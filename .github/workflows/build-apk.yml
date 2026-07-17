@@ -1,4 +1,4 @@
-name: 👑 Build APK - Ultra
+name: 👑 Build APK - Ultra with Android Project
 
 on:
   workflow_dispatch:
@@ -68,7 +68,7 @@ jobs:
         run: |
           npm install -g @capacitor/cli @capacitor/core @capacitor/android
           sudo apt-get update
-          sudo apt-get install -y imagemagick
+          sudo apt-get install -y imagemagick zip unzip
 
       - name: 📁 سحب وتجهيز جميع ملفات الموقع
         run: |
@@ -472,18 +472,166 @@ jobs:
             echo "  💾 assets: $(find android/app/src/main/assets -type f | wc -l) ملفات"
           fi
 
+      - name: 🏗️ تحضير مشروع Android Studio الكامل
+        run: |
+          echo "🏗️ جاري تحضير مشروع Android Studio الكامل..."
+          
+          # إنشاء مجلد للمشروع النهائي
+          mkdir -p android-project
+          
+          # نسخ جميع ملفات المشروع
+          cp -r android/* android-project/
+          cp -r www android-project/
+          cp capacitor.config.json android-project/
+          cp package.json android-project/
+          
+          # إنشاء ملف README.md للمشروع
+          cat > android-project/README.md << EOF
+          # ${{ github.event.inputs.app_name }} - Android Project
+          
+          ## 📱 معلومات المشروع
+          - **اسم التطبيق**: ${{ github.event.inputs.app_name }}
+          - **App ID**: ${{ github.event.inputs.app_id }}
+          - **الإصدار**: ${{ github.event.inputs.version_name }}
+          - **لون الخلفية**: ${{ github.event.inputs.app_color }}
+          
+          ## 📁 هيكل المشروع
+          ```
+          android-project/
+          ├── app/
+          │   ├── src/
+          │   │   └── main/
+          │   │       ├── java/...
+          │   │       ├── res/
+          │   │       └── AndroidManifest.xml
+          │   └── build.gradle
+          ├── gradle/
+          ├── www/              (ملفات الموقع)
+          ├── capacitor.config.json
+          ├── package.json
+          └── README.md
+          ```
+          
+          ## 🚀 طريقة الاستخدام
+          
+          ### 1️⃣ فتح المشروع في Android Studio
+          ```bash
+          1. افتح Android Studio
+          2. اختر "Open an existing project"
+          3. اختر مجلد android-project
+          4. انتظر حتى يكتمل تحميل المشروع
+          ```
+          
+          ### 2️⃣ بناء التطبيق
+          ```bash
+          # من Android Studio:
+          Build > Build Bundle(s) / APK(s) > Build APK(s)
+          
+          # أو من سطر الأوامر:
+          cd android-project
+          ./gradlew assembleDebug
+          ```
+          
+          ### 3️⃣ تثبيت التطبيق
+          ```bash
+          # سيتم إنشاء APK في:
+          android-project/app/build/outputs/apk/debug/app-debug.apk
+          ```
+          
+          ## ✨ المميزات
+          - 🖼️ Splash Screen مخصص مع أيقونة
+          - 📥 دعم التحميل الكامل
+          - 🌐 دعم WebView متكامل
+          - ⌨️ دعم الكيبورد
+          - 🎨 أيقونات تكيفية لجميع المقاسات
+          - 💾 صلاحيات تخزين كاملة
+          
+          ## 📝 ملاحظات
+          - يمكنك تعديل الألوان من `res/values/colors.xml`
+          - يمكنك تعديل النصوص من `res/values/strings.xml`
+          - يمكنك تعديل الصلاحيات من `AndroidManifest.xml`
+          
+          ---
+          *تم إنشاؤه بواسطة GitHub Actions*
+          EOF
+          
+          # إنشاء ملف .gitignore للمشروع
+          cat > android-project/.gitignore << EOF
+          *.iml
+          .gradle
+          /local.properties
+          /.idea
+          .DS_Store
+          /build
+          /captures
+          .externalNativeBuild
+          .cxx
+          local.properties
+          app/build/
+          EOF
+          
+          # إنشاء ملف build.gradle للمشروع الرئيسي
+          if [ -f "android-project/build.gradle" ]; then
+            echo "✅ ملف build.gradle موجود"
+          else
+            cat > android-project/build.gradle << EOF
+          // Top-level build file
+          buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:8.0.0'
+              }
+          }
+          
+          allprojects {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          EOF
+          fi
+          
+          # إنشاء ملف gradle.properties إذا لم يكن موجوداً
+          if [ ! -f "android-project/gradle.properties" ]; then
+            cat > android-project/gradle.properties << EOF
+          org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+          android.useAndroidX=true
+          android.enableJetifier=true
+          EOF
+          fi
+          
+          echo "✅ تم تحضير مشروع Android Studio الكامل"
+          echo "📊 إحصائيات المشروع:"
+          echo "  📁 عدد الملفات: $(find android-project -type f | wc -l)"
+          echo "  📂 عدد المجلدات: $(find android-project -type d | wc -l)"
+          echo "  💾 الحجم الإجمالي: $(du -sh android-project | cut -f1)"
+
       - name: 🔨 بناء تطبيق APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: 📊 معلومات الملف الناتج
+      - name: 📦 ضغط مشروع Android Studio
+        run: |
+          echo "📦 جاري ضغط مشروع Android Studio..."
+          cd android-project
+          zip -r ../android-project.zip ./*
+          cd ..
+          echo "✅ تم ضغط المشروع"
+          echo "📊 حجم الملف المضغوط: $(du -sh android-project.zip | cut -f1)"
+
+      - name: 📊 معلومات الملفات الناتجة
         run: |
           APK_PATH="android/app/build/outputs/apk/debug/app-debug.apk"
           if [ -f "$APK_PATH" ]; then
             echo "✅ تم بناء APK بنجاح"
-            echo "📱 حجم الملف: $(du -h $APK_PATH | cut -f1)"
+            echo "📱 حجم ملف APK: $(du -h $APK_PATH | cut -f1)"
+            echo "📁 حجم مشروع Android Studio: $(du -sh android-project.zip | cut -f1)"
             echo "📋 اسم التطبيق: ${{ github.event.inputs.app_name }}"
             echo "⬛ لون الخلفية: ${{ github.event.inputs.app_color }}"
             echo ""
@@ -493,19 +641,27 @@ jobs:
             echo "  🚫 بدون Spinner أو تحميل"
             echo "  ⚡ فتح سريع ومباشر"
             echo "  ⌨️ دعم الكيبورد"
+            echo "  📦 مشروع Android Studio كامل"
+            echo ""
+            echo "📂 الملفات التي سيتم رفعها:"
+            echo "  1️⃣ ملف APK للتثبيت المباشر"
+            echo "  2️⃣ مشروع Android Studio كامل (مضغوط)"
+            echo "  3️⃣ الكود المصدري في GitHub"
           else
             echo "❌ فشل بناء APK"
             exit 1
           fi
 
-      - name: 📤 رفع ملف APK إلى Artifacts (نسخة احتياطية)
+      - name: 📤 رفع الملفات إلى Artifacts (نسخة احتياطية)
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.event.inputs.app_name }}-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: ${{ github.event.inputs.app_name }}-Complete
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android-project.zip
           retention-days: 90
 
-      - name: 🚀 إنشاء Release ورفع APK
+      - name: 🚀 إنشاء Release ورفع جميع الملفات
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
@@ -527,38 +683,139 @@ jobs:
             - 🌐 يدعم جميع محتويات الويب
             - 💾 صلاحيات تخزين كاملة
             
-            ### 📥 التحميل
-            يمكنك تحميل ملف APK من الأسفل 👇
+            ### 📥 التحميلات المتاحة
+            
+            #### 📱 ملف APK (للتثبيت المباشر)
+            - قم بتحميل ملف `app-debug.apk` من الأسفل
+            - انقله إلى هاتفك
+            - ثبته مباشرة
+            
+            #### 📦 مشروع Android Studio (للمطورين)
+            - قم بتحميل ملف `android-project.zip`
+            - فك الضغط
+            - افتح المجلد في Android Studio
+            - يمكنك التعديل وإعادة البناء
+            
+            ### 🔧 للاستخدام في Android Studio
+            ```bash
+            1. حمل ملف android-project.zip
+            2. فك الضغط
+            3. افتح Android Studio
+            4. اختر Open Project
+            5. حدد المجلد المفكوك
+            6. انتظر تحميل المشروع
+            7. Build > Build APK
+            ```
             
             ---
             *Built with ❤️ using GitHub Actions*
-          files: android/app/build/outputs/apk/debug/app-debug.apk
+          files: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android-project.zip
           draft: false
           prerelease: false
           generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 📤 رفع مشروع Android إلى GitHub Repository
+        run: |
+          echo "📤 جاري رفع مشروع Android إلى GitHub..."
+          
+          # إنشاء مجلد android-project في المستودع
+          rm -rf android-source
+          mkdir -p android-source
+          
+          # نسخ مشروع Android Studio كامل
+          cp -r android-project/* android-source/
+          
+          # إضافة ملف README للمشروع
+          cat > android-source/README.md << EOF
+          # 🤖 ${{ github.event.inputs.app_name }} - Android Project
+          
+          هذا المجلد يحتوي على المشروع الكامل لنظام Android.
+          
+          ## 🚀 طريقة الاستخدام
+          
+          ### فتح المشروع في Android Studio
+          1. افتح Android Studio
+          2. اختر "Open an existing project"
+          3. حدد هذا المجلد
+          4. انتظر حتى يكتمل التحميل
+          
+          ### بناء APK جديد
+          - من Android Studio: `Build > Build Bundle(s) / APK(s) > Build APK(s)`
+          - من سطر الأوامر: `./gradlew assembleDebug`
+          
+          ### ملف APK الناتج
+          ```
+          app/build/outputs/apk/debug/app-debug.apk
+          ```
+          
+          ## 📁 هيكل المشروع
+          - `app/` - الملفات الرئيسية للتطبيق
+          - `app/src/main/java/` - الكود المصدري Java
+          - `app/src/main/res/` - الموارد (صور، أيقونات، تخطيطات)
+          - `app/src/main/assets/` - ملفات الموقع
+          - `app/src/main/AndroidManifest.xml` - إعدادات التطبيق
+          
+          ## 🎨 التخصيص
+          - **الألوان**: `app/src/main/res/values/colors.xml`
+          - **النصوص**: `app/src/main/res/values/strings.xml`
+          - **الأيقونات**: `app/src/main/res/mipmap-*/`
+          - **Splash Screen**: `app/src/main/res/drawable/splash_background.xml`
+          
+          ---
+          *آخر تحديث: $(date +%Y-%m-%d)*
+          EOF
+          
+          # إعداد Git
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          
+          # إضافة الملفات إلى Git
+          git add android-source/
+          
+          # التحقق من وجود تغييرات
+          if git diff --staged --quiet; then
+            echo "✅ لا توجد تغييرات جديدة"
+          else
+            git commit -m "🤖 إضافة مشروع Android Studio الكامل - ${{ github.event.inputs.app_name }} v${{ github.event.inputs.version_name }}"
+            git pull --rebase
+            git push
+            echo "✅ تم رفع مشروع Android Studio إلى GitHub بنجاح"
+          fi
+
       - name: 🎉 اكتمال البناء
         run: |
-          echo "╔════════════════════════════════════════════╗"
-          echo "║  👑  تم بناء التطبيق بنجاح!              ║"
-          echo "║  🖼️  تصميم فاخر                          ║"
-          echo "║  📥  دعم تحميل الصور                     ║"
-          echo "║  🚀  تم الرفع إلى Releases              ║"
-          echo "╚════════════════════════════════════════════╝"
+          echo "╔════════════════════════════════════════════════╗"
+          echo "║  👑  تم بناء التطبيق والمشروع بنجاح!        ║"
+          echo "║  🖼️  تصميم فاخر                              ║"
+          echo "║  📥  دعم تحميل الصور                         ║"
+          echo "║  🚀  تم الرفع إلى Releases                   ║"
+          echo "║  📦  مشروع Android Studio متاح               ║"
+          echo "╚════════════════════════════════════════════════╝"
           echo ""
           echo "📱 اسم التطبيق: ${{ github.event.inputs.app_name }}"
           echo "📌 الإصدار: ${{ github.event.inputs.version_name }}"
           echo "⬛ لون الخلفية: ${{ github.event.inputs.app_color }}"
           echo ""
-          echo "✨ طريقة عمل التطبيق:"
-          echo "  1️⃣ تفتح التطبيق"
-          echo "  2️⃣ تظهر الأيقونة في المنتصف"
-          echo "  3️⃣ يفتح التطبيق مباشرة"
-          echo "  4️⃣ تولد الصورة وتضغط تحميل"
-          echo "  5️⃣ يتم حفظ الصورة بنجاح ✅"
+          echo "✨ الملفات المتاحة:"
+          echo "  1️⃣ ملف APK جاهز للتثبيت"
+          echo "  2️⃣ مشروع Android Studio كامل (ZIP)"
+          echo "  3️⃣ الكود المصدري في GitHub (android-source/)"
           echo ""
-          echo "📥 يمكنك تحميل الـ APK من:"
-          echo "  🚀 Releases (رابط مباشر)"
-          echo "  📦 Artifacts (نسخة احتياطية)"
+          echo "📥 للتحميل:"
+          echo "  🚀 اذهب إلى Releases"
+          echo "  📦 حمل android-project.zip"
+          echo "  📱 أو حمل app-debug.apk مباشرة"
+          echo ""
+          echo "🔧 للمطورين:"
+          echo "  📁 افتح مجلد android-source/ في Android Studio"
+          echo "  🛠️ عدل على المشروع وأعد بناءه"
+          echo ""
+          echo "📲 طريقة تثبيت APK:"
+          echo "  1️⃣ حمل ملف APK من Releases"
+          echo "  2️⃣ افتح الملف على هاتفك"
+          echo "  3️⃣ اسمح بالتثبيت من مصادر غير معروفة"
+          echo "  4️⃣ استمتع بالتطبيق! 🎉"
