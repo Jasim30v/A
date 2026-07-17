@@ -1,33 +1,221 @@
-name: 🌐 Deploy Website
+# ╔══════════════════════════════════════════════════════════╗
+# ║     👑 Dark AI - قالب الأندرويد (المرحلة الثانية)     ║
+# ║            يعمل تلقائياً عند كل push                   ║
+# ╚══════════════════════════════════════════════════════════╝
 
+name: 📁 Build Template - المرحلة الثانية
+
+# ═══════════════════════════ المشغلات ═══════════════════════════
 on:
+  # يعمل تلقائياً عند رفع الكود
   push:
-    branches: [main]
+    branches: [main, master]
+    paths:
+      - 'website/**'
+      - 'scraper.py'
+      - 'icon.png'
+      
+  # أو يدوياً
   workflow_dispatch:
+    inputs:
+      website_url:
+        description: '🌐 رابط الموقع (للتجربة)'
+        required: false
+        default: ''
+        type: string
 
+# ═══════════════════════════ الصلاحيات ═══════════════════════════
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
+# ═══════════════════════════ المهام ═══════════════════════════
 jobs:
-  deploy:
+  # ──────── المرحلة 1: تحميل الموقع ────────
+  scrape:
+    name: 🕷️ تحميل الموقع
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      site_ready: ${{ steps.scrape.outputs.success }}
+      
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: 📥 تحميل المستودع
+        uses: actions/checkout@v4
+        
+      - name: 🐍 تثبيت Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - run: python scraper.py
-      - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
+          python-version: '3.11'
+          
+      - name: 📦 تثبيت المكتبات
+        run: pip install requests beautifulsoup4 lxml
+        
+      - name: 🕷️ تشغيل Scraper
+        id: scrape
+        run: |
+          if [ -f "scraper.py" ]; then
+            export WEBSITE_URL="${{ github.event.inputs.website_url }}"
+            python3 scraper.py
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ scraper.py غير موجود، استخدام الملفات الحالية"
+            echo "success=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: 📤 حفظ الموقع المحمل
+        uses: actions/upload-artifact@v4
         with:
-          path: './www'
-      - uses: actions/deploy-pages@v4
+          name: website-files
+          path: website/
+          retention-days: 7
+
+  # ──────── المرحلة 2: بناء القالب ────────
+  build-template:
+    name: 📁 بناء قالب الأندرويد
+    runs-on: ubuntu-latest
+    needs: scrape
+    
+    steps:
+      - name: 📥 تحميل المستودع
+        uses: actions/checkout@v4
+        
+      - name: 📥 تحميل ملفات الموقع
+        uses: actions/download-artifact@v4
+        with:
+          name: website-files
+          path: website/
+          
+      - name: ☕ تثبيت Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+      - name: 🟢 تثبيت Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: 🛠️ تثبيت الأدوات
+        run: |
+          npm install -g @capacitor/cli @capacitor/core @capacitor/android
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq imagemagick
+
+      - name: 📁 تجهيز الموقع
+        run: |
+          rm -rf www
+          mkdir -p www
+          
+          if [ -d "website" ] && [ "$(ls -A website 2>/dev/null)" ]; then
+            echo "📁 نسخ من website/"
+            cp -r website/* www/ 2>/dev/null || true
+          elif [ -f "index.html" ]; then
+            echo "📁 نسخ من المجلد الرئيسي"
+            shopt -s dotglob
+            for item in *; do
+              [[ "$item" != ".git" && "$item" != ".github" && "$item" != "node_modules" && "$item" != "android" && "$item" != "www" && "$item" != "website" && "$item" != "scraper.py" ]] && cp -r "$item" www/ 2>/dev/null || true
+            done
+          fi
+          
+          echo "📊 www: $(find www -type f | wc -l) ملفات"
+          [ -f "www/index.html" ] && echo "✅ index.html موجود" || echo "⚠️ index.html غير موجود"
+
+      - name: 📄 إعداد Capacitor
+        run: |
+          cat > package.json << 'EOF'
+          {
+            "name": "dark-ai-app",
+            "version": "1.0.0",
+            "main": "www/index.html",
+            "dependencies": {
+              "@capacitor/android": "^5.7.0",
+              "@capacitor/core": "^5.7.0",
+              "@capacitor/cli": "^5.7.0",
+              "@capacitor/app": "^5.0.6",
+              "@capacitor/filesystem": "^5.2.0",
+              "@capacitor/status-bar": "^5.0.6",
+              "@capacitor/splash-screen": "^5.0.6",
+              "@capacitor/keyboard": "^5.0.6"
+            }
+          }
+          EOF
+          
+          cat > capacitor.config.json << 'EOF'
+          {
+            "appId": "com.darkai.app",
+            "appName": "Dark AI",
+            "webDir": "www",
+            "server": {
+              "androidScheme": "https",
+              "allowNavigation": ["*"],
+              "cleartext": true
+            },
+            "android": {
+              "allowMixedContent": true,
+              "webContentsDebuggingEnabled": true
+            }
+          }
+          EOF
+          
+          npm install
+          npx cap add android
+
+      - name: 🎨 تجهيز الأيقونات
+        run: |
+          ICON="icon.png"
+          [ ! -f "$ICON" ] && ICON=$(find . -name "*.png" -not -path './node_modules/*' -not -path './android/*' | head -1)
+          
+          if [ -f "$ICON" ]; then
+            for dir in mipmap-ldpi mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
+              mkdir -p "android/app/src/main/res/$dir"
+            done
+            
+            convert "$ICON" -resize 36x36   android/app/src/main/res/mipmap-ldpi/ic_launcher.png
+            convert "$ICON" -resize 48x48   android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+            convert "$ICON" -resize 72x72   android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+            convert "$ICON" -resize 96x96   android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+            convert "$ICON" -resize 144x144 android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+            convert "$ICON" -resize 192x192 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+            
+            echo "✅ الأيقونات جاهزة"
+          else
+            echo "⚠️ لم يتم العثور على أيقونة"
+          fi
+
+      - name: 🔧 إعداد Android
+        run: |
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          [ -f "$MANIFEST" ] && sed -i 's|<application|<application android:usesCleartextTraffic="true" android:hardwareAccelerated="true"|' "$MANIFEST"
+
+      - name: 💾 حفظ قالب الأندرويد
+        run: |
+          # حذف الملفات غير الضرورية
+          rm -rf android/build android/app/build android/.gradle
+          rm -rf node_modules
+          
+          # إنشاء مجلد القالب
+          mkdir -p template
+          cp -r android template/
+          cp -r www template/
+          cp capacitor.config.json template/
+          cp package.json template/
+          
+          # ضغط القالب
+          tar -czf android-template.tar.gz template/
+          echo "✅ القالب جاهز: $(du -h android-template.tar.gz | cut -f1)"
+
+      - name: 📤 رفع القالب
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-template
+          path: android-template.tar.gz
+          retention-days: 30
+
+      - name: 📊 ملخص
+        run: |
+          echo "╔══════════════════════════════════════╗"
+          echo "║  ✅ المرحلة الثانية اكتملت!         ║"
+          echo "║  📁 قالب الأندرويد جاهز             ║"
+          echo "║  🔄 انتقل للمرحلة الثالثة           ║"
+          echo "║  🚀 استخدم build-apk.yml            ║"
+          echo "╚══════════════════════════════════════╝"
