@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🟦 Nexus | دخول</title>
+    <title>🟦 Sotwe | دخول</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -11,67 +11,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{
-            min-height:100vh;min-height:-webkit-fill-available;
-            background:#000;display:flex;align-items:center;justify-content:center;
-            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-            overflow:hidden;
-        }
+        body{min-height:100vh;min-height:-webkit-fill-available;background:#000;display:flex;align-items:center;justify-content:center;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;overflow:hidden}
         .bg-orb{position:fixed;border-radius:50%;filter:blur(140px);opacity:0.2}
         .bg-orb:nth-child(1){width:450px;height:450px;background:#1d9bf0;top:-120px;left:-120px}
         .bg-orb:nth-child(2){width:380px;height:380px;background:#f91880;bottom:-120px;right:-120px;animation-delay:5s}
         @keyframes orbFloat{0%{transform:translate(0,0)scale(1)}100%{transform:translate(60px,-60px)scale(1.4)}}
         .bg-orb{animation:orbFloat 18s infinite alternate}
-
-        .card{
-            position:relative;z-index:1;width:90%;max-width:440px;
-            background:rgba(0,0,0,0.85);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
-            border-radius:32px;padding:40px 32px;
-            border:1px solid rgba(29,155,240,0.2);
-            box-shadow:0 30px 70px rgba(29,155,240,0.1);
-            animation:fadeUp 0.8s ease;text-align:center;
-        }
+        .card{position:relative;z-index:1;width:90%;max-width:460px;background:rgba(0,0,0,0.85);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:32px;padding:48px 40px;border:1px solid rgba(29,155,240,0.2);box-shadow:0 30px 70px rgba(29,155,240,0.1);animation:fadeUp 0.8s ease;text-align:center}
         @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-        h1{font-size:44px;font-weight:800;margin-bottom:28px;
-            background:linear-gradient(135deg,#1d9bf0,#f91880);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        h2{font-size:22px;font-weight:700;margin-bottom:4px;text-align:right}
-        .sub{color:#71767b;font-size:13px;text-align:right;margin-bottom:20px}
+        h1{font-size:56px;font-weight:900;margin-bottom:32px;background:linear-gradient(135deg,#1d9bf0,#f91880);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        h2{font-size:24px;font-weight:700;margin-bottom:8px;text-align:right}
+        .sub{color:#71767b;font-size:14px;text-align:right;margin-bottom:24px}
         .tabs{display:flex;gap:4px;background:rgba(29,155,240,0.06);border-radius:40px;padding:4px;margin-bottom:24px}
         .tab{flex:1;padding:12px;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:600}
         .tab.active{background:linear-gradient(135deg,#1d9bf0,#f91880);color:#fff;box-shadow:0 8px 20px rgba(29,155,240,0.4)}
         .form{display:none;animation:fadeIn 0.4s ease;text-align:right}
         .form.active{display:block}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        input{width:100%;padding:14px 18px;margin:8px 0;border-radius:40px;
-            background:#1a1a1a;border:1px solid #2f3336;color:#fff;
-            font-size:15px;outline:none;transition:all 0.4s}
-        input:focus{border-color:#1d9bf0;box-shadow:0 0 20px rgba(29,155,240,0.15);background:#1a1a1a}
+        input{width:100%;padding:16px 20px;margin:10px 0;border-radius:12px;background:#1a1a1a;border:1px solid #2f3336;color:#fff;font-size:16px;outline:none;transition:0.2s}
+        input:focus{border-color:#1d9bf0;box-shadow:0 0 0 2px rgba(29,155,240,0.2)}
         input::placeholder{color:rgba(255,255,255,0.3)}
-        button{width:100%;padding:12px;margin-top:16px;
-            background:#1d9bf0;border:none;border-radius:40px;color:#fff;
-            font-weight:600;font-size:15px;cursor:pointer;
-            transition:all 0.3s;box-shadow:0 10px 30px rgba(29,155,240,0.3)}
-        button:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(29,155,240,0.5)}
+        button{width:100%;padding:14px;margin-top:16px;background:#1d9bf0;border:none;border-radius:40px;color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:0.2s}
+        button:hover{background:#1a8cd8}
         button:disabled{opacity:0.5;pointer-events:none}
         .msg{text-align:center;color:#f91880;font-size:13px;margin-top:12px;min-height:20px}
         .msg.success{color:#4ade80}
-        .link{margin-top:28px;color:#71767b;font-size:13px}
+        .link{margin-top:32px;color:#71767b;font-size:14px}
         .link a{color:#1d9bf0;text-decoration:none;font-weight:600}
-        .forgot{display:block;text-align:right;color:#1d9bf0;font-size:12px;margin-top:6px;text-decoration:none}
+        .forgot{display:block;text-align:right;color:#1d9bf0;font-size:13px;margin-top:8px;text-decoration:none}
+        .forgot:hover{text-decoration:underline}
     </style>
 </head>
 <body>
     <div class="bg-orb"></div><div class="bg-orb"></div>
     <div class="card">
-        <h1>Nexus</h1>
+        <h1>Sotwe</h1>
         <div class="tabs">
             <button class="tab active" id="tabLogin" onclick="switchAuth('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
             <button class="tab" id="tabRegister" onclick="switchAuth('register')"><i class="fas fa-user-plus"></i> اشتراك</button>
         </div>
         <div id="formLogin" class="form active">
             <h2>تسجيل الدخول</h2>
-            <p class="sub">قم بالوصول إلى حسابك في Nexus</p>
+            <p class="sub">قم بالوصول إلى حسابك في Sotwe</p>
             <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email">
             <input type="password" id="loginPass" placeholder="🔒 كلمة المرور" autocomplete="current-password">
             <a href="#" class="forgot" onclick="resetPassword()">نسيت كلمة المرور؟</a>
@@ -81,7 +62,7 @@
         </div>
         <div id="formRegister" class="form">
             <h2>إنشاء حساب</h2>
-            <p class="sub">قم بإنشاء حسابك في Nexus</p>
+            <p class="sub">قم بإنشاء حسابك في Sotwe</p>
             <input type="text" id="regName" placeholder="👤 اسم المستخدم" autocomplete="username">
             <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email">
             <input type="password" id="regPass" placeholder="🔒 كلمة المرور (6 أحرف على الأقل)" autocomplete="new-password">
@@ -108,7 +89,6 @@
                 document.getElementById('formRegister').classList.add('active');
             }
         }
-
         async function doLogin(){
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPass').value;
@@ -117,7 +97,7 @@
             if(!email || !password){ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
             btn.disabled = true; btn.innerHTML = '⏳ جاري الدخول...'; msg.innerText = '';
             try {
-                await firebase.auth().signInWithEmailAndPassword(email, password);
+                await auth.signInWithEmailAndPassword(email, password);
                 window.location.replace('index.html');
             } catch(error) {
                 btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول';
@@ -130,7 +110,6 @@
                 }
             }
         }
-
         async function doRegister(){
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
@@ -145,9 +124,9 @@
             if(!email.includes('@') || !email.includes('.')){ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }
             btn.disabled = true; btn.innerHTML = '⏳ جاري إنشاء الحساب...'; msg.innerText = '';
             try {
-                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const uid = userCredential.user.uid;
-                await firebase.database().ref('users/' + uid).set({
+                await db.ref('users/' + uid).set({
                     name: name, email: email, bio: '',
                     avatarUrl: '', coverUrl: '',
                     followers: {}, following: {}, bookmarks: {},
@@ -166,18 +145,16 @@
                 }
             }
         }
-
         function resetPassword(){
             const email = document.getElementById('loginEmail').value.trim();
             if(!email){ document.getElementById('loginMsg').innerText = '❌ أدخل بريدك الإلكتروني أولاً'; return; }
-            firebase.auth().sendPasswordResetEmail(email).then(() => {
+            auth.sendPasswordResetEmail(email).then(() => {
                 document.getElementById('loginMsg').innerText = '✅ تم إرسال رابط إعادة التعيين إلى بريدك';
                 document.getElementById('loginMsg').className = 'msg success';
             }).catch(e => {
                 document.getElementById('loginMsg').innerText = '❌ خطأ: ' + e.message;
             });
         }
-
         document.querySelectorAll('input').forEach(input => {
             input.addEventListener('keydown', function(e) {
                 if(e.key === 'Enter') {
@@ -187,12 +164,8 @@
                 }
             });
         });
-
-        firebase.auth().onAuthStateChanged(user => {
-            if(user) { window.location.replace('index.html'); }
-        });
-
-        console.log('🟦 Nexus Auth Ready');
+        auth.onAuthStateChanged(user => { if(user) window.location.replace('index.html'); });
+        console.log('🟦 Sotwe Auth Ready');
     </script>
 </body>
 </html>

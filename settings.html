@@ -1,37 +1,4 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🟦 Nexus | إعدادات</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root{--primary:#1d9bf0;--bg:#000;--border:rgba(255,255,255,0.08);--surface:#1a1a1a}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-y:auto}
-        .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);z-index:10}
-        .btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}
-        .item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer}
-        .item:hover{background:rgba(255,255,255,0.02)}
-        .btn-danger{background:rgba(249,24,128,0.2);border:1px solid rgba(249,24,128,0.3);color:#f91880;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block}
-    </style>
-</head>
-<body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 الإعدادات</h2></div>
-<div>
-    <div class="item" onclick="window.location.href='index.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user" style="color:var(--primary)"></i><span>الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
-    <div class="item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-moon" style="color:var(--primary)"></i><span>المظهر</span></div><span style="opacity:0.5;font-size:13px">داكن / فاتح</span></div>
-    <div class="item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle" style="color:var(--primary)"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">Nexus v2026.1</span></div>
-    <button class="btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
-</div>
-<script src="firebase-config.js"></script>
-<script>
-    firebase.auth().onAuthStateChanged(u=>{if(!u)window.location.href='auth.html'});
-    function logout(){firebase.auth().signOut();window.location.href='auth.html'}
-</script>
-</body>
-</html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>🟦 Sotwe | إعدادات</title><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>:root{--primary:#1d9bf0;--bg:#000;--border:#2f3336;--surface:#1a1a1a}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-y:auto}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);z-index:10}.btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}.item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer}.item:hover{background:#080808}.btn-danger{background:rgba(249,24,128,0.2);border:1px solid rgba(249,24,128,0.3);color:#f91880;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block}</style></head>
+<body><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 الإعدادات</h2></div><div><div class="item" onclick="window.location.href='index.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user" style="color:var(--primary)"></i><span>الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div><div class="item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-moon" style="color:var(--primary)"></i><span>المظهر</span></div><span style="opacity:0.5;font-size:13px">داكن / فاتح</span></div><div class="item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle" style="color:var(--primary)"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">Sotwe v2026.1</span></div><button class="btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button></div><script src="firebase-config.js"></script><script>auth.onAuthStateChanged(u=>{if(!u)window.location.href='auth.html'});function logout(){auth.signOut();window.location.href='auth.html'}</script></body></html>

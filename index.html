@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🟦 Nexus | الرئيسية</title>
+    <title>🟦 Sotwe | الرئيسية</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -15,292 +15,179 @@
             --secondary: #f91880;
             --bg: #000000;
             --surface: #1a1a1a;
-            --border: rgba(255,255,255,0.08);
+            --border: #2f3336;
             --text: #ffffff;
             --text-secondary: #71767b;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-            overflow-x: hidden;
-            overflow-y: auto;
-            -webkit-tap-highlight-color: transparent;
-            width: 100%;
-            position: relative;
-        }
-        body.light-mode {
-            --bg: #f5f7f9;
-            --surface: #ffffff;
-            --border: rgba(0,0,0,0.08);
-            --text: #111111;
-            --text-secondary: #536471;
-        }
-        body.light-mode .top-bar { background: rgba(245,247,249,0.95); border-bottom-color: rgba(0,0,0,0.08); }
-        body.light-mode .bottom-nav { background: rgba(245,247,249,0.95); border-top-color: rgba(0,0,0,0.08); }
-        body.light-mode .tweet-card { background: #ffffff; border-bottom-color: #eef2f5; }
-        body.light-mode .tweet-card:hover { background: #fafbfc; }
-        body.light-mode .panel { background: #ffffff; }
-        body.light-mode input { background: #f5f7f9; border-color: #eef2f5; color: #111; }
-        body.light-mode .message-bubble.received { background: #eef2f5; }
-        body.light-mode .admin-stat { background: #f0f2f5; }
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
-        .top-bar {
-            position: sticky; top: 0;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 12px 16px; display: flex;
-            justify-content: space-between; align-items: center;
-            z-index: 100; padding-top: max(12px, env(safe-area-inset-top));
-        }
-        .logo {
-            font-size: 22px; font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            cursor: pointer;
-        }
-        .top-icons { display: flex; gap: 20px; align-items: center; }
-        .top-icon { font-size: 20px; color: var(--text); cursor: pointer; position: relative; }
-        .top-icon:hover { color: var(--primary); }
-        .notification-badge {
-            position: absolute; top: -6px; right: -10px;
-            background: var(--secondary); color: white;
-            font-size: 9px; font-weight: bold;
-            border-radius: 50%; width: 16px; height: 16px;
-            display: flex; align-items: center; justify-content: center;
-            display: none;
-        }
-        .back-btn {
-            background: none; border: none; color: var(--primary);
-            font-size: 13px; cursor: pointer; display: none;
-            align-items: center; gap: 6px;
-        }
-
-        .feed-container { padding: 0 0 70px; min-height: 100vh; }
-        .tweet-card {
-            background: var(--bg); border-bottom: 1px solid var(--border);
-            padding: 14px 16px; transition: background 0.2s; cursor: pointer;
-        }
-        .tweet-card:hover { background: rgba(255,255,255,0.02); }
-        .tweet-header { display: flex; gap: 12px; margin-bottom: 6px; }
-        .tweet-avatar {
-            width: 44px; height: 44px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            overflow: hidden; cursor: pointer; flex-shrink: 0;
-        }
-        .tweet-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .tweet-name { font-weight: 700; cursor: pointer; font-size: 14px; }
-        .tweet-username { font-size: 12px; color: var(--text-secondary); }
-        .tweet-time { font-size: 12px; color: var(--text-secondary); }
-        .tweet-content { margin: 8px 0 10px; font-size: 14px; line-height: 1.4; white-space: pre-wrap; }
-        .tweet-media { margin: 10px 0; border-radius: 18px; overflow: hidden; background: var(--surface); }
-        .tweet-media img { width: 100%; max-height: 450px; object-fit: cover; cursor: pointer; }
-        .tweet-media video { width: 100%; max-height: 450px; border-radius: 18px; cursor: pointer; }
-        .tweet-media audio { width: 100%; }
-        .quote-embed {
-            margin-top: 12px; border: 1px solid var(--border); border-radius: 16px;
-            padding: 12px; cursor: pointer;
-        }
-        .tweet-actions {
-            display: flex; justify-content: space-between; max-width: 380px; margin-top: 10px;
-        }
-        .tweet-action {
-            display: flex; align-items: center; gap: 6px;
-            background: none; border: none; color: var(--text-secondary);
-            cursor: pointer; font-size: 12px; padding: 6px;
-            border-radius: 40px; transition: 0.2s;
-        }
-        .tweet-action i { font-size: 16px; }
-        .tweet-action:hover { color: var(--primary); background: rgba(29,155,240,0.1); }
-        .tweet-action.active { color: var(--secondary); }
-        @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        .heart-animation { animation: heartBeat 0.3s ease; }
-
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around;
-            padding: 8px 0 calc(8px + env(safe-area-inset-bottom)); z-index: 100;
-        }
-        .nav-item {
-            background: none; border: none; font-size: 22px;
-            color: var(--text-secondary); cursor: pointer; padding: 6px;
-            border-radius: 40px; transition: 0.2s;
-        }
-        .nav-item.active { color: var(--primary); }
-        .nav-item:hover { background: rgba(29,155,240,0.1); color: var(--primary); }
-
-        .panel {
-            position: fixed; inset: 0; background: var(--bg);
-            z-index: 200; transform: translateX(100%);
-            transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            overflow-y: auto; display: flex; flex-direction: column;
-        }
-        .panel.open { transform: translateX(0); }
-        .panel-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .panel-body { flex: 1; overflow-y: auto; padding: 12px; }
-
-        .compose-area { padding: 16px; max-width: 600px; margin: 0 auto; }
-        .compose-input {
-            width: 100%; min-height: 120px; background: transparent;
-            border: none; padding: 12px; color: var(--text);
-            font-size: 18px; resize: none; outline: none; font-family: inherit;
-        }
-        .media-preview { margin: 12px 0; display: none; }
-        .media-preview img, .media-preview video { max-height: 250px; border-radius: 18px; width: 100%; object-fit: cover; }
-        .compose-tools { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .compose-tool { background: none; border: none; color: var(--primary); font-size: 18px; padding: 8px; border-radius: 50%; cursor: pointer; }
-        .btn-post { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 40px; font-weight: 700; cursor: pointer; margin-top: 16px; }
-
-        .comment-item { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-        .comment-header { display: flex; gap: 10px; margin-bottom: 6px; }
-        .comment-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); overflow: hidden; cursor: pointer; flex-shrink: 0; }
-        .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .comment-user { font-weight: 600; font-size: 13px; cursor: pointer; }
-        .comment-time { font-size: 10px; color: var(--text-secondary); }
-        .comment-text { font-size: 13px; margin: 6px 0; }
-        .reply-list { margin-top: 10px; margin-right: 40px; border-right: 2px solid var(--primary); padding-right: 10px; }
-        .reply-item { margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-        .reply-header { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
-        .reply-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--primary); overflow: hidden; }
-        .reply-user { font-weight: 500; font-size: 11px; cursor: pointer; }
-        .reply-text { font-size: 12px; }
-        .comment-input-area { padding: 12px; border-top: 1px solid var(--border); background: var(--bg); }
-        .comment-input { display: flex; gap: 10px; align-items: center; }
-        .comment-input input { flex: 1; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; color: var(--text); outline: none; font-size: 13px; }
-
-        .profile-cover { width: 100%; height: 160px; background: linear-gradient(135deg, var(--primary), var(--secondary)); cursor: pointer; position: relative; }
-        .profile-cover img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-info { padding: 0 16px 16px; position: relative; }
-        .profile-avatar {
-            width: 88px; height: 88px; border-radius: 50%;
-            background: #111; border: 3px solid var(--bg);
-            margin-top: -44px; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; cursor: pointer; position: relative;
-        }
-        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-name { font-size: 18px; font-weight: 700; margin-top: 10px; }
-        .profile-bio { color: var(--text-secondary); font-size: 13px; margin: 6px 0; }
-        .profile-stats {
-            display: flex; gap: 20px; margin: 12px 0; padding: 10px 0;
-            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-        }
-        .stat-number { font-size: 16px; font-weight: 700; cursor: pointer; }
-        .stat-label { font-size: 12px; color: var(--text-secondary); cursor: pointer; }
-        .profile-buttons { display: flex; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
-        .profile-btn {
-            padding: 6px 20px; border-radius: 40px; font-weight: 600;
-            cursor: pointer; border: none; font-size: 13px;
-        }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-secondary { background: var(--surface); color: var(--text); }
-        .btn-danger { background: var(--secondary); color: white; }
-        .profile-posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 4px; }
-        .profile-post { aspect-ratio: 1; background: var(--surface); overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .profile-post img, .profile-post video { width: 100%; height: 100%; object-fit: cover; }
-
-        .chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-        .chat-message { display: flex; gap: 6px; max-width: 80%; }
-        .chat-message.sent { align-self: flex-end; flex-direction: row-reverse; }
-        .message-bubble { background: var(--surface); padding: 8px 12px; border-radius: 18px; font-size: 13px; }
-        .message-bubble.sent { background: var(--primary); color: white; }
-        .message-image { max-width: 180px; border-radius: 14px; cursor: pointer; }
-        .message-audio audio { width: 200px; height: 36px; }
-        .chat-input-area { display: flex; gap: 10px; padding: 10px; border-top: 1px solid var(--border); background: var(--bg); align-items: center; }
-        .chat-input-area input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 40px; background: var(--surface); color: var(--text); outline: none; font-size: 13px; }
-        .chat-input-area button { background: none; border: none; color: var(--primary); font-size: 18px; cursor: pointer; padding: 6px; }
-
-        .search-input { width: calc(100% - 24px); margin: 12px; padding: 10px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; color: var(--text); font-size: 14px; outline: none; }
-        .search-result { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .notification-item { display: flex; align-items: center; gap: 10px; padding: 12px; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .follower-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .conversation-item { display: flex; align-items: center; gap: 12px; padding: 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .conversation-item:hover { background: rgba(255,255,255,0.02); }
-        .avatar-sm { width: 48px; height: 48px; border-radius: 50%; background: var(--primary); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; }
-        .avatar-sm img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-xs { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; }
-        .avatar-xs img { width: 100%; height: 100%; object-fit: cover; }
-
-        .edit-profile-modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            z-index: 600; display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden; transition: 0.3s;
-        }
-        .edit-profile-modal.open { opacity: 1; visibility: visible; }
-        .edit-profile-content {
-            background: var(--bg); border-radius: 24px; padding: 24px;
-            width: 90%; max-width: 440px; border: 1px solid var(--border);
-        }
-        .edit-profile-content input, .edit-profile-content textarea {
-            width: 100%; padding: 12px 14px; margin: 10px 0;
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 40px; color: var(--text); font-size: 14px; outline: none;
-        }
-        .edit-profile-content textarea { border-radius: 20px; min-height: 80px; resize: vertical; }
-
-        .image-modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.96);
-            z-index: 2000; display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden; transition: 0.3s; cursor: pointer;
-        }
-        .image-modal.open { opacity: 1; visibility: visible; }
-        .image-modal img { max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 12px; }
-        .close-modal {
-            position: absolute; top: 16px; right: 16px;
-            background: rgba(0,0,0,0.5); color: white;
-            width: 36px; height: 36px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; cursor: pointer; z-index: 2001;
-        }
-
-        .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; padding: 16px; }
-        .admin-stat { background: var(--surface); padding: 16px; border-radius: 20px; text-align: center; border: 1px solid var(--border); }
-        .admin-stat-icon { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
-        .admin-stat-number { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-        .admin-stat-label { font-size: 12px; color: var(--text-secondary); }
-        .admin-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); }
-        .admin-item-name { font-weight: 600; font-size: 13px; margin-bottom: 2px; }
-        .admin-item-email { font-size: 11px; color: var(--text-secondary); }
-        .admin-delete-btn { background: var(--secondary); color: white; border: none; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 11px; font-weight: 500; }
-
-        .loading { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
-        .spinner { width: 32px; height: 32px; border: 2px solid rgba(29,155,240,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        #customToast {
-            position: fixed; bottom: 75px; left: 50%; transform: translateX(-50%);
-            background: var(--primary); color: white; padding: 8px 20px;
-            border-radius: 40px; z-index: 1100; font-size: 13px; font-weight: 500;
-            opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap;
-        }
-
-        .upload-btn { flex: 1; background: var(--surface); color: var(--text); padding: 8px; border-radius: 40px; font-weight: 500; cursor: pointer; text-align: center; font-size: 12px; }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{width:100%;height:100%;overflow:hidden;position:fixed;top:0;left:0;right:0;bottom:0}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow-y:auto;overflow-x:hidden;height:100%;width:100%;position:relative}
+        body.light-mode{--bg:#ffffff;--surface:#f7f9f9;--border:#eef2f5;--text:#111111;--text-secondary:#536471}
+        body.light-mode .tweet-card{background:#fff;border-bottom-color:#eef2f5}
+        body.light-mode .tweet-card:hover{background:#f7f9f9}
+        body.light-mode .top-bar{background:rgba(255,255,255,0.98);border-bottom-color:#eef2f5}
+        body.light-mode .bottom-nav{background:rgba(255,255,255,0.98);border-top-color:#eef2f5}
+        body.light-mode .panel{background:#fff}
+        body.light-mode input{background:#f7f9f9;border-color:#eef2f5;color:#111}
+        body.light-mode .message-bubble.received{background:#eef2f5}
+        body.light-mode .admin-stat{background:#f0f2f5}
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:#2f3336;border-radius:10px}
+        ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
+        .top-bar{position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+        .logo{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+        .top-icons{display:flex;gap:24px;align-items:center}
+        .top-icon{font-size:22px;color:var(--text);cursor:pointer;position:relative;transition:0.2s}
+        .top-icon:hover{color:var(--primary)}
+        .notification-badge{position:absolute;top:-8px;right:-12px;background:var(--secondary);color:#fff;font-size:10px;font-weight:700;border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center}
+        .back-btn{background:none;border:none;color:var(--primary);font-size:14px;cursor:pointer;display:none;align-items:center;gap:6px}
+        .feed-container{padding:0 0 80px}
+        .tweet-card{background:var(--bg);border-bottom:1px solid var(--border);padding:16px 20px;transition:background 0.2s;cursor:pointer}
+        .tweet-card:hover{background:#080808}
+        .tweet-header{display:flex;gap:12px;margin-bottom:8px}
+        .tweet-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));overflow:hidden;cursor:pointer;flex-shrink:0}
+        .tweet-avatar img{width:100%;height:100%;object-fit:cover}
+        .tweet-name{font-weight:800;cursor:pointer;font-size:15px}
+        .tweet-username{font-size:13px;color:var(--text-secondary)}
+        .tweet-time{font-size:13px;color:var(--text-secondary)}
+        .tweet-content{margin:8px 0 12px;font-size:15px;line-height:1.4;white-space:pre-wrap}
+        .tweet-media{margin:12px 0;border-radius:20px;overflow:hidden;background:var(--surface);cursor:pointer}
+        .tweet-media img{width:100%;max-height:500px;object-fit:cover;transition:transform 0.3s ease}
+        .tweet-media img:hover{transform:scale(1.02)}
+        .tweet-media video{width:100%;max-height:500px;border-radius:20px}
+        .tweet-media audio{width:100%}
+        .quote-embed{margin-top:12px;border:1px solid var(--border);border-radius:16px;padding:12px;cursor:pointer}
+        .tweet-actions{display:flex;justify-content:space-between;max-width:425px;margin-top:12px}
+        .tweet-action{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:13px;padding:8px;border-radius:40px;transition:0.2s}
+        .tweet-action i{font-size:18px}
+        .tweet-action:hover{color:var(--primary);background:rgba(29,155,240,0.1)}
+        .tweet-action.active{color:var(--secondary)}
+        @keyframes heartBeat{0%{transform:scale(1)}50%{transform:scale(1.3);color:#f91880}100%{transform:scale(1)}}
+        .heart-animation{animation:heartBeat 0.3s ease}
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 16px;z-index:100}
+        .nav-item{background:none;border:none;font-size:26px;color:var(--text-secondary);cursor:pointer;padding:8px;border-radius:40px;transition:0.2s}
+        .nav-item.active{color:var(--primary)}
+        .nav-item:hover{background:rgba(29,155,240,0.1);color:var(--primary)}
+        .panel{position:fixed;inset:0;background:var(--bg);z-index:200;transform:translateX(100%);transition:0.3s cubic-bezier(0.2,0.9,0.4,1.1);overflow-y:auto;display:flex;flex-direction:column}
+        .panel.open{transform:translateX(0)}
+        .panel-header{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+        .panel-body{flex:1;overflow-y:auto;padding:16px}
+        .compose-area{padding:20px;max-width:600px;margin:0 auto}
+        .compose-input{width:100%;min-height:150px;background:transparent;border:none;padding:16px;color:var(--text);font-size:20px;resize:none;outline:none;font-family:inherit}
+        .media-preview{margin:16px 0;display:none}
+        .media-preview img,.media-preview video{max-height:300px;border-radius:20px;width:100%;object-fit:cover}
+        .compose-tools{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+        .compose-tool{background:none;border:none;color:var(--primary);font-size:20px;padding:10px;border-radius:50%;cursor:pointer;transition:0.2s}
+        .compose-tool:hover{background:rgba(29,155,240,0.1)}
+        .btn-post{width:100%;background:var(--primary);color:#fff;border:none;padding:14px;border-radius:40px;font-weight:700;font-size:18px;cursor:pointer;margin-top:20px}
+        .btn-post:hover{background:#1a8cd8}
+        .comment-item{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+        .comment-header{display:flex;gap:12px;margin-bottom:8px}
+        .comment-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);overflow:hidden;cursor:pointer;flex-shrink:0}
+        .comment-avatar img{width:100%;height:100%;object-fit:cover}
+        .comment-user{font-weight:700;font-size:14px;cursor:pointer}
+        .comment-time{font-size:11px;color:var(--text-secondary)}
+        .comment-text{font-size:14px;margin:8px 0;line-height:1.4}
+        .reply-list{margin-top:12px;margin-right:48px;border-right:2px solid var(--primary);padding-right:12px}
+        .reply-item{margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+        .reply-header{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+        .reply-avatar{width:28px;height:28px;border-radius:50%;background:var(--primary);overflow:hidden}
+        .reply-avatar img{width:100%;height:100%;object-fit:cover}
+        .reply-user{font-weight:600;font-size:12px;cursor:pointer}
+        .reply-text{font-size:13px;margin:4px 0}
+        .comment-input-area{padding:16px;border-top:1px solid var(--border);background:var(--bg)}
+        .comment-input{display:flex;gap:12px;align-items:center}
+        .comment-input input{flex:1;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:40px;color:var(--text);outline:none;font-size:14px}
+        .profile-cover{width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));cursor:pointer;position:relative}
+        .profile-cover img{width:100%;height:100%;object-fit:cover}
+        .profile-info{padding:0 20px 20px;position:relative}
+        .profile-avatar{width:112px;height:112px;border-radius:50%;background:#111;border:4px solid var(--bg);margin-top:-56px;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;position:relative}
+        .profile-avatar img{width:100%;height:100%;object-fit:cover}
+        .profile-name{font-size:20px;font-weight:800;margin-top:12px}
+        .profile-bio{color:var(--text-secondary);font-size:14px;margin:8px 0;white-space:pre-wrap}
+        .profile-stats{display:flex;gap:24px;margin:16px 0;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+        .profile-stats div{text-align:center;cursor:pointer}
+        .stat-number{font-size:18px;font-weight:800}
+        .stat-label{font-size:13px;color:var(--text-secondary)}
+        .profile-buttons{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap}
+        .profile-btn{padding:8px 24px;border-radius:40px;font-weight:700;cursor:pointer;border:none;font-size:14px;transition:0.2s}
+        .btn-primary{background:var(--primary);color:#fff}
+        .btn-primary:hover{background:#1a8cd8}
+        .btn-secondary{background:var(--surface);color:var(--text)}
+        .btn-secondary:hover{background:#3a3f42}
+        .profile-posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:4px;padding-bottom:80px}
+        .profile-post{aspect-ratio:1;background:var(--surface);overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+        .profile-post img,.profile-post video{width:100%;height:100%;object-fit:cover}
+        .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+        .chat-message{display:flex;gap:8px;max-width:85%}
+        .chat-message.sent{align-self:flex-end;flex-direction:row-reverse}
+        .message-bubble{background:var(--surface);padding:10px 14px;border-radius:20px}
+        .message-bubble.sent{background:var(--primary);color:#fff}
+        .message-image{max-width:200px;border-radius:16px;cursor:pointer}
+        .message-audio audio{height:36px}
+        .chat-input-area{display:flex;gap:12px;padding:12px;border-top:1px solid var(--border);background:var(--bg);align-items:center}
+        .chat-input-area input{flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:40px;background:var(--surface);color:var(--text);outline:none}
+        .chat-input-area button{background:none;border:none;color:var(--primary);font-size:20px;cursor:pointer;padding:8px;border-radius:50%}
+        .search-input{width:calc(100% - 32px);margin:16px;padding:12px 20px;background:var(--surface);border:1px solid var(--border);border-radius:40px;color:var(--text);font-size:16px;outline:none}
+        .search-result{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer}
+        .search-result:hover{background:#080808}
+        .notification-item{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);cursor:pointer}
+        .notification-item:hover{background:#080808}
+        .follower-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer}
+        .follower-item:hover{background:#080808}
+        .conversation-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}
+        .conversation-item:hover{background:#080808}
+        .avatar-sm{width:48px;height:48px;border-radius:50%;background:var(--primary);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
+        .avatar-sm img{width:100%;height:100%;object-fit:cover}
+        .avatar-xs{width:40px;height:40px;border-radius:50%;background:var(--primary);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
+        .avatar-xs img{width:100%;height:100%;object-fit:cover}
+        .edit-profile-modal{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:600;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:0.3s}
+        .edit-profile-modal.open{opacity:1;visibility:visible}
+        .edit-profile-content{background:var(--bg);border-radius:28px;padding:32px;width:90%;max-width:500px;border:1px solid var(--border)}
+        .edit-profile-content input,.edit-profile-content textarea{width:100%;padding:14px 16px;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:16px;color:var(--text);font-size:16px;outline:none}
+        .edit-profile-content textarea{resize:vertical;min-height:100px;font-family:inherit}
+        .edit-profile-content input:focus,.edit-profile-content textarea:focus{border-color:var(--primary)}
+        .image-modal{position:fixed;inset:0;background:rgba(0,0,0,0.98);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:0.3s;cursor:pointer}
+        .image-modal.open{opacity:1;visibility:visible}
+        .image-modal img{max-width:95%;max-height:95%;object-fit:contain;border-radius:8px}
+        .close-modal{position:absolute;top:20px;right:20px;background:rgba(0,0,0,0.6);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;z-index:2001}
+        .admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:20px}
+        .admin-stat{background:linear-gradient(135deg,#1a1a2a,#0f0f1a);padding:24px;border-radius:24px;text-align:center;border:1px solid rgba(29,155,240,0.2);transition:transform 0.2s,border-color 0.2s}
+        .admin-stat:hover{transform:translateY(-4px);border-color:var(--primary)}
+        .admin-stat-icon{font-size:32px;margin-bottom:12px;color:var(--primary)}
+        .admin-stat-number{font-size:32px;font-weight:800;margin-bottom:8px}
+        .admin-stat-label{font-size:14px;color:var(--text-secondary)}
+        .admin-section{padding:20px;border-top:1px solid var(--border)}
+        .admin-section-title{font-size:20px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+        .admin-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);transition:background 0.2s}
+        .admin-item:hover{background:#080808}
+        .admin-item-name{font-weight:600;margin-bottom:4px}
+        .admin-item-email{font-size:12px;color:var(--text-secondary)}
+        .admin-item-text{font-size:14px;color:var(--text-secondary)}
+        .admin-delete-btn{background:var(--secondary);color:#fff;border:none;padding:8px 16px;border-radius:40px;cursor:pointer;font-size:12px;font-weight:600;transition:0.2s}
+        .admin-delete-btn:hover{background:#e01070;transform:scale(1.02)}
+        .upload-btn{flex:1;background:var(--surface);color:var(--text);padding:12px;border-radius:40px;font-weight:600;cursor:pointer;text-align:center;transition:0.2s}
+        .upload-btn:hover{background:#3a3f42}
+        .loading{text-align:center;padding:80px 20px;color:var(--text-secondary)}
+        .spinner{width:40px;height:40px;border:3px solid rgba(29,155,240,0.2);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        #customToast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:12px 24px;border-radius:40px;z-index:1100;font-size:14px;font-weight:500;opacity:0;transition:0.3s;pointer-events:none;white-space:nowrap}
     </style>
 </head>
 <body>
 
-<!-- Image Modal -->
 <div id="imageModal" class="image-modal" onclick="closeImageModal()">
     <div class="close-modal" onclick="closeImageModal()">&times;</div>
     <img id="modalImage" src="">
 </div>
 
-<!-- Main App -->
 <div id="mainApp" style="display:none">
     <div class="top-bar">
-        <div class="logo" onclick="goToHome()">Nexus</div>
+        <div class="logo" onclick="goToHome()">Sotwe</div>
         <div class="top-icons">
             <button class="back-btn" id="backBtn" onclick="goBack()"><i class="fas fa-arrow-right"></i> رجوع</button>
             <i class="fas fa-search top-icon" onclick="openSearch()"></i>
-            <div class="top-icon" onclick="openNotifications()" id="notifIcon" style="position: relative;">
+            <div class="top-icon" onclick="openNotifications()" id="notifIcon" style="position:relative;">
                 <i class="far fa-bell"></i><span class="notification-badge" id="notifBadge"></span>
             </div>
             <i class="far fa-envelope top-icon" onclick="openConversations()"></i>
@@ -309,7 +196,7 @@
     </div>
 
     <div id="feedContainer" class="feed-container">
-        <div class="loading"><div class="spinner"></div><span>🟦 جاري التحميل...</span></div>
+        <div class="loading"><div class="spinner"></div><span>جاري التحميل...</span></div>
     </div>
 
     <div class="bottom-nav">
@@ -322,7 +209,7 @@
 
     <!-- Compose Panel -->
     <div id="composePanel" class="panel">
-        <div class="panel-header"><h3>إنشاء منشور</h3><button onclick="closeCompose()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 style="font-size:20px;font-weight:700;">إنشاء منشور</h3><button onclick="closeCompose()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <div class="compose-area">
             <textarea id="postText" class="compose-input" placeholder="ماذا يحدث؟"></textarea>
             <div id="mediaPreview" class="media-preview"></div>
@@ -331,40 +218,40 @@
                 <button class="compose-tool" onclick="document.getElementById('postVideo').click()"><i class="fas fa-video"></i></button>
                 <button class="compose-tool" id="audioRecordBtn" onclick="startAudioRecording()"><i class="fas fa-microphone"></i></button>
             </div>
-            <input type="file" id="postImage" accept="image/*" style="display:none" onchange="previewMedia(this, 'image')">
-            <input type="file" id="postVideo" accept="video/*" style="display:none" onchange="previewMedia(this, 'video')">
-            <div id="postStatus" class="text-xs mt-2 text-center" style="color:var(--primary)"></div>
+            <input type="file" id="postImage" accept="image/*" style="display:none" onchange="previewMedia(this,'image')">
+            <input type="file" id="postVideo" accept="video/*" style="display:none" onchange="previewMedia(this,'video')">
+            <div id="postStatus" style="text-align:center;margin-top:12px;font-size:14px;color:var(--primary);"></div>
             <button onclick="createPost()" class="btn-post">نشر</button>
         </div>
     </div>
 
     <!-- Comments Panel -->
     <div id="commentsPanel" class="panel">
-        <div class="panel-header"><h3>التعليقات</h3><button onclick="closeComments()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 style="font-weight:700;">التعليقات</h3><button onclick="closeComments()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <div id="commentsList" class="panel-body"></div>
         <div class="comment-input-area">
             <div class="comment-input">
                 <input type="text" id="commentInput" placeholder="أضف تعليقاً...">
-                <button onclick="addComment()" style="background:var(--primary);color:white;padding:8px 16px;border:none;border-radius:40px;font-size:13px;font-weight:600;cursor:pointer;">نشر</button>
+                <button onclick="addComment()" style="background:var(--primary);color:#fff;padding:10px 20px;border:none;border-radius:40px;font-weight:700;cursor:pointer;">نشر</button>
             </div>
         </div>
     </div>
 
     <!-- Profile Panel -->
     <div id="profilePanel" class="panel">
-        <div class="panel-header"><h3>الملف الشخصي</h3><button onclick="closeProfile()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 style="font-weight:700;font-size:20px;">الملف الشخصي</h3><button onclick="closeProfile()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <div id="profileCover" class="profile-cover" onclick="changeCover()">
-            <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.5);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;"><i class="fas fa-camera fa-sm"></i></div>
+            <div style="position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,0.6);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"><i class="fas fa-camera"></i></div>
         </div>
         <div class="profile-info">
             <div class="profile-avatar" id="profileAvatar" onclick="changeAvatar()">
-                <div style="position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,0.5);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="fas fa-camera fa-xs"></i></div>
+                <div style="position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,0.6);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"><i class="fas fa-camera fa-xs"></i></div>
             </div>
             <div class="profile-name" id="profileName"></div>
             <div class="profile-bio" id="profileBio"></div>
-            <div style="display:flex;gap:10px;margin:12px 0;">
-                <div class="upload-btn" onclick="changeAvatar()"><i class="fas fa-user-circle"></i> تغيير الصورة</div>
-                <div class="upload-btn" onclick="changeCover()"><i class="fas fa-image"></i> تغيير الغلاف</div>
+            <div style="display:flex;gap:12px;margin:16px 0;">
+                <div class="upload-btn" onclick="changeAvatar()"><i class="fas fa-user-circle"></i> تغيير الصورة الشخصية</div>
+                <div class="upload-btn" onclick="changeCover()"><i class="fas fa-image"></i> تغيير صورة الغلاف</div>
             </div>
             <div class="profile-stats">
                 <div onclick="openFollowersList('followers')"><div class="stat-number" id="profileFollowersCount">0</div><div class="stat-label">متابع</div></div>
@@ -373,18 +260,18 @@
             </div>
             <div id="profileButtons" class="profile-buttons"></div>
         </div>
-        <div id="profilePostsGrid" class="profile-posts-grid" style="padding:0 8px 80px;"></div>
+        <div id="profilePostsGrid" class="profile-posts-grid"></div>
     </div>
 
     <!-- Edit Profile Modal -->
     <div id="editProfileModal" class="edit-profile-modal">
         <div class="edit-profile-content">
-            <h3 style="font-size:20px;font-weight:700;margin-bottom:20px;text-align:center;color:var(--primary);">تعديل الملف الشخصي</h3>
+            <h3 style="font-size:24px;font-weight:800;margin-bottom:24px;text-align:center;">تعديل الملف الشخصي</h3>
             <input type="text" id="editName" placeholder="الاسم">
             <textarea id="editBio" placeholder="السيرة الذاتية..."></textarea>
-            <div style="display:flex;gap:10px;margin-top:20px;">
-                <button class="btn-secondary" onclick="closeEditProfileModal()" style="flex:1;padding:10px;border-radius:40px;font-weight:600;cursor:pointer;">إلغاء</button>
-                <button class="btn-primary" onclick="saveProfileEdit()" style="flex:1;padding:10px;border-radius:40px;font-weight:600;cursor:pointer;">حفظ</button>
+            <div style="display:flex;gap:12px;margin-top:24px;">
+                <button class="btn-secondary" onclick="closeEditProfileModal()" style="flex:1;padding:12px;border-radius:40px;font-weight:600;cursor:pointer;">إلغاء</button>
+                <button class="btn-primary" onclick="saveProfileEdit()" style="flex:1;padding:12px;border-radius:40px;font-weight:600;cursor:pointer;">حفظ التغييرات</button>
             </div>
         </div>
     </div>
@@ -392,11 +279,11 @@
     <!-- Chat Panel -->
     <div id="chatPanel" class="panel">
         <div class="panel-header">
-            <div style="display:flex;align-items:center;gap:10px;">
+            <div style="display:flex;align-items:center;gap:12px;">
                 <div class="avatar-sm" id="chatAvatar">👤</div>
                 <h3 id="chatUserName">محادثة</h3>
             </div>
-            <button onclick="closeChat()" class="text-xl">&times;</button>
+            <button onclick="closeChat()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button>
         </div>
         <div id="chatMessages" class="chat-messages"></div>
         <div class="chat-input-area">
@@ -410,45 +297,50 @@
 
     <!-- Conversations Panel -->
     <div id="conversationsPanel" class="panel">
-        <div class="panel-header"><h3>الرسائل</h3><button onclick="closeConversations()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 style="font-weight:700;">الرسائل</h3><button onclick="closeConversations()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <div id="conversationsList" class="panel-body"></div>
     </div>
 
     <!-- Followers Panel -->
     <div id="followersPanel" class="panel">
-        <div class="panel-header"><h3 id="followersTitle">المتابعون</h3><button onclick="closeFollowers()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 id="followersTitle" style="font-weight:700;">المتابعون</h3><button onclick="closeFollowers()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <div id="followersList" class="panel-body"></div>
     </div>
 
     <!-- Notifications Panel -->
     <div id="notificationsPanel" class="panel">
-        <div class="panel-header"><h3>الإشعارات</h3><button onclick="closeNotifications()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 style="font-weight:700;">الإشعارات</h3><button onclick="closeNotifications()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <div id="notificationsList" class="panel-body"></div>
     </div>
 
     <!-- Search Panel -->
     <div id="searchPanel" class="panel">
-        <div class="panel-header"><h3>بحث</h3><button onclick="closeSearch()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 style="font-weight:700;">بحث</h3><button onclick="closeSearch()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <input type="text" id="searchInput" class="search-input" placeholder="بحث عن مستخدمين..." onkeyup="searchAll()">
         <div id="searchResults" class="panel-body"></div>
     </div>
 
     <!-- Admin Panel -->
     <div id="adminPanel" class="panel">
-        <div class="panel-header"><h3>🔧 لوحة التحكم</h3><button onclick="closeAdmin()" class="text-xl">&times;</button></div>
+        <div class="panel-header"><h3 style="font-weight:700;font-size:20px;">🔧 لوحة التحكم</h3><button onclick="closeAdmin()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
         <div id="adminStats" class="admin-stats"></div>
-        <div style="padding:16px;border-top:1px solid var(--border);"><h3 style="margin-bottom:12px;color:var(--primary);"><i class="fas fa-users"></i> إدارة المستخدمين</h3><div id="adminUsersList"></div></div>
-        <div style="padding:16px;border-top:1px solid var(--border);"><h3 style="margin-bottom:12px;color:var(--primary);"><i class="fas fa-file-alt"></i> إدارة المنشورات</h3><div id="adminPostsList"></div></div>
+        <div class="admin-section">
+            <div class="admin-section-title"><i class="fas fa-users" style="color:var(--primary);"></i> إدارة المستخدمين</div>
+            <div id="adminUsersList"></div>
+        </div>
+        <div class="admin-section">
+            <div class="admin-section-title"><i class="fas fa-file-alt" style="color:var(--primary);"></i> إدارة المنشورات</div>
+            <div id="adminPostsList"></div>
+        </div>
     </div>
 </div>
 
 <script src="firebase-config.js"></script>
 <script src="script.js"></script>
-
 <script>
-    window.openImageModal = function(imageUrl) { document.getElementById('modalImage').src = imageUrl; document.getElementById('imageModal').classList.add('open'); };
-    window.closeImageModal = function() { document.getElementById('imageModal').classList.remove('open'); };
-    window.toggleTheme = function() { document.body.classList.toggle('light-mode'); localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark'); };
+    window.openImageModal=function(u){document.getElementById('modalImage').src=u;document.getElementById('imageModal').classList.add('open')};
+    window.closeImageModal=function(){document.getElementById('imageModal').classList.remove('open')};
+    window.toggleTheme=function(){document.body.classList.toggle('light-mode');localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark')};
 </script>
 </body>
 </html>

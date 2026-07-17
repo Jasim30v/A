@@ -3,48 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🟦 Nexus | رفع منشور</title>
+    <title>🟦 Sotwe | رفع منشور</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root{--primary:#1d9bf0;--bg:#000;--surface:#1a1a1a;--border:rgba(255,255,255,0.08)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-y:auto}
-        .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);z-index:10}
-        .btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}
-        .container{max-width:500px;margin:0 auto;padding:20px}
-        textarea{width:100%;min-height:120px;background:transparent;border:none;color:#fff;font-size:18px;resize:none;outline:none;font-family:inherit;padding:12px}
-        .tools{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-        .tool{background:none;border:none;color:var(--primary);font-size:18px;padding:8px;border-radius:50%;cursor:pointer}
-        .preview{margin:12px 0;display:none}
-        .preview img,.preview video{max-height:250px;border-radius:18px;width:100%;object-fit:cover}
-        .btn-post{width:100%;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:40px;font-weight:700;cursor:pointer;margin-top:16px}
-    </style>
+    <style>:root{--primary:#1d9bf0;--bg:#000;--surface:#1a1a1a;--border:#2f3336;--text:#fff}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-y:auto}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);z-index:10}.btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;font-size:16px}.container{max-width:500px;margin:0 auto;padding:20px}textarea{width:100%;min-height:150px;background:transparent;border:none;color:var(--text);font-size:20px;resize:none;outline:none;font-family:inherit;padding:16px}.tools{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.tool{background:none;border:none;color:var(--primary);font-size:20px;padding:10px;border-radius:50%;cursor:pointer}.preview{margin:16px 0;display:none}.preview img,.preview video{max-height:300px;border-radius:20px;width:100%;object-fit:cover}.btn-post{width:100%;background:var(--primary);color:#fff;border:none;padding:14px;border-radius:40px;font-weight:700;font-size:18px;cursor:pointer;margin-top:20px}</style>
 </head>
 <body>
 <div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 رفع منشور</h2></div>
-<div class="container">
-    <textarea id="postText" placeholder="ماذا يحدث؟"></textarea>
-    <div id="mediaPreview" class="preview"></div>
-    <div class="tools">
-        <button class="tool" onclick="document.getElementById('postImage').click()"><i class="fas fa-image"></i></button>
-        <button class="tool" onclick="document.getElementById('postVideo').click()"><i class="fas fa-video"></i></button>
-    </div>
-    <input type="file" id="postImage" accept="image/*" style="display:none" onchange="previewMedia(this,'image')">
-    <input type="file" id="postVideo" accept="video/*" style="display:none" onchange="previewMedia(this,'video')">
-    <button class="btn-post" onclick="createPost()">نشر</button>
-    <div id="status" style="text-align:center;margin-top:12px;font-size:13px;color:var(--primary)"></div>
-</div>
+<div class="container"><textarea id="postText" placeholder="ماذا يحدث؟"></textarea><div id="mediaPreview" class="preview"></div><div class="tools"><button class="tool" onclick="document.getElementById('postImage').click()"><i class="fas fa-image"></i></button><button class="tool" onclick="document.getElementById('postVideo').click()"><i class="fas fa-video"></i></button></div><input type="file" id="postImage" accept="image/*" style="display:none" onchange="previewMedia(this,'image')"><input type="file" id="postVideo" accept="video/*" style="display:none" onchange="previewMedia(this,'video')"><button class="btn-post" onclick="createPost()">نشر</button><div id="status" style="text-align:center;margin-top:12px;font-size:14px;color:var(--primary)"></div></div>
 <script src="firebase-config.js"></script>
-<script>
-    let currentUser=null,currentUserData=null,selectedMediaFile=null;
-    firebase.auth().onAuthStateChanged(async u=>{if(!u)window.location.href='auth.html';currentUser=u;const snap=await firebase.database().ref('users/'+u.uid).once('value');if(snap.exists())currentUserData={uid:u.uid,...snap.val()}});
-    window.previewMedia=function(input,type){const file=input.files[0];if(!file)return;selectedMediaFile=file;const reader=new FileReader();reader.onload=function(e){const preview=document.getElementById('mediaPreview');if(type==='image')preview.innerHTML=`<img src="${e.target.result}">`;else preview.innerHTML=`<video controls><source src="${e.target.result}"></video>`;preview.style.display='block'};reader.readAsDataURL(file)};
-    async function uploadMedia(file){const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);let rt='image';if(file.type.startsWith('video/'))rt='video';const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${rt}/upload`,{method:'POST',body:fd});const data=await res.json();return{url:data.secure_url,type:rt}}
-    window.createPost=async function(){const text=document.getElementById('postText').value;if(!text.trim()&&!selectedMediaFile){document.getElementById('status').innerText='اكتب شيئاً أو اختر وسائط';return}document.getElementById('status').innerText='جاري النشر...';let mediaUrl='',mediaType='none';if(selectedMediaFile){try{const result=await uploadMedia(selectedMediaFile);mediaUrl=result.url;mediaType=result.type}catch(e){document.getElementById('status').innerText='فشل رفع الوسائط';return}}try{await firebase.database().ref('posts').push({text,mediaUrl,mediaType,sender:currentUser.uid,senderName:currentUserData?.name,likes:0,likedBy:{},retweets:{},retweetedBy:{},comments:{},timestamp:Date.now()});document.getElementById('status').innerText='تم النشر!';setTimeout(()=>window.location.href='index.html',1500)}catch(e){document.getElementById('status').innerText='فشل النشر'}};
-</script>
+<script>let currentUser=null,currentUserData=null,selectedMediaFile=null;auth.onAuthStateChanged(async u=>{if(!u)window.location.href='auth.html';currentUser=u;const snap=await db.ref('users/'+u.uid).once('value');if(snap.exists())currentUserData={uid:u.uid,...snap.val()}});window.previewMedia=function(input,type){const file=input.files[0];if(!file)return;selectedMediaFile=file;const reader=new FileReader();reader.onload=function(e){const preview=document.getElementById('mediaPreview');if(type==='image')preview.innerHTML='<img src="'+e.target.result+'">';else preview.innerHTML='<video controls><source src="'+e.target.result+'"></video>';preview.style.display='block'};reader.readAsDataURL(file)};async function uploadMedia(file){const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);let rt='image';if(file.type.startsWith('video/'))rt='video';const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/'+rt+'/upload',{method:'POST',body:fd});const data=await res.json();return{url:data.secure_url,type:rt}}window.createPost=async function(){const text=document.getElementById('postText').value;if(!text.trim()&&!selectedMediaFile){document.getElementById('status').innerText='اكتب شيئاً أو اختر وسائط';return}document.getElementById('status').innerText='جاري النشر...';let mediaUrl='',mediaType='none';if(selectedMediaFile){try{const result=await uploadMedia(selectedMediaFile);mediaUrl=result.url;mediaType=result.type}catch(e){document.getElementById('status').innerText='فشل رفع الوسائط';return}}try{await db.ref('posts').push({text,mediaUrl,mediaType,sender:currentUser.uid,senderName:currentUserData?.name,likes:0,likedBy:{},retweets:{},retweetedBy:{},comments:{},timestamp:Date.now()});document.getElementById('status').innerText='تم النشر!';setTimeout(()=>window.location.href='index.html',1500)}catch(e){document.getElementById('status').innerText='فشل النشر'}}</script>
 </body>
 </html>
