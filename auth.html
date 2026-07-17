@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>🟦 Nexus | دخول</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            min-height:100vh;min-height:-webkit-fill-available;
+            background:#000;display:flex;align-items:center;justify-content:center;
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            overflow:hidden;
+        }
+        .bg-orb{position:fixed;border-radius:50%;filter:blur(140px);opacity:0.2}
+        .bg-orb:nth-child(1){width:450px;height:450px;background:#1d9bf0;top:-120px;left:-120px}
+        .bg-orb:nth-child(2){width:380px;height:380px;background:#f91880;bottom:-120px;right:-120px;animation-delay:5s}
+        @keyframes orbFloat{0%{transform:translate(0,0)scale(1)}100%{transform:translate(60px,-60px)scale(1.4)}}
+        .bg-orb{animation:orbFloat 18s infinite alternate}
+
+        .card{
+            position:relative;z-index:1;width:90%;max-width:440px;
+            background:rgba(0,0,0,0.85);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+            border-radius:32px;padding:40px 32px;
+            border:1px solid rgba(29,155,240,0.2);
+            box-shadow:0 30px 70px rgba(29,155,240,0.1);
+            animation:fadeUp 0.8s ease;text-align:center;
+        }
+        @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+        h1{font-size:44px;font-weight:800;margin-bottom:28px;
+            background:linear-gradient(135deg,#1d9bf0,#f91880);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        h2{font-size:22px;font-weight:700;margin-bottom:4px;text-align:right}
+        .sub{color:#71767b;font-size:13px;text-align:right;margin-bottom:20px}
+        .tabs{display:flex;gap:4px;background:rgba(29,155,240,0.06);border-radius:40px;padding:4px;margin-bottom:24px}
+        .tab{flex:1;padding:12px;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:600}
+        .tab.active{background:linear-gradient(135deg,#1d9bf0,#f91880);color:#fff;box-shadow:0 8px 20px rgba(29,155,240,0.4)}
+        .form{display:none;animation:fadeIn 0.4s ease;text-align:right}
+        .form.active{display:block}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        input{width:100%;padding:14px 18px;margin:8px 0;border-radius:40px;
+            background:#1a1a1a;border:1px solid #2f3336;color:#fff;
+            font-size:15px;outline:none;transition:all 0.4s}
+        input:focus{border-color:#1d9bf0;box-shadow:0 0 20px rgba(29,155,240,0.15);background:#1a1a1a}
+        input::placeholder{color:rgba(255,255,255,0.3)}
+        button{width:100%;padding:12px;margin-top:16px;
+            background:#1d9bf0;border:none;border-radius:40px;color:#fff;
+            font-weight:600;font-size:15px;cursor:pointer;
+            transition:all 0.3s;box-shadow:0 10px 30px rgba(29,155,240,0.3)}
+        button:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(29,155,240,0.5)}
+        button:disabled{opacity:0.5;pointer-events:none}
+        .msg{text-align:center;color:#f91880;font-size:13px;margin-top:12px;min-height:20px}
+        .msg.success{color:#4ade80}
+        .link{margin-top:28px;color:#71767b;font-size:13px}
+        .link a{color:#1d9bf0;text-decoration:none;font-weight:600}
+        .forgot{display:block;text-align:right;color:#1d9bf0;font-size:12px;margin-top:6px;text-decoration:none}
+    </style>
+</head>
+<body>
+    <div class="bg-orb"></div><div class="bg-orb"></div>
+    <div class="card">
+        <h1>Nexus</h1>
+        <div class="tabs">
+            <button class="tab active" id="tabLogin" onclick="switchAuth('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
+            <button class="tab" id="tabRegister" onclick="switchAuth('register')"><i class="fas fa-user-plus"></i> اشتراك</button>
+        </div>
+        <div id="formLogin" class="form active">
+            <h2>تسجيل الدخول</h2>
+            <p class="sub">قم بالوصول إلى حسابك في Nexus</p>
+            <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email">
+            <input type="password" id="loginPass" placeholder="🔒 كلمة المرور" autocomplete="current-password">
+            <a href="#" class="forgot" onclick="resetPassword()">نسيت كلمة المرور؟</a>
+            <button id="btnLogin" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول</button>
+            <div class="msg" id="loginMsg"></div>
+            <div class="link">ليس لديك حساب؟ <a href="#" onclick="switchAuth('register')">إنشاء حساب</a></div>
+        </div>
+        <div id="formRegister" class="form">
+            <h2>إنشاء حساب</h2>
+            <p class="sub">قم بإنشاء حسابك في Nexus</p>
+            <input type="text" id="regName" placeholder="👤 اسم المستخدم" autocomplete="username">
+            <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email">
+            <input type="password" id="regPass" placeholder="🔒 كلمة المرور (6 أحرف على الأقل)" autocomplete="new-password">
+            <input type="password" id="regConfirmPass" placeholder="🔒 تأكيد كلمة المرور" autocomplete="new-password">
+            <button id="btnRegister" onclick="doRegister()"><i class="fas fa-heart"></i> إنشاء حساب</button>
+            <div class="msg" id="regMsg"></div>
+            <div class="link">لديك حساب بالفعل؟ <a href="#" onclick="switchAuth('login')">تسجيل الدخول</a></div>
+        </div>
+    </div>
+    <script src="firebase-config.js"></script>
+    <script>
+        function switchAuth(type){
+            document.getElementById('tabLogin').classList.remove('active');
+            document.getElementById('tabRegister').classList.remove('active');
+            document.getElementById('formLogin').classList.remove('active');
+            document.getElementById('formRegister').classList.remove('active');
+            document.getElementById('loginMsg').innerText = '';
+            document.getElementById('regMsg').innerText = '';
+            if(type === 'login'){
+                document.getElementById('tabLogin').classList.add('active');
+                document.getElementById('formLogin').classList.add('active');
+            } else {
+                document.getElementById('tabRegister').classList.add('active');
+                document.getElementById('formRegister').classList.add('active');
+            }
+        }
+
+        async function doLogin(){
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPass').value;
+            const msg = document.getElementById('loginMsg');
+            const btn = document.getElementById('btnLogin');
+            if(!email || !password){ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
+            btn.disabled = true; btn.innerHTML = '⏳ جاري الدخول...'; msg.innerText = '';
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, password);
+                window.location.replace('index.html');
+            } catch(error) {
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول';
+                switch(error.code) {
+                    case 'auth/user-not-found': msg.innerText = '❌ لا يوجد حساب بهذا البريد'; break;
+                    case 'auth/wrong-password': case 'auth/invalid-credential': msg.innerText = '❌ كلمة المرور غير صحيحة'; break;
+                    case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
+                    case 'auth/too-many-requests': msg.innerText = '❌ محاولات كثيرة، حاول لاحقاً'; break;
+                    default: msg.innerText = '❌ خطأ: ' + error.message;
+                }
+            }
+        }
+
+        async function doRegister(){
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPass').value;
+            const confirmPass = document.getElementById('regConfirmPass').value;
+            const msg = document.getElementById('regMsg');
+            const btn = document.getElementById('btnRegister');
+            if(!name || !email || !password || !confirmPass){ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
+            if(name.length < 3){ msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }
+            if(password.length < 6){ msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }
+            if(password !== confirmPass){ msg.innerText = '❌ كلمة المرور غير متطابقة'; return; }
+            if(!email.includes('@') || !email.includes('.')){ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }
+            btn.disabled = true; btn.innerHTML = '⏳ جاري إنشاء الحساب...'; msg.innerText = '';
+            try {
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                const uid = userCredential.user.uid;
+                await firebase.database().ref('users/' + uid).set({
+                    name: name, email: email, bio: '',
+                    avatarUrl: '', coverUrl: '',
+                    followers: {}, following: {}, bookmarks: {},
+                    createdAt: Date.now()
+                });
+                msg.innerText = '✅ تم إنشاء الحساب بنجاح! جاري التوجيه...';
+                msg.className = 'msg success';
+                setTimeout(() => { window.location.replace('index.html'); }, 800);
+            } catch(error) {
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-heart"></i> إنشاء حساب'; msg.className = 'msg';
+                switch(error.code) {
+                    case 'auth/email-already-in-use': msg.innerText = '❌ البريد الإلكتروني مستخدم بالفعل'; break;
+                    case 'auth/weak-password': msg.innerText = '❌ كلمة المرور ضعيفة جداً'; break;
+                    case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
+                    default: msg.innerText = '❌ خطأ: ' + (error.message || 'غير معروف');
+                }
+            }
+        }
+
+        function resetPassword(){
+            const email = document.getElementById('loginEmail').value.trim();
+            if(!email){ document.getElementById('loginMsg').innerText = '❌ أدخل بريدك الإلكتروني أولاً'; return; }
+            firebase.auth().sendPasswordResetEmail(email).then(() => {
+                document.getElementById('loginMsg').innerText = '✅ تم إرسال رابط إعادة التعيين إلى بريدك';
+                document.getElementById('loginMsg').className = 'msg success';
+            }).catch(e => {
+                document.getElementById('loginMsg').innerText = '❌ خطأ: ' + e.message;
+            });
+        }
+
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keydown', function(e) {
+                if(e.key === 'Enter') {
+                    e.preventDefault();
+                    if(document.getElementById('formLogin').classList.contains('active')) { doLogin(); }
+                    else { doRegister(); }
+                }
+            });
+        });
+
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) { window.location.replace('index.html'); }
+        });
+
+        console.log('🟦 Nexus Auth Ready');
+    </script>
+</body>
+</html>
