@@ -1,4 +1,4 @@
-name: 👑 Build APK - Ultra Pro
+name: 👑 Build APK - Ultra
 
 on:
   workflow_dispatch:
@@ -68,13 +68,17 @@ jobs:
         run: |
           npm install -g @capacitor/cli @capacitor/core @capacitor/android
           sudo apt-get update
-          sudo apt-get install -y imagemagick tree
+          sudo apt-get install -y imagemagick
 
-      - name: 📁 نسخ جميع ملفات المشروع إلى www
+      - name: 📁 سحب وتجهيز جميع ملفات الموقع
         run: |
-          echo "🔍 جاري نسخ جميع ملفات المشروع..."
+          echo "🔍 جاري سحب جميع ملفات المشروع..."
           
-          # تنظيف مجلد www القديم
+          # عرض جميع الملفات الموجودة في المشروع
+          echo "📋 جميع الملفات في المشروع:"
+          find . -type f -not -path './.git/*' -not -path './node_modules/*' | sort
+          
+          # إنشاء مجلد www
           rm -rf www
           mkdir -p www
           
@@ -84,103 +88,61 @@ jobs:
             SOURCE_DIR="."
           fi
           
-          echo "📁 مجلد المصدر: $SOURCE_DIR"
+          echo ""
+          echo "📁 جاري نسخ الملفات من: $SOURCE_DIR"
           
-          # نسخ جميع الملفات والمجلدات مع الحفاظ على الهيكل
+          # نسخ جميع الملفات والمجلدات
           if [ "$SOURCE_DIR" = "." ]; then
-            # نسخ من المجلد الرئيسي
-            echo "📄 نسخ من المجلد الرئيسي..."
-            
-            # قائمة الملفات والمجلدات المراد استبعادها
-            EXCLUDE_DIRS=".git .github node_modules android ios www .vscode .idea"
-            EXCLUDE_FILES="package.json package-lock.json capacitor.config.json .gitignore .DS_Store"
-            
-            # نسخ جميع الملفات والمجلدات باستثناء المستبعدة
-            for item in ./*; do
+            shopt -s dotglob
+            for item in "$SOURCE_DIR"/*; do
               basename=$(basename "$item")
-              should_exclude=false
-              
-              # التحقق من المجلدات المستبعدة
-              for exclude in $EXCLUDE_DIRS; do
-                if [ "$basename" = "$exclude" ]; then
-                  should_exclude=true
-                  break
-                fi
-              done
-              
-              # التحقق من الملفات المستبعدة
-              for exclude in $EXCLUDE_FILES; do
-                if [ "$basename" = "$exclude" ]; then
-                  should_exclude=true
-                  break
-                fi
-              done
-              
-              if [ "$should_exclude" = false ]; then
+              if [ "$basename" != ".git" ] && [ "$basename" != ".github" ] && [ "$basename" != "node_modules" ] && [ "$basename" != "android" ] && [ "$basename" != "ios" ] && [ "$basename" != "www" ] && [ "$basename" != "package.json" ] && [ "$basename" != "package-lock.json" ] && [ "$basename" != "capacitor.config.json" ]; then
                 echo "  📄 نسخ: $basename"
                 cp -r "$item" www/ 2>/dev/null || true
               fi
             done
-            
-            # نسخ الملفات المخفية (باستثناء .git)
-            shopt -s dotglob
-            for item in ./*; do
-              basename=$(basename "$item")
-              if [[ "$basename" != "." && "$basename" != ".." && "$basename" != ".git" && "$basename" != ".github" && "$basename" != ".vscode" && "$basename" != ".idea" ]]; then
-                if [[ "$basename" == .* ]]; then
-                  echo "  📄 نسخ ملف مخفي: $basename"
-                  cp -r "$item" www/ 2>/dev/null || true
-                fi
-              fi
-            done
-            shopt -u dotglob
-            
           else
-            # نسخ من مجلد محدد
             if [ -d "$SOURCE_DIR" ]; then
-              echo "✅ المجلد $SOURCE_DIR موجود"
+              echo "  ✅ المجلد $SOURCE_DIR موجود"
               cp -r "$SOURCE_DIR"/* www/ 2>/dev/null || true
               cp -r "$SOURCE_DIR"/.* www/ 2>/dev/null || true
             else
-              echo "❌ المجلد $SOURCE_DIR غير موجود!"
-              exit 1
+              echo "  ❌ المجلد $SOURCE_DIR غير موجود!"
+              shopt -s dotglob
+              for item in ./*; do
+                basename=$(basename "$item")
+                if [ "$basename" != ".git" ] && [ "$basename" != ".github" ] && [ "$basename" != "node_modules" ] && [ "$basename" != "android" ] && [ "$basename" != "ios" ] && [ "$basename" != "www" ] && [ "$basename" != "package.json" ] && [ "$basename" != "package-lock.json" ] && [ "$basename" != "capacitor.config.json" ]; then
+                  echo "  📄 نسخ: $basename"
+                  cp -r "$item" www/ 2>/dev/null || true
+                fi
+              done
             fi
           fi
           
-          # حذف الملفات غير المرغوب فيها من www
-          echo ""
-          echo "🧹 تنظيف الملفات غير المرغوب فيها..."
-          rm -rf www/.git www/.github www/node_modules 2>/dev/null || true
-          rm -rf www/.vscode www/.idea 2>/dev/null || true
-          rm -f www/package.json www/package-lock.json 2>/dev/null || true
-          rm -f www/capacitor.config.json 2>/dev/null || true
-          rm -f www/icon.png www/icon.jpg www/icon.jpeg 2>/dev/null || true
+          # حذف أي ملفات غير مرغوب فيها داخل www
+          rm -rf www/.git www/.github www/node_modules www/.gitignore 2>/dev/null || true
+          rm -rf www/package.json www/package-lock.json 2>/dev/null || true
+          rm -rf www/android www/ios www/capacitor.config.json 2>/dev/null || true
+          rm -rf www/icon.png www/icon.jpg www/icon.jpeg 2>/dev/null || true
           
           echo ""
+          echo "✅ تم نسخ جميع ملفات الموقع"
           echo "📊 إحصائيات مجلد www:"
-          echo "  📁 عدد الملفات: $(find www -type f 2>/dev/null | wc -l)"
-          echo "  📂 عدد المجلدات: $(find www -type d 2>/dev/null | wc -l)"
-          echo "  💾 الحجم الإجمالي: $(du -sh www 2>/dev/null | cut -f1)"
+          echo "  📁 عدد الملفات: $(find www -type f | wc -l)"
+          echo "  📂 عدد المجلدات: $(find www -type d | wc -l)"
+          echo "  💾 الحجم الإجمالي: $(du -sh www | cut -f1)"
           
-          # عرض هيكل الملفات
-          echo ""
-          echo "📂 هيكل مجلد www:"
-          tree -L 2 www/ || find www -type f | head -20
-          
-          # التحقق من وجود index.html
           if [ -f "www/index.html" ]; then
             echo ""
             echo "✅ تم العثور على index.html"
           else
             echo ""
             echo "⚠️ تحذير: لم يتم العثور على index.html!"
-            echo "🔍 البحث عن ملفات HTML:"
-            find www -name "*.html" | head -10
           fi
 
-      - name: 📄 إنشاء package.json للتطبيق
+      - name: 📄 إنشاء package.json
         run: |
-          cat > package.json << 'EOF'
+          cat > package.json << EOF
           {
             "name": "${{ github.event.inputs.app_name }}",
             "version": "1.0.0",
@@ -203,9 +165,9 @@ jobs:
           }
           EOF
 
-      - name: ⚙️ إعداد Capacitor مع دعم كامل
+      - name: ⚙️ إعداد Capacitor - دعم التحميل الكامل
         run: |
-          cat > capacitor.config.json << 'EOF'
+          cat > capacitor.config.json << EOF
           {
             "appId": "${{ github.event.inputs.app_id }}",
             "appName": "${{ github.event.inputs.app_name }}",
@@ -261,16 +223,21 @@ jobs:
         run: |
           ICON_FILE="${{ github.event.inputs.icon_file }}"
           
-          # البحث عن ملف الأيقونة
           if [ ! -f "$ICON_FILE" ]; then
             echo "❌ خطأ: ملف الأيقونة $ICON_FILE غير موجود!"
-            echo "🔍 البحث عن ملفات PNG في المشروع:"
-            find . -name "*.png" -not -path './node_modules/*' -not -path './.git/*' | head -10
+            echo "📁 البحث عن ملفات PNG في المشروع:"
+            find . -name "*.png" -not -path './node_modules/*' -not -path './.git/*'
             exit 1
           fi
           
           echo "✅ تم العثور على ملف الأيقونة: $ICON_FILE"
           echo "📏 حجم الصورة الأصلي: $(identify -format '%wx%h' $ICON_FILE)"
+          echo ""
+          
+          # حذف الأيقونات القديمة
+          rm -rf android/app/src/main/res/mipmap-*
+          rm -rf android/app/src/main/res/drawable/ic_launcher_*
+          rm -rf android/app/src/main/res/drawable-*
           
           # إنشاء جميع مجلدات المقاسات
           mkdir -p android/app/src/main/res/mipmap-ldpi
@@ -282,16 +249,22 @@ jobs:
           mkdir -p android/app/src/main/res/mipmap-anydpi-v26
           mkdir -p android/app/src/main/res/drawable
           
-          echo "🎨 جاري إنشاء الأيقونات..."
-          convert $ICON_FILE -resize 36x36   android/app/src/main/res/mipmap-ldpi/ic_launcher.png
-          convert $ICON_FILE -resize 48x48   android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-          convert $ICON_FILE -resize 72x72   android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-          convert $ICON_FILE -resize 96x96   android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-          convert $ICON_FILE -resize 144x144 android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-          convert $ICON_FILE -resize 192x192 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+          echo "🎨 جاري إنشاء الأيقونات بجميع المقاسات..."
+          echo ""
           
-          cp $ICON_FILE android/app/src/main/res/drawable/ic_launcher_foreground.png
+          echo "📱 أيقونات mipmap (للتطبيق):"
+          convert $ICON_FILE -resize 36x36   android/app/src/main/res/mipmap-ldpi/ic_launcher.png   && echo "  ✅ ldpi:    36x36"
+          convert $ICON_FILE -resize 48x48   android/app/src/main/res/mipmap-mdpi/ic_launcher.png   && echo "  ✅ mdpi:    48x48"
+          convert $ICON_FILE -resize 72x72   android/app/src/main/res/mipmap-hdpi/ic_launcher.png   && echo "  ✅ hdpi:    72x72"
+          convert $ICON_FILE -resize 96x96   android/app/src/main/res/mipmap-xhdpi/ic_launcher.png  && echo "  ✅ xhdpi:   96x96"
+          convert $ICON_FILE -resize 144x144 android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png && echo "  ✅ xxhdpi: 144x144"
+          convert $ICON_FILE -resize 192x192 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png && echo "  ✅ xxxhdpi:192x192"
           
+          echo ""
+          echo "🎯 الأيقونات الإضافية:"
+          cp $ICON_FILE android/app/src/main/res/drawable/ic_launcher_foreground.png && echo "  ✅ Foreground"
+          
+          echo ""
           echo "✅ تم إنشاء جميع الأيقونات بنجاح!"
 
       - name: 🎨 إنشاء Splash Screen
@@ -299,14 +272,16 @@ jobs:
           ICON_FILE="${{ github.event.inputs.icon_file }}"
           APP_COLOR="${{ github.event.inputs.app_color }}"
           
+          echo "🎨 جاري إنشاء Splash Screen..."
+          
           mkdir -p android/app/src/main/res/drawable
           mkdir -p android/app/src/main/res/values
           
-          # إنشاء صورة Splash
           convert $ICON_FILE -resize 250x250 -background "$APP_COLOR" -gravity center -extent 300x300 \
                   android/app/src/main/res/drawable/splash.png
           
-          # إنشاء ملفات XML
+          echo "  ✅ تم إنشاء splash.png"
+          
           cat > android/app/src/main/res/drawable/splash_background.xml << EOF
           <?xml version="1.0" encoding="utf-8"?>
           <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
@@ -326,6 +301,7 @@ jobs:
               </item>
           </layer-list>
           EOF
+          echo "  ✅ تم إنشاء splash_background.xml"
           
           cat > android/app/src/main/res/values/styles.xml << EOF
           <?xml version="1.0" encoding="utf-8"?>
@@ -350,6 +326,7 @@ jobs:
               </style>
           </resources>
           EOF
+          echo "  ✅ تم إنشاء styles.xml"
           
           cat > android/app/src/main/res/values/colors.xml << EOF
           <?xml version="1.0" encoding="utf-8"?>
@@ -358,36 +335,141 @@ jobs:
               <color name="primaryColor">${APP_COLOR}</color>
           </resources>
           EOF
+          echo "  ✅ تم إنشاء colors.xml"
           
-          echo "✅ تم إنشاء Splash Screen بنجاح"
+          cat > android/app/src/main/res/values/strings.xml << EOF
+          <?xml version='1.0' encoding='utf-8'?>
+          <resources>
+              <string name="app_name">${{ github.event.inputs.app_name }}</string>
+              <string name="title_activity_main">${{ github.event.inputs.app_name }}</string>
+              <string name="package_name">${{ github.event.inputs.app_id }}</string>
+          </resources>
+          EOF
+          echo "  ✅ تم إنشاء strings.xml"
+          
+          echo ""
+          echo "✨ تم إنشاء Splash Screen بنجاح!"
 
-      - name: 🔄 مزامنة المشروع والتحقق من الملفات
+      - name: 🎨 إنشاء الأيقونة التكيفية (لأندرويد 8+)
+        run: |
+          cat > android/app/src/main/res/drawable/ic_launcher_background.xml << EOF
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android">
+              <solid android:color="${{ github.event.inputs.app_color }}"/>
+          </shape>
+          EOF
+          
+          cat > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@drawable/ic_launcher_background"/>
+              <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+          </adaptive-icon>
+          EOF
+          
+          cat > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@drawable/ic_launcher_background"/>
+              <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+          </adaptive-icon>
+          EOF
+          
+          echo "✅ تم إنشاء الأيقونة التكيفية"
+
+      - name: 🔧 إعداد ملف AndroidManifest.xml مع صلاحيات التحميل
+        run: |
+          MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
+          
+          if [ -f "$MANIFEST_FILE" ]; then
+            echo "📝 جاري تعديل AndroidManifest.xml..."
+            
+            cp $MANIFEST_FILE ${MANIFEST_FILE}.backup
+            
+            # إزالة الإعدادات القديمة
+            sed -i 's/android:networkSecurityConfig="[^"]*"//g' $MANIFEST_FILE
+            sed -i 's/android:usesCleartextTraffic="[^"]*"//g' $MANIFEST_FILE
+            sed -i 's/android:hardwareAccelerated="[^"]*"//g' $MANIFEST_FILE
+            sed -i 's/android:theme="[^"]*"//g' $MANIFEST_FILE
+            sed -i 's/android:windowSoftInputMode="[^"]*"//g' $MANIFEST_FILE
+            sed -i 's/android:requestLegacyExternalStorage="[^"]*"//g' $MANIFEST_FILE
+            
+            # تعديل application مع دعم التخزين والتحميل
+            sed -i 's|<application|<application android:usesCleartextTraffic="true" android:hardwareAccelerated="true" android:requestLegacyExternalStorage="true" android:theme="@style/AppTheme.Splash" android:windowSoftInputMode="adjustResize"|' $MANIFEST_FILE
+            
+            # إضافة جميع الأذونات المطلوبة للتحميل
+            if ! grep -q "INTERNET" $MANIFEST_FILE; then
+              sed -i 's|</manifest>|    <uses-permission android:name="android.permission.INTERNET"/>\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>\n    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>\n    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>\n</manifest>|' $MANIFEST_FILE
+            fi
+            
+            echo "✅ تم تعديل AndroidManifest.xml مع صلاحيات التحميل الكاملة"
+            echo ""
+            echo "📋 الصلاحيات المضافة:"
+            echo "  ✅ INTERNET"
+            echo "  ✅ ACCESS_NETWORK_STATE"
+            echo "  ✅ WRITE_EXTERNAL_STORAGE"
+            echo "  ✅ READ_EXTERNAL_STORAGE"
+            echo "  ✅ DOWNLOAD_WITHOUT_NOTIFICATION"
+            echo "  ✅ requestLegacyExternalStorage"
+          else
+            echo "❌ ملف AndroidManifest.xml غير موجود!"
+            exit 1
+          fi
+
+      - name: ⌨️ إضافة دعم الكيبورد والتحميل في MainActivity
+        run: |
+          MAIN_ACTIVITY="android/app/src/main/java/$(echo ${{ github.event.inputs.app_id }} | tr '.' '/')/MainActivity.java"
+          
+          if [ ! -f "$MAIN_ACTIVITY" ]; then
+            MAIN_ACTIVITY=$(find android/app/src/main/java -name "MainActivity.java" -type f | head -1)
+          fi
+          
+          if [ -f "$MAIN_ACTIVITY" ]; then
+            echo "📝 جاري تعديل $MAIN_ACTIVITY..."
+            
+            # إضافة imports
+            if ! grep -q "import android.view.WindowManager;" $MAIN_ACTIVITY; then
+              sed -i '/^package/a import android.view.WindowManager;' $MAIN_ACTIVITY
+            fi
+            
+            if ! grep -q "import android.os.Build;" $MAIN_ACTIVITY; then
+              sed -i '/^package/a import android.os.Build;' $MAIN_ACTIVITY
+            fi
+            
+            if ! grep -q "import androidx.core.view.WindowCompat;" $MAIN_ACTIVITY; then
+              sed -i '/^package/a import androidx.core.view.WindowCompat;' $MAIN_ACTIVITY
+            fi
+            
+            if ! grep -q "import android.webkit.WebSettings;" $MAIN_ACTIVITY; then
+              sed -i '/^package/a import android.webkit.WebSettings;' $MAIN_ACTIVITY
+            fi
+            
+            if ! grep -q "import android.webkit.WebView;" $MAIN_ACTIVITY; then
+              sed -i '/^package/a import android.webkit.WebView;' $MAIN_ACTIVITY
+            fi
+            
+            # إضافة إعدادات WebView للتحميل
+            if ! grep -q "getWindow().setSoftInputMode" $MAIN_ACTIVITY; then
+              sed -i '/super.onCreate/a \        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);\n        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {\n            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);\n        }' $MAIN_ACTIVITY
+            fi
+            
+            echo "✅ تم تعديل MainActivity.java"
+          else
+            echo "⚠️ لم يتم العثور على MainActivity.java"
+          fi
+
+      - name: 🔄 مزامنة المشروع
         run: |
           echo "🔄 جاري مزامنة الملفات..."
           npx cap sync android
           
           echo ""
-          echo "🔍 التحقق من محتويات assets:"
-          if [ -d "android/app/src/main/assets" ]; then
-            echo "  📁 عدد الملفات في assets: $(find android/app/src/main/assets -type f 2>/dev/null | wc -l)"
-            echo "  💾 حجم assets: $(du -sh android/app/src/main/assets 2>/dev/null | cut -f1)"
-            echo ""
-            echo "  📂 أول 20 ملف في assets:"
-            find android/app/src/main/assets -type f 2>/dev/null | head -20
-          else
-            echo "  ❌ مجلد assets غير موجود!"
-            exit 1
-          fi
+          echo "🔍 التحقق من الملفات:"
+          [ -f "android/app/src/main/res/drawable/splash.png" ] && echo "  ✅ splash.png"
+          [ -f "android/app/src/main/res/drawable/splash_background.xml" ] && echo "  ✅ splash_background.xml"
           
-          # التحقق من وجود index.html في assets
-          if [ -f "android/app/src/main/assets/public/index.html" ] || [ -f "android/app/src/main/assets/index.html" ]; then
-            echo ""
-            echo "✅ تم العثور على index.html في assets"
-          else
-            echo ""
-            echo "⚠️ تحذير: لم يتم العثور على index.html في assets!"
-            echo "🔍 البحث عن index.html:"
-            find android/app/src/main/assets -name "index.html" 2>/dev/null
+          if [ -d "android/app/src/main/assets" ]; then
+            echo "  💾 assets: $(find android/app/src/main/assets -type f | wc -l) ملفات"
           fi
 
       - name: 🔨 بناء تطبيق APK
@@ -395,17 +477,28 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
-          
-          # التحقق من وجود APK
-          if [ -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
+
+      - name: 📊 معلومات الملف الناتج
+        run: |
+          APK_PATH="android/app/build/outputs/apk/debug/app-debug.apk"
+          if [ -f "$APK_PATH" ]; then
             echo "✅ تم بناء APK بنجاح"
-            echo "📱 حجم APK: $(du -h app/build/outputs/apk/debug/app-debug.apk | cut -f1)"
+            echo "📱 حجم الملف: $(du -h $APK_PATH | cut -f1)"
+            echo "📋 اسم التطبيق: ${{ github.event.inputs.app_name }}"
+            echo "⬛ لون الخلفية: ${{ github.event.inputs.app_color }}"
+            echo ""
+            echo "✨ المميزات:"
+            echo "  🖼️ صورة واحدة فقط عند الفتح"
+            echo "  📥 دعم تحميل الصور داخل التطبيق"
+            echo "  🚫 بدون Spinner أو تحميل"
+            echo "  ⚡ فتح سريع ومباشر"
+            echo "  ⌨️ دعم الكيبورد"
           else
             echo "❌ فشل بناء APK"
             exit 1
           fi
 
-      - name: 📤 رفع APK إلى Artifacts
+      - name: 📤 رفع ملف APK إلى Artifacts (نسخة احتياطية)
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.inputs.app_name }}-APK
@@ -413,6 +506,7 @@ jobs:
           retention-days: 90
 
       - name: 🚀 إنشاء Release ورفع APK
+        id: create_release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.event.inputs.version_name }}-${{ github.run_number }}
@@ -422,7 +516,7 @@ jobs:
             
             ### 📋 معلومات التطبيق
             - **الإصدار**: ${{ github.event.inputs.version_name }}
-            - **Build**: #${{ github.event.run_number }}
+            - **Build**: #${{ github.run_number }}
             - **التاريخ**: $(date +%Y-%m-%d)
             
             ### ✨ المميزات
@@ -457,6 +551,13 @@ jobs:
           echo "📱 اسم التطبيق: ${{ github.event.inputs.app_name }}"
           echo "📌 الإصدار: ${{ github.event.inputs.version_name }}"
           echo "⬛ لون الخلفية: ${{ github.event.inputs.app_color }}"
+          echo ""
+          echo "✨ طريقة عمل التطبيق:"
+          echo "  1️⃣ تفتح التطبيق"
+          echo "  2️⃣ تظهر الأيقونة في المنتصف"
+          echo "  3️⃣ يفتح التطبيق مباشرة"
+          echo "  4️⃣ تولد الصورة وتضغط تحميل"
+          echo "  5️⃣ يتم حفظ الصورة بنجاح ✅"
           echo ""
           echo "📥 يمكنك تحميل الـ APK من:"
           echo "  🚀 Releases (رابط مباشر)"
