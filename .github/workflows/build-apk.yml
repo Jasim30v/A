@@ -1,5 +1,11 @@
-name: 👑 Build APK - Joker Compatible
+# ╔══════════════════════════════════════════════════════════╗
+# ║      👑 Dark AI - بناء APK (المرحلة الثالثة)         ║
+# ║              يعمل يدوياً فقط                           ║
+# ╚══════════════════════════════════════════════════════════╝
 
+name: 🚀 Build APK - المرحلة الثالثة
+
+# ═══════════════════════════ المشغلات ═══════════════════════════
 on:
   workflow_dispatch:
     inputs:
@@ -7,237 +13,237 @@ on:
         description: '📱 اسم التطبيق'
         required: true
         default: 'Dark AI'
+        type: string
+        
       app_id:
         description: '🆔 App ID'
         required: true
         default: 'com.darkai.app'
+        type: string
+        
       app_color:
-        description: '🎨 لون الخلفية'
+        description: '🎨 لون التطبيق'
         required: true
         default: '#000000'
+        type: string
+        
+      version_name:
+        description: '📌 الإصدار'
+        required: true
+        default: '1.0.0'
+        type: string
+        
       icon_file:
-        description: '🖼️ اسم ملف الأيقونة PNG'
+        description: '🖼️ ملف الأيقونة'
         required: true
         default: 'icon.png'
-      version_name:
-        description: '📌 إصدار'
-        required: false
-        default: '1.0.0'
+        type: string
 
 permissions:
   contents: write
 
 jobs:
   build-apk:
-    name: 👑 ${{ inputs.app_name }}
+    name: 👑 بناء APK
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with: {distribution: 'temurin', java-version: '17'}
-
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-
-      - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
-
-      - name: 📦 Install Tools
+      - name: 📥 تحميل المستودع
+        uses: actions/checkout@v4
+        
+      - name: 📥 تحميل القالب
+        uses: actions/download-artifact@v4
+        with:
+          name: android-template
+          
+      - name: 📦 فك القالب
         run: |
-          npm install -g @capacitor/cli @capacitor/core @capacitor/android
-          sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
+          tar -xzf android-template.tar.gz
+          cp -r template/* .
+          rm -rf template android-template.tar.gz
 
-      - name: 🃏 Run Joker Scraper
-        run: python scraper.py
+      - name: ☕ Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: 📁 Prepare www
+      - name: 🟢 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 🛠️ الأدوات
         run: |
-          if [ -d "output/www" ]; then
-            cp -r output/www www
-          elif [ ! -d "www" ]; then
-            mkdir www
-          fi
-          [ ! -f "www/index.html" ] && echo "<h1>${{ inputs.app_name }}</h1>" > www/index.html
-          echo "✅ www ready: $(find www -type f | wc -l) files"
+          npm install -g @capacitor/cli
+          sudo apt-get install -y -qq imagemagick
+          npm install
 
-      - name: ⚙️ Setup Capacitor
+      - name: ⚙️ تحديث الإعدادات
         run: |
-          cat > package.json << EOF
+          # تحديث capacitor.config.json
+          cat > capacitor.config.json << EOF
           {
-            "name": "${{ inputs.app_name }}",
-            "version": "1.0.0",
-            "dependencies": {
-              "@capacitor/android": "^5.0.0",
-              "@capacitor/core": "^5.0.0",
-              "@capacitor/cli": "^5.0.0",
-              "@capacitor/filesystem": "^5.0.0",
-              "@capacitor/app": "^5.0.0",
-              "@capacitor/status-bar": "^5.0.0",
-              "@capacitor/splash-screen": "^5.0.0",
-              "@capacitor/keyboard": "^5.0.0"
-            }
-          }
-          EOF
-
-          if [ -f "output/capacitor.config.json" ]; then
-            cp output/capacitor.config.json .
-          else
-            cat > capacitor.config.json << EOF
-          {
-            "appId": "${{ inputs.app_id }}",
-            "appName": "${{ inputs.app_name }}",
+            "appId": "${{ github.event.inputs.app_id }}",
+            "appName": "${{ github.event.inputs.app_name }}",
             "webDir": "www",
             "bundledWebRuntime": false,
-            "server": {"androidScheme": "https", "cleartext": true, "allowNavigation": ["*"]},
-            "android": {"allowMixedContent": true, "keyboardStyle": "DARK"},
+            "server": {
+              "androidScheme": "https",
+              "allowNavigation": ["*"],
+              "cleartext": true,
+              "hostname": "localhost"
+            },
+            "android": {
+              "allowMixedContent": true,
+              "captureInput": true,
+              "webContentsDebuggingEnabled": true,
+              "backgroundColor": "${{ github.event.inputs.app_color }}"
+            },
             "plugins": {
               "SplashScreen": {
-                "launchShowDuration": 0, "launchAutoHide": true,
-                "backgroundColor": "${{ inputs.app_color }}",
+                "launchShowDuration": 0,
+                "launchAutoHide": true,
+                "backgroundColor": "${{ github.event.inputs.app_color }}",
                 "androidSplashResourceName": "splash",
-                "androidScaleType": "FIT_CENTER", "showSpinner": false
+                "androidScaleType": "CENTER_CROP",
+                "showSpinner": false,
+                "splashFullScreen": true,
+                "splashImmersive": true
+              },
+              "Keyboard": {
+                "resize": "body",
+                "style": "DARK"
+              },
+              "StatusBar": {
+                "style": "LIGHT",
+                "backgroundColor": "${{ github.event.inputs.app_color }}"
               }
             }
           }
           EOF
+
+      - name: 🎨 الأيقونات و Splash
+        run: |
+          ICON="${{ github.event.inputs.icon_file }}"
+          COLOR="${{ github.event.inputs.app_color }}"
+          
+          [ ! -f "$ICON" ] && ICON=$(find . -name "*.png" -not -path './node_modules/*' -not -path './android/*' | head -1)
+          
+          if [ -f "$ICON" ]; then
+            rm -rf android/app/src/main/res/mipmap-* android/app/src/main/res/drawable/ic_launcher_*
+            
+            for dir in mipmap-ldpi mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi mipmap-anydpi-v26 drawable; do
+              mkdir -p "android/app/src/main/res/$dir"
+            done
+            
+            convert "$ICON" -resize 36x36   android/app/src/main/res/mipmap-ldpi/ic_launcher.png
+            convert "$ICON" -resize 48x48   android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+            convert "$ICON" -resize 72x72   android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+            convert "$ICON" -resize 96x96   android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+            convert "$ICON" -resize 144x144 android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+            convert "$ICON" -resize 192x192 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+            
+            cp "$ICON" android/app/src/main/res/drawable/ic_launcher_foreground.png
+            
+            # Splash
+            mkdir -p android/app/src/main/res/{drawable,values}
+            convert "$ICON" -resize 250x250 -background "$COLOR" -gravity center -extent 300x300 android/app/src/main/res/drawable/splash.png
+            
+            # Splash background
+            cat > android/app/src/main/res/drawable/splash_background.xml << XML
+            <?xml version="1.0" encoding="utf-8"?>
+            <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+                <item><shape><solid android:color="${COLOR}"/></shape></item>
+                <item android:gravity="center" android:width="250dp" android:height="250dp">
+                    <bitmap android:src="@drawable/splash" android:gravity="center"/>
+                </item>
+            </layer-list>
+            XML
+            
+            # Styles
+            cat > android/app/src/main/res/values/styles.xml << XML
+            <?xml version="1.0" encoding="utf-8"?>
+            <resources>
+                <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                    <item name="colorPrimary">${COLOR}</item>
+                    <item name="colorPrimaryDark">${COLOR}</item>
+                    <item name="android:statusBarColor">${COLOR}</item>
+                    <item name="android:navigationBarColor">${COLOR}</item>
+                    <item name="android:windowBackground">${COLOR}</item>
+                </style>
+                <style name="AppTheme.Splash" parent="AppTheme">
+                    <item name="android:windowBackground">@drawable/splash_background</item>
+                    <item name="android:statusBarColor">${COLOR}</item>
+                    <item name="android:navigationBarColor">${COLOR}</item>
+                    <item name="android:windowFullscreen">true</item>
+                </style>
+            </resources>
+            XML
+            
+            # Adaptive icon
+            cat > android/app/src/main/res/drawable/ic_launcher_background.xml << XML
+            <?xml version="1.0" encoding="utf-8"?>
+            <shape><solid android:color="${COLOR}"/></shape>
+            XML
+            
+            cat > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml << XML
+            <?xml version="1.0" encoding="utf-8"?>
+            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                <background android:drawable="@drawable/ic_launcher_background"/>
+                <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+            </adaptive-icon>
+            XML
+            
+            cat > android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml << XML
+            <?xml version="1.0" encoding="utf-8"?>
+            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                <background android:drawable="@drawable/ic_launcher_background"/>
+                <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+            </adaptive-icon>
+            XML
+            
+            echo "✅ التصميم جاهز"
           fi
 
-      - name: 📦 Install & Add Android
+      - name: 🔧 AndroidManifest
         run: |
-          npm install
-          npx cap add android
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          [ -f "$MANIFEST" ] && sed -i 's|<application|<application android:usesCleartextTraffic="true" android:hardwareAccelerated="true" android:requestLegacyExternalStorage="true" android:theme="@style/AppTheme.Splash"|' "$MANIFEST"
 
-      - name: 🎨 Copy Joker Android Files
-        run: |
-          if [ -d "output/android" ]; then
-            echo "📁 Merging Joker Android files..."
-            cp -r output/android/* android/ 2>/dev/null || true
-            echo "✅ Android files merged"
-          else
-            echo "ℹ️ No Joker Android folder, using Capacitor defaults"
-          fi
-
-      - name: 🎨 Generate Icons
-        run: |
-          ICON="${{ inputs.icon_file }}"
-          [ ! -f "$ICON" ] && echo "❌ Icon not found: $ICON" && exit 1
-          
-          RES="android/app/src/main/res"
-          mkdir -p $RES/{mipmap-{ldpi,mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi,anydpi-v26},drawable}
-          
-          for S in 36:ldpi 48:mdpi 72:hdpi 96:xhdpi 144:xxhdpi 192:xxxhdpi; do
-            s=${S%:*}; d=${S#*:}
-            convert "$ICON" -resize ${s}x${s} $RES/mipmap-${d}/ic_launcher.png && echo "  ✅ ${d}"
-          done
-          
-          cp "$ICON" $RES/drawable/ic_launcher_foreground.png
-          convert "$ICON" -resize 250x250 $RES/drawable/splash.png
-          echo "✅ Icons ready"
-
-      - name: 🎨 Splash & Theme (if not from Joker)
-        run: |
-          RES="android/app/src/main/res"
-          C="${{ inputs.app_color }}"
-          
-          # splash_background.xml
-          cat > $RES/drawable/splash_background.xml << EOF
-          <?xml version="1.0" encoding="utf-8"?>
-          <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-          <item><shape><solid android:color="${C}"/></shape></item>
-          <item android:gravity="center" android:width="250dp" android:height="250dp">
-          <bitmap android:src="@drawable/splash" android:gravity="center"/></item>
-          </layer-list>
-          EOF
-
-          # ic_launcher_background.xml
-          cat > $RES/drawable/ic_launcher_background.xml << EOF
-          <?xml version="1.0" encoding="utf-8"?>
-          <shape xmlns:android="http://schemas.android.com/apk/res/android">
-          <solid android:color="${C}"/></shape>
-          EOF
-
-          # Adaptive icons
-          for f in ic_launcher ic_launcher_round; do
-            cat > $RES/mipmap-anydpi-v26/${f}.xml << EOF
-          <?xml version="1.0" encoding="utf-8"?>
-          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-          <background android:drawable="@drawable/ic_launcher_background"/>
-          <foreground android:drawable="@drawable/ic_launcher_foreground"/></adaptive-icon>
-          EOF
-          done
-
-          # styles.xml (if not exists)
-          if [ ! -f "$RES/values/styles.xml" ]; then
-            cat > $RES/values/styles.xml << EOF
-          <?xml version="1.0" encoding="utf-8"?>
-          <resources>
-          <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-          <item name="colorPrimary">${C}</item>
-          <item name="android:statusBarColor">${C}</item>
-          </style>
-          <style name="AppTheme.Splash" parent="AppTheme">
-          <item name="android:windowBackground">@drawable/splash_background</item>
-          <item name="android:windowFullscreen">true</item>
-          </style>
-          </resources>
-          EOF
-          fi
-
-          echo "✅ Theme ready"
-
-      - name: 📝 Fix Manifest
-        run: |
-          M="android/app/src/main/AndroidManifest.xml"
-          [ ! -f "$M" ] && echo "❌ No manifest" && exit 1
-          
-          # Ensure all attributes
-          sed -i 's|<application|<application android:usesCleartextTraffic="true" android:hardwareAccelerated="true" android:requestLegacyExternalStorage="true" android:theme="@style/AppTheme.Splash" android:windowSoftInputMode="adjustResize" android:largeHeap="true"|' "$M"
-          
-          # Add permissions if missing
-          for perm in INTERNET ACCESS_NETWORK_STATE WRITE_EXTERNAL_STORAGE READ_EXTERNAL_STORAGE DOWNLOAD_WITHOUT_NOTIFICATION CAMERA RECORD_AUDIO VIBRATE; do
-            grep -q "$perm" "$M" || sed -i "s|<application|<uses-permission android:name=\"android.permission.$perm\"/>\n    <application|" "$M"
-          done
-          
-          echo "✅ Manifest fixed"
-
-      - name: 🔄 Sync
+      - name: 🔄 مزامنة
         run: npx cap sync android
 
-      - name: 🔨 Build APK
-        run: cd android && chmod +x gradlew && ./gradlew assembleDebug
+      - name: 🔨 بناء APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          
+          APK="app/build/outputs/apk/debug/app-debug.apk"
+          [ -f "$APK" ] && cp "$APK" ../app-debug.apk && echo "✅ APK جاهز: $(du -h ../app-debug.apk | cut -f1)"
 
-      - name: 📤 Upload Artifact
+      - name: 📤 رفع APK
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.app_name }}-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: ${{ github.event.inputs.app_name }}-v${{ github.event.inputs.version_name }}
+          path: app-debug.apk
           retention-days: 90
 
-      - name: 🚀 Create Release
+      - name: 🚀 Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ inputs.version_name }}-${{ github.run_number }}
-          name: "👑 ${{ inputs.app_name }} v${{ inputs.version_name }}"
-          body: |
-            ## 👑 ${{ inputs.app_name }}
-            - **إصدار**: ${{ inputs.version_name }}
-            - **Build**: #${{ github.run_number }}
-            - **تاريخ**: $(date +%Y-%m-%d)
-            ### ✨ مميزات
-            - 🃏 Joker Scraper
-            - 📥 دعم تحميل
-            - ⚡ فتح سريع
-            - ⌨️ دعم كيبورد
-          files: android/app/build/outputs/apk/debug/app-debug.apk
+          tag_name: v${{ github.event.inputs.version_name }}-${{ github.run_number }}
+          name: "👑 ${{ github.event.inputs.app_name }} v${{ github.event.inputs.version_name }}"
+          files: app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🎉 Done
+      - name: 🎉 اكتمال
         run: |
-          echo "╔══════════════════════════════╗"
-          echo "║  👑 APK Build Complete!    ║"
-          echo "║  📱 ${{ inputs.app_name }}"
-          echo "║  🃏 Joker Compatible       ║"
-          echo "╚══════════════════════════════╝"
+          echo "╔══════════════════════════════════════╗"
+          echo "║     🎉 تم بناء APK بنجاح!          ║"
+          echo "║     📱 ${{ github.event.inputs.app_name }}"
+          echo "║     📌 v${{ github.event.inputs.version_name }}"
+          echo "║     🔗 اذهب إلى Releases للتحميل    ║"
+          echo "╚══════════════════════════════════════╝"
