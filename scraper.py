@@ -2,39 +2,42 @@
 """
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                            ║
-║  🟦 SOTWE 2026 - SOCIAL PLATFORM GENERATOR  🟦            ║
-║     Ultimate Version - 9 Files - 2500+ Lines               ║
+║  ☁️  MNAENCA 2026 - SKY BLUE LUXURY EDITION  ☁️       ║
+║     Ultimate Version - 9 Files - 3000+ Lines               ║
 ║                                                            ║
 ║  🔥  Firebase: muvg-42126                                 ║
 ║  ☁️   Cloudinary: dmqyd0haj / s3_gok                     ║
 ║  👑  Admin: jasim28v@gmail.com                            ║
-║  🟦  Design: Modern Blue & Pink Luxury                    ║
+║  👾  Avatars: DiceBear Big Smile (Random)                  ║
+║  💎  Design: Sky Blue Glass Luxury                        ║
 ║                                                            ║
 ║  ✨  PREMIUM FEATURES:                                     ║
-║     • 🔔 Notification System                              ║
-║     • 💬 Comments & Replies                               ║
-║     • ❤️  Likes & Retweets                                ║
-║     • 📌 Bookmarks                                        ║
-║     • 💬 Quote Tweets                                     ║
-║     • 📝 Stories (24hr)                                   ║
-║     • 💌 Private Chat (Text/Image/Audio)                  ║
-║     • 🔍 Search Users                                     ║
-║     • 👤 Edit Profile + Custom Avatar/Cover               ║
-║     • 🌓 Dark/Light Mode Toggle                           ║
-║     • 🛡️  Admin Panel (Delete Users/Posts)               ║
-║     • 📱 Mobile Responsive + Fullscreen Support           ║
-║     • 🎤 Voice Messages in Chat                           ║
-║     • 📸 Image Modal Viewer                               ║
-║     • 🎨 Modern Polished UI                               ║
+║     • 💬 TikTok-Style Comments with Replies              ║
+║     • 📤 Professional Share System                       ║
+║     • 👤 Enhanced Profile with Video Grid                ║
+║     • 💧 Watermark on Downloaded Videos                  ║
+║     • 🔔 Notification System (Working 100%)              ║
+║     • 🎬 Compact Video Grid with Description              ║
+║     • 🗑️  Delete Videos from Admin Panel                  ║
+║     • 🖤 Parallax Cover                                   ║
+║     • 💎 Glass Morphism Dark Layers                       ║
+║     • 💙 Sky Blue Story Rings                            ║
+║     • ✨ Blue/Cyan Glow Effects                           ║
+║     • 🌟 Smooth In-App Viewer (No Popups!)               ║
+║     • 📱 Floating Bottom Nav                              ║
+║     • 🎥 Slide-Up Video Reveal Animation                 ║
+║     • توثيق + حظر + حذف فيديوهات                          ║
 ║                                                            ║
 ╚══════════════════════════════════════════════════════════════╝
 """
 
 import os
 import sys
+import json
+import shutil
 
 # ═══════════════════════════════════════════════════════════
-# 🔑 CONFIGURATION
+# ☁️ CONFIGURATION - الإعدادات
 # ═══════════════════════════════════════════════════════════
 
 FIREBASE_CONFIG = {
@@ -51,30 +54,126 @@ FIREBASE_CONFIG = {
 CLOUD_NAME = "dmqyd0haj"
 UPLOAD_PRESET = "s3_gok"
 ADMIN_EMAILS_JS = "['jasim28v@gmail.com']"
+DICEBEAR_URL = "https://api.dicebear.com/7.x/big-smile/svg"
+APP_NAME = "MNAENCA"
+WATERMARK_TEXT = "☁️ MNAENCA"
+WATERMARK_URL = "https://res.cloudinary.com/dmqyd0haj/image/upload/v1/watermark_mnaenca"
+
+# ☁️ Sky Blue Luxury Palette
+SKY_COLORS_JS = """[
+    "linear-gradient(135deg, #0c4a6e, #0369a1, #0284c7)",
+    "linear-gradient(135deg, #082f49, #0c4a6e, #0369a1)",
+    "linear-gradient(135deg, #164e63, #155e75, #0e7490)",
+    "linear-gradient(135deg, #1e3a8a, #2563eb, #3b82f6)",
+    "linear-gradient(135deg, #0284c7, #38bdf8, #7dd3fc)",
+    "linear-gradient(135deg, #0a1628, #0f2847, #0369a1)"
+]"""
+
+OUTPUT_DIR = "output"
+
+# ═══════════════════════════════════════════════════════════
+# 💙 UTILITY - دوال مساعدة
+# ═══════════════════════════════════════════════════════════
 
 TOTAL_LINES = 0
 
 def write(filename, content):
+    """حفظ ملف وحساب عدد الأسطر"""
     global TOTAL_LINES
-    os.makedirs(os.path.dirname(filename) if os.path.dirname(filename) else '.', exist_ok=True)
-    with open(filename, 'w', encoding='utf-8') as f:
+    filepath = os.path.join(OUTPUT_DIR, filename)
+    os.makedirs(os.path.dirname(filepath) if os.path.dirname(filepath) else OUTPUT_DIR, exist_ok=True)
+    with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)
     lines = content.count('\n') + 1
     TOTAL_LINES += lines
     print(f"  ✅ {filename} ({lines} سطر)")
 
 def section(title):
+    """طباعة عنوان القسم"""
     print(f"\n{'='*60}")
-    print(f"  🟦  {title}")
+    print(f"  ☁️  {title}")
     print(f"{'='*60}")
 
 # ═══════════════════════════════════════════════════════════
-# 1. firebase-config.js
+# ☁️ COMMON CSS - ستايل مشترك
+# ═══════════════════════════════════════════════════════════
+
+COMMON_CSS = """
+    :root{
+        --glass:rgba(14,165,233,0.03);
+        --border:rgba(14,165,233,0.12);
+        --accent:#0ea5e9;
+        --accent2:#06b6d4;
+        --bg:#020617;
+        --card:rgba(14,165,233,0.06);
+        --danger:#ef4444;
+        --success:#22c55e;
+        --warning:#f59e0b;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+        font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        background:var(--bg);
+        color:#fff;
+        -webkit-tap-highlight-color:transparent;
+        user-select:none;
+        -webkit-user-select:none;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    @keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
+    @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(14,165,233,0.3)}50%{box-shadow:0 0 40px rgba(6,182,212,0.7)}}
+    .spinner{
+        width:36px;height:36px;
+        border:3px solid rgba(14,165,233,0.2);
+        border-top-color:var(--accent);
+        border-radius:50%;
+        animation:spin 0.7s linear infinite;
+        margin:30px auto;
+    }
+    .toast-msg{
+        position:fixed;bottom:120px;left:50%;transform:translateX(-50%);
+        background:rgba(2,6,23,0.95);padding:12px 24px;border-radius:30px;
+        z-index:10000;border:1px solid rgba(14,165,233,0.3);font-size:13px;
+        opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;
+        box-shadow:0 8px 32px rgba(0,0,0,0.4);
+    }
+    .toast-msg.show{opacity:1}
+    .overlay{
+        position:fixed;inset:0;background:rgba(2,6,23,0.97);
+        backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+        z-index:400;overflow-y:auto;
+        animation:fadeIn 0.3s ease;
+    }
+    .overlay-header{
+        display:flex;justify-content:space-between;align-items:center;
+        padding:16px 20px;border-bottom:1px solid var(--border);
+        position:sticky;top:0;background:rgba(2,6,23,0.9);
+        backdrop-filter:blur(20px);z-index:5;
+    }
+    .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px}
+    .btn-close-overlay{
+        background:rgba(14,165,233,0.1);border:1px solid var(--border);
+        color:#fff;width:36px;height:36px;border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        cursor:pointer;font-size:16px;transition:all 0.3s;
+    }
+    .btn-close-overlay:hover{background:rgba(14,165,233,0.25);box-shadow:0 0 15px rgba(14,165,233,0.3)}
+"""
+
+# ═══════════════════════════════════════════════════════════
+# ☁️ 1. firebase-config.js
 # ═══════════════════════════════════════════════════════════
 
 def build_config():
-    return f"""// 🟦 SOTWE 2026 - Firebase & Cloudinary Configuration
+    return f"""// ☁️ MNAENCA 2026 - Sky Blue Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: dmqyd0haj
+// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
 
 const firebaseConfig = {{
     apiKey: "{FIREBASE_CONFIG['apiKey']}",
@@ -87,746 +186,1854 @@ const firebaseConfig = {{
     measurementId: "{FIREBASE_CONFIG['measurementId']}"
 }};
 
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
+// Cloudinary Configuration
 const CLOUD_NAME = "{CLOUD_NAME}";
 const UPLOAD_PRESET = "{UPLOAD_PRESET}";
+const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${{CLOUD_NAME}}/auto/upload`;
 
+// ☁️ MNAENCA Settings
 const ADMIN_EMAILS = {ADMIN_EMAILS_JS};
-const APP_NAME = "Sotwe";
-const APP_VERSION = "2026.1";
+const DICEBEAR_URL = "{DICEBEAR_URL}";
+const COVER_COLORS = {SKY_COLORS_JS};
 
-console.log('🟦 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #1d9bf0; font-size: 16px; font-weight: bold;');
+// ☁️ App Info
+const APP_NAME = "{APP_NAME}";
+const APP_VERSION = "2026.3";
+const PRIMARY_COLOR = "#0ea5e9";
+const SECONDARY_COLOR = "#38bdf8";
+const WATERMARK_TEXT = "{WATERMARK_TEXT}";
+const WATERMARK_URL = "{WATERMARK_URL}";
+
+console.log('☁️ %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #0ea5e9; font-size: 16px; font-weight: bold;');
 """
 
 # ═══════════════════════════════════════════════════════════
-# 2. auth.html
+# ☁️ 2. auth.html - تسجيل الدخول والاشتراك
 # ═══════════════════════════════════════════════════════════
 
 def build_auth():
-    return """<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🟦 Sotwe | دخول</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>☁️ MNAENCA | دخول</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{min-height:100vh;min-height:-webkit-fill-available;background:#000;display:flex;align-items:center;justify-content:center;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;overflow:hidden}
-        .bg-orb{position:fixed;border-radius:50%;filter:blur(140px);opacity:0.2}
-        .bg-orb:nth-child(1){width:450px;height:450px;background:#1d9bf0;top:-120px;left:-120px}
-        .bg-orb:nth-child(2){width:380px;height:380px;background:#f91880;bottom:-120px;right:-120px;animation-delay:5s}
-        @keyframes orbFloat{0%{transform:translate(0,0)scale(1)}100%{transform:translate(60px,-60px)scale(1.4)}}
-        .bg-orb{animation:orbFloat 18s infinite alternate}
-        .card{position:relative;z-index:1;width:90%;max-width:460px;background:rgba(0,0,0,0.85);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:32px;padding:48px 40px;border:1px solid rgba(29,155,240,0.2);box-shadow:0 30px 70px rgba(29,155,240,0.1);animation:fadeUp 0.8s ease;text-align:center}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-        h1{font-size:56px;font-weight:900;margin-bottom:32px;background:linear-gradient(135deg,#1d9bf0,#f91880);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        h2{font-size:24px;font-weight:700;margin-bottom:8px;text-align:right}
-        .sub{color:#71767b;font-size:14px;text-align:right;margin-bottom:24px}
-        .tabs{display:flex;gap:4px;background:rgba(29,155,240,0.06);border-radius:40px;padding:4px;margin-bottom:24px}
-        .tab{flex:1;padding:12px;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:600}
-        .tab.active{background:linear-gradient(135deg,#1d9bf0,#f91880);color:#fff;box-shadow:0 8px 20px rgba(29,155,240,0.4)}
-        .form{display:none;animation:fadeIn 0.4s ease;text-align:right}
-        .form.active{display:block}
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        input{width:100%;padding:16px 20px;margin:10px 0;border-radius:12px;background:#1a1a1a;border:1px solid #2f3336;color:#fff;font-size:16px;outline:none;transition:0.2s}
-        input:focus{border-color:#1d9bf0;box-shadow:0 0 0 2px rgba(29,155,240,0.2)}
-        input::placeholder{color:rgba(255,255,255,0.3)}
-        button{width:100%;padding:14px;margin-top:16px;background:#1d9bf0;border:none;border-radius:40px;color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:0.2s}
-        button:hover{background:#1a8cd8}
-        button:disabled{opacity:0.5;pointer-events:none}
-        .msg{text-align:center;color:#f91880;font-size:13px;margin-top:12px;min-height:20px}
-        .msg.success{color:#4ade80}
-        .link{margin-top:32px;color:#71767b;font-size:14px}
-        .link a{color:#1d9bf0;text-decoration:none;font-weight:600}
-        .forgot{display:block;text-align:right;color:#1d9bf0;font-size:13px;margin-top:8px;text-decoration:none}
-        .forgot:hover{text-decoration:underline}
+        {COMMON_CSS}
+        body{{
+            min-height:100vh;
+            background:radial-gradient(ellipse at top, #0a1628, #060d1a, #020617);
+            display:flex;align-items:center;justify-content:center;
+            overflow:hidden;position:relative;
+        }}
+        .bg-orb{{
+            position:fixed;border-radius:50%;filter:blur(130px);opacity:0.25;
+            animation:orbFloat 20s infinite alternate;pointer-events:none;
+        }}
+        .bg-orb:nth-child(1){{width:400px;height:400px;background:#0ea5e9;top:-100px;left:-100px}}
+        .bg-orb:nth-child(2){{width:350px;height:350px;background:#06b6d4;bottom:-100px;right:-100px;animation-delay:5s}}
+        .bg-orb:nth-child(3){{width:300px;height:300px;background:#38bdf8;top:50%;left:50%;animation-delay:10s}}
+        @keyframes orbFloat{{0%{{transform:translate(0,0) scale(1)}}100%{{transform:translate(50px,-50px) scale(1.3)}}}}
+
+        .card{{
+            position:relative;z-index:1;width:90%;max-width:420px;
+            background:rgba(14,165,233,0.03);
+            backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+            border-radius:32px;padding:36px 24px;
+            border:1px solid rgba(14,165,233,0.2);
+            box-shadow:0 30px 70px rgba(14,165,233,0.1),inset 0 0 30px rgba(14,165,233,0.02);
+            animation:fadeUp 0.8s ease;
+        }}
+        .logo{{
+            width:70px;height:70px;margin:0 auto 20px;
+            background:linear-gradient(135deg, rgba(14,165,233,0.3), rgba(6,182,212,0.3));
+            border-radius:20px;display:flex;align-items:center;justify-content:center;
+            font-size:36px;border:1px solid rgba(14,165,233,0.2);
+            animation:glowPulse 3s ease-in-out infinite;
+        }}
+        h1{{text-align:center;font-size:36px;font-weight:900;background:linear-gradient(to bottom, #fff, #7dd3fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}}
+        .sub{{text-align:center;color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:20px}}
+
+        .tabs{{display:flex;gap:4px;background:rgba(14,165,233,0.06);border-radius:40px;padding:4px;margin-bottom:24px}}
+        .tab{{flex:1;padding:12px;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:500}}
+        .tab.active{{background:linear-gradient(135deg, #0ea5e9, #06b6d4);color:#fff;box-shadow:0 8px 20px rgba(14,165,233,0.4)}}
+
+        .form{{display:none;animation:fadeIn 0.4s ease}}
+        .form.active{{display:block}}
+
+        input{{
+            width:100%;padding:15px 18px;margin:8px 0;
+            border-radius:50px;background:rgba(14,165,233,0.04);
+            border:1px solid rgba(14,165,233,0.15);color:#fff;
+            font-size:14px;outline:none;transition:all 0.4s;
+        }}
+        input:focus{{border-color:rgba(14,165,233,0.6);box-shadow:0 0 20px rgba(14,165,233,0.1);background:rgba(14,165,233,0.08)}}
+        input::placeholder{{color:rgba(255,255,255,0.3)}}
+
+        button{{
+            width:100%;padding:15px;margin-top:18px;
+            background:linear-gradient(135deg, #0ea5e9, #06b6d4);
+            border:none;border-radius:50px;color:#fff;
+            font-weight:bold;font-size:15px;cursor:pointer;
+            transition:all 0.3s;box-shadow:0 10px 30px rgba(14,165,233,0.4);
+        }}
+        button:hover{{transform:translateY(-2px);box-shadow:0 20px 40px rgba(14,165,233,0.6)}}
+        button:active{{transform:scale(0.97)}}
+        button:disabled{{opacity:0.5;pointer-events:none}}
+
+        .msg{{text-align:center;color:#fca5a5;font-size:13px;margin-top:12px;min-height:20px}}
+        .msg.success{{color:#4ade80}}
     </style>
 </head>
 <body>
-    <div class="bg-orb"></div><div class="bg-orb"></div>
+    <div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div>
+
     <div class="card">
-        <h1>Sotwe</h1>
+        <div class="logo">☁️</div>
+        <h1>MNAENCA</h1>
+        <p class="sub">Sky Blue Luxury 2026 ✨</p>
+
         <div class="tabs">
-            <button class="tab active" id="tabLogin" onclick="switchAuth('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
-            <button class="tab" id="tabRegister" onclick="switchAuth('register')"><i class="fas fa-user-plus"></i> اشتراك</button>
+            <button class="tab active" id="tabLogin" onclick="switchTab('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
+            <button class="tab" id="tabRegister" onclick="switchTab('register')"><i class="fas fa-user-plus"></i> اشتراك</button>
         </div>
+
         <div id="formLogin" class="form active">
-            <h2>تسجيل الدخول</h2>
-            <p class="sub">قم بالوصول إلى حسابك في Sotwe</p>
-            <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email">
+            <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
             <input type="password" id="loginPass" placeholder="🔒 كلمة المرور" autocomplete="current-password">
-            <a href="#" class="forgot" onclick="resetPassword()">نسيت كلمة المرور؟</a>
             <button id="btnLogin" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول</button>
             <div class="msg" id="loginMsg"></div>
-            <div class="link">ليس لديك حساب؟ <a href="#" onclick="switchAuth('register')">إنشاء حساب</a></div>
         </div>
+
         <div id="formRegister" class="form">
-            <h2>إنشاء حساب</h2>
-            <p class="sub">قم بإنشاء حسابك في Sotwe</p>
             <input type="text" id="regName" placeholder="👤 اسم المستخدم" autocomplete="username">
-            <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email">
+            <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
             <input type="password" id="regPass" placeholder="🔒 كلمة المرور (6 أحرف على الأقل)" autocomplete="new-password">
-            <input type="password" id="regConfirmPass" placeholder="🔒 تأكيد كلمة المرور" autocomplete="new-password">
             <button id="btnRegister" onclick="doRegister()"><i class="fas fa-heart"></i> إنشاء حساب</button>
             <div class="msg" id="regMsg"></div>
-            <div class="link">لديك حساب بالفعل؟ <a href="#" onclick="switchAuth('login')">تسجيل الدخول</a></div>
         </div>
     </div>
+
     <script src="firebase-config.js"></script>
     <script>
-        function switchAuth(type){
+        function switchTab(type){{
             document.getElementById('tabLogin').classList.remove('active');
             document.getElementById('tabRegister').classList.remove('active');
             document.getElementById('formLogin').classList.remove('active');
             document.getElementById('formRegister').classList.remove('active');
             document.getElementById('loginMsg').innerText = '';
             document.getElementById('regMsg').innerText = '';
-            if(type === 'login'){
+            if(type === 'login'){{
                 document.getElementById('tabLogin').classList.add('active');
                 document.getElementById('formLogin').classList.add('active');
-            } else {
+            }} else {{
                 document.getElementById('tabRegister').classList.add('active');
                 document.getElementById('formRegister').classList.add('active');
-            }
-        }
-        async function doLogin(){
+            }}
+        }}
+
+        async function doLogin(){{
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPass').value;
             const msg = document.getElementById('loginMsg');
             const btn = document.getElementById('btnLogin');
-            if(!email || !password){ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
-            btn.disabled = true; btn.innerHTML = '⏳ جاري الدخول...'; msg.innerText = '';
-            try {
+            if(!email || !password){{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
+            btn.disabled = true; btn.innerHTML = '⏳ جاري الدخول...'; msg.innerText = ''; msg.className = 'msg';
+            try {{
                 await auth.signInWithEmailAndPassword(email, password);
                 window.location.replace('index.html');
-            } catch(error) {
+            }} catch(error) {{
                 btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول';
-                switch(error.code) {
+                switch(error.code) {{
                     case 'auth/user-not-found': msg.innerText = '❌ لا يوجد حساب بهذا البريد'; break;
                     case 'auth/wrong-password': case 'auth/invalid-credential': msg.innerText = '❌ كلمة المرور غير صحيحة'; break;
                     case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
                     case 'auth/too-many-requests': msg.innerText = '❌ محاولات كثيرة، حاول لاحقاً'; break;
                     default: msg.innerText = '❌ خطأ: ' + error.message;
-                }
-            }
-        }
-        async function doRegister(){
-            const name = document.getElementById('regName').value.trim();
+                }}
+            }}
+        }}
+
+        async function doRegister(){{
+            const username = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPass').value;
-            const confirmPass = document.getElementById('regConfirmPass').value;
             const msg = document.getElementById('regMsg');
             const btn = document.getElementById('btnRegister');
-            if(!name || !email || !password || !confirmPass){ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
-            if(name.length < 3){ msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }
-            if(password.length < 6){ msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }
-            if(password !== confirmPass){ msg.innerText = '❌ كلمة المرور غير متطابقة'; return; }
-            if(!email.includes('@') || !email.includes('.')){ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }
-            btn.disabled = true; btn.innerHTML = '⏳ جاري إنشاء الحساب...'; msg.innerText = '';
-            try {
+            if(!username || !email || !password){{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
+            if(username.length < 3){{ msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }}
+            if(password.length < 6){{ msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }}
+            if(!email.includes('@') || !email.includes('.')){{ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }}
+            btn.disabled = true; btn.innerHTML = '⏳ جاري إنشاء الحساب...'; msg.innerText = ''; msg.className = 'msg';
+            try {{
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const uid = userCredential.user.uid;
-                await db.ref('users/' + uid).set({
-                    name: name, email: email, bio: '',
-                    avatarUrl: '', coverUrl: '',
-                    followers: {}, following: {}, bookmarks: {},
-                    createdAt: Date.now()
-                });
+                const avatarUrl = DICEBEAR_URL + '?seed=' + uid;
+                const coverColor = COVER_COLORS[Math.floor(Math.random() * COVER_COLORS.length)];
+                const userData = {{
+                    username: username, email: email, bio: '',
+                    website: '', location: '', contactEmail: '',
+                    avatarUrl: avatarUrl, hasCustomAvatar: false,
+                    coverImageUrl: '', hasCustomCover: false,
+                    coverColor: coverColor, followers: {{}}, following: {{}},
+                    totalLikes: 0, isVerified: false, verifiedAt: null, verifiedBy: null,
+                    banned: false, createdAt: Date.now(), lastSeen: Date.now()
+                }};
+                await db.ref('users/' + uid).set(userData);
                 msg.innerText = '✅ تم إنشاء الحساب بنجاح! جاري التوجيه...';
                 msg.className = 'msg success';
-                setTimeout(() => { window.location.replace('index.html'); }, 800);
-            } catch(error) {
+                setTimeout(() => {{ window.location.replace('index.html'); }}, 800);
+            }} catch(error) {{
                 btn.disabled = false; btn.innerHTML = '<i class="fas fa-heart"></i> إنشاء حساب'; msg.className = 'msg';
-                switch(error.code) {
+                switch(error.code) {{
                     case 'auth/email-already-in-use': msg.innerText = '❌ البريد الإلكتروني مستخدم بالفعل'; break;
                     case 'auth/weak-password': msg.innerText = '❌ كلمة المرور ضعيفة جداً'; break;
                     case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
+                    case 'auth/operation-not-allowed': msg.innerText = '❌ التسجيل غير مفعل، راجع إعدادات Firebase'; break;
                     default: msg.innerText = '❌ خطأ: ' + (error.message || 'غير معروف');
-                }
-            }
-        }
-        function resetPassword(){
-            const email = document.getElementById('loginEmail').value.trim();
-            if(!email){ document.getElementById('loginMsg').innerText = '❌ أدخل بريدك الإلكتروني أولاً'; return; }
-            auth.sendPasswordResetEmail(email).then(() => {
-                document.getElementById('loginMsg').innerText = '✅ تم إرسال رابط إعادة التعيين إلى بريدك';
-                document.getElementById('loginMsg').className = 'msg success';
-            }).catch(e => {
-                document.getElementById('loginMsg').innerText = '❌ خطأ: ' + e.message;
-            });
-        }
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keydown', function(e) {
-                if(e.key === 'Enter') {
+                }}
+            }}
+        }}
+
+        document.querySelectorAll('input').forEach(input => {{
+            input.addEventListener('keydown', function(e) {{
+                if(e.key === 'Enter') {{
                     e.preventDefault();
-                    if(document.getElementById('formLogin').classList.contains('active')) { doLogin(); }
-                    else { doRegister(); }
-                }
-            });
-        });
-        auth.onAuthStateChanged(user => { if(user) window.location.replace('index.html'); });
-        console.log('🟦 Sotwe Auth Ready');
+                    if(document.getElementById('formLogin').classList.contains('active')) {{ doLogin(); }}
+                    else {{ doRegister(); }}
+                }}
+            }});
+        }});
+
+        auth.onAuthStateChanged(user => {{
+            if(user) {{ window.location.replace('index.html'); }}
+        }});
+
+        console.log('☁️ MNAENCA Auth Ready');
     </script>
 </body>
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# 3. index.html - Sotwe الرئيسية
+# ☁️ 3. index.html - الرئيسية مع تعليقات تيك توك + مشاركة احترافية
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
-    return """<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🟦 Sotwe | الرئيسية</title>
+    <title>☁️ MNAENCA | الرئيسية</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #1d9bf0;
-            --secondary: #f91880;
-            --bg: #000000;
-            --surface: #1a1a1a;
-            --border: #2f3336;
-            --text: #ffffff;
-            --text-secondary: #71767b;
-        }
-        *{margin:0;padding:0;box-sizing:border-box}
-        html,body{width:100%;height:100%;overflow:hidden;position:fixed;top:0;left:0;right:0;bottom:0}
-        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow-y:auto;overflow-x:hidden;height:100%;width:100%;position:relative}
-        body.light-mode{--bg:#ffffff;--surface:#f7f9f9;--border:#eef2f5;--text:#111111;--text-secondary:#536471}
-        body.light-mode .tweet-card{background:#fff;border-bottom-color:#eef2f5}
-        body.light-mode .tweet-card:hover{background:#f7f9f9}
-        body.light-mode .top-bar{background:rgba(255,255,255,0.98);border-bottom-color:#eef2f5}
-        body.light-mode .bottom-nav{background:rgba(255,255,255,0.98);border-top-color:#eef2f5}
-        body.light-mode .panel{background:#fff}
-        body.light-mode input{background:#f7f9f9;border-color:#eef2f5;color:#111}
-        body.light-mode .message-bubble.received{background:#eef2f5}
-        body.light-mode .admin-stat{background:#f0f2f5}
-        ::-webkit-scrollbar{width:6px}
-        ::-webkit-scrollbar-track{background:#2f3336;border-radius:10px}
-        ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
-        .top-bar{position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:100}
-        .logo{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
-        .top-icons{display:flex;gap:24px;align-items:center}
-        .top-icon{font-size:22px;color:var(--text);cursor:pointer;position:relative;transition:0.2s}
-        .top-icon:hover{color:var(--primary)}
-        .notification-badge{position:absolute;top:-8px;right:-12px;background:var(--secondary);color:#fff;font-size:10px;font-weight:700;border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center}
-        .back-btn{background:none;border:none;color:var(--primary);font-size:14px;cursor:pointer;display:none;align-items:center;gap:6px}
-        .feed-container{padding:0 0 80px}
-        .tweet-card{background:var(--bg);border-bottom:1px solid var(--border);padding:16px 20px;transition:background 0.2s;cursor:pointer}
-        .tweet-card:hover{background:#080808}
-        .tweet-header{display:flex;gap:12px;margin-bottom:8px}
-        .tweet-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));overflow:hidden;cursor:pointer;flex-shrink:0}
-        .tweet-avatar img{width:100%;height:100%;object-fit:cover}
-        .tweet-name{font-weight:800;cursor:pointer;font-size:15px}
-        .tweet-username{font-size:13px;color:var(--text-secondary)}
-        .tweet-time{font-size:13px;color:var(--text-secondary)}
-        .tweet-content{margin:8px 0 12px;font-size:15px;line-height:1.4;white-space:pre-wrap}
-        .tweet-media{margin:12px 0;border-radius:20px;overflow:hidden;background:var(--surface);cursor:pointer}
-        .tweet-media img{width:100%;max-height:500px;object-fit:cover;transition:transform 0.3s ease}
-        .tweet-media img:hover{transform:scale(1.02)}
-        .tweet-media video{width:100%;max-height:500px;border-radius:20px}
-        .tweet-media audio{width:100%}
-        .quote-embed{margin-top:12px;border:1px solid var(--border);border-radius:16px;padding:12px;cursor:pointer}
-        .tweet-actions{display:flex;justify-content:space-between;max-width:425px;margin-top:12px}
-        .tweet-action{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:13px;padding:8px;border-radius:40px;transition:0.2s}
-        .tweet-action i{font-size:18px}
-        .tweet-action:hover{color:var(--primary);background:rgba(29,155,240,0.1)}
-        .tweet-action.active{color:var(--secondary)}
-        @keyframes heartBeat{0%{transform:scale(1)}50%{transform:scale(1.3);color:#f91880}100%{transform:scale(1)}}
-        .heart-animation{animation:heartBeat 0.3s ease}
-        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 16px;z-index:100}
-        .nav-item{background:none;border:none;font-size:26px;color:var(--text-secondary);cursor:pointer;padding:8px;border-radius:40px;transition:0.2s}
-        .nav-item.active{color:var(--primary)}
-        .nav-item:hover{background:rgba(29,155,240,0.1);color:var(--primary)}
-        .panel{position:fixed;inset:0;background:var(--bg);z-index:200;transform:translateX(100%);transition:0.3s cubic-bezier(0.2,0.9,0.4,1.1);overflow-y:auto;display:flex;flex-direction:column}
-        .panel.open{transform:translateX(0)}
-        .panel-header{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-        .panel-body{flex:1;overflow-y:auto;padding:16px}
-        .compose-area{padding:20px;max-width:600px;margin:0 auto}
-        .compose-input{width:100%;min-height:150px;background:transparent;border:none;padding:16px;color:var(--text);font-size:20px;resize:none;outline:none;font-family:inherit}
-        .media-preview{margin:16px 0;display:none}
-        .media-preview img,.media-preview video{max-height:300px;border-radius:20px;width:100%;object-fit:cover}
-        .compose-tools{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-        .compose-tool{background:none;border:none;color:var(--primary);font-size:20px;padding:10px;border-radius:50%;cursor:pointer;transition:0.2s}
-        .compose-tool:hover{background:rgba(29,155,240,0.1)}
-        .btn-post{width:100%;background:var(--primary);color:#fff;border:none;padding:14px;border-radius:40px;font-weight:700;font-size:18px;cursor:pointer;margin-top:20px}
-        .btn-post:hover{background:#1a8cd8}
-        .comment-item{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-        .comment-header{display:flex;gap:12px;margin-bottom:8px}
-        .comment-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);overflow:hidden;cursor:pointer;flex-shrink:0}
-        .comment-avatar img{width:100%;height:100%;object-fit:cover}
-        .comment-user{font-weight:700;font-size:14px;cursor:pointer}
-        .comment-time{font-size:11px;color:var(--text-secondary)}
-        .comment-text{font-size:14px;margin:8px 0;line-height:1.4}
-        .reply-list{margin-top:12px;margin-right:48px;border-right:2px solid var(--primary);padding-right:12px}
-        .reply-item{margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-        .reply-header{display:flex;gap:8px;align-items:center;margin-bottom:4px}
-        .reply-avatar{width:28px;height:28px;border-radius:50%;background:var(--primary);overflow:hidden}
-        .reply-avatar img{width:100%;height:100%;object-fit:cover}
-        .reply-user{font-weight:600;font-size:12px;cursor:pointer}
-        .reply-text{font-size:13px;margin:4px 0}
-        .comment-input-area{padding:16px;border-top:1px solid var(--border);background:var(--bg)}
-        .comment-input{display:flex;gap:12px;align-items:center}
-        .comment-input input{flex:1;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:40px;color:var(--text);outline:none;font-size:14px}
-        .profile-cover{width:100%;height:200px;background:linear-gradient(135deg,var(--primary),var(--secondary));cursor:pointer;position:relative}
-        .profile-cover img{width:100%;height:100%;object-fit:cover}
-        .profile-info{padding:0 20px 20px;position:relative}
-        .profile-avatar{width:112px;height:112px;border-radius:50%;background:#111;border:4px solid var(--bg);margin-top:-56px;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;position:relative}
-        .profile-avatar img{width:100%;height:100%;object-fit:cover}
-        .profile-name{font-size:20px;font-weight:800;margin-top:12px}
-        .profile-bio{color:var(--text-secondary);font-size:14px;margin:8px 0;white-space:pre-wrap}
-        .profile-stats{display:flex;gap:24px;margin:16px 0;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-        .profile-stats div{text-align:center;cursor:pointer}
-        .stat-number{font-size:18px;font-weight:800}
-        .stat-label{font-size:13px;color:var(--text-secondary)}
-        .profile-buttons{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap}
-        .profile-btn{padding:8px 24px;border-radius:40px;font-weight:700;cursor:pointer;border:none;font-size:14px;transition:0.2s}
-        .btn-primary{background:var(--primary);color:#fff}
-        .btn-primary:hover{background:#1a8cd8}
-        .btn-secondary{background:var(--surface);color:var(--text)}
-        .btn-secondary:hover{background:#3a3f42}
-        .profile-posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:4px;padding-bottom:80px}
-        .profile-post{aspect-ratio:1;background:var(--surface);overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
-        .profile-post img,.profile-post video{width:100%;height:100%;object-fit:cover}
-        .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-        .chat-message{display:flex;gap:8px;max-width:85%}
-        .chat-message.sent{align-self:flex-end;flex-direction:row-reverse}
-        .message-bubble{background:var(--surface);padding:10px 14px;border-radius:20px}
-        .message-bubble.sent{background:var(--primary);color:#fff}
-        .message-image{max-width:200px;border-radius:16px;cursor:pointer}
-        .message-audio audio{height:36px}
-        .chat-input-area{display:flex;gap:12px;padding:12px;border-top:1px solid var(--border);background:var(--bg);align-items:center}
-        .chat-input-area input{flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:40px;background:var(--surface);color:var(--text);outline:none}
-        .chat-input-area button{background:none;border:none;color:var(--primary);font-size:20px;cursor:pointer;padding:8px;border-radius:50%}
-        .search-input{width:calc(100% - 32px);margin:16px;padding:12px 20px;background:var(--surface);border:1px solid var(--border);border-radius:40px;color:var(--text);font-size:16px;outline:none}
-        .search-result{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer}
-        .search-result:hover{background:#080808}
-        .notification-item{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);cursor:pointer}
-        .notification-item:hover{background:#080808}
-        .follower-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer}
-        .follower-item:hover{background:#080808}
-        .conversation-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}
-        .conversation-item:hover{background:#080808}
-        .avatar-sm{width:48px;height:48px;border-radius:50%;background:var(--primary);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
-        .avatar-sm img{width:100%;height:100%;object-fit:cover}
-        .avatar-xs{width:40px;height:40px;border-radius:50%;background:var(--primary);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
-        .avatar-xs img{width:100%;height:100%;object-fit:cover}
-        .edit-profile-modal{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:600;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:0.3s}
-        .edit-profile-modal.open{opacity:1;visibility:visible}
-        .edit-profile-content{background:var(--bg);border-radius:28px;padding:32px;width:90%;max-width:500px;border:1px solid var(--border)}
-        .edit-profile-content input,.edit-profile-content textarea{width:100%;padding:14px 16px;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:16px;color:var(--text);font-size:16px;outline:none}
-        .edit-profile-content textarea{resize:vertical;min-height:100px;font-family:inherit}
-        .edit-profile-content input:focus,.edit-profile-content textarea:focus{border-color:var(--primary)}
-        .image-modal{position:fixed;inset:0;background:rgba(0,0,0,0.98);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:0.3s;cursor:pointer}
-        .image-modal.open{opacity:1;visibility:visible}
-        .image-modal img{max-width:95%;max-height:95%;object-fit:contain;border-radius:8px}
-        .close-modal{position:absolute;top:20px;right:20px;background:rgba(0,0,0,0.6);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;z-index:2001}
-        .admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:20px}
-        .admin-stat{background:linear-gradient(135deg,#1a1a2a,#0f0f1a);padding:24px;border-radius:24px;text-align:center;border:1px solid rgba(29,155,240,0.2);transition:transform 0.2s,border-color 0.2s}
-        .admin-stat:hover{transform:translateY(-4px);border-color:var(--primary)}
-        .admin-stat-icon{font-size:32px;margin-bottom:12px;color:var(--primary)}
-        .admin-stat-number{font-size:32px;font-weight:800;margin-bottom:8px}
-        .admin-stat-label{font-size:14px;color:var(--text-secondary)}
-        .admin-section{padding:20px;border-top:1px solid var(--border)}
-        .admin-section-title{font-size:20px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-        .admin-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);transition:background 0.2s}
-        .admin-item:hover{background:#080808}
-        .admin-item-name{font-weight:600;margin-bottom:4px}
-        .admin-item-email{font-size:12px;color:var(--text-secondary)}
-        .admin-item-text{font-size:14px;color:var(--text-secondary)}
-        .admin-delete-btn{background:var(--secondary);color:#fff;border:none;padding:8px 16px;border-radius:40px;cursor:pointer;font-size:12px;font-weight:600;transition:0.2s}
-        .admin-delete-btn:hover{background:#e01070;transform:scale(1.02)}
-        .upload-btn{flex:1;background:var(--surface);color:var(--text);padding:12px;border-radius:40px;font-weight:600;cursor:pointer;text-align:center;transition:0.2s}
-        .upload-btn:hover{background:#3a3f42}
-        .loading{text-align:center;padding:80px 20px;color:var(--text-secondary)}
-        .spinner{width:40px;height:40px;border:3px solid rgba(29,155,240,0.2);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        #customToast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:12px 24px;border-radius:40px;z-index:1100;font-size:14px;font-weight:500;opacity:0;transition:0.3s;pointer-events:none;white-space:nowrap}
+        {COMMON_CSS}
+        body{{height:100vh;overflow:hidden;}}
+        
+        #loaderScreen{{
+            position:fixed;inset:0;z-index:9999;
+            background:radial-gradient(ellipse at top, #0a1628, #060d1a, #020617);
+            display:flex;align-items:center;justify-content:center;
+            flex-direction:column;gap:16px;
+        }}
+        .spinner-big{{
+            width:50px;height:50px;
+            border:4px solid rgba(14,165,233,0.2);
+            border-top-color:var(--accent);
+            border-radius:50%;
+            animation:spin 0.8s linear infinite;
+        }}
+
+        #mainApp{{display:none;height:100vh;position:relative}}
+
+        .topbar{{
+            position:fixed;top:10px;left:10px;right:10px;z-index:100;
+            display:flex;justify-content:space-between;align-items:center;
+            padding:8px 16px;
+            background:rgba(2,6,23,0.7);
+            backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+            border:1px solid var(--border);
+            border-radius:50px;
+            box-shadow:0 8px 32px rgba(14,165,233,0.08);
+        }}
+        .logo-icon{{
+            width:34px;height:34px;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border-radius:50%;display:flex;align-items:center;justify-content:center;
+            font-weight:900;font-size:12px;
+            animation:glowPulse 2s ease-in-out infinite;
+        }}
+        .logo-text{{
+            font-weight:800;font-size:17px;
+            background:linear-gradient(to bottom,#fff,#7dd3fc);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            margin-left:8px;
+        }}
+        .tabs{{display:flex;gap:4px;background:var(--glass);border-radius:30px;padding:3px}}
+        .tab{{
+            background:none;border:none;color:rgba(255,255,255,0.5);
+            padding:7px 16px;cursor:pointer;border-radius:25px;
+            font-size:13px;font-weight:500;transition:all 0.3s;
+        }}
+        .tab.active{{background:rgba(14,165,233,0.25);color:#fff}}
+        .top-icons{{display:flex;gap:16px}}
+        .top-icon{{
+            background:none;border:none;color:rgba(255,255,255,0.7);
+            font-size:18px;cursor:pointer;transition:all 0.3s;position:relative;
+        }}
+        .top-icon:hover{{color:var(--accent2)}}
+        .notif-badge{{
+            position:absolute;top:-6px;right:-6px;
+            min-width:18px;height:18px;
+            background:#ef4444;
+            border-radius:10px;
+            border:2px solid var(--bg);
+            display:none;
+            align-items:center;justify-content:center;
+            font-size:9px;font-weight:bold;padding:0 5px;
+        }}
+
+        .videos-wrap{{
+            height:100vh;overflow-y:scroll;
+            scroll-snap-type:y mandatory;
+            scrollbar-width:none;-ms-overflow-style:none;
+        }}
+        .videos-wrap::-webkit-scrollbar{{display:none}}
+        .vid-card{{height:100vh;scroll-snap-align:start;position:relative;background:#000}}
+
+        .vid-card video {{
+            width:100%;height:100%;object-fit:cover;
+            opacity:0;transform:translateY(60px);
+            transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.16,1,0.3,1);
+        }}
+        .vid-card.active video {{opacity:1;transform:translateY(0)}}
+
+        .vid-info{{
+            position:absolute;bottom:90px;left:14px;right:80px;z-index:20;
+            text-shadow:0 2px 10px rgba(0,0,0,0.8);
+        }}
+        .author-row{{display:flex;align-items:center;gap:10px;margin-bottom:6px}}
+        .author-avatar{{
+            width:50px;height:50px;border-radius:50%;overflow:hidden;
+            cursor:pointer;position:relative;
+            background:linear-gradient(135deg, #0ea5e9, #06b6d4, #7dd3fc);
+            padding:3px;
+            animation:storyRing 3s ease-in-out infinite;
+            flex-shrink:0;
+        }}
+        @keyframes storyRing{{0%,100%{{box-shadow:0 0 15px rgba(14,165,233,0.4)}}50%{{box-shadow:0 0 25px rgba(6,182,212,0.8)}}}}
+        .author-avatar img{{width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--bg)}}
+        .author-name{{
+            font-weight:700;font-size:15px;cursor:pointer;
+            display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+        }}
+        .verified-badge-main{{
+            background:linear-gradient(135deg, #0ea5e9, #06b6d4);
+            color:#fff;font-size:10px;padding:2px 5px;border-radius:50%;
+            display:inline-flex;align-items:center;justify-content:center;
+            width:18px;height:18px;font-weight:bold;
+            box-shadow:0 0 12px rgba(56,189,248,0.6);
+        }}
+        .btn-follow{{
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            padding:5px 14px;border-radius:20px;font-size:11px;
+            font-weight:700;border:none;color:#fff;cursor:pointer;
+            box-shadow:0 4px 15px rgba(14,165,233,0.4);
+            transition:all 0.3s;white-space:nowrap;
+        }}
+        .btn-follow:hover{{box-shadow:0 8px 25px rgba(14,165,233,0.7);transform:translateY(-1px)}}
+        .caption{{font-size:14px;margin-bottom:5px;line-height:1.4}}
+        .tag{{color:var(--accent2);cursor:pointer;font-weight:500}}
+        .music{{font-size:12px;opacity:0.8;display:flex;align-items:center;gap:6px;cursor:pointer}}
+        .music-wave{{display:flex;gap:2px;align-items:flex-end;height:16px}}
+        .music-wave span{{width:2px;background:var(--accent2);border-radius:1px;animation:musicWave 1s ease-in-out infinite}}
+        .music-wave span:nth-child(1){{height:8px;animation-delay:0s}}
+        .music-wave span:nth-child(2){{height:14px;animation-delay:0.15s}}
+        .music-wave span:nth-child(3){{height:6px;animation-delay:0.3s}}
+        .music-wave span:nth-child(4){{height:12px;animation-delay:0.45s}}
+        .music-wave span:nth-child(5){{height:4px;animation-delay:0.6s}}
+        @keyframes musicWave{{0%,100%{{transform:scaleY(1)}}50%{{transform:scaleY(1.8)}}}}
+
+        /* 💧 Watermark */
+        .watermark-overlay{{
+            position:absolute;top:20px;right:20px;
+            z-index:15;pointer-events:none;
+            display:flex;align-items:center;gap:6px;
+            opacity:0.6;
+        }}
+        .watermark-overlay span{{
+            font-weight:700;font-size:13px;
+            text-shadow:0 2px 8px rgba(0,0,0,0.6);
+            color:#fff;
+        }}
+        .watermark-overlay img{{width:24px;height:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))}}
+
+        .side-btns{{
+            position:absolute;right:14px;bottom:130px;
+            display:flex;flex-direction:column;gap:22px;z-index:20;
+        }}
+        .sbtn{{
+            display:flex;flex-direction:column;align-items:center;gap:3px;
+            background:none;border:none;color:#fff;cursor:pointer;
+            font-size:10px;transition:transform 0.15s;
+        }}
+        .sbtn:active{{transform:scale(0.85)}}
+        .sbtn i{{font-size:28px;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.5))}}
+        .sbtn.liked i{{color:var(--accent);animation:likePop 0.4s ease}}
+        @keyframes likePop{{0%{{transform:scale(1)}}50%{{transform:scale(1.4)}}100%{{transform:scale(1)}}}}
+        .sbtn .cnt{{font-weight:700;font-size:11px}}
+
+        /* 📤 Share Panel */
+        .share-panel{{
+            position:fixed;bottom:0;left:0;right:0;
+            background:rgba(2,6,23,0.98);
+            backdrop-filter:blur(40px);
+            border-top:2px solid var(--accent);
+            border-radius:24px 24px 0 0;
+            padding:24px 20px 40px;
+            z-index:500;
+            transform:translateY(100%);
+            transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }}
+        .share-panel.show{{transform:translateY(0)}}
+        .share-panel h3{{font-size:17px;font-weight:700;margin-bottom:20px;text-align:center;color:var(--accent2)}}
+        .share-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}}
+        .share-item{{
+            display:flex;flex-direction:column;align-items:center;gap:8px;
+            cursor:pointer;transition:transform 0.2s;
+        }}
+        .share-item:hover{{transform:scale(1.1)}}
+        .share-item .share-icon{{
+            width:56px;height:56px;border-radius:16px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:24px;transition:all 0.3s;
+        }}
+        .share-item span{{font-size:11px;opacity:0.7}}
+        .share-copy-row{{
+            display:flex;gap:8px;align-items:center;
+            background:rgba(14,165,233,0.06);border-radius:16px;
+            padding:8px;border:1px solid var(--border);
+        }}
+        .share-copy-row input{{
+            flex:1;padding:12px;border-radius:12px;
+            background:rgba(14,165,233,0.04);border:1px solid var(--border);
+            color:#fff;font-size:13px;outline:none;direction:ltr;
+        }}
+        .share-copy-row button{{
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border:none;color:#fff;padding:12px 20px;border-radius:12px;
+            font-weight:700;cursor:pointer;white-space:nowrap;
+        }}
+
+        /* 💬 TikTok Style Comments */
+        .comments-panel{{
+            position:fixed;bottom:0;left:0;right:0;
+            background:rgba(2,6,23,0.98);
+            backdrop-filter:blur(40px);
+            border-top:2px solid var(--accent);
+            border-radius:24px 24px 0 0;
+            padding:0;
+            z-index:500;
+            max-height:70vh;
+            display:flex;flex-direction:column;
+            transform:translateY(100%);
+            transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }}
+        .comments-panel.show{{transform:translateY(0)}}
+        .comments-header{{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:16px 20px;border-bottom:1px solid var(--border);
+            flex-shrink:0;
+        }}
+        .comments-header h3{{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}}
+        .comments-list{{
+            flex:1;overflow-y:auto;padding:12px 16px;
+        }}
+        .comment-item{{
+            display:flex;gap:10px;padding:12px 0;
+            border-bottom:1px solid rgba(14,165,233,0.06);
+            animation:fadeIn 0.3s ease;
+        }}
+        .comment-avatar{{
+            width:36px;height:36px;border-radius:50%;
+            overflow:hidden;flex-shrink:0;
+            border:2px solid rgba(14,165,233,0.2);
+        }}
+        .comment-avatar img{{width:100%;height:100%;object-fit:cover}}
+        .comment-body{{flex:1;min-width:0}}
+        .comment-user{{font-weight:600;font-size:13px;margin-bottom:2px;display:flex;align-items:center;gap:5px}}
+        .comment-text{{font-size:13px;line-height:1.4;word-break:break-word}}
+        .comment-actions{{display:flex;gap:16px;margin-top:6px;font-size:11px}}
+        .comment-actions span{{cursor:pointer;opacity:0.6;display:flex;align-items:center;gap:4px;transition:opacity 0.2s}}
+        .comment-actions span:hover{{opacity:1}}
+        .comment-time{{font-size:10px;opacity:0.4}}
+        .reply-item{{
+            margin-right:46px;padding:8px 0;
+            border-bottom:1px solid rgba(14,165,233,0.04);
+            display:flex;gap:8px;
+        }}
+        .reply-item .comment-avatar{{width:28px;height:28px}}
+        .comment-input-row{{
+            display:flex;gap:8px;padding:12px 16px;
+            border-top:1px solid var(--border);
+            background:rgba(2,6,23,0.95);
+            flex-shrink:0;
+        }}
+        .comment-input-row input{{
+            flex:1;padding:12px 16px;border-radius:30px;
+            background:rgba(14,165,233,0.04);border:1px solid var(--border);
+            color:#fff;font-size:13px;outline:none;
+        }}
+        .comment-input-row button{{
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border:none;color:#fff;padding:10px 18px;border-radius:30px;
+            font-weight:700;cursor:pointer;white-space:nowrap;font-size:13px;
+        }}
+
+        /* ☁️ Fullscreen Video Player */
+        .fullscreen-player {{
+            position:fixed;top:0;left:0;width:100vw;height:100vh;
+            background:#000;z-index:9999;display:flex;align-items:center;
+            justify-content:center;opacity:0;pointer-events:none;
+            transition:opacity 0.3s ease;flex-direction:column;
+        }}
+        .fullscreen-player.active {{opacity:1;pointer-events:auto}}
+        .fullscreen-player video {{max-width:100%;max-height:85vh;object-fit:contain;cursor:pointer}}
+        .player-controls{{
+            position:absolute;bottom:100px;left:20px;right:20px;
+            display:flex;align-items:center;justify-content:space-between;
+            background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);
+            border-radius:50px;padding:10px 20px;
+            border:1px solid rgba(14,165,233,0.3);z-index:10000;color:#fff;gap:12px;flex-wrap:wrap;
+        }}
+        .player-controls button{{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;transition:color 0.2s;padding:5px}}
+        .player-controls button:hover{{color:#38bdf8}}
+        .progress-wrap{{flex:1;display:flex;align-items:center;gap:8px;min-width:100px}}
+        .progress-bar{{flex:1;height:4px;background:rgba(255,255,255,0.2);border-radius:4px;cursor:pointer;position:relative}}
+        .progress-fill{{height:100%;background:linear-gradient(90deg,#0ea5e9,#06b6d4);border-radius:4px;width:0%}}
+        .close-player{{
+            position:absolute;top:20px;left:20px;
+            background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);
+            border:1px solid rgba(14,165,233,0.4);color:#fff;
+            width:44px;height:44px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:20px;z-index:10001;transition:all 0.3s;
+        }}
+        .close-player:hover{{background:rgba(14,165,233,0.3);box-shadow:0 0 20px rgba(14,165,233,0.5)}}
+
+        /* 📱 FLOATING BOTTOM NAV */
+        .nav-bottom{{
+            position:fixed;bottom:12px;left:12px;right:12px;
+            display:flex;justify-content:space-around;align-items:center;
+            padding:8px 0;
+            background:rgba(2,6,23,0.8);
+            backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+            z-index:100;
+            border:1px solid var(--border);
+            border-radius:40px;
+            box-shadow:0 -8px 32px rgba(14,165,233,0.06);
+        }}
+        .nav-item{{
+            display:flex;flex-direction:column;align-items:center;gap:3px;
+            background:none;border:none;color:rgba(255,255,255,0.5);
+            font-size:10px;cursor:pointer;transition:all 0.3s;text-decoration:none;
+        }}
+        .nav-item i{{font-size:22px}}
+        .nav-item.active{{color:var(--accent2)}}
+        .btn-add{{
+            width:48px;height:48px;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border-radius:50%;display:flex;align-items:center;justify-content:center;
+            margin-top:-30px;cursor:pointer;
+            box-shadow:0 10px 30px rgba(14,165,233,0.6),0 0 40px rgba(14,165,233,0.2);
+            border:none;color:#fff;font-size:20px;
+            z-index:101;transition:all 0.3s;text-decoration:none;
+        }}
+        .btn-add:hover{{transform:scale(1.1);box-shadow:0 15px 40px rgba(14,165,233,0.8)}}
     </style>
 </head>
 <body>
 
-<div id="imageModal" class="image-modal" onclick="closeImageModal()">
-    <div class="close-modal" onclick="closeImageModal()">&times;</div>
-    <img id="modalImage" src="">
+<div id="loaderScreen">
+    <div class="spinner-big"></div>
+    <p style="color:rgba(255,255,255,0.5);font-size:15px">☁️ MNAENCA جاري التحميل...</p>
 </div>
 
-<div id="mainApp" style="display:none">
-    <div class="top-bar">
-        <div class="logo" onclick="goToHome()">Sotwe</div>
+<div id="mainApp">
+    <div class="topbar">
+        <div style="display:flex;align-items:center">
+            <div class="logo-icon">☁️</div>
+            <span class="logo-text">MNAENCA</span>
+        </div>
+        <div class="tabs">
+            <button class="tab" onclick="switchFeed('following')">متابَعين</button>
+            <button class="tab active" onclick="switchFeed('forYou')">لك</button>
+        </div>
         <div class="top-icons">
-            <button class="back-btn" id="backBtn" onclick="goBack()"><i class="fas fa-arrow-right"></i> رجوع</button>
             <i class="fas fa-search top-icon" onclick="openSearch()"></i>
-            <div class="top-icon" onclick="openNotifications()" id="notifIcon" style="position:relative;">
-                <i class="far fa-bell"></i><span class="notification-badge" id="notifBadge"></span>
-            </div>
-            <i class="far fa-envelope top-icon" onclick="openConversations()"></i>
-            <i class="fas fa-sun top-icon" onclick="toggleTheme()"></i>
+            <i class="fas fa-bell top-icon" onclick="openNotifs()"><span class="notif-badge" id="notifBadge"></span></i>
         </div>
     </div>
 
-    <div id="feedContainer" class="feed-container">
-        <div class="loading"><div class="spinner"></div><span>جاري التحميل...</span></div>
-    </div>
-
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i></button>
-        <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i></button>
-        <button class="nav-item" onclick="openCompose()"><i class="fas fa-feather-alt"></i></button>
-        <button class="nav-item" onclick="openNotifications()"><i class="far fa-bell"></i></button>
-        <button class="nav-item" onclick="openMyProfile()"><i class="fas fa-user"></i></button>
-    </div>
-
-    <!-- Compose Panel -->
-    <div id="composePanel" class="panel">
-        <div class="panel-header"><h3 style="font-size:20px;font-weight:700;">إنشاء منشور</h3><button onclick="closeCompose()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <div class="compose-area">
-            <textarea id="postText" class="compose-input" placeholder="ماذا يحدث؟"></textarea>
-            <div id="mediaPreview" class="media-preview"></div>
-            <div class="compose-tools">
-                <button class="compose-tool" onclick="document.getElementById('postImage').click()"><i class="fas fa-image"></i></button>
-                <button class="compose-tool" onclick="document.getElementById('postVideo').click()"><i class="fas fa-video"></i></button>
-                <button class="compose-tool" id="audioRecordBtn" onclick="startAudioRecording()"><i class="fas fa-microphone"></i></button>
-            </div>
-            <input type="file" id="postImage" accept="image/*" style="display:none" onchange="previewMedia(this,'image')">
-            <input type="file" id="postVideo" accept="video/*" style="display:none" onchange="previewMedia(this,'video')">
-            <div id="postStatus" style="text-align:center;margin-top:12px;font-size:14px;color:var(--primary);"></div>
-            <button onclick="createPost()" class="btn-post">نشر</button>
+    <div class="videos-wrap" id="videosWrap">
+        <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
+            <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i>
+            <p>لا توجد فيديوهات بعد</p>
+            <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! ☁️</p>
         </div>
     </div>
 
-    <!-- Comments Panel -->
-    <div id="commentsPanel" class="panel">
-        <div class="panel-header"><h3 style="font-weight:700;">التعليقات</h3><button onclick="closeComments()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <div id="commentsList" class="panel-body"></div>
-        <div class="comment-input-area">
-            <div class="comment-input">
-                <input type="text" id="commentInput" placeholder="أضف تعليقاً...">
-                <button onclick="addComment()" style="background:var(--primary);color:#fff;padding:10px 20px;border:none;border-radius:40px;font-weight:700;cursor:pointer;">نشر</button>
+    <!-- ☁️ Fullscreen Video Player -->
+    <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
+        <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
+        <video id="fullscreenVideo" controls playsinline></video>
+        <div class="player-controls">
+            <button onclick="skipTime(-10)"><i class="fas fa-backward"></i></button>
+            <button id="btnPlayPause" onclick="togglePlayPause()"><i class="fas fa-pause"></i></button>
+            <button onclick="skipTime(10)"><i class="fas fa-forward"></i></button>
+            <div class="progress-wrap">
+                <span id="currentTime">0:00</span>
+                <div class="progress-bar" id="progressBar" onclick="seekVideo(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span id="duration">0:00</span>
             </div>
+            <button onclick="toggleMutePlayer()"><i class="fas fa-volume-up" id="muteIcon"></i></button>
+            <a id="downloadLink" href="#" download style="color:#38bdf8;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
         </div>
     </div>
 
-    <!-- Profile Panel -->
-    <div id="profilePanel" class="panel">
-        <div class="panel-header"><h3 style="font-weight:700;font-size:20px;">الملف الشخصي</h3><button onclick="closeProfile()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <div id="profileCover" class="profile-cover" onclick="changeCover()">
-            <div style="position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,0.6);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"><i class="fas fa-camera"></i></div>
-        </div>
-        <div class="profile-info">
-            <div class="profile-avatar" id="profileAvatar" onclick="changeAvatar()">
-                <div style="position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,0.6);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"><i class="fas fa-camera fa-xs"></i></div>
+    <!-- 📤 Share Panel -->
+    <div class="share-panel" id="sharePanel">
+        <h3><i class="fas fa-share-alt"></i> مشاركة</h3>
+        <div class="share-grid">
+            <div class="share-item" onclick="shareTo('whatsapp')">
+                <div class="share-icon" style="background:rgba(37,211,102,0.15);color:#25D366"><i class="fab fa-whatsapp"></i></div>
+                <span>WhatsApp</span>
             </div>
-            <div class="profile-name" id="profileName"></div>
-            <div class="profile-bio" id="profileBio"></div>
-            <div style="display:flex;gap:12px;margin:16px 0;">
-                <div class="upload-btn" onclick="changeAvatar()"><i class="fas fa-user-circle"></i> تغيير الصورة الشخصية</div>
-                <div class="upload-btn" onclick="changeCover()"><i class="fas fa-image"></i> تغيير صورة الغلاف</div>
+            <div class="share-item" onclick="shareTo('telegram')">
+                <div class="share-icon" style="background:rgba(0,136,204,0.15);color:#0088cc"><i class="fab fa-telegram"></i></div>
+                <span>Telegram</span>
             </div>
-            <div class="profile-stats">
-                <div onclick="openFollowersList('followers')"><div class="stat-number" id="profileFollowersCount">0</div><div class="stat-label">متابع</div></div>
-                <div onclick="openFollowersList('following')"><div class="stat-number" id="profileFollowingCount">0</div><div class="stat-label">يتابع</div></div>
-                <div><div class="stat-number" id="profilePostsCount">0</div><div class="stat-label">منشورات</div></div>
+            <div class="share-item" onclick="shareTo('facebook')">
+                <div class="share-icon" style="background:rgba(24,119,242,0.15);color:#1877F2"><i class="fab fa-facebook"></i></div>
+                <span>Facebook</span>
             </div>
-            <div id="profileButtons" class="profile-buttons"></div>
-        </div>
-        <div id="profilePostsGrid" class="profile-posts-grid"></div>
-    </div>
-
-    <!-- Edit Profile Modal -->
-    <div id="editProfileModal" class="edit-profile-modal">
-        <div class="edit-profile-content">
-            <h3 style="font-size:24px;font-weight:800;margin-bottom:24px;text-align:center;">تعديل الملف الشخصي</h3>
-            <input type="text" id="editName" placeholder="الاسم">
-            <textarea id="editBio" placeholder="السيرة الذاتية..."></textarea>
-            <div style="display:flex;gap:12px;margin-top:24px;">
-                <button class="btn-secondary" onclick="closeEditProfileModal()" style="flex:1;padding:12px;border-radius:40px;font-weight:600;cursor:pointer;">إلغاء</button>
-                <button class="btn-primary" onclick="saveProfileEdit()" style="flex:1;padding:12px;border-radius:40px;font-weight:600;cursor:pointer;">حفظ التغييرات</button>
+            <div class="share-item" onclick="shareTo('twitter')">
+                <div class="share-icon" style="background:rgba(29,161,242,0.15);color:#1DA1F2"><i class="fab fa-twitter"></i></div>
+                <span>X</span>
+            </div>
+            <div class="share-item" onclick="shareTo('messenger')">
+                <div class="share-icon" style="background:rgba(0,178,255,0.15);color:#00B2FF"><i class="fab fa-facebook-messenger"></i></div>
+                <span>Messenger</span>
+            </div>
+            <div class="share-item" onclick="shareTo('email')">
+                <div class="share-icon" style="background:rgba(234,67,53,0.15);color:#EA4335"><i class="fas fa-envelope"></i></div>
+                <span>بريد</span>
+            </div>
+            <div class="share-item" onclick="shareTo('copy')">
+                <div class="share-icon" style="background:rgba(14,165,233,0.15);color:#0ea5e9"><i class="fas fa-link"></i></div>
+                <span>نسخ الرابط</span>
+            </div>
+            <div class="share-item" onclick="shareTo('embed')">
+                <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i class="fas fa-code"></i></div>
+                <span>تضمين</span>
             </div>
         </div>
-    </div>
-
-    <!-- Chat Panel -->
-    <div id="chatPanel" class="panel">
-        <div class="panel-header">
-            <div style="display:flex;align-items:center;gap:12px;">
-                <div class="avatar-sm" id="chatAvatar">👤</div>
-                <h3 id="chatUserName">محادثة</h3>
-            </div>
-            <button onclick="closeChat()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button>
-        </div>
-        <div id="chatMessages" class="chat-messages"></div>
-        <div class="chat-input-area">
-            <button id="chatRecordBtn" onclick="startRecordingChat()"><i class="fas fa-microphone"></i></button>
-            <input type="file" id="chatImageInput" accept="image/*" style="display:none" onchange="sendChatImage(this)">
-            <button onclick="document.getElementById('chatImageInput').click()"><i class="fas fa-image"></i></button>
-            <input type="text" id="chatMessageInput" placeholder="اكتب رسالة...">
-            <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+        <div class="share-copy-row">
+            <input type="text" id="shareUrlInput" value="" readonly dir="ltr">
+            <button onclick="shareTo('copy')"><i class="fas fa-copy"></i> نسخ</button>
         </div>
     </div>
+    <div class="overlay" id="shareOverlay" style="display:none;z-index:499" onclick="closeSharePanel()"></div>
 
-    <!-- Conversations Panel -->
-    <div id="conversationsPanel" class="panel">
-        <div class="panel-header"><h3 style="font-weight:700;">الرسائل</h3><button onclick="closeConversations()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <div id="conversationsList" class="panel-body"></div>
-    </div>
-
-    <!-- Followers Panel -->
-    <div id="followersPanel" class="panel">
-        <div class="panel-header"><h3 id="followersTitle" style="font-weight:700;">المتابعون</h3><button onclick="closeFollowers()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <div id="followersList" class="panel-body"></div>
-    </div>
-
-    <!-- Notifications Panel -->
-    <div id="notificationsPanel" class="panel">
-        <div class="panel-header"><h3 style="font-weight:700;">الإشعارات</h3><button onclick="closeNotifications()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <div id="notificationsList" class="panel-body"></div>
-    </div>
-
-    <!-- Search Panel -->
-    <div id="searchPanel" class="panel">
-        <div class="panel-header"><h3 style="font-weight:700;">بحث</h3><button onclick="closeSearch()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <input type="text" id="searchInput" class="search-input" placeholder="بحث عن مستخدمين..." onkeyup="searchAll()">
-        <div id="searchResults" class="panel-body"></div>
-    </div>
-
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="panel">
-        <div class="panel-header"><h3 style="font-weight:700;font-size:20px;">🔧 لوحة التحكم</h3><button onclick="closeAdmin()" style="font-size:28px;background:none;border:none;color:var(--text-secondary);cursor:pointer;">&times;</button></div>
-        <div id="adminStats" class="admin-stats"></div>
-        <div class="admin-section">
-            <div class="admin-section-title"><i class="fas fa-users" style="color:var(--primary);"></i> إدارة المستخدمين</div>
-            <div id="adminUsersList"></div>
+    <!-- 💬 Comments Panel -->
+    <div class="comments-panel" id="commentsPanel">
+        <div class="comments-header">
+            <h3><i class="fas fa-comments" style="color:var(--accent)"></i> التعليقات <span id="commentsCount" style="font-size:13px;opacity:0.5"></span></h3>
+            <button class="btn-close-overlay" onclick="closeCommentsPanel()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="admin-section">
-            <div class="admin-section-title"><i class="fas fa-file-alt" style="color:var(--primary);"></i> إدارة المنشورات</div>
-            <div id="adminPostsList"></div>
+        <div class="comments-list" id="commentsList"></div>
+        <div class="comment-input-row">
+            <input type="text" id="commentInput" placeholder="أضف تعليقاً..." onkeydown="if(event.key==='Enter')addComment()">
+            <button onclick="addComment()"><i class="fas fa-paper-plane"></i> نشر</button>
         </div>
     </div>
+    <div class="overlay" id="commentsOverlay" style="display:none;z-index:499" onclick="closeCommentsPanel()"></div>
+
+    <div class="nav-bottom">
+        <button class="nav-item active"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i><span>بحث</span></button>
+        <a href="upload.html" class="btn-add"><i class="fas fa-plus"></i></a>
+        <a href="chat.html" class="nav-item"><i class="fas fa-envelope"></i><span>رسائل</span></a>
+        <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>ملفي</span></a>
+    </div>
+
+    <div class="toast-msg" id="toast">✅ تم النسخ</div>
 </div>
 
 <script src="firebase-config.js"></script>
-<script src="script.js"></script>
 <script>
-    window.openImageModal=function(u){document.getElementById('modalImage').src=u;document.getElementById('imageModal').classList.add('open')};
-    window.closeImageModal=function(){document.getElementById('imageModal').classList.remove('open')};
-    window.toggleTheme=function(){document.body.classList.toggle('light-mode');localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark')};
+    let currentUser = null;
+    let currentUserData = null;
+    let allUsers = {{}};
+    let allVideos = [];
+    let allSounds = {{}};
+    let isMuted = true;
+    let currentFeed = 'forYou';
+    let currentShareUrl = null;
+    let playerVideo = null;
+    let currentCommentVideoId = null;
+    let replyingTo = null;
+
+    // ☁️ Player Functions
+    function openPlayer(url, title) {{
+        const player = document.getElementById('fullscreenPlayer');
+        const video = document.getElementById('fullscreenVideo');
+        player.classList.add('active');
+        video.src = url;
+        video.load();
+        video.play();
+        document.getElementById('downloadLink').href = url;
+        document.getElementById('downloadLink').download = title || 'video.mp4';
+        playerVideo = video;
+        video.onloadedmetadata = () => {{
+            document.getElementById('duration').innerText = formatTime(video.duration);
+            document.getElementById('muteIcon').className = video.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+        }};
+        video.ontimeupdate = () => {{
+            const pct = (video.currentTime / video.duration) * 100;
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('currentTime').innerText = formatTime(video.currentTime);
+        }};
+    }}
+    window.openPlayer = openPlayer;
+
+    function closePlayer() {{
+        const player = document.getElementById('fullscreenPlayer');
+        const video = document.getElementById('fullscreenVideo');
+        video.pause();video.src='';player.classList.remove('active');
+    }}
+    function togglePlayPause() {{
+        const video = document.getElementById('fullscreenVideo');
+        if(video.paused){{video.play();document.getElementById('btnPlayPause').innerHTML='<i class="fas fa-pause"></i>';}}
+        else{{video.pause();document.getElementById('btnPlayPause').innerHTML='<i class="fas fa-play"></i>';}}
+    }}
+    function skipTime(sec) {{if(playerVideo)playerVideo.currentTime+=sec;}}
+    function seekVideo(e) {{
+        if(!playerVideo)return;
+        const bar=document.getElementById('progressBar');
+        const rect=bar.getBoundingClientRect();
+        const pct=(e.clientX-rect.left)/rect.width;
+        playerVideo.currentTime=pct*playerVideo.duration;
+    }}
+    function toggleMutePlayer() {{
+        if(playerVideo){{playerVideo.muted=!playerVideo.muted;document.getElementById('muteIcon').className=playerVideo.muted?'fas fa-volume-mute':'fas fa-volume-up';}}
+    }}
+
+    // 📤 Share Functions
+    function openSharePanel(url) {{
+        currentShareUrl = url;
+        document.getElementById('shareUrlInput').value = url;
+        document.getElementById('sharePanel').classList.add('show');
+        document.getElementById('shareOverlay').style.display = 'block';
+    }}
+    function closeSharePanel() {{
+        document.getElementById('sharePanel').classList.remove('show');
+        document.getElementById('shareOverlay').style.display = 'none';
+    }}
+    function shareTo(platform) {{
+        const url = encodeURIComponent(currentShareUrl);
+        const text = encodeURIComponent('شاهد هذا الفيديو على MNAENCA ☁️');
+        let shareUrl = '';
+        switch(platform) {{
+            case 'whatsapp': shareUrl = 'https://wa.me/?text=' + text + '%20' + url; break;
+            case 'telegram': shareUrl = 'https://t.me/share/url?url=' + url + '&text=' + text; break;
+            case 'facebook': shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + url; break;
+            case 'twitter': shareUrl = 'https://twitter.com/intent/tweet?url=' + url + '&text=' + text; break;
+            case 'messenger': shareUrl = 'https://www.facebook.com/dialog/send?link=' + url + '&app_id=0'; break;
+            case 'email': shareUrl = 'mailto:?subject=' + text + '&body=' + url; break;
+            case 'copy':
+                navigator.clipboard.writeText(currentShareUrl).then(() => {{
+                    showToast('✅ تم نسخ الرابط');
+                    closeSharePanel();
+                }});
+                return;
+            case 'embed':
+                const embedCode = '<iframe src="' + currentShareUrl + '" width="100%" height="600" frameborder="0"></iframe>';
+                navigator.clipboard.writeText(embedCode).then(() => {{
+                    showToast('✅ تم نسخ كود التضمين');
+                    closeSharePanel();
+                }});
+                return;
+        }}
+        if(shareUrl) window.open(shareUrl, '_blank');
+        closeSharePanel();
+    }}
+
+    // 💬 Comments Functions
+    async function openCommentsPanel(videoId) {{
+        currentCommentVideoId = videoId;
+        replyingTo = null;
+        document.getElementById('commentsPanel').classList.add('show');
+        document.getElementById('commentsOverlay').style.display = 'block';
+        document.getElementById('commentInput').placeholder = 'أضف تعليقاً...';
+        await loadComments();
+    }}
+    function closeCommentsPanel() {{
+        document.getElementById('commentsPanel').classList.remove('show');
+        document.getElementById('commentsOverlay').style.display = 'none';
+        currentCommentVideoId = null;
+        replyingTo = null;
+    }}
+    async function loadComments() {{
+        if(!currentCommentVideoId) return;
+        const snap = await db.ref('videos/' + currentCommentVideoId + '/comments').get();
+        const comments = snap.val() || {{}};
+        const commentsArr = Object.entries(comments).map(([id, c]) => ({{id, ...c}}));
+        commentsArr.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        document.getElementById('commentsCount').innerText = '(' + commentsArr.length + ')';
+        const list = document.getElementById('commentsList');
+        if(!commentsArr.length) {{
+            list.innerHTML = '<div style="text-align:center;opacity:0.5;padding:30px"><i class="fas fa-comment-slash" style="font-size:32px;color:var(--accent);margin-bottom:8px;display:block"></i>لا توجد تعليقات</div>';
+            return;
+        }}
+        list.innerHTML = commentsArr.map(c => {{
+            const user = allUsers[c.userId] || {{username: c.username || 'مستخدم'}};
+            const avatar = user.avatarUrl || (DICEBEAR_URL + '?seed=' + c.userId);
+            const replies = c.replies ? Object.entries(c.replies).map(([rid, r]) => ({{id: rid, ...r}})) : [];
+            replies.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+            let repliesHTML = '';
+            if(replies.length) {{
+                repliesHTML = replies.map(r => {{
+                    const rUser = allUsers[r.userId] || {{username: r.username || 'مستخدم'}};
+                    const rAvatar = rUser.avatarUrl || (DICEBEAR_URL + '?seed=' + r.userId);
+                    return `<div class="reply-item">
+                        <div class="comment-avatar"><img src="${{rAvatar}}" alt=""></div>
+                        <div style="flex:1;min-width:0">
+                            <div class="comment-user" style="font-size:12px">@${{rUser.username}} <span class="comment-time">${{formatTimeAgo(r.timestamp)}}</span></div>
+                            <div class="comment-text" style="font-size:12px">${{r.text}}</div>
+                        </div>
+                    </div>`;
+                }}).join('');
+            }}
+            return `<div class="comment-item">
+                <div class="comment-avatar"><img src="${{avatar}}" alt=""></div>
+                <div class="comment-body">
+                    <div class="comment-user">@${{user.username}} ${{user.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}} <span class="comment-time">${{formatTimeAgo(c.timestamp)}}</span></div>
+                    <div class="comment-text">${{c.text}}</div>
+                    <div class="comment-actions">
+                        <span onclick="replyToComment('${{c.id}}', '@${{user.username}}')"><i class="fas fa-reply"></i> رد</span>
+                        <span>${{c.likes || 0}} <i class="fas fa-heart"></i></span>
+                    </div>
+                    ${{repliesHTML}}
+                </div>
+            </div>`;
+        }}).join('');
+    }}
+    function replyToComment(commentId, username) {{
+        replyingTo = commentId;
+        const input = document.getElementById('commentInput');
+        input.placeholder = 'رد على ' + username + '...';
+        input.focus();
+    }}
+    async function addComment() {{
+        const input = document.getElementById('commentInput');
+        const text = input.value.trim();
+        if(!text || !currentCommentVideoId || !currentUser) return;
+        const commentData = {{
+            userId: currentUser.uid,
+            username: currentUserData?.username || 'مستخدم',
+            text: text,
+            timestamp: Date.now(),
+            likes: 0
+        }};
+        if(replyingTo) {{
+            await db.ref('videos/' + currentCommentVideoId + '/comments/' + replyingTo + '/replies').push(commentData);
+            replyingTo = null;
+            input.placeholder = 'أضف تعليقاً...';
+        }} else {{
+            await db.ref('videos/' + currentCommentVideoId + '/comments').push(commentData);
+            const videoSnap = await db.ref('videos/' + currentCommentVideoId).get();
+            const video = videoSnap.val();
+            if(video && video.sender !== currentUser.uid) {{
+                sendNotification(video.sender, currentUserData?.username, 'علق على فيديو الخاص بك 💬');
+            }}
+        }}
+        input.value = '';
+        await loadComments();
+    }}
+    window.addComment = addComment;
+    window.replyToComment = replyToComment;
+
+    auth.onAuthStateChanged(async (user) => {{
+        if(!user) {{ window.location.replace('auth.html'); return; }}
+        currentUser = user;
+        try {{
+            const snap = await db.ref('users/' + user.uid).get();
+            if(snap.exists()) currentUserData = {{uid: user.uid, ...snap.val()}};
+        }} catch(e) {{ console.error('Error loading user:', e); }}
+
+        db.ref('users').on('value', s => {{ allUsers = s.val() || {{}}; }});
+        db.ref('videos').on('value', s => {{
+            const data = s.val();
+            if(!data) {{ allVideos = []; allSounds = {{}}; }}
+            else {{
+                allVideos = []; allSounds = {{}};
+                Object.entries(data).forEach(([key, value]) => {{
+                    allVideos.push({{id: key, ...value}});
+                    if(value.music) allSounds[value.music] = (allSounds[value.music] || 0) + 1;
+                }});
+                allVideos.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            }}
+            renderVideos();
+        }});
+
+        db.ref('notifications/' + user.uid).on('value', s => {{
+            const ns = s.val() || {{}};
+            const badge = document.getElementById('notifBadge');
+            if(badge) {{
+                const count = Object.keys(ns).length;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+                if(count > 0) badge.innerText = count;
+            }}
+        }});
+
+        db.ref('presence/' + user.uid).set(true);
+        db.ref('presence/' + user.uid).onDisconnect().remove();
+        db.ref('users/' + user.uid + '/lastSeen').set(Date.now());
+        setInterval(() => {{ db.ref('users/' + user.uid + '/lastSeen').set(Date.now()); }}, 60000);
+
+        document.getElementById('loaderScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+    }});
+
+    async function sendNotification(toUserId, fromUsername, msg) {{
+        if(!currentUser) return;
+        await db.ref('notifications/' + toUserId).push({{
+            from: fromUsername || currentUserData?.username || 'مستخدم',
+            msg: msg,
+            timestamp: Date.now(),
+            read: false
+        }});
+    }}
+
+    function renderVideos() {{
+        const container = document.getElementById('videosWrap');
+        if(!container) return;
+        let filtered = currentFeed === 'forYou' ? allVideos : allVideos.filter(v => currentUserData?.following?.[v.sender]);
+        if(!filtered.length) {{
+            container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i><p>${{currentFeed === 'forYou' ? 'لا توجد فيديوهات بعد' : 'تابع مستخدمين لرؤية فيديوهاتهم'}}</p></div>`;
+            return;
+        }}
+        container.innerHTML = '';
+        filtered.forEach(video => {{
+            const isLiked = video.likedBy && video.likedBy[currentUser?.uid];
+            const user = allUsers[video.sender] || {{username: video.senderName || 'مستخدم'}};
+            const isFollowing = currentUserData?.following && currentUserData.following[video.sender];
+            const commentsCount = video.comments ? Object.keys(video.comments).length : 0;
+            const caption = (video.description || '').replace(/#(\\w+)/g, '<span class="tag">#$1</span>');
+            const avatarUrl = user.avatarUrl || (DICEBEAR_URL + '?seed=' + video.sender);
+            const verifiedBadgeHtml = user.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : '';
+            const musicHtml = video.music ? `<div class="music-wave">${{[1,2,3,4,5].map(()=>'<span></span>').join('')}}</div> ${{video.music}}` : 'Original Sound';
+
+            const div = document.createElement('div');
+            div.className = 'vid-card';
+            div.innerHTML = `
+                <div class="watermark-overlay"><span>☁️ MNAENCA</span></div>
+                <video loop playsinline muted data-src="${{video.url}}" poster="${{video.thumbnail || ''}}"></video>
+                <div class="vid-info">
+                    <div class="author-row">
+                        <div class="author-avatar" onclick="openUserProfile('${{video.sender}}')">
+                            <img src="${{avatarUrl}}" alt="avatar">
+                        </div>
+                        <div class="author-name">
+                            <span onclick="openUserProfile('${{video.sender}}')">@${{user.username}}</span>
+                            ${{verifiedBadgeHtml}}
+                            ${{currentUser?.uid !== video.sender ? `<button class="btn-follow" onclick="event.stopPropagation();toggleFollow('${{video.sender}}', this)">${{isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}}</button>` : ''}}
+                        </div>
+                    </div>
+                    <div class="caption">${{caption}}</div>
+                    <div class="music">${{musicHtml}}</div>
+                </div>
+                <div class="side-btns">
+                    <button class="sbtn" onclick="toggleMute()"><i class="fas ${{isMuted ? 'fa-volume-mute' : 'fa-volume-up'}}"></i></button>
+                    <button class="sbtn like-btn ${{isLiked ? 'liked' : ''}}" onclick="toggleLike('${{video.id}}', this)"><i class="fas fa-heart"></i><span class="cnt">${{video.likes || 0}}</span></button>
+                    <button class="sbtn" onclick="openCommentsPanel('${{video.id}}')"><i class="fas fa-comment"></i><span class="cnt">${{commentsCount}}</span></button>
+                    <button class="sbtn" onclick="openPlayer('${{video.url}}', 'video.mp4')"><i class="fas fa-expand"></i></button>
+                    <button class="sbtn" onclick="openSharePanel('${{video.url}}')"><i class="fas fa-share"></i></button>
+                </div>`;
+            const videoEl = div.querySelector('video');
+            videoEl.addEventListener('dblclick', e => {{
+                e.stopPropagation();
+                const likeBtn = div.querySelector('.like-btn');
+                if(likeBtn) toggleLike(video.id, likeBtn);
+            }});
+            container.appendChild(div);
+        }});
+        initVideoObserver();
+    }}
+
+    function openUserProfile(userId) {{
+        if(userId === currentUser?.uid) window.location.href = 'profile.html';
+        else window.location.href = 'profile.html?uid=' + userId;
+    }}
+
+    function initVideoObserver() {{
+        const observer = new IntersectionObserver(entries => {{
+            entries.forEach(entry => {{
+                const video = entry.target.querySelector('video');
+                if(entry.isIntersecting) {{
+                    entry.target.classList.add('active');
+                    if(!video.src) video.src = video.dataset.src;
+                    video.muted = isMuted;
+                    video.play().catch(() => {{}});
+                }} else {{
+                    entry.target.classList.remove('active');
+                    video.pause();
+                }}
+            }});
+        }}, {{threshold: 0.65}});
+        document.querySelectorAll('.vid-card').forEach(seg => observer.observe(seg));
+    }}
+
+    function toggleMute() {{ isMuted = !isMuted; document.querySelectorAll('video').forEach(v => v.muted = isMuted); }}
+    function switchFeed(feed) {{ currentFeed = feed; document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); renderVideos(); }}
+
+    async function toggleLike(videoId, btn) {{
+        if(!currentUser) return;
+        const ref = db.ref('videos/' + videoId);
+        const snap = await ref.get();
+        const video = snap.val();
+        if(!video) return;
+        let likes = video.likes || 0;
+        let likedBy = video.likedBy || {{}};
+        if(likedBy[currentUser.uid]) {{ likes--; delete likedBy[currentUser.uid]; }}
+        else {{
+            likes++; likedBy[currentUser.uid] = true;
+            if(video.sender && video.sender !== currentUser.uid) {{
+                sendNotification(video.sender, currentUserData?.username, 'أعجب بفيديو الخاص بك ❤️');
+            }}
+        }}
+        await ref.update({{likes, likedBy}});
+        btn.classList.toggle('liked');
+        const countSpan = btn.querySelector('.cnt');
+        if(countSpan) countSpan.innerText = likes;
+    }}
+
+    async function toggleFollow(userId, btn) {{
+        if(!currentUser || currentUser.uid === userId) return;
+        const userRef = db.ref('users/' + currentUser.uid + '/following/' + userId);
+        const targetRef = db.ref('users/' + userId + '/followers/' + currentUser.uid);
+        const snap = await userRef.get();
+        if(snap.exists()) {{ await userRef.remove(); await targetRef.remove(); btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة'; }}
+        else {{
+            await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع';
+            sendNotification(userId, currentUserData?.username, 'بدأ بمتابعتك 👤');
+        }}
+    }}
+
+    async function openNotifs() {{
+        const snap = await db.ref('notifications/' + currentUser.uid).once('value');
+        const ns = snap.val() || {{}};
+        const items = Object.values(ns).reverse();
+        let notifHTML = '';
+        if(!items.length) {{
+            notifHTML = '<div style="text-align:center;opacity:0.5;padding:40px"><i class="fas fa-bell" style="font-size:48px;color:#0ea5e9;margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';
+        }} else {{
+            items.forEach(n => {{
+                notifHTML += `<div style="display:flex;gap:12px;padding:14px;border-bottom:1px solid rgba(14,165,233,0.1);align-items:center;animation:fadeIn 0.3s ease">
+                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(14,165,233,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;color:#0ea5e9"><i class="fas fa-bell"></i></div>
+                    <div><div style="font-weight:600">${{n.from || 'مستخدم'}}</div><div style="font-size:12px;opacity:0.6;margin-top:2px">${{n.msg || ''}}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${{new Date(n.timestamp).toLocaleString('ar-SA')}}</div></div></div>`;
+            }});
+        }}
+        await db.ref('notifications/' + currentUser.uid).remove();
+        const badge = document.getElementById('notifBadge');
+        if(badge) badge.style.display = 'none';
+        showOverlay('🔔 الإشعارات', notifHTML);
+    }}
+
+    function openSearch() {{
+        showOverlay('🔍 بحث', `<input type="text" id="searchQ" onkeyup="doSearch()" placeholder="ابحث عن مستخدمين، فيديوهات..." style="width:100%;padding:14px;border-radius:30px;background:rgba(14,165,233,0.04);border:1px solid rgba(14,165,233,0.15);color:#fff;font-size:14px;outline:none;margin-bottom:16px"><div id="searchR"></div>`);
+        window.doSearch = function() {{
+            const query = document.getElementById('searchQ').value.toLowerCase();
+            const resultsDiv = document.getElementById('searchR');
+            if(!query) {{ resultsDiv.innerHTML = ''; return; }}
+            const users = Object.values(allUsers).filter(u => u.username?.toLowerCase().includes(query));
+            const vids = allVideos.filter(v => (v.description || '').toLowerCase().includes(query));
+            resultsDiv.innerHTML = `${{users.length ? `<div style="margin-bottom:16px"><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-users"></i> مستخدمين</h4>${{users.map(u => `<div onclick="openUserProfile('${{u.uid || Object.keys(allUsers).find(k=>allUsers[k]===u)}}')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(14,165,233,0.1)"><img src="${{u.avatarUrl || (DICEBEAR_URL + '?seed=' + (u.uid || u.username))}}" style="width:40px;height:40px;border-radius:50%"><div>@${{u.username}} ${{u.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}}</div></div>`).join('')}}</div>` : ''}}${{vids.length ? `<div><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-video"></i> فيديوهات</h4>${{vids.map(v => `<div onclick="openPlayer('${{v.url}}', 'video.mp4')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(14,165,233,0.1)"><i class="fas fa-play-circle" style="color:#0ea5e9;font-size:20px"></i><span style="font-size:13px">${{(v.description || 'فيديو').substring(0, 40)}}</span></div>`).join('')}}</div>` : ''}}${{!users.length && !vids.length ? '<div style="text-align:center;opacity:0.5;padding:30px">لا توجد نتائج</div>' : ''}}`;
+        }};
+        setTimeout(() => {{ const input = document.getElementById('searchQ'); if(input) input.focus(); }}, 300);
+    }}
+
+    function showOverlay(title, content) {{
+        const id = 'overlay_' + Date.now();
+        const html = `<div id="${{id}}" class="overlay"><div class="overlay-header"><h3>${{title}}</h3><button class="btn-close-overlay" onclick="document.getElementById('${{id}}').remove()"><i class="fas fa-times"></i></button></div><div style="padding:16px">${{content}}</div></div>`;
+        document.body.insertAdjacentHTML('beforeend', html);
+    }}
+
+    function showToast(msg) {{
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }}
+
+    function formatTime(seconds) {{
+        if(isNaN(seconds)) return '0:00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return m + ':' + (s < 10 ? '0' : '') + s;
+    }}
+
+    function formatTimeAgo(ts) {{
+        if(!ts) return '';
+        const diff = Date.now() - ts;
+        const mins = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+        if(mins < 1) return 'الآن';
+        if(mins < 60) return 'منذ ' + mins + ' د';
+        if(hours < 24) return 'منذ ' + hours + ' س';
+        if(days < 7) return 'منذ ' + days + ' يوم';
+        return new Date(ts).toLocaleDateString('ar-SA');
+    }}
+
+    // Make functions globally accessible
+    window.closePlayer = closePlayer;
+    window.togglePlayPause = togglePlayPause;
+    window.skipTime = skipTime;
+    window.seekVideo = seekVideo;
+    window.toggleMutePlayer = toggleMutePlayer;
+    window.openSharePanel = openSharePanel;
+    window.closeSharePanel = closeSharePanel;
+    window.shareTo = shareTo;
+    window.openCommentsPanel = openCommentsPanel;
+    window.closeCommentsPanel = closeCommentsPanel;
+    window.openUserProfile = openUserProfile;
+    window.toggleFollow = toggleFollow;
+    window.toggleLike = toggleLike;
+    window.formatTime = formatTime;
+
+    console.log('☁️ MNAENCA Index Ready ✨');
 </script>
 </body>
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# 4. script.js - Sotwe Full Logic
+# ☁️ 4. profile.html - ملف شخصي محترف مع فيديوهات
 # ═══════════════════════════════════════════════════════════
 
-def build_script():
-    return r"""// 🟦 SOTWE 2026 - Main Script (Compat Version)
-let currentUser=null,currentUserData=null,allUsers={},allPosts=[],selectedMediaFile=null,currentChatUserId=null,viewingProfileUserId=null,currentPostForComments=null,mediaRecorder=null,audioChunks=[],bookmarks={},isAdmin=false;
-
-async function loadUserData(){const snap=await db.ref('users/'+currentUser.uid).once('value');if(snap.exists())currentUserData={uid:currentUser.uid,...snap.val()};if(currentUserData?.bookmarks)bookmarks=currentUserData.bookmarks}
-db.ref('users').on('value',s=>{allUsers=s.val()||{}});
-db.ref('posts').on('value',s=>{const data=s.val();if(!data){allPosts=[];renderFeed();return}allPosts=[];Object.keys(data).forEach(k=>allPosts.push({id:k,...data[k]}));allPosts.sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));renderFeed()});
-
-async function uploadMedia(file){const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);let rt='image';if(file.type.startsWith('video/'))rt='video';else if(file.type.startsWith('audio/'))rt='raw';const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/'+rt+'/upload',{method:'POST',body:fd});const data=await res.json();return{url:data.secure_url,type:rt==='raw'?'audio':rt}}
-
-function escapeHtml(text){if(!text)return '';const div=document.createElement('div');div.textContent=text;return div.innerHTML}
-
-function renderFeed(){const c=document.getElementById('feedContainer');if(!c)return;c.innerHTML='';if(!allPosts.length){c.innerHTML='<div class="loading"><div class="spinner"></div><span>لا توجد منشورات بعد</span></div>';return}
-allPosts.forEach(post=>{const user=allUsers[post.sender]||{name:post.senderName||'مستخدم',avatarUrl:''};const isLiked=post.likedBy&&post.likedBy[currentUser?.uid];const isRetweeted=post.retweetedBy&&post.retweetedBy[currentUser?.uid];const isBookmarked=bookmarks[post.id];const cc=post.comments?Object.keys(post.comments).length:0;const rc=post.retweets?Object.keys(post.retweets).length:0;
-let mh='';if(post.mediaUrl){if(post.mediaType==='image')mh='<div class="tweet-media" onclick="event.stopPropagation();openImageModal(\''+post.mediaUrl+'\')"><img src="'+post.mediaUrl+'" loading="lazy"></div>';else if(post.mediaType==='video')mh='<div class="tweet-media" onclick="event.stopPropagation()"><video controls src="'+post.mediaUrl+'"></video></div>';else mh='<div class="tweet-media" onclick="event.stopPropagation()"><audio controls src="'+post.mediaUrl+'"></audio></div>'}
-let qh='';if(post.quotePostId&&post.quotePostData){const qu=allUsers[post.quotePostData.sender]||{name:'مستخدم',avatarUrl:''};qh='<div class="quote-embed" onclick="event.stopPropagation();openCommentsModal(\''+post.quotePostId+'\')"><div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;"><div class="comment-avatar">'+(qu.avatarUrl?'<img src="'+qu.avatarUrl+'">':(qu.name?.charAt(0)||'U'))+'</div><span style="font-weight:600;font-size:13px;">'+escapeHtml(qu.name)+'</span></div><div style="font-size:13px;">'+escapeHtml(post.quotePostData.text?.substring(0,100)||'')+'</div></div>'}
-const div=document.createElement('div');div.className='tweet-card';div.onclick=()=>openCommentsModal(post.id);div.innerHTML='<div class="tweet-header"><div class="tweet-avatar" onclick="event.stopPropagation();viewProfile(\''+post.sender+'\')">'+(user.avatarUrl?'<img src="'+user.avatarUrl+'">':(user.name?.charAt(0)||'👤'))+'</div><div style="flex:1"><div><span class="tweet-name" onclick="event.stopPropagation();viewProfile(\''+post.sender+'\')">'+escapeHtml(user.name)+'</span><span class="tweet-username mx-1">@'+user.name?.toLowerCase().replace(/\s/g,'')+'</span><span class="tweet-time">· '+new Date(post.timestamp).toLocaleString()+'</span></div><div class="tweet-content">'+escapeHtml(post.text||'')+'</div>'+mh+qh+'</div></div><div class="tweet-actions" onclick="event.stopPropagation()"><button class="tweet-action" onclick="openCommentsModal(\''+post.id+'\')"><i class="far fa-comment"></i> <span>'+cc+'</span></button><button class="tweet-action '+(isRetweeted?'active':'')+'" onclick="toggleRetweet(\''+post.id+'\',this)"><i class="fas fa-retweet"></i> <span>'+rc+'</span></button><button class="tweet-action '+(isLiked?'active':'')+'" onclick="toggleLike(\''+post.id+'\',this)"><i class="fas fa-heart"></i> <span>'+(post.likes||0)+'</span></button><button class="tweet-action '+(isBookmarked?'active':'')+'" onclick="toggleBookmark(\''+post.id+'\',this)"><i class="fas fa-bookmark"></i></button><button class="tweet-action" onclick="openQuoteModal(\''+post.id+'\')"><i class="fas fa-quote-right"></i></button></div>';c.appendChild(div)})}
-
-window.openCompose=function(){document.getElementById('composePanel').classList.add('open');document.getElementById('backBtn').style.display='flex';resetCompose()}
-window.closeCompose=function(){document.getElementById('composePanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-function resetCompose(){document.getElementById('postText').value='';document.getElementById('mediaPreview').innerHTML='';document.getElementById('mediaPreview').style.display='none';selectedMediaFile=null;document.getElementById('postImage').value='';document.getElementById('postVideo').value='';document.getElementById('postStatus').innerHTML=''}
-window.previewMedia=function(input,type){const file=input.files[0];if(!file)return;selectedMediaFile=file;const reader=new FileReader();reader.onload=function(e){const mp=document.getElementById('mediaPreview');if(type==='image')mp.innerHTML='<img src="'+e.target.result+'">';else mp.innerHTML='<video controls><source src="'+e.target.result+'"></video>';mp.style.display='block'};reader.readAsDataURL(file)}
-window.startAudioRecording=async function(){const btn=document.getElementById('audioRecordBtn');if(mediaRecorder&&mediaRecorder.state==='recording'){mediaRecorder.stop();btn.innerHTML='<i class="fas fa-microphone"></i>';return}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});mediaRecorder=new MediaRecorder(stream);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=async()=>{const blob=new Blob(audioChunks,{type:'audio/mp3'});selectedMediaFile=new File([blob],'recording.mp3',{type:'audio/mp3'});const url=URL.createObjectURL(blob);document.getElementById('mediaPreview').innerHTML='<audio controls src="'+url+'"></audio>';document.getElementById('mediaPreview').style.display='block';stream.getTracks().forEach(t=>t.stop())};mediaRecorder.start();btn.innerHTML='<i class="fas fa-stop-circle" style="color:#f91880"></i>'}catch(err){showToast('لا يمكن الوصول إلى الميكروفون')}}
-window.createPost=async function(){const text=document.getElementById('postText')?.value||'';if(!text.trim()&&!selectedMediaFile){showToast('اكتب شيئاً أو اختر وسائط');return}document.getElementById('postStatus').innerHTML='📤 جاري النشر...';let mediaUrl='',mediaType='none';if(selectedMediaFile){try{const result=await uploadMedia(selectedMediaFile);mediaUrl=result.url;mediaType=result.type}catch(e){document.getElementById('postStatus').innerHTML='❌ فشل رفع الوسائط';return}}try{await db.ref('posts').push({text,mediaUrl,mediaType,sender:currentUser.uid,senderName:currentUserData?.name,likes:0,likedBy:{},retweets:{},retweetedBy:{},comments:{},timestamp:Date.now()});document.getElementById('postStatus').innerHTML='✅ تم النشر!';setTimeout(()=>closeCompose(),1500)}catch(e){document.getElementById('postStatus').innerHTML='❌ فشل النشر'}}
-
-window.toggleLike=async function(postId,btn){if(!currentUser)return;const ref=db.ref('posts/'+postId);const snap=await ref.once('value');const post=snap.val();if(!post)return;let likes=post.likes||0;let likedBy=post.likedBy||{};if(likedBy[currentUser.uid]){likes--;delete likedBy[currentUser.uid];showToast('تم إلغاء الإعجاب')}else{likes++;likedBy[currentUser.uid]=true;addNotification(post.sender,'like',postId);showToast('❤️ أعجبتك');if(btn){const icon=btn.querySelector('i');if(icon)icon.classList.add('heart-animation');setTimeout(()=>icon?.classList.remove('heart-animation'),300)}}await ref.update({likes,likedBy});if(btn){btn.classList.toggle('active');const span=btn.querySelector('span');if(span)span.innerText=likes}}
-window.toggleRetweet=async function(postId,btn){if(!currentUser)return;const ref=db.ref('posts/'+postId);const snap=await ref.once('value');const post=snap.val();if(!post)return;let retweets=post.retweets||{};let retweetedBy=post.retweetedBy||{};let rc=Object.keys(retweets).length;if(retweetedBy[currentUser.uid]){const k=Object.keys(retweets).find(k=>retweets[k].userId===currentUser.uid);if(k)delete retweets[k];delete retweetedBy[currentUser.uid];rc--;showToast('تم إلغاء إعادة التغريد')}else{retweets[Date.now().toString()]={userId:currentUser.uid,timestamp:Date.now()};retweetedBy[currentUser.uid]=true;rc++;addNotification(post.sender,'retweet',postId);showToast('🔁 تم إعادة التغريد')}await ref.update({retweets,retweetedBy});if(btn){btn.classList.toggle('active');const span=btn.querySelector('span');if(span)span.innerText=rc}}
-window.toggleBookmark=async function(postId,btn){if(!currentUser)return;const ref=db.ref('users/'+currentUser.uid+'/bookmarks/'+postId);const snap=await ref.once('value');if(snap.exists()){await ref.set(null);delete bookmarks[postId];showToast('تمت إزالة من الإشارات المرجعية')}else{await ref.set(true);bookmarks[postId]=true;showToast('📌 تمت إضافة إلى الإشارات المرجعية')}if(btn)btn.classList.toggle('active')}
-window.openQuoteModal=function(postId){const text=prompt('أضف تعليقك على هذا المنشور:');if(text)createQuotePost(postId,text)}
-async function createQuotePost(opid,text){const op=allPosts.find(p=>p.id===opid);if(!op)return;await db.ref('posts').push({text,mediaUrl:'',mediaType:'none',sender:currentUser.uid,senderName:currentUserData?.name,quotePostId:opid,quotePostData:{text:op.text,sender:op.sender,senderName:op.senderName,mediaUrl:op.mediaUrl,mediaType:op.mediaType},likes:0,likedBy:{},retweets:{},retweetedBy:{},comments:{},timestamp:Date.now()});addNotification(op.sender,'quote',opid);showToast('✅ تم نشر الاقتباس')}
-
-window.openCommentsModal=async function(postId){currentPostForComments=postId;const post=allPosts.find(p=>p.id===postId);if(!post)return;const c=document.getElementById('commentsList');const comments=post.comments||{};c.innerHTML='';const sorted=Object.entries(comments).sort((a,b)=>b[1].timestamp-a[1].timestamp);for(const[ck,comment]of sorted){const user=allUsers[comment.userId]||{name:comment.username||'مستخدم',avatarUrl:''};const replies=comment.replies||{};const cd=document.createElement('div');cd.className='comment-item';cd.innerHTML='<div class="comment-header"><div class="comment-avatar" onclick="viewProfile(\''+comment.userId+'\')">'+(user.avatarUrl?'<img src="'+user.avatarUrl+'">':(user.name?.charAt(0)||'U'))+'</div><div style="flex:1"><div><span class="comment-user" onclick="viewProfile(\''+comment.userId+'\')">'+escapeHtml(user.name)+'</span><span class="comment-time mx-2">· '+new Date(comment.timestamp).toLocaleString()+'</span></div><div class="comment-text">'+escapeHtml(comment.text)+'</div></div></div><div class="reply-list" id="replies-'+ck+'"></div><div><button style="color:#1d9bf0;font-size:14px;margin-top:8px;" onclick="showReplyInput(\''+ck+'\')"><i class="fas fa-reply"></i> رد</button></div><div id="reply-input-'+ck+'" style="margin-top:8px;"></div>';const rc=cd.querySelector('#replies-'+ck);if(rc&&replies){const sr=Object.entries(replies).sort((a,b)=>a[1].timestamp-b[1].timestamp);for(const[rk,reply]of sr){const ru=allUsers[reply.userId]||{name:reply.username||'مستخدم',avatarUrl:''};rc.innerHTML+='<div class="reply-item"><div class="reply-header"><div class="reply-avatar" onclick="viewProfile(\''+reply.userId+'\')">'+(ru.avatarUrl?'<img src="'+ru.avatarUrl+'">':(ru.name?.charAt(0)||'U'))+'</div><div class="reply-user" onclick="viewProfile(\''+reply.userId+'\')">'+escapeHtml(ru.name)+'</div><div class="comment-time">'+new Date(reply.timestamp).toLocaleTimeString()+'</div></div><div class="reply-text">'+escapeHtml(reply.text)+'</div></div>'}}c.appendChild(cd)}if(c.innerHTML==='')c.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا توجد تعليقات بعد</div>';document.getElementById('commentsPanel').classList.add('open');document.getElementById('backBtn').style.display='flex'}
-window.closeComments=function(){document.getElementById('commentsPanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-window.showReplyInput=function(commentId){const d=document.getElementById('reply-input-'+commentId);if(!d)return;if(d.innerHTML){d.innerHTML='';return}d.innerHTML='<div style="display:flex;gap:8px;"><input type="text" id="reply-text-'+commentId+'" style="flex:1;background:#1a1a2a;border:1px solid #2f3336;border-radius:40px;padding:8px 12px;color:#fff;font-size:13px;outline:none;" placeholder="اكتب رداً..." onkeypress="if(event.key===\'Enter\')addReply(\''+commentId+'\')"><button onclick="addReply(\''+commentId+'\')" style="background:#1d9bf0;color:#fff;border:none;padding:8px 16px;border-radius:40px;font-size:13px;cursor:pointer;">نشر</button></div>'}
-window.addReply=async function(commentId){const input=document.getElementById('reply-text-'+commentId);const text=input?.value;if(!text?.trim())return;await db.ref('posts/'+currentPostForComments+'/comments/'+commentId+'/replies').push({userId:currentUser.uid,username:currentUserData?.name,text,timestamp:Date.now()});if(input)input.value='';openCommentsModal(currentPostForComments)}
-window.addComment=async function(){const input=document.getElementById('commentInput');const text=input?.value;if(!text?.trim()||!currentPostForComments)return;await db.ref('posts/'+currentPostForComments+'/comments').push({userId:currentUser.uid,username:currentUserData?.name,text,replies:{},timestamp:Date.now()});if(input)input.value='';openCommentsModal(currentPostForComments);const post=allPosts.find(p=>p.id===currentPostForComments);if(post)addNotification(post.sender,'comment',currentPostForComments)}
-
-async function addNotification(targetUserId,type,postId=null){if(targetUserId===currentUser.uid)return;const messages={like:'❤️ أعجب بمنشورك',comment:'💬 علق على منشورك',retweet:'🔁 أعاد تغريد منشورك',quote:'📝 اقتبس منشورك',follow:'👥 بدأ بمتابعتك'};await db.ref('notifications/'+targetUserId).push({type,fromUserId:currentUser.uid,fromUsername:currentUserData?.name,message:messages[type],postId:postId,timestamp:Date.now(),read:false});updateNotificationBadge()}
-function updateNotificationBadge(){if(!currentUser?.uid)return;db.ref('notifications/'+currentUser.uid).on('value',snap=>{const notifs=snap.val()||{};const unread=Object.values(notifs).filter(n=>!n.read).length;const badge=document.getElementById('notifBadge');if(badge){if(unread>0){badge.style.display='flex';badge.innerText=unread>9?'9+':unread}else badge.style.display='none'}})}
-window.openNotifications=async function(){const panel=document.getElementById('notificationsPanel');const snap=await db.ref('notifications/'+currentUser.uid).once('value');const notifs=snap.val()||{};const c=document.getElementById('notificationsList');c.innerHTML='';const sorted=Object.entries(notifs).sort((a,b)=>b[1].timestamp-a[1].timestamp);for(const[key,n]of sorted){const icons={like:'❤️',comment:'💬',retweet:'🔁',quote:'📝',follow:'👥'};const bg=n.read?'':'background:rgba(29,155,240,0.1);border-right:4px solid #1d9bf0;';c.innerHTML+='<div class="notification-item" style="'+bg+'" onclick="handleNotificationClick(\''+n.type+'\',\''+n.fromUserId+'\',\''+(n.postId||'')+'\')"><div style="font-size:24px;">'+(icons[n.type]||'🔔')+'</div><div style="flex:1"><div style="font-weight:700;">'+escapeHtml(n.fromUsername)+'</div><div style="font-size:14px;color:#71767b;">'+n.message+'</div><div style="font-size:12px;color:#71767b;margin-top:4px;">'+new Date(n.timestamp).toLocaleString()+'</div></div></div>';if(!n.read)await db.ref('notifications/'+currentUser.uid+'/'+key).update({read:true})}if(c.innerHTML==='')c.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا توجد إشعارات</div>';panel.classList.add('open');document.getElementById('backBtn').style.display='flex'}
-window.handleNotificationClick=function(type,userId,postId){closeNotifications();if(type==='follow')viewProfile(userId);else if(postId)openCommentsModal(postId)}
-window.closeNotifications=function(){document.getElementById('notificationsPanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-
-function showToast(msg){let t=document.getElementById('customToast');if(!t){t=document.createElement('div');t.id='customToast';document.body.appendChild(t)}t.innerText=msg;t.style.opacity='1';setTimeout(()=>{t.style.opacity='0'},3000)}
-
-window.openMyProfile=function(){viewProfile(currentUser.uid)}
-window.viewProfile=async function(userId){if(!userId)return;viewingProfileUserId=userId;await loadProfileData(userId);document.getElementById('profilePanel').classList.add('open');document.getElementById('backBtn').style.display='flex'}
-window.closeProfile=function(){document.getElementById('profilePanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-async function loadProfileData(userId){const snap=await db.ref('users/'+userId).once('value');const user=snap.val();if(!user)return;const cover=document.getElementById('profileCover');if(user.coverUrl)cover.style.background='url('+user.coverUrl+') center/cover';else cover.style.background='linear-gradient(135deg,#1d9bf0,#f91880)';document.getElementById('profileAvatar').innerHTML=user.avatarUrl?'<img src="'+user.avatarUrl+'">':(user.name?.charAt(0)||'👤');document.getElementById('profileName').innerText=user.name;document.getElementById('profileBio').innerText=user.bio||'✏️ أضف سيرة ذاتية';const ups=allPosts.filter(p=>p.sender===userId);document.getElementById('profilePostsCount').innerText=ups.length;document.getElementById('profileFollowersCount').innerText=Object.keys(user.followers||{}).length;document.getElementById('profileFollowingCount').innerText=Object.keys(user.following||{}).length;const grid=document.getElementById('profilePostsGrid');grid.innerHTML=ups.map(p=>'<div class="profile-post" onclick="openCommentsModal(\''+p.id+'\')">'+(p.mediaUrl?(p.mediaType==='image'?'<img src="'+p.mediaUrl+'" loading="lazy">':p.mediaType==='video'?'<video src="'+p.mediaUrl+'"></video>':'<i class="fas fa-music" style="font-size:24px;"></i>'):'<i class="fas fa-file-alt" style="font-size:24px;"></i>')+'</div>').join('');if(!ups.length)grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#71767b;padding:40px;">لا توجد منشورات</div>';const bd=document.getElementById('profileButtons');bd.innerHTML='';if(userId===currentUser.uid){bd.innerHTML='<button class="profile-btn btn-primary" onclick="openEditProfileModal()">✏️ تعديل الملف</button><button class="profile-btn btn-secondary" onclick="logout()">🚪 تسجيل خروج</button>'+(isAdmin?'<button class="profile-btn btn-secondary" onclick="openAdmin()">🔧 لوحة التحكم</button>':'')}else{const isF=currentUserData?.following&&currentUserData.following[userId];bd.innerHTML='<button class="profile-btn btn-primary" onclick="toggleFollow(\''+userId+'\',this)">'+(isF?'✅ متابع':'➕ متابعة')+'</button><button class="profile-btn btn-secondary" onclick="openPrivateChat(\''+userId+'\')"><i class="fas fa-envelope"></i> مراسلة</button>'}}
-
-window.openEditProfileModal=function(){document.getElementById('editName').value=currentUserData?.name||'';document.getElementById('editBio').value=currentUserData?.bio||'';document.getElementById('editProfileModal').classList.add('open')}
-window.closeEditProfileModal=function(){document.getElementById('editProfileModal').classList.remove('open')}
-window.saveProfileEdit=async function(){const name=document.getElementById('editName').value;const bio=document.getElementById('editBio').value;if(!name.trim()){showToast('الاسم مطلوب');return}await db.ref('users/'+currentUser.uid).update({name:name.trim(),bio});showToast('✅ تم تحديث الملف الشخصي');closeEditProfileModal();setTimeout(()=>location.reload(),1000)}
-
-window.changeAvatar=function(){document.getElementById('avatarInput')?.click()}
-window.changeCover=function(){document.getElementById('coverInput')?.click()}
-(function(){if(!document.getElementById('avatarInput')){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.id='avatarInput';inp.style.display='none';document.body.appendChild(inp);inp.addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;showToast('📤 جاري رفع الصورة...');const result=await uploadMedia(file);await db.ref('users/'+currentUser.uid).update({avatarUrl:result.url});showToast('✅ تم تحديث الصورة الشخصية');location.reload()})}if(!document.getElementById('coverInput')){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.id='coverInput';inp.style.display='none';document.body.appendChild(inp);inp.addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;showToast('📤 جاري رفع الصورة...');const result=await uploadMedia(file);await db.ref('users/'+currentUser.uid).update({coverUrl:result.url});showToast('✅ تم تحديث صورة الغلاف');location.reload()})}})()
-
-window.toggleFollow=async function(userId,btn){if(!currentUser||currentUser.uid===userId)return;const ref=db.ref('users/'+currentUser.uid+'/following/'+userId);const tref=db.ref('users/'+userId+'/followers/'+currentUser.uid);const snap=await ref.once('value');if(snap.exists()){await ref.set(null);await tref.set(null);if(btn)btn.innerText='➕ متابعة';showToast('👋 توقفت عن متابعة '+(allUsers[userId]?.name||''))}else{await ref.set(true);await tref.set(true);if(btn)btn.innerText='✅ متابع';addNotification(userId,'follow');showToast('👥 بدأت بمتابعة '+(allUsers[userId]?.name||''))}if(viewingProfileUserId===userId)await loadProfileData(userId)}
-window.openFollowersList=async function(type){document.getElementById('followersTitle').innerText=type==='followers'?'المتابعون':'المتابَعون';const c=document.getElementById('followersList');const user=viewingProfileUserId?allUsers[viewingProfileUserId]:currentUserData;const list=type==='followers'?user?.followers:user?.following;c.innerHTML='';if(list){for(const[uid]of Object.entries(list)){const u=allUsers[uid];if(u)c.innerHTML+='<div class="follower-item" onclick="viewProfile(\''+uid+'\')"><div class="avatar-xs">'+(u.avatarUrl?'<img src="'+u.avatarUrl+'">':(u.name?.charAt(0)||'U'))+'</div><div><div style="font-weight:700;">'+escapeHtml(u.name)+'</div><div style="font-size:13px;color:#71767b;">@'+u.name?.toLowerCase().replace(/\s/g,'')+'</div></div></div>'}}if(c.innerHTML==='')c.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا يوجد مستخدمين</div>';document.getElementById('followersPanel').classList.add('open');document.getElementById('backBtn').style.display='flex'}
-window.closeFollowers=function(){document.getElementById('followersPanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-
-function getChatId(u1,u2){return u1<u2?u1+'_'+u2:u2+'_'+u1}
-window.openConversations=async function(){const panel=document.getElementById('conversationsPanel');const c=document.getElementById('conversationsList');const snap=await db.ref('private_chats/'+currentUser.uid).once('value');const convs=snap.val()||{};c.innerHTML='';for(const[oid,cd]of Object.entries(convs)){const u=allUsers[oid];if(u)c.innerHTML+='<div class="conversation-item" onclick="openPrivateChat(\''+oid+'\')"><div class="avatar-sm">'+(u.avatarUrl?'<img src="'+u.avatarUrl+'">':(u.name?.charAt(0)||'U'))+'</div><div><div style="font-weight:700;">'+escapeHtml(u.name)+'</div><div style="font-size:13px;color:#71767b;">'+(cd.lastMessage?.substring(0,40)||'رسالة')+'</div></div></div>'}if(c.innerHTML==='')c.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا توجد محادثات بعد</div>';panel.classList.add('open');document.getElementById('backBtn').style.display='flex'}
-window.closeConversations=function(){document.getElementById('conversationsPanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-window.openPrivateChat=async function(oid){currentChatUserId=oid;const u=allUsers[oid];document.getElementById('chatUserName').innerText=u?.name||'مستخدم';document.getElementById('chatAvatar').innerHTML=u?.avatarUrl?'<img src="'+u.avatarUrl+'">':(u?.name?.charAt(0)||'U');await loadPrivateMessages(oid);document.getElementById('chatPanel').classList.add('open');document.getElementById('backBtn').style.display='flex';closeConversations()}
-window.closeChat=function(){document.getElementById('chatPanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none';currentChatUserId=null}
-async function loadPrivateMessages(oid){const c=document.getElementById('chatMessages');c.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">جاري التحميل...</div>';const chatId=getChatId(currentUser.uid,oid);const snap=await db.ref('private_messages/'+chatId).once('value');const msgs=snap.val()||{};c.innerHTML='';const sorted=Object.entries(msgs).sort((a,b)=>a[1].timestamp-b[1].timestamp);for(const[id,msg]of sorted){const sent=msg.senderId===currentUser.uid;const time=new Date(msg.timestamp).toLocaleTimeString();let content='';if(msg.type==='text')content='<div class="message-bubble '+(sent?'sent':'received')+'">'+escapeHtml(msg.text)+'</div>';else if(msg.type==='image')content='<img src="'+msg.imageUrl+'" class="message-image" onclick="openImageModal(\''+msg.imageUrl+'\')">';else if(msg.type==='audio')content='<div class="message-audio"><audio controls src="'+msg.audioUrl+'"></audio></div>';c.innerHTML+='<div class="chat-message '+(sent?'sent':'received')+'"><div>'+content+'<div style="font-size:10px;opacity:0.5;margin-top:4px;">'+time+'</div></div></div>'}if(c.innerHTML==='')c.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا توجد رسائل بعد</div>';c.scrollTop=c.scrollHeight}
-window.sendChatMessage=async function(){const input=document.getElementById('chatMessageInput');const text=input?.value.trim();if(!text||!currentChatUserId)return;const chatId=getChatId(currentUser.uid,currentChatUserId);await db.ref('private_messages/'+chatId).push({senderId:currentUser.uid,senderName:currentUserData?.name,text,type:'text',timestamp:Date.now()});await db.ref('private_chats/'+currentUser.uid+'/'+currentChatUserId).set({lastMessage:text,lastTimestamp:Date.now(),withUser:currentChatUserId});await db.ref('private_chats/'+currentChatUserId+'/'+currentUser.uid).set({lastMessage:text,lastTimestamp:Date.now(),withUser:currentUser.uid});input.value='';await loadPrivateMessages(currentChatUserId)}
-window.sendChatImage=async function(input){const file=input.files[0];if(!file||!currentChatUserId)return;const result=await uploadMedia(file);const chatId=getChatId(currentUser.uid,currentChatUserId);await db.ref('private_messages/'+chatId).push({senderId:currentUser.uid,senderName:currentUserData?.name,imageUrl:result.url,type:'image',timestamp:Date.now()});await db.ref('private_chats/'+currentUser.uid+'/'+currentChatUserId).set({lastMessage:'📷 صورة',lastTimestamp:Date.now(),withUser:currentChatUserId});await db.ref('private_chats/'+currentChatUserId+'/'+currentUser.uid).set({lastMessage:'📷 صورة',lastTimestamp:Date.now(),withUser:currentUser.uid});input.value='';await loadPrivateMessages(currentChatUserId)}
-window.startRecordingChat=async function(){const btn=document.getElementById('chatRecordBtn');if(mediaRecorder&&mediaRecorder.state==='recording'){mediaRecorder.stop();btn.innerHTML='<i class="fas fa-microphone"></i>';return}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});mediaRecorder=new MediaRecorder(stream);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=async()=>{const blob=new Blob(audioChunks,{type:'audio/mp3'});const file=new File([blob],'recording.mp3',{type:'audio/mp3'});const result=await uploadMedia(file);if(currentChatUserId){const chatId=getChatId(currentUser.uid,currentChatUserId);await db.ref('private_messages/'+chatId).push({senderId:currentUser.uid,senderName:currentUserData?.name,audioUrl:result.url,type:'audio',timestamp:Date.now()});await db.ref('private_chats/'+currentUser.uid+'/'+currentChatUserId).set({lastMessage:'🎤 رسالة صوتية',lastTimestamp:Date.now(),withUser:currentChatUserId});await db.ref('private_chats/'+currentChatUserId+'/'+currentUser.uid).set({lastMessage:'🎤 رسالة صوتية',lastTimestamp:Date.now(),withUser:currentUser.uid});await loadPrivateMessages(currentChatUserId)}stream.getTracks().forEach(t=>t.stop())};mediaRecorder.start();btn.innerHTML='<i class="fas fa-stop-circle" style="color:#f91880"></i>'}catch(err){showToast('لا يمكن الوصول إلى الميكروفون')}}
-
-window.openSearch=function(){document.getElementById('searchPanel').classList.add('open');document.getElementById('backBtn').style.display='flex'}
-window.closeSearch=function(){document.getElementById('searchPanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-window.searchAll=function(){const q=document.getElementById('searchInput').value.toLowerCase();const r=document.getElementById('searchResults');if(!q){r.innerHTML='';return}const users=Object.values(allUsers).filter(u=>u.name?.toLowerCase().includes(q));r.innerHTML=users.map(u=>'<div class="search-result" onclick="viewProfile(\''+u.uid+'\')"><div class="avatar-xs">'+(u.avatarUrl?'<img src="'+u.avatarUrl+'">':(u.name?.charAt(0)||'U'))+'</div><div><div style="font-weight:700;">'+escapeHtml(u.name)+'</div><div style="font-size:13px;color:#71767b;">@'+u.name?.toLowerCase().replace(/\s/g,'')+'</div></div></div>').join('');if(!users.length)r.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا توجد نتائج</div>'}
-
-window.openAdmin=async function(){if(!isAdmin)return;const tu=Object.keys(allUsers).length;const tp=allPosts.length;const tl=allPosts.reduce((s,p)=>s+(p.likes||0),0);const tc=allPosts.reduce((s,p)=>s+(p.comments?Object.keys(p.comments).length:0),0);document.getElementById('adminStats').innerHTML='<div class="admin-stat"><div class="admin-stat-icon"><i class="fas fa-users"></i></div><div class="admin-stat-number">'+tu+'</div><div class="admin-stat-label">مستخدمين</div></div><div class="admin-stat"><div class="admin-stat-icon"><i class="fas fa-file-alt"></i></div><div class="admin-stat-number">'+tp+'</div><div class="admin-stat-label">منشورات</div></div><div class="admin-stat"><div class="admin-stat-icon" style="color:#f91880;"><i class="fas fa-heart"></i></div><div class="admin-stat-number">'+tl+'</div><div class="admin-stat-label">إعجابات</div></div><div class="admin-stat"><div class="admin-stat-icon" style="color:#1d9bf0;"><i class="fas fa-comment"></i></div><div class="admin-stat-number">'+tc+'</div><div class="admin-stat-label">تعليقات</div></div>';const ul=document.getElementById('adminUsersList');ul.innerHTML='';Object.entries(allUsers).forEach(([uid,u])=>{if(uid!==currentUser.uid)ul.innerHTML+='<div class="admin-item"><div><div class="admin-item-name">'+escapeHtml(u.name)+'</div><div class="admin-item-email">'+u.email+'</div></div><button class="admin-delete-btn" onclick="adminDeleteUser(\''+uid+'\')"><i class="fas fa-trash"></i> حذف</button></div>'});if(ul.innerHTML==='')ul.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا يوجد مستخدمين آخرين</div>';const pl=document.getElementById('adminPostsList');pl.innerHTML='';allPosts.slice(0,30).forEach(p=>{pl.innerHTML+='<div class="admin-item"><div><div class="admin-item-name">'+escapeHtml(p.senderName||'مستخدم')+'</div><div class="admin-item-text">'+(p.text?.substring(0,60)||'منشور بدون نص')+'</div><div class="admin-item-email">'+new Date(p.timestamp).toLocaleString()+'</div></div><button class="admin-delete-btn" onclick="adminDeletePost(\''+p.id+'\')"><i class="fas fa-trash"></i> حذف</button></div>'});document.getElementById('adminPanel').classList.add('open');document.getElementById('backBtn').style.display='flex'}
-window.closeAdmin=function(){document.getElementById('adminPanel').classList.remove('open');if(!document.querySelector('.panel.open'))document.getElementById('backBtn').style.display='none'}
-window.adminDeleteUser=async function(uid){if(!isAdmin||!confirm('⚠️ حذف هذا المستخدم وجميع منشوراته؟'))return;const posts=allPosts.filter(p=>p.sender===uid);for(const p of posts)await db.ref('posts/'+p.id).set(null);await db.ref('users/'+uid).set(null);showToast('✅ تم حذف المستخدم');location.reload()}
-window.adminDeletePost=async function(pid){if(!isAdmin||!confirm('⚠️ حذف هذا المنشور؟'))return;await db.ref('posts/'+pid).set(null);showToast('✅ تم حذف المنشور');renderFeed()}
-
-window.switchTab=function(tab){document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));if(event&&event.target){const clicked=event.target.closest('.nav-item');if(clicked)clicked.classList.add('active')}if(tab==='home'){closeCompose();closeProfile();closeChat();closeConversations();closeNotifications();closeSearch();closeComments();closeFollowers();closeAdmin();closeEditProfileModal()}}
-window.goToHome=function(){const hb=document.querySelector('.nav-item i.fa-home')?.closest('.nav-item');if(hb){document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));hb.classList.add('active')}closeCompose();closeProfile();closeChat();closeConversations();closeNotifications();closeSearch();closeComments();closeFollowers();closeAdmin();closeEditProfileModal();document.getElementById('backBtn').style.display='none'}
-window.goBack=function(){if(document.getElementById('commentsPanel')?.classList.contains('open'))closeComments();else if(document.getElementById('profilePanel')?.classList.contains('open'))closeProfile();else if(document.getElementById('chatPanel')?.classList.contains('open'))closeChat();else if(document.getElementById('conversationsPanel')?.classList.contains('open'))closeConversations();else if(document.getElementById('notificationsPanel')?.classList.contains('open'))closeNotifications();else if(document.getElementById('searchPanel')?.classList.contains('open'))closeSearch();else if(document.getElementById('followersPanel')?.classList.contains('open'))closeFollowers();else if(document.getElementById('adminPanel')?.classList.contains('open'))closeAdmin();else if(document.getElementById('composePanel')?.classList.contains('open'))closeCompose();else if(document.getElementById('editProfileModal')?.classList.contains('open'))closeEditProfileModal();else goToHome()}
-window.logout=function(){auth.signOut();location.reload()}
-
-auth.onAuthStateChanged(async user=>{if(user){currentUser=user;await loadUserData();isAdmin=ADMIN_EMAILS.includes(currentUser.email);document.getElementById('mainApp').style.display='block';updateNotificationBadge();if(localStorage.getItem('theme')==='light')document.body.classList.add('light-mode');showToast('👋 مرحباً '+(currentUserData?.name||'مستخدم'))}else{window.location.replace('auth.html')}})
-console.log('🟦 Sotwe Platform Ready ✨')
-"""
-
-# ═══════════════════════════════════════════════════════════
-# 5-9. الملفات المتبقية
-# ═══════════════════════════════════════════════════════════
-
-def build_upload():
-    return """<!DOCTYPE html>
+def build_profile():
+    return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🟦 Sotwe | رفع منشور</title>
+    <title>☁️ MNAENCA | ملف شخصي</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>:root{--primary:#1d9bf0;--bg:#000;--surface:#1a1a1a;--border:#2f3336;--text:#fff}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-y:auto}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);z-index:10}.btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;font-size:16px}.container{max-width:500px;margin:0 auto;padding:20px}textarea{width:100%;min-height:150px;background:transparent;border:none;color:var(--text);font-size:20px;resize:none;outline:none;font-family:inherit;padding:16px}.tools{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.tool{background:none;border:none;color:var(--primary);font-size:20px;padding:10px;border-radius:50%;cursor:pointer}.preview{margin:16px 0;display:none}.preview img,.preview video{max-height:300px;border-radius:20px;width:100%;object-fit:cover}.btn-post{width:100%;background:var(--primary);color:#fff;border:none;padding:14px;border-radius:40px;font-weight:700;font-size:18px;cursor:pointer;margin-top:20px}</style>
+    <style>
+        {COMMON_CSS}
+        body{{min-height:100vh;overflow-y:auto;overflow-x:hidden;}}
+        .cover-section{{position:relative;width:100%;height:260px;overflow:hidden;cursor:pointer}}
+        .cover-img{{width:100%;height:130%;object-fit:cover;transition:transform 0.1s linear;transform:translateY(0)}}
+        .cover-gradient{{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(2,6,23,0.4) 60%,rgba(2,6,23,0.95) 100%);pointer-events:none;z-index:1}}
+        .cover-glow{{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(14,165,233,0.15) 0%,transparent 70%);pointer-events:none;z-index:2}}
+        .cover-edit-btn{{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);backdrop-filter:blur(15px);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;border:1px solid rgba(14,165,233,0.3);color:#fff;font-size:14px;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.3)}}
+        .cover-edit-btn:hover{{background:rgba(14,165,233,0.4);box-shadow:0 0 20px rgba(14,165,233,0.5)}}
+        .btn-back{{position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.5);backdrop-filter:blur(15px);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;border:1px solid var(--border);color:#fff;font-size:16px;transition:all 0.3s}}
+        .btn-back:hover{{background:rgba(14,165,233,0.3);box-shadow:0 0 20px rgba(14,165,233,0.4)}}
+        .avatar-wrap{{position:relative;z-index:2;margin-top:-60px;display:flex;justify-content:center}}
+        .avatar-lg{{width:120px;height:120px;border-radius:50%;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#0ea5e9,#06b6d4,#7dd3fc);padding:3px;box-shadow:0 0 30px rgba(14,165,233,0.4),0 0 60px rgba(14,165,233,0.1);animation:avatarGlow 3s ease-in-out infinite}}
+        @keyframes avatarGlow{{0%,100%{{box-shadow:0 0 30px rgba(14,165,233,0.4),0 0 60px rgba(14,165,233,0.1)}}50%{{box-shadow:0 0 40px rgba(6,182,212,0.7),0 0 80px rgba(14,165,233,0.3)}}}}
+        .avatar-lg img{{width:100%;height:100%;object-fit:cover;border-radius:50%;border:3px solid var(--bg)}}
+        .avatar-edit-btn{{position:absolute;bottom:5px;right:5px;width:30px;height:30px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--bg);color:#fff;font-size:12px;box-shadow:0 0 15px rgba(14,165,233,0.5)}}
+        .online-dot{{position:absolute;top:10px;right:10px;width:18px;height:18px;background:#22c55e;border-radius:50%;border:3px solid var(--bg);z-index:3;box-shadow:0 0 10px rgba(34,197,94,0.6)}}
+        .profile-info{{padding:20px 20px 10px;text-align:center}}
+        .username{{font-size:22px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:8px}}
+        .bio-text{{font-size:13px;opacity:0.7;margin-bottom:8px;max-width:320px;margin-left:auto;margin-right:auto;line-height:1.5}}
+        .contact-info{{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;font-size:12px}}
+        .contact-info a{{color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:5px;background:var(--card);padding:6px 14px;border-radius:20px;border:1px solid var(--border);transition:all 0.3s}}
+        .contact-info a:hover{{background:rgba(14,165,233,0.15);box-shadow:0 0 15px rgba(14,165,233,0.2)}}
+        .last-seen{{font-size:11px;opacity:0.5;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:6px}}
+        .stats-row{{display:flex;justify-content:center;gap:30px;margin:15px 20px;padding:18px;background:rgba(14,165,233,0.04);backdrop-filter:blur(20px);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.2)}}
+        .stat-item{{text-align:center;cursor:pointer;transition:transform 0.2s}}
+        .stat-item:hover{{transform:scale(1.05)}}
+        .stat-val{{font-size:20px;font-weight:700;color:var(--accent2)}}
+        .stat-lbl{{font-size:10px;opacity:0.6;margin-top:2px}}
+        .action-btns{{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 20px 20px}}
+        .btn{{background:rgba(14,165,233,0.06);border:1px solid var(--border);padding:10px 20px;border-radius:25px;color:#fff;cursor:pointer;font-size:13px;transition:all 0.3s;display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px)}}
+        .btn:hover{{background:rgba(14,165,233,0.15);border-color:var(--accent);box-shadow:0 0 20px rgba(14,165,233,0.2)}}
+        .btn-primary{{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;color:#fff;box-shadow:0 8px 25px rgba(14,165,233,0.4)}}
+        .btn-primary:hover{{transform:translateY(-2px);box-shadow:0 12px 35px rgba(14,165,233,0.6)}}
+        .section-title{{font-size:16px;font-weight:700;padding:0 20px;margin-bottom:12px;display:flex;align-items:center;gap:8px}}
+        .videos-grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 8px 100px}}
+        .video-grid-item{{aspect-ratio:9/16;position:relative;overflow:hidden;cursor:pointer;background:#000;border-radius:4px}}
+        .video-grid-item video{{width:100%;height:100%;object-fit:cover}}
+        .video-grid-item .grid-play-icon{{position:absolute;bottom:4px;left:4px;font-size:14px;color:#fff;z-index:1;opacity:0.8}}
+        .video-grid-item .grid-views{{position:absolute;bottom:4px;right:4px;font-size:10px;color:#fff;z-index:1;display:flex;align-items:center;gap:3px;opacity:0.8}}
+        .empty-state{{text-align:center;opacity:0.5;padding:40px 20px}}
+        .empty-state i{{font-size:48px;color:var(--accent);margin-bottom:12px;display:block}}
+        .badge-verified{{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;font-size:12px;padding:3px 6px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-weight:bold;box-shadow:0 0 15px rgba(56,189,248,0.6);animation:verifyGlow 2s ease-in-out infinite}}
+        @keyframes verifyGlow{{0%,100%{{box-shadow:0 0 15px rgba(56,189,248,0.6)}}50%{{box-shadow:0 0 25px rgba(56,189,248,0.9)}}}}
+        .edit-panel{{position:fixed;bottom:0;left:0;right:0;background:rgba(2,6,23,0.98);backdrop-filter:blur(40px);border-top:2px solid var(--accent);border-radius:24px 24px 0 0;padding:24px 20px 40px;z-index:200;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);max-height:80vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(14,165,233,0.1)}}
+        .edit-panel.show{{transform:translateY(0)}}
+        .edit-panel h3{{font-size:18px;font-weight:700;margin-bottom:20px;color:var(--accent2);text-align:center}}
+        .edit-panel label{{display:block;font-size:12px;opacity:0.7;margin-bottom:6px;margin-top:14px}}
+        .edit-panel input,.edit-panel textarea{{width:100%;padding:12px 16px;border-radius:14px;background:var(--card);border:1px solid var(--border);color:#fff;font-size:14px;outline:none;resize:none;font-family:'Segoe UI',sans-serif;transition:border 0.3s}}
+        .edit-panel input:focus,.edit-panel textarea:focus{{border-color:var(--accent);box-shadow:0 0 15px rgba(14,165,233,0.15)}}
+        .edit-actions{{display:flex;gap:10px;margin-top:20px}}
+        .edit-actions button{{flex:1;padding:12px;border-radius:25px;font-weight:700;cursor:pointer;font-size:14px;transition:all 0.3s}}
+        .btn-save{{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff}}
+        .btn-cancel{{background:var(--card);border:1px solid var(--border);color:#fff}}
+        .overlay-panel{{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:none}}
+        .overlay-panel.show{{display:block}}
+
+        /* Admin Panel */
+        .admin-panel{{padding:0 8px;margin:0 8px 100px 8px}}
+        .admin-panel h3{{color:#38bdf8;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-weight:700}}
+        .admin-stats-grid{{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}}
+        .stat-card{{background:rgba(14,165,233,0.06);border:1px solid rgba(14,165,233,0.15);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(10px)}}
+        .stat-icon{{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 15px rgba(14,165,233,0.3)}}
+        .stat-info h4{{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;font-weight:500}}
+        .stat-info span{{font-size:22px;font-weight:800}}
+        .admin-user-item{{display:flex;align-items:center;justify-content:space-between;padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.2s;border-radius:8px}}
+        .admin-user-item:hover{{background:rgba(14,165,233,0.04)}}
+        .admin-user-info{{display:flex;align-items:center;gap:12px;flex:1;min-width:0}}
+        .admin-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(14,165,233,0.3);flex-shrink:0}}
+        .admin-avatar img{{width:100%;height:100%;object-fit:cover}}
+        .admin-user-details h4{{font-weight:600;font-size:15px}}
+        .admin-user-details p{{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}}
+        .admin-user-actions{{display:flex;gap:8px;align-items:center;flex-shrink:0}}
+        .admin-btn{{border:none;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px}}
+        .btn-ban{{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.1)}}
+        .btn-unban{{background:rgba(34,197,94,0.1);color:#4ade80;border:1px solid rgba(34,197,94,0.2)}}
+        .btn-verify{{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;box-shadow:0 4px 12px rgba(14,165,233,0.3)}}
+        .btn-delete-video{{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2)}}
+        .btn-delete-video:hover{{background:rgba(239,68,68,0.3)}}
+    </style>
 </head>
 <body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 رفع منشور</h2></div>
-<div class="container"><textarea id="postText" placeholder="ماذا يحدث؟"></textarea><div id="mediaPreview" class="preview"></div><div class="tools"><button class="tool" onclick="document.getElementById('postImage').click()"><i class="fas fa-image"></i></button><button class="tool" onclick="document.getElementById('postVideo').click()"><i class="fas fa-video"></i></button></div><input type="file" id="postImage" accept="image/*" style="display:none" onchange="previewMedia(this,'image')"><input type="file" id="postVideo" accept="video/*" style="display:none" onchange="previewMedia(this,'video')"><button class="btn-post" onclick="createPost()">نشر</button><div id="status" style="text-align:center;margin-top:12px;font-size:14px;color:var(--primary)"></div></div>
+
+<div class="load-center" id="loader" style="display:flex;align-items:center;justify-content:center;min-height:80vh;flex-direction:column;gap:12px;color:rgba(255,255,255,0.5)">
+    <div class="spinner"></div><span>☁️ تحميل الملف...</span>
+</div>
+
+<div id="content" style="display:none">
+    <div class="cover-section" id="coverSection" onmousemove="parallaxCover(event)">
+        <img class="cover-img" id="coverImg" src="" alt="cover" style="display:none">
+        <div class="cover-gradient"></div>
+        <div class="cover-glow"></div>
+        <div class="cover-edit-btn" id="coverEditBtn" onclick="event.stopPropagation();document.getElementById('coverInput').click()" style="display:none">
+            <i class="fas fa-camera"></i>
+        </div>
+    </div>
+    <input type="file" id="coverInput" accept="image/*" style="display:none" onchange="uploadCover(this)">
+    
+    <button class="btn-back" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+    
+    <div class="avatar-wrap">
+        <div class="avatar-lg" id="avatarDisplay">
+            <img src="" alt="avatar" id="avatarImg">
+            <div class="avatar-edit-btn" id="avatarEditBtn" onclick="event.stopPropagation();document.getElementById('avatarInput').click()" style="display:none">
+                <i class="fas fa-camera"></i>
+            </div>
+            <div class="online-dot" id="onlineDot" style="display:none"></div>
+        </div>
+    </div>
+    <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+
+    <div class="profile-info">
+        <div class="username"><span id="nameDisplay"></span></div>
+        <div class="bio-text" id="bioDisplay"></div>
+        <div class="contact-info" id="contactInfo"></div>
+        <div class="last-seen" id="lastSeenDisplay"></div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-item" onclick="showList('following')"><div class="stat-val" id="statFollowing">0</div><div class="stat-lbl">يتابع</div></div>
+        <div class="stat-item" onclick="showList('followers')"><div class="stat-val" id="statFollowers">0</div><div class="stat-lbl">متابع</div></div>
+        <div class="stat-item"><div class="stat-val" id="statLikes">0</div><div class="stat-lbl">إعجابات</div></div>
+    </div>
+
+    <div class="action-btns" id="actionsBar"></div>
+
+    <div class="section-title"><i class="fas fa-video" style="color:var(--accent)"></i> الفيديوهات</div>
+    <div class="videos-grid" id="videosGrid"></div>
+</div>
+
+<div class="overlay-panel" id="overlayPanel" onclick="closeEditPanel()"></div>
+<div class="edit-panel" id="editPanel">
+    <h3>☁️ لوحة تعديل الملف الشخصي</h3>
+    <label>👤 اسم المستخدم</label>
+    <input type="text" id="editUsername" placeholder="اسم المستخدم">
+    <label>📝 السيرة الذاتية</label>
+    <textarea id="editBio" placeholder="اكتب شيئاً عن نفسك..."></textarea>
+    <label>🌐 الموقع الإلكتروني</label>
+    <input type="text" id="editWebsite" placeholder="https://example.com" dir="ltr">
+    <label>📧 البريد الإلكتروني</label>
+    <input type="text" id="editContactEmail" placeholder="example@email.com" dir="ltr">
+    <label>🎨 لون الغلاف</label>
+    <div id="coverColors" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+    <div class="edit-actions">
+        <button class="btn-cancel" onclick="closeEditPanel()">إلغاء</button>
+        <button class="btn-save" onclick="saveProfile()"><i class="fas fa-save"></i> حفظ التغييرات</button>
+    </div>
+</div>
+
+<div class="toast-msg" id="toastMsg">✅ تم</div>
+
 <script src="firebase-config.js"></script>
-<script>let currentUser=null,currentUserData=null,selectedMediaFile=null;auth.onAuthStateChanged(async u=>{if(!u)window.location.href='auth.html';currentUser=u;const snap=await db.ref('users/'+u.uid).once('value');if(snap.exists())currentUserData={uid:u.uid,...snap.val()}});window.previewMedia=function(input,type){const file=input.files[0];if(!file)return;selectedMediaFile=file;const reader=new FileReader();reader.onload=function(e){const preview=document.getElementById('mediaPreview');if(type==='image')preview.innerHTML='<img src="'+e.target.result+'">';else preview.innerHTML='<video controls><source src="'+e.target.result+'"></video>';preview.style.display='block'};reader.readAsDataURL(file)};async function uploadMedia(file){const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);let rt='image';if(file.type.startsWith('video/'))rt='video';const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/'+rt+'/upload',{method:'POST',body:fd});const data=await res.json();return{url:data.secure_url,type:rt}}window.createPost=async function(){const text=document.getElementById('postText').value;if(!text.trim()&&!selectedMediaFile){document.getElementById('status').innerText='اكتب شيئاً أو اختر وسائط';return}document.getElementById('status').innerText='جاري النشر...';let mediaUrl='',mediaType='none';if(selectedMediaFile){try{const result=await uploadMedia(selectedMediaFile);mediaUrl=result.url;mediaType=result.type}catch(e){document.getElementById('status').innerText='فشل رفع الوسائط';return}}try{await db.ref('posts').push({text,mediaUrl,mediaType,sender:currentUser.uid,senderName:currentUserData?.name,likes:0,likedBy:{},retweets:{},retweetedBy:{},comments:{},timestamp:Date.now()});document.getElementById('status').innerText='تم النشر!';setTimeout(()=>window.location.href='index.html',1500)}catch(e){document.getElementById('status').innerText='فشل النشر'}}</script>
+<script>
+    let profileUserId = null, currentUser = null, currentUserData = null, allVideos = [], allUsers = {{}}, isOwnProfile = false, _selectedCover = null;
+
+    window.parallaxCover = function(event) {{
+        const img = document.getElementById('coverImg');
+        if(!img || !img.src || img.style.display === 'none') return;
+        const cover = document.getElementById('coverSection');
+        const rect = cover.getBoundingClientRect();
+        const y = event.clientY - rect.top;
+        const percent = (y / rect.height - 0.5) * 0.15;
+        img.style.transform = `translateY(${{percent * 100}}px)`;
+    }};
+
+    auth.onAuthStateChanged(async u => {{
+        if(!u) {{ window.location.href = 'auth.html'; return; }}
+        currentUser = u;
+        const params = new URLSearchParams(window.location.search);
+        profileUserId = params.get('uid') || u.uid;
+        isOwnProfile = (profileUserId === u.uid);
+        const snap = await db.ref('users/' + u.uid).get();
+        if(snap.exists()) currentUserData = {{uid: u.uid, ...snap.val()}};
+        await loadAll();
+        await loadProfile();
+        if(!isOwnProfile) {{
+            db.ref('presence/' + profileUserId).on('value', s => {{
+                const isOnline = s.val();
+                const dot = document.getElementById('onlineDot');
+                const lastSeen = document.getElementById('lastSeenDisplay');
+                if(dot) dot.style.display = isOnline ? 'block' : 'none';
+                if(lastSeen) {{
+                    const userData = allUsers[profileUserId];
+                    if(userData) lastSeen.innerHTML = isOnline ? '<i class="fas fa-circle" style="color:#22c55e;font-size:8px"></i> نشط الآن' : '<i class="fas fa-clock"></i> آخر ظهور: ' + formatTime(userData.lastSeen);
+                }}
+            }});
+        }}
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    }});
+
+    async function loadAll() {{
+        const us = await db.ref('users').once('value'); allUsers = us.val() || {{}};
+        const vs = await db.ref('videos').once('value'); allVideos = Object.entries(vs.val() || {{}}).map(([k, v]) => ({{id: k, ...v}}));
+    }}
+
+    async function loadProfile() {{
+        const u = allUsers[profileUserId];
+        if(!u) {{ document.getElementById('content').innerHTML = '<div class="empty-state" style="padding-top:100px"><i class="fas fa-user-slash"></i><p>المستخدم غير موجود</p></div>'; return; }}
+        const skyVerifiedBadge = u.isVerified ? '<span class="badge-verified"><i class="fas fa-check"></i></span>' : '';
+        document.getElementById('nameDisplay').innerHTML = '@' + (u.username || 'مستخدم') + ' ' + skyVerifiedBadge;
+        document.getElementById('bioDisplay').innerText = u.bio || 'لم تتم إضافة سيرة ذاتية بعد';
+        const contactInfo = document.getElementById('contactInfo');
+        let contactHTML = '';
+        if(u.website) contactHTML += `<a href="${{u.website}}" target="_blank"><i class="fas fa-globe"></i> ${{u.website.replace('https://','').replace('http://','')}}</a>`;
+        if(u.contactEmail) contactHTML += `<a href="mailto:${{u.contactEmail}}"><i class="fas fa-envelope"></i> ${{u.contactEmail}}</a>`;
+        contactInfo.innerHTML = contactHTML;
+        document.getElementById('statFollowing').innerText = Object.keys(u.following || {{}}).length;
+        document.getElementById('statFollowers').innerText = Object.keys(u.followers || {{}}).length;
+        const uvs = allVideos.filter(v => v.sender === profileUserId);
+        document.getElementById('statLikes').innerText = uvs.reduce((s, v) => s + (v.likes || 0), 0);
+        const coverImg = document.getElementById('coverImg');
+        if(u.coverImageUrl) {{ coverImg.src = u.coverImageUrl; coverImg.style.display = 'block'; }}
+        else {{ document.getElementById('coverSection').style.background = u.coverColor || COVER_COLORS[0]; coverImg.style.display = 'none'; }}
+        document.getElementById('avatarImg').src = u.avatarUrl || (DICEBEAR_URL + '?seed=' + profileUserId);
+        if(isOwnProfile) {{ document.getElementById('avatarEditBtn').style.display = 'flex'; document.getElementById('coverEditBtn').style.display = 'flex'; }}
+        const lastSeen = document.getElementById('lastSeenDisplay');
+        if(!isOwnProfile) {{
+            const presenceSnap = await db.ref('presence/' + profileUserId).get();
+            const isOnline = presenceSnap.val();
+            document.getElementById('onlineDot').style.display = isOnline ? 'block' : 'none';
+            lastSeen.innerHTML = isOnline ? '<i class="fas fa-circle" style="color:#22c55e;font-size:8px"></i> نشط الآن' : '<i class="fas fa-clock"></i> آخر ظهور: ' + formatTime(u.lastSeen || u.createdAt);
+        }}
+
+        // Render video grid
+        const grid = document.getElementById('videosGrid');
+        grid.innerHTML = '';
+        if(!uvs.length) {{ grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-video-slash"></i><p>لا توجد فيديوهات</p></div>'; }}
+        else {{
+            uvs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).forEach(v => {{
+                const d = document.createElement('div');
+                d.className = 'video-grid-item';
+                d.onclick = () => window.open(v.url, '_blank');
+                d.innerHTML = `
+                    ${{v.thumbnail ? `<img src="${{v.thumbnail}}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fas fa-play" style="color:#555;font-size:24px"></i></div>'}}
+                    <div class="grid-play-icon"><i class="fas fa-play"></i></div>
+                    <div class="grid-views"><i class="fas fa-heart" style="color:var(--accent)"></i> ${{v.likes || 0}}</div>
+                `;
+                grid.appendChild(d);
+            }});
+        }}
+
+        const actionsBar = document.getElementById('actionsBar');
+        if(isOwnProfile) {{
+            actionsBar.innerHTML = `<button class="btn btn-primary" onclick="openEditPanel()"><i class="fas fa-edit"></i> تعديل الملف</button><button class="btn" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</button><button class="btn" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</button>`;
+        }} else {{
+            const isFollowing = currentUserData?.following?.[profileUserId];
+            actionsBar.innerHTML = `<button class="btn btn-follow ${{isFollowing ? 'following' : ''}}" id="followBtn" onclick="toggleFollowUser()">${{isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}}</button><button class="btn btn-primary" onclick="window.location.href='chat.html?uid=${{profileUserId}}'"><i class="fas fa-comment"></i> مراسلة</button><button class="btn" onclick="copyProfile()"><i class="fas fa-copy"></i> نسخ المعلومات</button>`;
+        }}
+        if(isOwnProfile && ADMIN_EMAILS.includes(currentUser?.email)) {{ loadAdminPanel(); }}
+    }}
+
+    function openEditPanel() {{
+        const u = allUsers[profileUserId] || currentUserData;
+        document.getElementById('editUsername').value = u.username || '';
+        document.getElementById('editBio').value = u.bio || '';
+        document.getElementById('editWebsite').value = u.website || '';
+        document.getElementById('editContactEmail').value = u.contactEmail || '';
+        _selectedCover = u.coverColor || COVER_COLORS[0];
+        const colorsDiv = document.getElementById('coverColors');
+        colorsDiv.innerHTML = COVER_COLORS.map((c, i) => `<div onclick="selectCover('${{c.replace(/'/g, "\\\\'")}}', this)" style="width:40px;height:40px;border-radius:50%;background:${{c}};cursor:pointer;border:3px solid ${{_selectedCover === c ? '#fff' : 'transparent'}};transition:all 0.2s;box-shadow:0 4px 15px rgba(0,0,0,0.3)" title="غلاف ${{i+1}}"></div>`).join('');
+        document.getElementById('editPanel').classList.add('show'); document.getElementById('overlayPanel').classList.add('show');
+    }}
+    function closeEditPanel() {{ document.getElementById('editPanel').classList.remove('show'); document.getElementById('overlayPanel').classList.remove('show'); }}
+    function selectCover(color, el) {{ _selectedCover = color; document.getElementById('coverSection').style.background = color; document.getElementById('coverImg').style.display = 'none'; document.querySelectorAll('#coverColors div').forEach(d => d.style.borderColor = 'transparent'); el.style.borderColor = '#fff'; }}
+    async function saveProfile() {{
+        const username = document.getElementById('editUsername').value.trim();
+        const bio = document.getElementById('editBio').value.trim();
+        const website = document.getElementById('editWebsite').value.trim();
+        const contactEmail = document.getElementById('editContactEmail').value.trim();
+        if(!username || username.length < 3) {{ showToast('❌ اسم المستخدم 3 أحرف على الأقل'); return; }}
+        const updates = {{username, bio, website, contactEmail}};
+        if(_selectedCover) updates.coverColor = _selectedCover;
+        try {{ await db.ref('users/' + profileUserId).update(updates); closeEditPanel(); await loadAll(); await loadProfile(); showToast('✅ تم حفظ التغييرات بنجاح'); }} catch(e) {{ showToast('❌ حدث خطأ'); }}
+    }}
+    async function uploadAvatar(inp) {{
+        const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الصورة...');
+        const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
+        try {{
+            const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {{method: 'POST', body: fd}});
+            const data = await res.json();
+            if(data.secure_url) {{ await db.ref('users/' + profileUserId).update({{avatarUrl: data.secure_url, hasCustomAvatar: true}}); document.getElementById('avatarImg').src = data.secure_url; showToast('✅ تم تحديث الصورة الشخصية'); }}
+        }} catch(e) {{ showToast('❌ خطأ في الرفع'); }} inp.value = '';
+    }}
+    async function uploadCover(inp) {{
+        const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الغلاف...');
+        const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
+        try {{
+            const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {{method: 'POST', body: fd}});
+            const data = await res.json();
+            if(data.secure_url) {{ await db.ref('users/' + profileUserId).update({{coverImageUrl: data.secure_url, hasCustomCover: true}}); const coverImg = document.getElementById('coverImg'); coverImg.src = data.secure_url; coverImg.style.display = 'block'; document.getElementById('coverSection').style.background = 'none'; showToast('✅ تم تحديث الغلاف'); }}
+        }} catch(e) {{ showToast('❌ خطأ في الرفع'); }} inp.value = '';
+    }}
+    async function toggleFollowUser() {{
+        if(!currentUser || isOwnProfile) return;
+        const btn = document.getElementById('followBtn');
+        const userRef = db.ref('users/' + currentUser.uid + '/following/' + profileUserId);
+        const targetRef = db.ref('users/' + profileUserId + '/followers/' + currentUser.uid);
+        const snap = await userRef.get();
+        if(snap.exists()) {{ await userRef.remove(); await targetRef.remove(); btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة'; btn.classList.remove('following'); }}
+        else {{ await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع'; btn.classList.add('following'); }}
+        await loadAll(); await loadProfile();
+    }}
+    async function copyProfile() {{
+        const u = allUsers[profileUserId];
+        const text = `👤 @${{u.username || 'مستخدم'}}\\n📝 ${{u.bio || ''}}\\n☁️ MNAENCA 2026`;
+        try {{ await navigator.clipboard.writeText(text); }} catch(e) {{ const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }}
+        showToast('✅ تم نسخ معلومات الملف الشخصي');
+    }}
+    function showList(type) {{
+        const u = allUsers[profileUserId];
+        const list = type === 'followers' ? (u?.followers || {{}}) : (u?.following || {{}});
+        const ids = Object.keys(list);
+        if(!ids.length) {{ alert('لا يوجد'); return; }}
+        const names = ids.map(id => {{ const user = allUsers[id]; return user ? '@' + user.username : 'مستخدم'; }}).join('\\n');
+        alert((type === 'followers' ? 'المتابِعون' : 'المتابَعون') + ':\\n' + names);
+    }}
+    function showToast(msg) {{ const toast = document.getElementById('toastMsg'); toast.innerText = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }}
+    function formatTime(ts) {{
+        if(!ts) return 'غير معروف';
+        const diff = Date.now() - ts;
+        const mins = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+        if(mins < 1) return 'الآن';
+        if(mins < 60) return 'منذ ' + mins + ' دقيقة';
+        if(hours < 24) return 'منذ ' + hours + ' ساعة';
+        if(days < 7) return 'منذ ' + days + ' يوم';
+        return new Date(ts).toLocaleDateString('ar-SA');
+    }}
+
+    async function loadAdminPanel() {{
+        const grid = document.getElementById('videosGrid'); if(!grid) return;
+        const oldPanel = document.getElementById('adminPanelContainer'); if(oldPanel) oldPanel.remove();
+        const adminDiv = document.createElement('div'); adminDiv.id = 'adminPanelContainer'; adminDiv.className = 'admin-panel';
+        const totalUsers = Object.keys(allUsers).length;
+        const totalVideos = allVideos.length;
+        const totalVerified = Object.values(allUsers).filter(u => u.isVerified).length;
+        const totalBanned = Object.values(allUsers).filter(u => u.banned).length;
+        adminDiv.innerHTML = `<h3><i class="fas fa-crown"></i> لوحة تحكم الأدمن</h3>
+            <div class="admin-stats-grid">
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h4>المستخدمين</h4><span>${{totalUsers}}</span></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#f59e0b,#0ea5e9)"><i class="fas fa-video"></i></div><div class="stat-info"><h4>فيديوهات</h4><span>${{totalVideos}}</span></div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-info"><h4>موثقين</h4><span>${{totalVerified}}</span></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)"><i class="fas fa-ban"></i></div><div class="stat-info"><h4>محظورين</h4><span>${{totalBanned}}</span></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;border-bottom:1px solid rgba(14,165,233,0.1);padding-bottom:8px">
+                <span>📋 قائمة المستخدمين</span><span style="font-size:11px">${{totalUsers}} إجمالي</span>
+            </div>
+            <div id="adminDynamicList"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;margin-bottom:14px;color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;border-bottom:1px solid rgba(14,165,233,0.1);padding-bottom:8px">
+                <span>🎬 جميع الفيديوهات</span><span style="font-size:11px">${{totalVideos}} إجمالي</span>
+            </div>
+            <div id="adminVideosList"></div>`;
+        grid.after(adminDiv);
+        loadAdminUsersList(); loadAdminVideosList();
+    }}
+
+    function loadAdminUsersList() {{
+        const listContainer = document.getElementById('adminDynamicList'); if(!listContainer) return;
+        const usersArray = Object.entries(allUsers).sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 15);
+        if(!usersArray.length) {{ listContainer.innerHTML = '<div style="text-align:center;opacity:0.5;padding:20px">لا يوجد مستخدمون</div>'; return; }}
+        listContainer.innerHTML = usersArray.map(([id, u]) => {{
+            const avatar = u.avatarUrl || (DICEBEAR_URL + '?seed=' + id);
+            const isVerified = u.isVerified;
+            const isBanned = u.banned;
+            const verifiedBadgeHtml = isVerified ? '<span class="badge-verified"><i class="fas fa-check"></i></span>' : '';
+            let actionBtns = '';
+            if(isBanned) {{ actionBtns = `<button class="admin-btn btn-unban" onclick="toggleBanUser('${{id}}')"><i class="fas fa-undo"></i> إلغاء الحظر</button>`; }}
+            else {{ actionBtns = `<button class="admin-btn btn-verify ${{isVerified ? 'unverify' : ''}}" onclick="toggleVerifyUser('${{id}}')">${{isVerified ? '<i class="fas fa-times-circle"></i> إلغاء' : '<i class="fas fa-check-circle"></i> توثيق'}}</button><button class="admin-btn btn-ban" onclick="toggleBanUser('${{id}}')"><i class="fas fa-ban"></i> حظر</button>`; }}
+            return `<div class="admin-user-item"><div class="admin-user-info" onclick="openUserProfile('${{id}}')" style="cursor:pointer"><div class="admin-avatar"><img src="${{avatar}}"></div><div class="admin-user-details"><h4>@${{u.username || 'مستخدم'}} ${{verifiedBadgeHtml}}</h4><p>${{u.email || ''}}</p></div></div><div class="admin-user-actions">${{actionBtns}}</div></div>`;
+        }}).join('');
+    }}
+
+    function loadAdminVideosList() {{
+        const listContainer = document.getElementById('adminVideosList'); if(!listContainer) return;
+        const videosArray = allVideos.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 20);
+        if(!videosArray.length) {{ listContainer.innerHTML = '<div style="text-align:center;opacity:0.5;padding:20px">لا توجد فيديوهات</div>'; return; }}
+        listContainer.innerHTML = videosArray.map(v => {{
+            const user = allUsers[v.sender] || {{username: v.senderName || 'مستخدم'}};
+            const desc = (v.description || 'بدون وصف').substring(0, 40);
+            return `<div class="admin-user-item"><div class="admin-user-info"><div class="admin-avatar" style="border-radius:8px;width:50px;height:70px">${{v.thumbnail ? `<img src="${{v.thumbnail}}" style="object-fit:cover">` : ''}}</div><div class="admin-user-details"><p style="font-size:12px">${{desc}}</p><span style="font-size:10px;opacity:0.4">@${{user.username}} · ❤️ ${{v.likes || 0}}</span></div></div><div class="admin-user-actions"><button class="admin-btn btn-delete-video" onclick="deleteVideo('${{v.id}}')"><i class="fas fa-trash"></i> حذف</button></div></div>`;
+        }}).join('');
+    }}
+
+    window.deleteVideo = async function(videoId) {{ if(!confirm('هل أنت متأكد من حذف هذا الفيديو؟')) return; try {{ await db.ref('videos/' + videoId).remove(); showToast('🗑️ تم حذف الفيديو بنجاح'); await loadAll(); await loadProfile(); loadAdminVideosList(); }} catch(e) {{ showToast('❌ فشل حذف الفيديو'); }} }};
+    window.toggleVerifyUser = async function(id) {{ const snap = await db.ref('users/' + id).once('value'); const data = snap.val(); if(!data) return; const newState = !data.isVerified; if(!confirm(`تأكيد ${{newState ? 'توثيق' : 'إلغاء توثيق'}} @${{data.username || 'المستخدم'}}؟`)) return; await db.ref('users/' + id).update({{isVerified: newState, verifiedAt: newState ? Date.now() : null, verifiedBy: newState ? currentUser.uid : null}}); await loadAll(); await loadProfile(); showToast(`✅ تم ${{newState ? 'توثيق' : 'إلغاء توثيق'}} المستخدم`); loadAdminUsersList(); }};
+    window.toggleBanUser = async function(id) {{ const snap = await db.ref('users/' + id).once('value'); const data = snap.val(); if(!data) return; const newState = !data.banned; if(!confirm(`تأكيد ${{newState ? 'حظر' : 'إلغاء حظر'}} @${{data.username || 'المستخدم'}}؟`)) return; await db.ref('users/' + id).update({{banned: newState, bannedAt: newState ? Date.now() : null, bannedBy: newState ? currentUser.uid : null}}); await loadAll(); await loadProfile(); showToast(`✅ تم ${{newState ? 'حظر' : 'إلغاء حظر'}} المستخدم`); loadAdminUsersList(); }};
+    window.openUserProfile = function(id) {{ if(id === currentUser?.uid) window.location.href = 'profile.html'; else window.location.href = 'profile.html?uid=' + id; }};
+
+    console.log('☁️ MNAENCA Profile Ready ✨');
+</script>
+</body>
+</html>"""
+
+# ═══════════════════════════════════════════════════════════
+# ☁️ 5-9. الملفات المتبقية (upload, chat, explore, notifications, settings)
+# ═══════════════════════════════════════════════════════════
+
+def build_upload():
+    return f"""<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>☁️ MNAENCA | رفع فيديو</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        {COMMON_CSS}
+        body{{min-height:100vh;overflow-y:auto}}
+        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);background:rgba(2,6,23,0.8);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10}}
+        .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
+        .container{{max-width:500px;margin:0 auto;padding:20px}}
+        .dropzone{{border:2px dashed rgba(14,165,233,0.3);border-radius:20px;padding:50px 20px;text-align:center;cursor:pointer;background:var(--glass);margin-bottom:20px}}
+        .dropzone i{{font-size:48px;color:var(--accent)}}
+        .dropzone video{{width:100%;max-height:250px;object-fit:contain;margin-top:12px;border-radius:12px;display:none}}
+        .form-card{{background:rgba(14,165,233,0.03);border:1px solid var(--border);border-radius:20px;padding:20px}}
+        .form-card label{{display:block;font-size:13px;opacity:0.7;margin-bottom:6px;margin-top:12px}}
+        .form-card textarea,.form-card input{{width:100%;padding:14px 16px;border-radius:16px;background:rgba(14,165,233,0.04);border:1px solid var(--border);color:#fff;font-size:14px;outline:none;resize:none;font-family:'Segoe UI',sans-serif}}
+        .progress-wrap{{display:none;margin:16px 0}}
+        .progress-bar{{background:rgba(255,255,255,0.1);border-radius:30px;height:6px;overflow:hidden}}
+        .progress-fill{{background:linear-gradient(90deg,var(--accent),var(--accent2));height:100%;border-radius:30px;width:0%}}
+        .progress-text{{text-align:center;font-size:12px;margin-top:6px;color:var(--accent2)}}
+        .btn-upload{{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:30px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;margin-top:16px;box-shadow:0 10px 25px rgba(14,165,233,0.4)}}
+        .btn-upload:disabled{{opacity:0.5}}
+        .status{{text-align:center;margin-top:12px;font-size:13px}}
+    </style>
+</head>
+<body>
+<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-cloud-upload-alt"></i> رفع فيديو جديد</h2></div>
+<div class="container">
+    <div class="dropzone" onclick="document.getElementById('videoFile').click()"><i class="fas fa-cloud-upload-alt"></i><p>اضغط لاختيار فيديو</p><span style="font-size:11px;opacity:0.5">MP4 - حتى 100MB</span><video id="preview" controls></video></div>
+    <input type="file" id="videoFile" accept="video/*" style="display:none" onchange="onFilePick(this)">
+    <div class="form-card">
+        <label><i class="fas fa-pen"></i> وصف الفيديو</label><textarea id="vidDesc" placeholder="اكتب وصفاً... #هاشتاقات"></textarea>
+        <label><i class="fas fa-music"></i> الموسيقى</label><input type="text" id="vidMusic" placeholder="Original Sound">
+        <div class="progress-wrap" id="progressWrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-text" id="progressText">0%</div></div>
+        <button class="btn-upload" id="uploadBtn" onclick="upload()"><i class="fas fa-heart"></i> رفع الفيديو</button>
+        <div class="status" id="status"></div>
+    </div>
+</div>
+<script src="firebase-config.js"></script>
+<script>
+    let currentUser=null,currentUserData=null,selectedFile=null;
+    auth.onAuthStateChanged(async u=>{{if(!u)window.location.href='auth.html';currentUser=u;const snap=await db.ref('users/'+u.uid).get();if(snap.exists())currentUserData={{uid:u.uid,...snap.val()}}}});
+    function onFilePick(inp){{const f=inp.files[0];if(!f||!f.type.startsWith('video/')){{alert('اختر فيديو صحيح');return}}if(f.size>100*1024*1024){{alert('أقل من 100MB');return}}selectedFile=f;const r=new FileReader();r.onload=e=>{{const v=document.getElementById('preview');v.src=e.target.result;v.style.display='block'}};r.readAsDataURL(f)}}
+    async function upload(){{
+        if(!selectedFile){{alert('اختر فيديو');return}}if(!currentUser){{alert('سجل دخول');return}}
+        const desc=document.getElementById('vidDesc').value;const music=document.getElementById('vidMusic').value||'Original Sound';
+        const pw=document.getElementById('progressWrap');pw.style.display='block';const pf=document.getElementById('progressFill');pf.style.width='0%';const pt=document.getElementById('progressText');pt.innerText='0%';
+        const st=document.getElementById('status');st.innerHTML='';const btn=document.getElementById('uploadBtn');btn.disabled=true;
+        const fd=new FormData();fd.append('file',selectedFile);fd.append('upload_preset',UPLOAD_PRESET);
+        const xhr=new XMLHttpRequest();xhr.open('POST','https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload');
+        xhr.upload.onprogress=e=>{{if(e.lengthComputable){{const p=Math.round(e.loaded/e.total*100);pf.style.width=p+'%';pt.innerText=p+'%'}}}};
+        xhr.onload=async()=>{{const r=JSON.parse(xhr.responseText);await db.ref('videos/').push({{url:r.secure_url,thumbnail:r.secure_url.replace('.mp4','.jpg'),description:desc,music:music,sender:currentUser.uid,senderName:currentUserData?.username,likes:0,likedBy:{{}},comments:{{}},timestamp:Date.now()}});st.innerHTML='✅ تم الرفع بنجاح!';st.style.color='#4ade80';setTimeout(()=>window.location.href='index.html',1500)}};
+        xhr.onerror=()=>{{st.innerHTML='❌ فشل الرفع';btn.disabled=false}};xhr.send(fd);
+    }}
+</script>
 </body>
 </html>"""
 
 def build_chat():
-    return """<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🟦 Sotwe | رسائل</title>
+    <title>☁️ MNAENCA | دردشة</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>:root{--primary:#1d9bf0;--bg:#000;--surface:#1a1a1a;--border:#2f3336;--text:#fff}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.95);backdrop-filter:blur(12px)}.btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;font-size:16px}.conv-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}.conv-item:hover{background:#080808}.avatar-sm{width:48px;height:48px;border-radius:50%;background:var(--primary);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px}.avatar-sm img{width:100%;height:100%;object-fit:cover}.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}.bubble{max-width:85%;padding:10px 14px;border-radius:20px}.bubble.sent{background:var(--primary);color:#fff;align-self:flex-end}.bubble.received{background:var(--surface);align-self:flex-start}.input-bar{display:flex;gap:12px;padding:12px;border-top:1px solid var(--border);background:var(--bg);align-items:center}.input-bar input{flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:40px;background:var(--surface);color:var(--text);outline:none}.input-bar button{background:none;border:none;color:var(--primary);font-size:20px;cursor:pointer;padding:8px}</style>
+    <style>
+        {COMMON_CSS}
+        body{{height:100vh;display:flex;flex-direction:column}}
+        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);background:rgba(2,6,23,0.8);backdrop-filter:blur(20px)}}
+        .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
+        .msgs{{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}}
+        .bubble{{max-width:80%;padding:10px 16px;border-radius:20px;word-break:break-word;font-size:14px;position:relative;animation:msgIn 0.3s ease}}
+        @keyframes msgIn{{from{{opacity:0;transform:translateY(10px)}}to{{opacity:1;transform:translateY(0)}}}}
+        .bubble.sent{{background:linear-gradient(135deg,var(--accent),var(--accent2));align-self:flex-end;color:#fff}}
+        .bubble.received{{background:rgba(14,165,233,0.06);align-self:flex-start;border:1px solid rgba(14,165,233,0.1)}}
+        .bubble img{{max-width:200px;border-radius:12px;cursor:pointer;margin-top:4px}}
+        .bubble .time{{font-size:9px;opacity:0.6;margin-top:4px}}
+        .input-bar{{display:flex;gap:10px;padding:12px;background:rgba(2,6,23,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center}}
+        .input-bar input{{flex:1;padding:12px 16px;border-radius:30px;background:var(--glass);border:1px solid var(--border);color:#fff;font-size:14px;outline:none}}
+        .btn-icon{{width:42px;height:42px;background:rgba(14,165,233,0.1);border:1px solid var(--border);border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
+        .btn-send{{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
+        .conv-item{{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--border);cursor:pointer}}
+        .conv-item:hover{{background:rgba(14,165,233,0.04)}}
+        .chat-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(14,165,233,0.3)}}
+        .chat-avatar img{{width:100%;height:100%;object-fit:cover}}
+        .online-indicator{{width:10px;height:10px;background:#22c55e;border-radius:50%;display:inline-block;margin-left:6px}}
+    </style>
 </head>
 <body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 الرسائل</h2></div>
-<div id="convList" style="flex:1;overflow-y:auto"></div>
-<div id="msgsList" class="msgs" style="display:none"></div>
-<div class="input-bar" id="chatInput" style="display:none"><input type="text" id="msgInput" placeholder="اكتب رسالة..."><button onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button></div>
+<div id="loader" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px"><div class="spinner"></div><span>☁️ تحميل...</span></div>
+<div id="convView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-comments"></i> المحادثات</h2></div><div id="convList" style="flex:1;overflow-y:auto"></div></div>
+<div id="chatView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="showConvs()"><i class="fas fa-arrow-right"></i></button><div class="chat-avatar" id="chatAvatar"></div><h3 id="chatName">محادثة</h3><span id="chatOnline" style="font-size:11px;opacity:0.5;margin-right:8px"></span></div><div class="msgs" id="msgsList"></div><div class="input-bar"><button class="btn-icon" onclick="sendImage()" title="إرسال صورة"><i class="fas fa-image"></i></button><input type="text" id="msgInput" placeholder="اكتب رسالة..." onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button><button class="btn-icon" onclick="copyChat()" title="نسخ المحادثة"><i class="fas fa-copy"></i></button></div></div>
+<div class="toast-msg" id="toastMsg">✅ تم</div>
 <script src="firebase-config.js"></script>
-<script>let currentUser=null,allUsers={},chatUserId=null;function getChatId(u1,u2){return u1<u2?u1+'_'+u2:u2+'_'+u1}auth.onAuthStateChanged(async u=>{if(!u){window.location.href='auth.html';return}currentUser=u;db.ref('users').on('value',s=>{allUsers=s.val()||{}});loadConvs()});async function loadConvs(){const cl=document.getElementById('convList');cl.style.display='block';document.getElementById('msgsList').style.display='none';document.getElementById('chatInput').style.display='none';const snap=await db.ref('private_chats/'+currentUser.uid).once('value');const convs=snap.val()||{};cl.innerHTML='';for(const[oid,c]of Object.entries(convs)){const u=allUsers[oid];if(u)cl.innerHTML+='<div class="conv-item" onclick="openChat(\''+oid+'\')"><div class="avatar-sm">'+(u.avatarUrl?'<img src="'+u.avatarUrl+'">':(u.name?.charAt(0)||'U'))+'</div><div><div style="font-weight:700;">'+u.name+'</div><div style="font-size:13px;color:#71767b;">'+(c.lastMessage?.substring(0,40)||'رسالة')+'</div></div></div>'}if(cl.innerHTML==='')cl.innerHTML='<div style="text-align:center;color:#71767b;padding:40px;">لا توجد محادثات</div>'}async function openChat(uid){chatUserId=uid;const u=allUsers[uid];document.getElementById('convList').style.display='none';document.getElementById('msgsList').style.display='flex';document.getElementById('chatInput').style.display='flex';await loadMsgs()}async function loadMsgs(){const ml=document.getElementById('msgsList');ml.innerHTML='';const chatId=getChatId(currentUser.uid,chatUserId);const snap=await db.ref('private_messages/'+chatId).once('value');const ms=snap.val()||{};Object.values(ms).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{const sent=m.senderId===currentUser.uid;ml.innerHTML+='<div class="bubble '+(sent?'sent':'received')+'">'+(m.type==='image'?'<img src="'+m.imageUrl+'" style="max-width:200px;border-radius:16px;">':m.text)+'<div style="font-size:10px;opacity:0.5;margin-top:4px;">'+new Date(m.timestamp).toLocaleTimeString()+'</div></div>'});ml.scrollTop=ml.scrollHeight}async function sendMsg(){const inp=document.getElementById('msgInput');const txt=inp.value.trim();if(!txt||!chatUserId)return;const chatId=getChatId(currentUser.uid,chatUserId);await db.ref('private_messages/'+chatId).push({senderId:currentUser.uid,text:txt,type:'text',timestamp:Date.now()});await db.ref('private_chats/'+currentUser.uid+'/'+chatUserId).set({lastMessage:txt,lastTimestamp:Date.now(),withUser:chatUserId});await db.ref('private_chats/'+chatUserId+'/'+currentUser.uid).set({lastMessage:txt,lastTimestamp:Date.now(),withUser:currentUser.uid});inp.value='';await loadMsgs()}window.openChat=openChat;window.sendMsg=sendMsg;window.loadConvs=loadConvs</script>
+<script>
+    let currentUser=null,allUsers={{}},chatUserId=null;
+    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;const us=await db.ref('users').once('value');allUsers=us.val()||{{}};document.getElementById('loader').style.display='none';const params=new URLSearchParams(window.location.search);const targetUid=params.get('uid');if(targetUid){{openChat(targetUid)}}else{{showConvs()}}setInterval(()=>{{if(currentUser)db.ref('users/'+currentUser.uid+'/lastSeen').set(Date.now())}},60000)}});
+    function showConvs(){{document.getElementById('chatView').style.display='none';document.getElementById('convView').style.display='flex';chatUserId=null;loadConvs()}}
+    async function loadConvs(){{const cl=document.getElementById('convList');cl.innerHTML='';const snap=await db.ref('private_messages').once('value');const all=snap.val()||{{}};const found=new Set();Object.keys(all).forEach(cid=>{{const[u1,u2]=cid.split('_');const other=u1===currentUser.uid?u2:u2===currentUser.uid?u1:null;if(other&&!found.has(other)&&allUsers[other])found.add(other)}});if(!found.size){{cl.innerHTML='<div style="text-align:center;opacity:0.5;padding:40px">لا محادثات</div>';return}}found.forEach(uid=>{{const u=allUsers[uid];const d=document.createElement('div');d.className='conv-item';d.innerHTML=`<div class="chat-avatar"><img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}"></div><div><div style="font-weight:600">@${{u?.username||'?'}} ${{u?.isVerified?'<span style="color:#38bdf8;font-size:12px"><i class="fas fa-check-circle"></i></span>':''}}</div></div>`;d.onclick=()=>openChat(uid);cl.appendChild(d)}})}}
+    async function openChat(uid){{chatUserId=uid;const u=allUsers[uid];document.getElementById('chatName').innerText='@'+(u?.username||'مستخدم');document.getElementById('chatAvatar').innerHTML=`<img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}">`;document.getElementById('convView').style.display='none';document.getElementById('chatView').style.display='flex';db.ref('presence/'+uid).on('value',s=>{{const online=s.val();document.getElementById('chatOnline').innerHTML=online?'<span class="online-indicator"></span> نشط الآن':'آخر ظهور: '+formatTime(u?.lastSeen)}});await loadMsgs()}}
+    function getChatId(){{return[currentUser.uid,chatUserId].sort().join('_')}}
+    async function loadMsgs(){{const ml=document.getElementById('msgsList');ml.innerHTML='';if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const ms=snap.val()||{{}};Object.values(ms).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sent=m.senderId===currentUser.uid;const d=document.createElement('div');d.className='bubble '+(sent?'sent':'received');d.innerHTML=`${{m.type==='image'?`<img src="${{m.imageUrl}}" onclick="window.open('${{m.imageUrl}}','_blank')">`:m.text}}<div class="time">${{new Date(m.timestamp).toLocaleTimeString('ar-SA')}}</div>`;ml.appendChild(d)}});ml.scrollTop=ml.scrollHeight}}
+    async function sendMsg(){{const inp=document.getElementById('msgInput');const txt=inp.value.trim();if(!txt||!chatUserId)return;await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,text:txt,type:'text',timestamp:Date.now()}});inp.value='';await loadMsgs()}}
+    async function sendImage(){{if(!chatUserId)return;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async(e)=>{{const file=e.target.files[0];if(!file)return;showToast('⏳ جاري رفع الصورة...');const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{{method:'POST',body:fd}});const data=await res.json();if(data.secure_url){{await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,type:'image',imageUrl:data.secure_url,timestamp:Date.now()}});await loadMsgs()}}}};inp.click()}}
+    async function copyChat(){{if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const msgs=snap.val()||{{}};let text='💬 محادثة MNAENCA\\n'+'─'.repeat(30)+'\\n';Object.values(msgs).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sender=m.senderId===currentUser.uid?'أنت':(allUsers[m.senderId]?.username||'مستخدم');const content=m.type==='image'?'[صورة]':m.text;const time=new Date(m.timestamp).toLocaleTimeString('ar-SA');text+=`\\n${{sender}} (${{time}}):\\n${{content}}\\n`}});try{{await navigator.clipboard.writeText(text)}}catch(e){{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}}showToast('✅ تم نسخ المحادثة')}}
+    function showToast(msg){{const toast=document.getElementById('toastMsg');toast.innerText=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}}
+    function formatTime(ts){{if(!ts)return'غير معروف';const diff=Date.now()-ts;const mins=Math.floor(diff/60000);const hours=Math.floor(diff/3600000);const days=Math.floor(diff/86400000);if(mins<1)return'الآن';if(mins<60)return'منذ '+mins+' دقيقة';if(hours<24)return'منذ '+hours+' ساعة';if(days<7)return'منذ '+days+' يوم';return new Date(ts).toLocaleDateString('ar-SA')}}
+</script>
 </body>
 </html>"""
 
 def build_explore():
-    return """<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>🟦 Sotwe | استكشاف</title><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>:root{--primary:#1d9bf0;--bg:#000;--border:#2f3336}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-y:auto}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);z-index:10}.btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px}.thumb{aspect-ratio:1;background:#1a1a2a;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden}.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.thumb i{position:absolute;font-size:24px;color:#fff;z-index:1;opacity:0;transition:0.3s}.thumb:hover i{opacity:1}.thumb .likes{position:absolute;bottom:4px;left:4px;font-size:10px;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:10px}</style></head>
-<body><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 استكشاف</h2></div><div class="grid" id="exploreGrid"></div><script src="firebase-config.js"></script><script>db.ref('posts').on('value',s=>{const data=s.val()||{};const vids=Object.entries(data).map(([k,v])=>({id:k,...v})).filter(p=>p.mediaUrl&&(p.mediaType==='image'||p.mediaType==='video')).sort((a,b)=>(b.likes||0)-(a.likes||0));const g=document.getElementById('exploreGrid');g.innerHTML=vids.length?vids.map(p=>'<div class="thumb" onclick="window.open(\''+p.mediaUrl+'\',\'_blank\')">'+(p.mediaType==='image'?'<img src="'+p.mediaUrl+'">':'<video src="'+p.mediaUrl+'"></video>')+'<i class="fas fa-play"></i><span class="likes"><i class="fas fa-heart"></i> '+(p.likes||0)+'</span></div>').join(''):'<div style="text-align:center;padding:40px;grid-column:1/-1;color:#71767b">لا توجد وسائط</div>'})</script></body></html>"""
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>☁️ MNAENCA | استكشاف</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        {COMMON_CSS}
+        body{{min-height:100vh;overflow-y:auto}}
+        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(2,6,23,0.8);backdrop-filter:blur(20px);z-index:10}}
+        .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
+        .grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px}}
+        .thumb{{aspect-ratio:9/16;background:rgba(14,165,233,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden}}
+        .thumb img{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}}
+        .thumb i{{position:absolute;font-size:24px;color:#fff;z-index:1;opacity:0;transition:opacity 0.3s}}
+        .thumb:hover i{{opacity:1}}
+        .thumb .views{{position:absolute;bottom:4px;left:4px;font-size:10px;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:10px}}
+    </style>
+</head>
+<body>
+<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-globe"></i> استكشاف</h2></div>
+<div class="grid" id="exploreGrid"><div class="spinner" style="grid-column:1/-1"></div></div>
+<script src="firebase-config.js"></script>
+<script>
+    let currentUser=null;
+    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;loadExplore()}});
+    async function loadExplore(){{
+        const snap=await db.ref('videos').once('value');
+        const videos=snap.val()||{{}};
+        const allVids=Object.entries(videos).map(([k,v])=>({{id:k,...v}})).sort((a,b)=>(b.likes||0)-(a.likes||0));
+        const g=document.getElementById('exploreGrid');
+        if(!allVids.length){{g.innerHTML='<div style="text-align:center;padding:40px;grid-column:1/-1;opacity:0.5">لا توجد فيديوهات</div>';return}}
+        g.innerHTML=allVids.map(v=>`<div class="thumb" onclick="window.open('${{v.url}}','_blank')">${{v.thumbnail?`<img src="${{v.thumbnail}}">`:''}}<i class="fas fa-play"></i><span class="views"><i class="fas fa-heart"></i> ${{v.likes||0}}</span></div>`).join('');
+    }}
+</script>
+</body>
+</html>"""
 
 def build_notifications():
-    return """<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>🟦 Sotwe | إشعارات</title><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>:root{--primary:#1d9bf0;--bg:#000;--border:#2f3336}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-y:auto}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);z-index:10}.btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}.notif-item{display:flex;gap:12px;padding:16px;border-bottom:1px solid var(--border);align-items:center}.notif-item:hover{background:#080808}.notif-icon{width:40px;height:40px;border-radius:50%;background:rgba(29,155,240,0.1);display:flex;align-items:center;justify-content:center;font-size:18px}</style></head>
-<body><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 الإشعارات</h2></div><div id="notifsList"></div><script src="firebase-config.js"></script><script>auth.onAuthStateChanged(async u=>{if(!u){window.location.href='auth.html';return}const snap=await db.ref('notifications/'+u.uid).once('value');const ns=snap.val()||{};const c=document.getElementById('notifsList');const items=Object.values(ns).reverse();const icons={like:'❤️',comment:'💬',retweet:'🔁',quote:'📝',follow:'👥'};c.innerHTML=items.length?items.map(n=>'<div class="notif-item"><div class="notif-icon">'+(icons[n.type]||'🔔')+'</div><div><div style="font-weight:700;">'+(n.fromUsername||'مستخدم')+'</div><div style="font-size:14px;color:#71767b;margin-top:4px;">'+(n.message||'')+'</div><div style="font-size:12px;color:#71767b;margin-top:4px;">'+new Date(n.timestamp).toLocaleString()+'</div></div></div>').join(''):'<div style="text-align:center;padding:40px;color:#71767b">لا توجد إشعارات</div>'})</script></body></html>"""
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>☁️ MNAENCA | إشعارات</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        {COMMON_CSS}
+        body{{min-height:100vh;overflow-y:auto}}
+        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(2,6,23,0.8);backdrop-filter:blur(20px);z-index:10}}
+        .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
+        .notif-item{{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center}}
+        .notif-icon{{width:40px;height:40px;border-radius:50%;background:rgba(14,165,233,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}}
+    </style>
+</head>
+<body>
+<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-bell"></i> الإشعارات</h2></div>
+<div id="notifsList"><div class="spinner"></div></div>
+<script src="firebase-config.js"></script>
+<script>
+    let currentUser=null;
+    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;loadNotifs()}});
+    async function loadNotifs(){{
+        const snap=await db.ref('notifications/'+currentUser.uid).once('value');
+        const ns=snap.val()||{{}};
+        const c=document.getElementById('notifsList');
+        const items=Object.values(ns).reverse();
+        if(!items.length){{c.innerHTML='<div style="text-align:center;opacity:0.5;padding:40px"><i class="fas fa-bell" style="font-size:48px;color:#0ea5e9;margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';return}}
+        c.innerHTML=items.map(n=>`<div class="notif-item"><div class="notif-icon"><i class="fas fa-bell"></i></div><div><div style="font-weight:600">${{n.from||'مستخدم'}}</div><div style="font-size:12px;opacity:0.6;margin-top:2px">${{n.msg||''}}</div></div></div>`).join('');
+    }}
+</script>
+</body>
+</html>"""
 
 def build_settings():
-    return """<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>🟦 Sotwe | إعدادات</title><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>:root{--primary:#1d9bf0;--bg:#000;--border:#2f3336;--surface:#1a1a1a}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-y:auto}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(12px);z-index:10}.btn-back{background:rgba(29,155,240,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}.item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer}.item:hover{background:#080808}.btn-danger{background:rgba(249,24,128,0.2);border:1px solid rgba(249,24,128,0.3);color:#f91880;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block}</style></head>
-<body><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2>🟦 الإعدادات</h2></div><div><div class="item" onclick="window.location.href='index.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user" style="color:var(--primary)"></i><span>الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div><div class="item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-moon" style="color:var(--primary)"></i><span>المظهر</span></div><span style="opacity:0.5;font-size:13px">داكن / فاتح</span></div><div class="item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle" style="color:var(--primary)"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">Sotwe v2026.1</span></div><button class="btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button></div><script src="firebase-config.js"></script><script>auth.onAuthStateChanged(u=>{if(!u)window.location.href='auth.html'});function logout(){auth.signOut();window.location.href='auth.html'}</script></body></html>"""
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>☁️ MNAENCA | إعدادات</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        {COMMON_CSS}
+        body{{min-height:100vh;overflow-y:auto}}
+        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(2,6,23,0.8);backdrop-filter:blur(20px);z-index:10}}
+        .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
+        .setting-item{{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s}}
+        .setting-item:hover{{background:var(--glass)}}
+        .setting-item i{{color:var(--accent);font-size:18px;width:30px}}
+        .btn-danger{{background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block}}
+    </style>
+</head>
+<body>
+<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-cog"></i> الإعدادات</h2></div>
+<div style="padding:8px 0">
+    <div class="setting-item" onclick="window.location.href='profile.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user"></i><span>تعديل الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
+    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-lock"></i><span>الخصوصية</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
+    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px">العربية</span></div>
+    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">v2026.3 ☁️</span></div>
+    <button class="btn-danger" onclick="if(confirm('تسجيل الخروج؟')){{auth.signOut();window.location.href='auth.html'}}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+</div>
+<script src="firebase-config.js"></script>
+<script>auth.onAuthStateChanged(u=>{{if(!u)window.location.href='auth.html'}});</script>
+</body>
+</html>"""
 
 # ═══════════════════════════════════════════════════════════
-# MAIN
+# ☁️ MAIN
 # ═══════════════════════════════════════════════════════════
 
 def main():
     print("""
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
-║  🟦  SOTWE 2026 - SOCIAL PLATFORM GENERATOR  ✨      ║
-║     Ultimate Generator - 9 Files - 2500+ Lines           ║
+║  ☁️  MNAENCA 2026 - SKY BLUE LUXURY EDITION  ✨      ║
+║     Ultimate Generator - 9 Files - 3000+ Lines           ║
 ║                                                          ║
-║  ✨  Posts + Comments + Replies + Quotes              ║
-║  ❤️   Likes + Retweets + Bookmarks                   ║
-║  💬  Private Chat (Text/Image/Audio)                  ║
-║  📝  Stories + Search + Admin Panel                   ║
-║  🛡️   Delete Users/Posts + Dark/Light Mode           ║
+║  💬 TikTok-Style Comments with Replies                ║
+║  📤 Professional Share System                         ║
+║  👤 Enhanced Profile with Video Grid                  ║
+║  💧 Watermark on Videos                               ║
+║  🔥 Firebase: muvg-42126                              ║
+║  ☁️ Cloudinary: dmqyd0haj                             ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
     """)
-
-    section("BUILDING FILES - Sotwe")
-
+    
+    section("BUILDING FILES - إنشاء الملفات")
+    
+    # Clean output directory
+    if os.path.exists(OUTPUT_DIR):
+        shutil.rmtree(OUTPUT_DIR)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    
     write("firebase-config.js", build_config())
     write("auth.html", build_auth())
     write("index.html", build_index())
-    write("script.js", build_script())
+    write("profile.html", build_profile())
     write("upload.html", build_upload())
     write("chat.html", build_chat())
     write("explore.html", build_explore())
     write("notifications.html", build_notifications())
     write("settings.html", build_settings())
-
+    
+    # Copy to root for GitHub Pages
+    for f in os.listdir(OUTPUT_DIR):
+        src = os.path.join(OUTPUT_DIR, f)
+        dst = os.path.join('.', f)
+        if os.path.isfile(src):
+            shutil.copy2(src, dst)
+    
     print(f"""
 {'='*60}
-  🟦 SOTWE BUILD COMPLETE! ✨
+  ☁️ BUILD COMPLETE - تم الإنشاء بنجاح! ✨
 {'='*60}
 
   📊 إحصائيات:
@@ -834,35 +2041,33 @@ def main():
      • 9 ملفات تم إنشاؤها
 
   📁 الملفات:
-     1. firebase-config.js
-     2. auth.html
-     3. index.html (تصميم Sotwe المحسّن)
-     4. script.js (كل المنطق - Compat Version)
-     5. upload.html
-     6. chat.html
-     7. explore.html
-     8. notifications.html
-     9. settings.html
+     1. firebase-config.js   → إعدادات Firebase + Cloudinary
+     2. auth.html            → تسجيل دخول + اشتراك
+     3. index.html           → الرئيسية + تعليقات تيك توك + مشاركة
+     4. profile.html         → ملف شخصي محترف + شبكة فيديوهات
+     5. upload.html          → رفع فيديو
+     6. chat.html            → دردشة خاصة
+     7. explore.html         → استكشاف
+     8. notifications.html   → صفحة الإشعارات
+     9. settings.html        → إعدادات
 
-  🟦 SOTWE المميزات:
-     • ❤️  منشورات + إعجابات + ريتويت + إشارات
-     • 💬 تعليقات + ردود متداخلة
-     • 📝 اقتباسات (Quote Tweets)
-     • 💌 دردشة (نص + صورة + صوت)
-     • 📸 رفع وسائط + تسجيل صوتي
-     • 👤 ملف شخصي + تعديل + صورة + غلاف
-     • 🔍 بحث + 🔔 إشعارات + 🌓 ليلي/نهاري
-     • 🛡️  لوحة أدمن كاملة
-     • 🎨 تصميم عصري محسّن
+  ✨ المميزات الجديدة:
+     • 💬 تعليقات بتصميم تيك توك مع نظام ردود كامل
+     • 📤 لوحة مشاركة احترافية (8 منصات + نسخ + تضمين)
+     • 👤 ملف شخصي مطور مع شبكة فيديوهات 3 أعمدة
+     • 💧 علامة مائية MNAENCA على الفيديوهات
+     • 🎥 أنيميشن انزلاق الفيديو عند التمرير
+     • 🎥 مشغل فيديو احترافي داخلي
+     • 🔔 نظام إشعارات شغال 100%
+     • 🗑️ حذف فيديوهات من لوحة الأدمن
+     • 🛡️ توثيق + حظر
 
-  🔑 البيانات:
+  🔑 بيانات:
      • Firebase: muvg-42126
      • Cloudinary: dmqyd0haj / s3_gok
      • Admin: jasim28v@gmail.com
 
-  🚀 للتشغيل:
-     python scraper.py
-  🟦 SOTWE READY! ✨
+  ☁️ MNAENCA SKY BLUE READY! ✨
 {'='*60}
     """)
 
