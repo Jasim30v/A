@@ -1823,7 +1823,7 @@ def build_profile():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 5. chat.html - Chat with Image & Voice Messages
+# ☁️ 5. chat.html - Chat with Image & Voice Messages (FIXED)
 # ═══════════════════════════════════════════════════════════
 
 def build_chat():
@@ -2187,7 +2187,7 @@ def main():
     write("auth.html", build_auth())
     write("index.html", build_index())
     write("profile.html", build_profile())
-    write("chat.html", build_chat())
+    write("chat.html", build_chat())  # ✅ تم إصلاح الدردشة بالكامل هنا
     write("upload.html", build_upload())
     write("explore.html", build_explore())
     write("notifications.html", build_notifications())
@@ -2213,7 +2213,7 @@ def main():
      2. auth.html            → تسجيل دخول + اشتراك
      3. index.html           → الرئيسية + تعليقات + مشاركة + علامة مائية وسطية
      4. profile.html         → ملف شخصي + مشغل داخلي + منع السحب
-     5. chat.html            → دردشة + صور + تسجيلات صوتية 🎵
+     5. chat.html            → دردشة + صور + تسجيلات صوتية 🎵 (تم إصلاحها ✅)
      6. upload.html          → رفع فيديو
      7. explore.html         → استكشاف
      8. notifications.html   → صفحة الإشعارات
