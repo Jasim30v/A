@@ -27,6 +27,11 @@
 ║     • 📱 Floating Bottom Nav                              ║
 ║     • 🎥 Slide-Up Video Reveal Animation                 ║
 ║     • توثيق + حظر + حذف فيديوهات                          ║
+║     • 🎵 Voice Messages in Chat                           ║
+║     • 🖼️  Image Messages in Chat                          ║
+║     • 🎥 In-App Video Player in Profile                   ║
+║     • 💧 Centered Watermark                               ║
+║     • 🔒 Anti-Download Protection                         ║
 ║                                                            ║
 ╚══════════════════════════════════════════════════════════════╝
 """
@@ -128,6 +133,8 @@ COMMON_CSS = """
     @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
     @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
     @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(14,165,233,0.3)}50%{box-shadow:0 0 40px rgba(6,182,212,0.7)}}
+    @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,0.7)}50%{box-shadow:0 0 0 15px rgba(14,165,233,0)}}
     .spinner{
         width:36px;height:36px;
         border:3px solid rgba(14,165,233,0.2);
@@ -173,7 +180,7 @@ COMMON_CSS = """
 def build_config():
     return f"""// ☁️ MNAENCA 2026 - Sky Blue Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: dmqyd0haj
-// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
+// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile + Voice Messages
 
 const firebaseConfig = {{
     apiKey: "{FIREBASE_CONFIG['apiKey']}",
@@ -195,6 +202,8 @@ const db = firebase.database();
 const CLOUD_NAME = "{CLOUD_NAME}";
 const UPLOAD_PRESET = "{UPLOAD_PRESET}";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${{CLOUD_NAME}}/auto/upload`;
+const CLOUDINARY_UPLOAD_IMAGE_URL = `https://api.cloudinary.com/v1_1/${{CLOUD_NAME}}/image/upload`;
+const CLOUDINARY_UPLOAD_AUDIO_URL = `https://api.cloudinary.com/v1_1/${{CLOUD_NAME}}/video/upload`;
 
 // ☁️ MNAENCA Settings
 const ADMIN_EMAILS = {ADMIN_EMAILS_JS};
@@ -203,7 +212,7 @@ const COVER_COLORS = {SKY_COLORS_JS};
 
 // ☁️ App Info
 const APP_NAME = "{APP_NAME}";
-const APP_VERSION = "2026.3";
+const APP_VERSION = "2026.4";
 const PRIMARY_COLOR = "#0ea5e9";
 const SECONDARY_COLOR = "#38bdf8";
 const WATERMARK_TEXT = "{WATERMARK_TEXT}";
@@ -424,7 +433,7 @@ def build_auth():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 3. index.html - الرئيسية مع تعليقات تيك توك + مشاركة احترافية
+# ☁️ 3. index.html - الرئيسية مع تعليقات تيك توك + مشاركة احترافية + علامة مائية في المنتصف
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
@@ -517,6 +526,9 @@ def build_index():
             width:100%;height:100%;object-fit:cover;
             opacity:0;transform:translateY(60px);
             transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.16,1,0.3,1);
+            -webkit-user-drag:none;
+            user-select:none;
+            pointer-events:auto;
         }}
         .vid-card.active video {{opacity:1;transform:translateY(0)}}
 
@@ -566,19 +578,28 @@ def build_index():
         .music-wave span:nth-child(5){{height:4px;animation-delay:0.6s}}
         @keyframes musicWave{{0%,100%{{transform:scaleY(1)}}50%{{transform:scaleY(1.8)}}}}
 
-        /* 💧 Watermark */
+        /* 💧 Watermark - Centered */
         .watermark-overlay{{
-            position:absolute;top:20px;right:20px;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
             z-index:15;pointer-events:none;
             display:flex;align-items:center;gap:6px;
-            opacity:0.6;
+            opacity:0.5;
+            background:rgba(0,0,0,0.3);
+            padding:8px 20px;
+            border-radius:50px;
+            backdrop-filter:blur(5px);
+            -webkit-backdrop-filter:blur(5px);
+            border:1px solid rgba(255,255,255,0.2);
         }}
         .watermark-overlay span{{
-            font-weight:700;font-size:13px;
+            font-weight:700;font-size:18px;
             text-shadow:0 2px 8px rgba(0,0,0,0.6);
             color:#fff;
+            letter-spacing:1px;
         }}
-        .watermark-overlay img{{width:24px;height:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))}}
 
         .side-btns{{
             position:absolute;right:14px;bottom:130px;
@@ -710,7 +731,7 @@ def build_index():
             transition:opacity 0.3s ease;flex-direction:column;
         }}
         .fullscreen-player.active {{opacity:1;pointer-events:auto}}
-        .fullscreen-player video {{max-width:100%;max-height:85vh;object-fit:contain;cursor:pointer}}
+        .fullscreen-player video {{max-width:100%;max-height:85vh;object-fit:contain;cursor:pointer;-webkit-user-drag:none;user-select:none}}
         .player-controls{{
             position:absolute;bottom:100px;left:20px;right:20px;
             display:flex;align-items:center;justify-content:space-between;
@@ -798,7 +819,7 @@ def build_index():
     <!-- ☁️ Fullscreen Video Player -->
     <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
         <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
-        <video id="fullscreenVideo" controls playsinline></video>
+        <video id="fullscreenVideo" controls controlsList="nodownload" playsinline oncontextmenu="return false;"></video>
         <div class="player-controls">
             <button onclick="skipTime(-10)"><i class="fas fa-backward"></i></button>
             <button id="btnPlayPause" onclick="togglePlayPause()"><i class="fas fa-pause"></i></button>
@@ -811,7 +832,6 @@ def build_index():
                 <span id="duration">0:00</span>
             </div>
             <button onclick="toggleMutePlayer()"><i class="fas fa-volume-up" id="muteIcon"></i></button>
-            <a id="downloadLink" href="#" download style="color:#38bdf8;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
         </div>
     </div>
 
@@ -906,8 +926,8 @@ def build_index():
         video.src = url;
         video.load();
         video.play();
-        document.getElementById('downloadLink').href = url;
-        document.getElementById('downloadLink').download = title || 'video.mp4';
+        video.setAttribute('controlsList', 'nodownload');
+        video.setAttribute('oncontextmenu', 'return false;');
         playerVideo = video;
         video.onloadedmetadata = () => {{
             document.getElementById('duration').innerText = formatTime(video.duration);
@@ -924,7 +944,7 @@ def build_index():
     function closePlayer() {{
         const player = document.getElementById('fullscreenPlayer');
         const video = document.getElementById('fullscreenVideo');
-        video.pause();video.src='';player.classList.remove('active');
+        video.pause();video.removeAttribute('src');video.load();player.classList.remove('active');
     }}
     function togglePlayPause() {{
         const video = document.getElementById('fullscreenVideo');
@@ -1333,7 +1353,7 @@ def build_index():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 4. profile.html - ملف شخصي محترف مع فيديوهات
+# ☁️ 4. profile.html - ملف شخصي محترف مع فيديوهات + In-App Player + منع السحب
 # ═══════════════════════════════════════════════════════════
 
 def build_profile():
@@ -1403,6 +1423,33 @@ def build_profile():
         .btn-cancel{{background:var(--card);border:1px solid var(--border);color:#fff}}
         .overlay-panel{{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:none}}
         .overlay-panel.show{{display:block}}
+
+        /* ✨ In-App Video Player */
+        .in-app-player {{
+            position: fixed;top:0;left:0;width:100vw;height:100vh;
+            background: rgba(0,0,0,0.95);backdrop-filter: blur(30px);
+            z-index: 9999;display: flex;align-items: center;justify-content: center;
+            opacity: 0;pointer-events: none;transition: opacity 0.4s ease;flex-direction: column;
+        }}
+        .in-app-player.active {{opacity: 1;pointer-events: auto;}}
+        .in-app-player video {{
+            max-width: 100%;max-height: 90vh;object-fit: contain;
+            -webkit-user-drag: none;user-select: none;pointer-events: auto;
+        }}
+        .close-in-app-player {{
+            position: absolute;top: 20px;left: 20px;
+            background: rgba(14,165,233,0.2);backdrop-filter: blur(15px);
+            border: 1px solid rgba(14,165,233,0.4);color: #fff;
+            width: 44px;height: 44px;border-radius: 50%;
+            display: flex;align-items: center;justify-content: center;
+            cursor: pointer;font-size: 22px;z-index: 10001;transition: all 0.3s;
+        }}
+        .close-in-app-player:hover {{
+            background: rgba(14,165,233,0.5);box-shadow: 0 0 25px rgba(14,165,233,0.6);
+        }}
+        video::-internal-media-controls-download-button {{display: none !important;}}
+        video::-webkit-media-controls-enclosure {{overflow: hidden;}}
+        video::-webkit-media-controls-panel {{width: calc(100% + 30px);}}
 
         /* Admin Panel */
         .admin-panel{{padding:0 8px;margin:0 8px 100px 8px}}
@@ -1477,6 +1524,14 @@ def build_profile():
     <div class="videos-grid" id="videosGrid"></div>
 </div>
 
+<!-- ✨ In-App Video Player -->
+<div class="in-app-player" id="inAppPlayer">
+    <button class="close-in-app-player" onclick="closeInAppPlayer()">
+        <i class="fas fa-times"></i>
+    </button>
+    <video id="inAppVideo" controls controlsList="nodownload" playsinline oncontextmenu="return false;"></video>
+</div>
+
 <div class="overlay-panel" id="overlayPanel" onclick="closeEditPanel()"></div>
 <div class="edit-panel" id="editPanel">
     <h3>☁️ لوحة تعديل الملف الشخصي</h3>
@@ -1510,6 +1565,28 @@ def build_profile():
         const y = event.clientY - rect.top;
         const percent = (y / rect.height - 0.5) * 0.15;
         img.style.transform = `translateY(${{percent * 100}}px)`;
+    }};
+
+    // ✨ In-App Player Functions
+    window.playInApp = function(videoUrl) {{
+        const player = document.getElementById('inAppPlayer');
+        const video = document.getElementById('inAppVideo');
+        video.src = videoUrl;
+        video.load();
+        video.play();
+        player.classList.add('active');
+        video.setAttribute('controlsList', 'nodownload');
+        video.setAttribute('oncontextmenu', 'return false;');
+        video.setAttribute('disablePictureInPicture', 'true');
+    }};
+
+    window.closeInAppPlayer = function() {{
+        const player = document.getElementById('inAppPlayer');
+        const video = document.getElementById('inAppVideo');
+        video.pause();
+        video.removeAttribute('src');
+        video.load();
+        player.classList.remove('active');
     }};
 
     auth.onAuthStateChanged(async u => {{
@@ -1571,7 +1648,7 @@ def build_profile():
             lastSeen.innerHTML = isOnline ? '<i class="fas fa-circle" style="color:#22c55e;font-size:8px"></i> نشط الآن' : '<i class="fas fa-clock"></i> آخر ظهور: ' + formatTime(u.lastSeen || u.createdAt);
         }}
 
-        // Render video grid
+        // Render video grid with In-App Player
         const grid = document.getElementById('videosGrid');
         grid.innerHTML = '';
         if(!uvs.length) {{ grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-video-slash"></i><p>لا توجد فيديوهات</p></div>'; }}
@@ -1579,12 +1656,15 @@ def build_profile():
             uvs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).forEach(v => {{
                 const d = document.createElement('div');
                 d.className = 'video-grid-item';
-                d.onclick = () => window.open(v.url, '_blank');
+                d.onclick = () => playInApp(v.url);
                 d.innerHTML = `
-                    ${{v.thumbnail ? `<img src="${{v.thumbnail}}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fas fa-play" style="color:#555;font-size:24px"></i></div>'}}
-                    <div class="grid-play-icon"><i class="fas fa-play"></i></div>
-                    <div class="grid-views"><i class="fas fa-heart" style="color:var(--accent)"></i> ${{v.likes || 0}}</div>
-                `;
+                    <div style="position:relative;width:100%;height:100%">
+                        <img src="${{v.thumbnail}}" style="width:100%;height:100%;object-fit:cover;pointer-events:none;" draggable="false">
+                        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s">
+                            <i class="fas fa-play" style="color:#fff;font-size:24px;filter:drop-shadow(0 0 10px rgba(0,0,0,0.8))"></i>
+                        </div>
+                        <div class="grid-views"><i class="fas fa-heart" style="color:var(--accent)"></i> ${{v.likes || 0}}</div>
+                    </div>`;
                 grid.appendChild(d);
             }});
         }}
@@ -1626,7 +1706,7 @@ def build_profile():
         const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الصورة...');
         const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
         try {{
-            const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {{method: 'POST', body: fd}});
+            const res = await fetch(CLOUDINARY_UPLOAD_IMAGE_URL, {{method: 'POST', body: fd}});
             const data = await res.json();
             if(data.secure_url) {{ await db.ref('users/' + profileUserId).update({{avatarUrl: data.secure_url, hasCustomAvatar: true}}); document.getElementById('avatarImg').src = data.secure_url; showToast('✅ تم تحديث الصورة الشخصية'); }}
         }} catch(e) {{ showToast('❌ خطأ في الرفع'); }} inp.value = '';
@@ -1635,7 +1715,7 @@ def build_profile():
         const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الغلاف...');
         const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
         try {{
-            const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {{method: 'POST', body: fd}});
+            const res = await fetch(CLOUDINARY_UPLOAD_IMAGE_URL, {{method: 'POST', body: fd}});
             const data = await res.json();
             if(data.secure_url) {{ await db.ref('users/' + profileUserId).update({{coverImageUrl: data.secure_url, hasCustomCover: true}}); const coverImg = document.getElementById('coverImg'); coverImg.src = data.secure_url; coverImg.style.display = 'block'; document.getElementById('coverSection').style.background = 'none'; showToast('✅ تم تحديث الغلاف'); }}
         }} catch(e) {{ showToast('❌ خطأ في الرفع'); }} inp.value = '';
@@ -1743,7 +1823,150 @@ def build_profile():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 5-9. الملفات المتبقية (upload, chat, explore, notifications, settings)
+# ☁️ 5. chat.html - Chat with Image & Voice Messages
+# ═══════════════════════════════════════════════════════════
+
+def build_chat():
+    return f"""<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>☁️ MNAENCA | دردشة</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        {COMMON_CSS}
+        body{{height:100vh;display:flex;flex-direction:column;overflow:hidden;}}
+        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);background:rgba(2,6,23,0.8);backdrop-filter:blur(20px);flex-shrink:0;}}
+        .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;flex-shrink:0;}}
+        .msgs{{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;}}
+        .bubble{{max-width:80%;padding:10px 16px;border-radius:20px;word-break:break-word;font-size:14px;position:relative;animation:msgIn 0.3s ease;}}
+        .bubble.sent{{background:linear-gradient(135deg,var(--accent),var(--accent2));align-self:flex-end;color:#fff;}}
+        .bubble.received{{background:rgba(14,165,233,0.06);align-self:flex-start;border:1px solid rgba(14,165,233,0.1);}}
+        .bubble img{{max-width:200px;border-radius:12px;cursor:pointer;margin-top:4px;}}
+        .bubble audio{{margin-top:6px;max-width:200px;height:36px;}}
+        .bubble .time{{font-size:9px;opacity:0.6;margin-top:4px;}}
+        .input-bar{{display:flex;gap:10px;padding:12px;background:rgba(2,6,23,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center;flex-shrink:0;}}
+        .input-bar input{{flex:1;padding:12px 16px;border-radius:30px;background:var(--glass);border:1px solid var(--border);color:#fff;font-size:14px;outline:none;}}
+        .btn-icon{{width:42px;height:42px;background:rgba(14,165,233,0.1);border:1px solid var(--border);border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;}}
+        .btn-icon:hover{{background:rgba(14,165,233,0.25);}}
+        .btn-icon.recording{{background:rgba(239,68,68,0.3);border-color:#ef4444;animation:voicePulse 1.5s ease-in-out infinite;}}
+        .btn-send{{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}}
+        .conv-item{{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--border);cursor:pointer;}}
+        .conv-item:hover{{background:rgba(14,165,233,0.04);}}
+        .chat-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(14,165,233,0.3);flex-shrink:0;}}
+        .chat-avatar img{{width:100%;height:100%;object-fit:cover;}}
+        .online-indicator{{width:10px;height:10px;background:#22c55e;border-radius:50%;display:inline-block;margin-left:6px;}}
+        .recording-timer{{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);padding:20px 30px;border-radius:20px;z-index:200;display:none;text-align:center;border:1px solid rgba(239,68,68,0.5);}}
+        .recording-timer.show{{display:block;}}
+        .recording-timer i{{font-size:32px;color:#ef4444;margin-bottom:8px;display:block;animation:pulse 1s ease-in-out infinite;}}
+    </style>
+</head>
+<body>
+<div id="loader" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px"><div class="spinner"></div><span>☁️ تحميل...</span></div>
+<div id="convView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-comments"></i> المحادثات</h2></div><div id="convList" style="flex:1;overflow-y:auto"></div></div>
+<div id="chatView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="showConvs()"><i class="fas fa-arrow-right"></i></button><div class="chat-avatar" id="chatAvatar"></div><h3 id="chatName">محادثة</h3><span id="chatOnline" style="font-size:11px;opacity:0.5;margin-right:8px"></span></div><div class="msgs" id="msgsList"></div><div class="input-bar"><button class="btn-icon" id="btnVoice" onclick="toggleVoiceRecording()" title="تسجيل صوتي"><i class="fas fa-microphone"></i></button><button class="btn-icon" onclick="sendImage()" title="إرسال صورة"><i class="fas fa-image"></i></button><input type="text" id="msgInput" placeholder="اكتب رسالة..." onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button><button class="btn-icon" onclick="copyChat()" title="نسخ المحادثة"><i class="fas fa-copy"></i></button></div></div>
+<div class="recording-timer" id="recordingTimer"><i class="fas fa-microphone"></i><div id="recordingTime" style="font-size:18px;font-weight:700;color:#fff;">00:00</div><div style="font-size:11px;opacity:0.6;margin-top:4px;">جاري التسجيل... اضغط للإيقاف</div></div>
+<div class="toast-msg" id="toastMsg">✅ تم</div>
+<script src="firebase-config.js"></script>
+<script>
+    let currentUser=null,allUsers={{}},chatUserId=null,mediaRecorder=null,audioChunks=[],recordingInterval=null,recordingSeconds=0;
+
+    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;const us=await db.ref('users').once('value');allUsers=us.val()||{{}};document.getElementById('loader').style.display='none';const params=new URLSearchParams(window.location.search);const targetUid=params.get('uid');if(targetUid){{openChat(targetUid)}}else{{showConvs()}}setInterval(()=>{{if(currentUser)db.ref('users/'+currentUser.uid+'/lastSeen').set(Date.now())}},60000)}});
+
+    function showConvs(){{document.getElementById('chatView').style.display='none';document.getElementById('convView').style.display='flex';chatUserId=null;loadConvs()}}
+    async function loadConvs(){{const cl=document.getElementById('convList');cl.innerHTML='';const snap=await db.ref('private_messages').once('value');const all=snap.val()||{{}};const found=new Set();Object.keys(all).forEach(cid=>{{const[u1,u2]=cid.split('_');const other=u1===currentUser.uid?u2:u2===currentUser.uid?u1:null;if(other&&!found.has(other)&&allUsers[other])found.add(other)}});if(!found.size){{cl.innerHTML='<div style="text-align:center;opacity:0.5;padding:40px">لا محادثات</div>';return}}found.forEach(uid=>{{const u=allUsers[uid];const d=document.createElement('div');d.className='conv-item';d.innerHTML=`<div class="chat-avatar"><img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}"></div><div><div style="font-weight:600">@${{u?.username||'?'}} ${{u?.isVerified?'<span style="color:#38bdf8;font-size:12px"><i class="fas fa-check-circle"></i></span>':''}}</div></div>`;d.onclick=()=>openChat(uid);cl.appendChild(d)}})}}
+    async function openChat(uid){{chatUserId=uid;const u=allUsers[uid];document.getElementById('chatName').innerText='@'+(u?.username||'مستخدم');document.getElementById('chatAvatar').innerHTML=`<img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}">`;document.getElementById('convView').style.display='none';document.getElementById('chatView').style.display='flex';db.ref('presence/'+uid).on('value',s=>{{const online=s.val();document.getElementById('chatOnline').innerHTML=online?'<span class="online-indicator"></span> نشط الآن':'آخر ظهور: '+formatTime(u?.lastSeen)}});await loadMsgs()}}
+    function getChatId(){{return[currentUser.uid,chatUserId].sort().join('_')}}
+
+    async function loadMsgs(){{const ml=document.getElementById('msgsList');ml.innerHTML='';if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const ms=snap.val()||{{}};Object.values(ms).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sent=m.senderId===currentUser.uid;const d=document.createElement('div');d.className='bubble '+(sent?'sent':'received');let content=m.text||'';if(m.type==='image'){{content=`<img src="${{m.imageUrl}}" onclick="window.open('${{m.imageUrl}}','_blank')" style="max-width:200px;border-radius:12px;cursor:pointer">`}}else if(m.type==='voice'){{content=`<audio controls controlsList="nodownload" style="max-width:200px;height:36px"><source src="${{m.audioUrl}}" type="audio/webm"></audio>`}}d.innerHTML=`${{content}}<div class="time">${{new Date(m.timestamp).toLocaleTimeString('ar-SA')}}</div>`;ml.appendChild(d)}});ml.scrollTop=ml.scrollHeight}}
+
+    async function sendMsg(){{const inp=document.getElementById('msgInput');const txt=inp.value.trim();if(!txt||!chatUserId)return;await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,text:txt,type:'text',timestamp:Date.now()}});inp.value='';await loadMsgs()}}
+
+    async function sendImage(){{if(!chatUserId)return;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async(e)=>{{const file=e.target.files[0];if(!file)return;showToast('⏳ جاري رفع الصورة...');const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);const res=await fetch(CLOUDINARY_UPLOAD_IMAGE_URL,{{method:'POST',body:fd}});const data=await res.json();if(data.secure_url){{await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,type:'image',imageUrl:data.secure_url,timestamp:Date.now()}});await loadMsgs()}}}};inp.click()}}
+
+    // 🎵 Voice Recording
+    async function toggleVoiceRecording() {{
+        const btn = document.getElementById('btnVoice');
+        const timer = document.getElementById('recordingTimer');
+        const timeDisplay = document.getElementById('recordingTime');
+        
+        if (mediaRecorder && mediaRecorder.state === 'recording') {{
+            mediaRecorder.stop();
+            btn.classList.remove('recording');
+            btn.innerHTML = '<i class="fas fa-microphone"></i>';
+            timer.classList.remove('show');
+            clearInterval(recordingInterval);
+            return;
+        }}
+        
+        try {{
+            const stream = await navigator.mediaDevices.getUserMedia({{ audio: true }});
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            
+            mediaRecorder.ondataavailable = (e) => {{
+                if (e.data.size > 0) audioChunks.push(e.data);
+            }};
+            
+            mediaRecorder.onstop = async () => {{
+                const audioBlob = new Blob(audioChunks, {{ type: 'audio/webm' }});
+                showToast('⏳ جاري رفع التسجيل الصوتي...');
+                const fd = new FormData();
+                fd.append('file', audioBlob, 'voice_message.webm');
+                fd.append('upload_preset', UPLOAD_PRESET);
+                try {{
+                    const res = await fetch(CLOUDINARY_UPLOAD_AUDIO_URL, {{ method: 'POST', body: fd }});
+                    const data = await res.json();
+                    if (data.secure_url) {{
+                        await db.ref('private_messages/' + getChatId()).push({{
+                            senderId: currentUser.uid,
+                            type: 'voice',
+                            audioUrl: data.secure_url,
+                            timestamp: Date.now()
+                        }});
+                        await loadMsgs();
+                        showToast('✅ تم إرسال التسجيل الصوتي');
+                    }}
+                }} catch(e) {{
+                    showToast('❌ فشل رفع التسجيل');
+                }}
+                stream.getTracks().forEach(t => t.stop());
+            }};
+            
+            mediaRecorder.start();
+            btn.classList.add('recording');
+            btn.innerHTML = '<i class="fas fa-stop"></i>';
+            timer.classList.add('show');
+            recordingSeconds = 0;
+            timeDisplay.innerText = '00:00';
+            recordingInterval = setInterval(() => {{
+                recordingSeconds++;
+                const mins = Math.floor(recordingSeconds / 60);
+                const secs = recordingSeconds % 60;
+                timeDisplay.innerText = `${{mins.toString().padStart(2, '0')}}:${{secs.toString().padStart(2, '0')}}`;
+            }}, 1000);
+            
+            timer.onclick = () => toggleVoiceRecording();
+            
+        }} catch(e) {{
+            showToast('❌ تعذر الوصول للميكروفون');
+            console.error(e);
+        }}
+    }}
+
+    async function copyChat(){{if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const msgs=snap.val()||{{}};let text='💬 محادثة MNAENCA\\n'+'─'.repeat(30)+'\\n';Object.values(msgs).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sender=m.senderId===currentUser.uid?'أنت':(allUsers[m.senderId]?.username||'مستخدم');let content=m.text||'';if(m.type==='image')content='[صورة]';else if(m.type==='voice')content='[تسجيل صوتي 🎵]';const time=new Date(m.timestamp).toLocaleTimeString('ar-SA');text+=`\\n${{sender}} (${{time}}):\\n${{content}}\\n`}});try{{await navigator.clipboard.writeText(text)}}catch(e){{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}}showToast('✅ تم نسخ المحادثة')}}
+    function showToast(msg){{const toast=document.getElementById('toastMsg');toast.innerText=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}}
+    function formatTime(ts){{if(!ts)return'غير معروف';const diff=Date.now()-ts;const mins=Math.floor(diff/60000);const hours=Math.floor(diff/3600000);const days=Math.floor(diff/86400000);if(mins<1)return'الآن';if(mins<60)return'منذ '+mins+' دقيقة';if(hours<24)return'منذ '+hours+' ساعة';if(days<7)return'منذ '+days+' يوم';return new Date(ts).toLocaleDateString('ar-SA')}}
+</script>
+</body>
+</html>"""
+
+# ═══════════════════════════════════════════════════════════
+# ☁️ 6-9. الملفات المتبقية
 # ═══════════════════════════════════════════════════════════
 
 def build_upload():
@@ -1802,68 +2025,11 @@ def build_upload():
         const pw=document.getElementById('progressWrap');pw.style.display='block';const pf=document.getElementById('progressFill');pf.style.width='0%';const pt=document.getElementById('progressText');pt.innerText='0%';
         const st=document.getElementById('status');st.innerHTML='';const btn=document.getElementById('uploadBtn');btn.disabled=true;
         const fd=new FormData();fd.append('file',selectedFile);fd.append('upload_preset',UPLOAD_PRESET);
-        const xhr=new XMLHttpRequest();xhr.open('POST','https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload');
+        const xhr=new XMLHttpRequest();xhr.open('POST',CLOUDINARY_UPLOAD_URL);
         xhr.upload.onprogress=e=>{{if(e.lengthComputable){{const p=Math.round(e.loaded/e.total*100);pf.style.width=p+'%';pt.innerText=p+'%'}}}};
         xhr.onload=async()=>{{const r=JSON.parse(xhr.responseText);await db.ref('videos/').push({{url:r.secure_url,thumbnail:r.secure_url.replace('.mp4','.jpg'),description:desc,music:music,sender:currentUser.uid,senderName:currentUserData?.username,likes:0,likedBy:{{}},comments:{{}},timestamp:Date.now()}});st.innerHTML='✅ تم الرفع بنجاح!';st.style.color='#4ade80';setTimeout(()=>window.location.href='index.html',1500)}};
         xhr.onerror=()=>{{st.innerHTML='❌ فشل الرفع';btn.disabled=false}};xhr.send(fd);
     }}
-</script>
-</body>
-</html>"""
-
-def build_chat():
-    return f"""<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>☁️ MNAENCA | دردشة</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        {COMMON_CSS}
-        body{{height:100vh;display:flex;flex-direction:column}}
-        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);background:rgba(2,6,23,0.8);backdrop-filter:blur(20px)}}
-        .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
-        .msgs{{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}}
-        .bubble{{max-width:80%;padding:10px 16px;border-radius:20px;word-break:break-word;font-size:14px;position:relative;animation:msgIn 0.3s ease}}
-        @keyframes msgIn{{from{{opacity:0;transform:translateY(10px)}}to{{opacity:1;transform:translateY(0)}}}}
-        .bubble.sent{{background:linear-gradient(135deg,var(--accent),var(--accent2));align-self:flex-end;color:#fff}}
-        .bubble.received{{background:rgba(14,165,233,0.06);align-self:flex-start;border:1px solid rgba(14,165,233,0.1)}}
-        .bubble img{{max-width:200px;border-radius:12px;cursor:pointer;margin-top:4px}}
-        .bubble .time{{font-size:9px;opacity:0.6;margin-top:4px}}
-        .input-bar{{display:flex;gap:10px;padding:12px;background:rgba(2,6,23,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center}}
-        .input-bar input{{flex:1;padding:12px 16px;border-radius:30px;background:var(--glass);border:1px solid var(--border);color:#fff;font-size:14px;outline:none}}
-        .btn-icon{{width:42px;height:42px;background:rgba(14,165,233,0.1);border:1px solid var(--border);border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
-        .btn-send{{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
-        .conv-item{{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--border);cursor:pointer}}
-        .conv-item:hover{{background:rgba(14,165,233,0.04)}}
-        .chat-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(14,165,233,0.3)}}
-        .chat-avatar img{{width:100%;height:100%;object-fit:cover}}
-        .online-indicator{{width:10px;height:10px;background:#22c55e;border-radius:50%;display:inline-block;margin-left:6px}}
-    </style>
-</head>
-<body>
-<div id="loader" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px"><div class="spinner"></div><span>☁️ تحميل...</span></div>
-<div id="convView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-comments"></i> المحادثات</h2></div><div id="convList" style="flex:1;overflow-y:auto"></div></div>
-<div id="chatView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="showConvs()"><i class="fas fa-arrow-right"></i></button><div class="chat-avatar" id="chatAvatar"></div><h3 id="chatName">محادثة</h3><span id="chatOnline" style="font-size:11px;opacity:0.5;margin-right:8px"></span></div><div class="msgs" id="msgsList"></div><div class="input-bar"><button class="btn-icon" onclick="sendImage()" title="إرسال صورة"><i class="fas fa-image"></i></button><input type="text" id="msgInput" placeholder="اكتب رسالة..." onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button><button class="btn-icon" onclick="copyChat()" title="نسخ المحادثة"><i class="fas fa-copy"></i></button></div></div>
-<div class="toast-msg" id="toastMsg">✅ تم</div>
-<script src="firebase-config.js"></script>
-<script>
-    let currentUser=null,allUsers={{}},chatUserId=null;
-    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;const us=await db.ref('users').once('value');allUsers=us.val()||{{}};document.getElementById('loader').style.display='none';const params=new URLSearchParams(window.location.search);const targetUid=params.get('uid');if(targetUid){{openChat(targetUid)}}else{{showConvs()}}setInterval(()=>{{if(currentUser)db.ref('users/'+currentUser.uid+'/lastSeen').set(Date.now())}},60000)}});
-    function showConvs(){{document.getElementById('chatView').style.display='none';document.getElementById('convView').style.display='flex';chatUserId=null;loadConvs()}}
-    async function loadConvs(){{const cl=document.getElementById('convList');cl.innerHTML='';const snap=await db.ref('private_messages').once('value');const all=snap.val()||{{}};const found=new Set();Object.keys(all).forEach(cid=>{{const[u1,u2]=cid.split('_');const other=u1===currentUser.uid?u2:u2===currentUser.uid?u1:null;if(other&&!found.has(other)&&allUsers[other])found.add(other)}});if(!found.size){{cl.innerHTML='<div style="text-align:center;opacity:0.5;padding:40px">لا محادثات</div>';return}}found.forEach(uid=>{{const u=allUsers[uid];const d=document.createElement('div');d.className='conv-item';d.innerHTML=`<div class="chat-avatar"><img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}"></div><div><div style="font-weight:600">@${{u?.username||'?'}} ${{u?.isVerified?'<span style="color:#38bdf8;font-size:12px"><i class="fas fa-check-circle"></i></span>':''}}</div></div>`;d.onclick=()=>openChat(uid);cl.appendChild(d)}})}}
-    async function openChat(uid){{chatUserId=uid;const u=allUsers[uid];document.getElementById('chatName').innerText='@'+(u?.username||'مستخدم');document.getElementById('chatAvatar').innerHTML=`<img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}">`;document.getElementById('convView').style.display='none';document.getElementById('chatView').style.display='flex';db.ref('presence/'+uid).on('value',s=>{{const online=s.val();document.getElementById('chatOnline').innerHTML=online?'<span class="online-indicator"></span> نشط الآن':'آخر ظهور: '+formatTime(u?.lastSeen)}});await loadMsgs()}}
-    function getChatId(){{return[currentUser.uid,chatUserId].sort().join('_')}}
-    async function loadMsgs(){{const ml=document.getElementById('msgsList');ml.innerHTML='';if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const ms=snap.val()||{{}};Object.values(ms).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sent=m.senderId===currentUser.uid;const d=document.createElement('div');d.className='bubble '+(sent?'sent':'received');d.innerHTML=`${{m.type==='image'?`<img src="${{m.imageUrl}}" onclick="window.open('${{m.imageUrl}}','_blank')">`:m.text}}<div class="time">${{new Date(m.timestamp).toLocaleTimeString('ar-SA')}}</div>`;ml.appendChild(d)}});ml.scrollTop=ml.scrollHeight}}
-    async function sendMsg(){{const inp=document.getElementById('msgInput');const txt=inp.value.trim();if(!txt||!chatUserId)return;await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,text:txt,type:'text',timestamp:Date.now()}});inp.value='';await loadMsgs()}}
-    async function sendImage(){{if(!chatUserId)return;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async(e)=>{{const file=e.target.files[0];if(!file)return;showToast('⏳ جاري رفع الصورة...');const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{{method:'POST',body:fd}});const data=await res.json();if(data.secure_url){{await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,type:'image',imageUrl:data.secure_url,timestamp:Date.now()}});await loadMsgs()}}}};inp.click()}}
-    async function copyChat(){{if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const msgs=snap.val()||{{}};let text='💬 محادثة MNAENCA\\n'+'─'.repeat(30)+'\\n';Object.values(msgs).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sender=m.senderId===currentUser.uid?'أنت':(allUsers[m.senderId]?.username||'مستخدم');const content=m.type==='image'?'[صورة]':m.text;const time=new Date(m.timestamp).toLocaleTimeString('ar-SA');text+=`\\n${{sender}} (${{time}}):\\n${{content}}\\n`}});try{{await navigator.clipboard.writeText(text)}}catch(e){{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}}showToast('✅ تم نسخ المحادثة')}}
-    function showToast(msg){{const toast=document.getElementById('toastMsg');toast.innerText=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}}
-    function formatTime(ts){{if(!ts)return'غير معروف';const diff=Date.now()-ts;const mins=Math.floor(diff/60000);const hours=Math.floor(diff/3600000);const days=Math.floor(diff/86400000);if(mins<1)return'الآن';if(mins<60)return'منذ '+mins+' دقيقة';if(hours<24)return'منذ '+hours+' ساعة';if(days<7)return'منذ '+days+' يوم';return new Date(ts).toLocaleDateString('ar-SA')}}
 </script>
 </body>
 </html>"""
@@ -1978,7 +2144,7 @@ def build_settings():
     <div class="setting-item" onclick="window.location.href='profile.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user"></i><span>تعديل الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
     <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-lock"></i><span>الخصوصية</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
     <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px">العربية</span></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">v2026.3 ☁️</span></div>
+    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">v2026.4 ☁️</span></div>
     <button class="btn-danger" onclick="if(confirm('تسجيل الخروج؟')){{auth.signOut();window.location.href='auth.html'}}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
 </div>
 <script src="firebase-config.js"></script>
@@ -1995,12 +2161,16 @@ def main():
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
 ║  ☁️  MNAENCA 2026 - SKY BLUE LUXURY EDITION  ✨      ║
-║     Ultimate Generator - 9 Files - 3000+ Lines           ║
+║     Ultimate Generator - 9 Files - 3500+ Lines           ║
 ║                                                          ║
 ║  💬 TikTok-Style Comments with Replies                ║
 ║  📤 Professional Share System                         ║
 ║  👤 Enhanced Profile with Video Grid                  ║
-║  💧 Watermark on Videos                               ║
+║  💧 Centered Watermark                                ║
+║  🎵 Voice Messages in Chat                            ║
+║  🖼️  Image Messages in Chat                           ║
+║  🎥 In-App Video Player in Profile                    ║
+║  🔒 Anti-Download Protection                          ║
 ║  🔥 Firebase: muvg-42126                              ║
 ║  ☁️ Cloudinary: dmqyd0haj                             ║
 ║                                                          ║
@@ -2009,7 +2179,6 @@ def main():
     
     section("BUILDING FILES - إنشاء الملفات")
     
-    # Clean output directory
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -2018,13 +2187,12 @@ def main():
     write("auth.html", build_auth())
     write("index.html", build_index())
     write("profile.html", build_profile())
-    write("upload.html", build_upload())
     write("chat.html", build_chat())
+    write("upload.html", build_upload())
     write("explore.html", build_explore())
     write("notifications.html", build_notifications())
     write("settings.html", build_settings())
     
-    # Copy to root for GitHub Pages
     for f in os.listdir(OUTPUT_DIR):
         src = os.path.join(OUTPUT_DIR, f)
         dst = os.path.join('.', f)
@@ -2043,23 +2211,23 @@ def main():
   📁 الملفات:
      1. firebase-config.js   → إعدادات Firebase + Cloudinary
      2. auth.html            → تسجيل دخول + اشتراك
-     3. index.html           → الرئيسية + تعليقات تيك توك + مشاركة
-     4. profile.html         → ملف شخصي محترف + شبكة فيديوهات
-     5. upload.html          → رفع فيديو
-     6. chat.html            → دردشة خاصة
+     3. index.html           → الرئيسية + تعليقات + مشاركة + علامة مائية وسطية
+     4. profile.html         → ملف شخصي + مشغل داخلي + منع السحب
+     5. chat.html            → دردشة + صور + تسجيلات صوتية 🎵
+     6. upload.html          → رفع فيديو
      7. explore.html         → استكشاف
      8. notifications.html   → صفحة الإشعارات
      9. settings.html        → إعدادات
 
-  ✨ المميزات الجديدة:
-     • 💬 تعليقات بتصميم تيك توك مع نظام ردود كامل
-     • 📤 لوحة مشاركة احترافية (8 منصات + نسخ + تضمين)
-     • 👤 ملف شخصي مطور مع شبكة فيديوهات 3 أعمدة
-     • 💧 علامة مائية MNAENCA على الفيديوهات
-     • 🎥 أنيميشن انزلاق الفيديو عند التمرير
-     • 🎥 مشغل فيديو احترافي داخلي
-     • 🔔 نظام إشعارات شغال 100%
-     • 🗑️ حذف فيديوهات من لوحة الأدمن
+  ✨ الإضافات الجديدة:
+     • 💧 علامة مائية MNAENCA في منتصف الفيديو
+     • 🎥 مشغل فيديو داخلي في الملف الشخصي (بدون فتح خارجي)
+     • 🔒 منع سحب وتحميل الفيديوهات (nodownload + oncontextmenu)
+     • 🎵 إرسال تسجيلات صوتية في الشات (Voice Messages)
+     • 🖼️  إرسال صور في الشات (Images)
+     • 💬 تعليقات تيك توك مع ردود
+     • 📤 مشاركة احترافية 8 منصات
+     • 🗑️ حذف فيديوهات من الأدمن
      • 🛡️ توثيق + حظر
 
   🔑 بيانات:
