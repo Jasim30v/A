@@ -1,6 +1,6 @@
 // ☁️ MNAENCA 2026 - Sky Blue Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: dmqyd0haj
-// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile + Voice Messages
+// ✨ PREMIUM: TikTok Comments + Share System + Left Watermark + Enhanced Profile + Voice Messages
 
 const firebaseConfig = {
     apiKey: "AIzaSyCqDvG98pEqmZHKZienquJEq6gS1kNjK8M",
