@@ -1,6 +1,6 @@
 // ☁️ MNAENCA 2026 - Sky Blue Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: dmqyd0haj
-// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
+// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile + Voice Messages
 
 const firebaseConfig = {
     apiKey: "AIzaSyCqDvG98pEqmZHKZienquJEq6gS1kNjK8M",
@@ -22,6 +22,8 @@ const db = firebase.database();
 const CLOUD_NAME = "dmqyd0haj";
 const UPLOAD_PRESET = "s3_gok";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
+const CLOUDINARY_UPLOAD_IMAGE_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+const CLOUDINARY_UPLOAD_AUDIO_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`;
 
 // ☁️ MNAENCA Settings
 const ADMIN_EMAILS = ['jasim28v@gmail.com'];
@@ -37,7 +39,7 @@ const COVER_COLORS = [
 
 // ☁️ App Info
 const APP_NAME = "MNAENCA";
-const APP_VERSION = "2026.3";
+const APP_VERSION = "2026.4";
 const PRIMARY_COLOR = "#0ea5e9";
 const SECONDARY_COLOR = "#38bdf8";
 const WATERMARK_TEXT = "☁️ MNAENCA";
