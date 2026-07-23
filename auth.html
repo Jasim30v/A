@@ -3,198 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | دخول</title>
+    <title>💜 VØID_X | دخول</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         
-    :root{
-        --glass:rgba(120,40,200,0.03);
-        --border:rgba(120,40,200,0.15);
-        --accent:#a855f7;
-        --accent2:#ec4899;
-        --bg:#050005;
-        --card:rgba(120,40,200,0.06);
-        --danger:#ef4444;
-        --success:#22c55e;
-        --warning:#f59e0b;
-        --glow:0 0 20px rgba(168,85,247,0.4), 0 0 40px rgba(236,72,153,0.2);
-        --glow-strong:0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(236,72,153,0.4);
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Cairo:wght@400;700&display=swap');
+    :root {
+        --neon: #ff007f;
+        --bg: #050002;
+        --glass: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.08);
+        --card: rgba(255, 255, 255, 0.05);
     }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-        font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-        background:var(--bg);
-        color:#f0e6ff;
-        -webkit-tap-highlight-color:transparent;
-        user-select:none;
-        -webkit-user-select:none;
-        letter-spacing:0.3px;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: var(--bg);
+        color: #fff;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+        overflow: hidden;
     }
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-    @keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
-    @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
-    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(168,85,247,0.3),0 0 35px rgba(236,72,153,0.2)}50%{box-shadow:0 0 40px rgba(168,85,247,0.7),0 0 70px rgba(236,72,153,0.5)}}
-    @keyframes borderGlow{0%,100%{border-color:rgba(168,85,247,0.3)}50%{border-color:rgba(236,72,153,0.6)}}
-    @keyframes textShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-    .spinner{
-        width:36px;height:36px;
-        border:3px solid rgba(168,85,247,0.2);
-        border-top-color:var(--accent);
-        border-radius:50%;
-        animation:spin 0.7s linear infinite;
-        margin:30px auto;
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes slideDown { from { transform: translateY(0); } to { transform: translateY(100%); } }
+    @keyframes scaleIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px var(--neon); } 50% { box-shadow: 0 0 40px var(--neon), 0 0 60px rgba(255,0,127,0.5); } }
+    @keyframes floatMark { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-20px, 40px); } }
+    .spinner {
+        width: 36px; height: 36px;
+        border: 3px solid rgba(255,0,127,0.2);
+        border-top-color: var(--neon);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        margin: 30px auto;
     }
-    .toast-msg{
-        position:fixed;bottom:120px;left:50%;transform:translateX(-50%);
-        background:rgba(5,0,5,0.95);padding:12px 24px;border-radius:30px;
-        z-index:10000;border:1px solid rgba(168,85,247,0.4);font-size:13px;
-        opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;
-        box-shadow:0 8px 32px rgba(168,85,247,0.3),0 0 20px rgba(236,72,153,0.2);
-        color:#f0e6ff;
+    .toast-msg {
+        position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%);
+        background: rgba(5,0,2,0.95); padding: 12px 24px; border-radius: 30px;
+        z-index: 10000; border: 1px solid rgba(255,0,127,0.4); font-size: 13px;
+        opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        box-shadow: 0 8px 32px rgba(255,0,127,0.2);
     }
-    .toast-msg.show{opacity:1}
-    .overlay{
-        position:fixed;inset:0;background:rgba(5,0,5,0.97);
-        backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
-        z-index:400;overflow-y:auto;
-        animation:fadeIn 0.3s ease;
+    .toast-msg.show { opacity: 1; }
+    .overlay {
+        position: fixed; inset: 0; background: rgba(5,0,2,0.97);
+        backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+        z-index: 400; overflow-y: auto;
+        animation: fadeIn 0.3s ease;
     }
-    .overlay-header{
-        display:flex;justify-content:space-between;align-items:center;
-        padding:16px 20px;border-bottom:1px solid var(--border);
-        position:sticky;top:0;background:rgba(5,0,5,0.9);
-        backdrop-filter:blur(20px);z-index:5;
+    .overlay-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        position: sticky; top: 0; background: rgba(5,0,2,0.9);
+        backdrop-filter: blur(20px); z-index: 5;
     }
-    .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;color:#e0d0ff}
-    .btn-close-overlay{
-        background:rgba(168,85,247,0.1);border:1px solid var(--border);
-        color:#e0d0ff;width:36px;height:36px;border-radius:50%;
-        display:flex;align-items:center;justify-content:center;
-        cursor:pointer;font-size:16px;transition:all 0.3s;
+    .overlay-header h3 { font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 8px; color: #fff; }
+    .btn-close-overlay {
+        background: rgba(255,0,127,0.1); border: 1px solid rgba(255,255,255,0.1);
+        color: #fff; width: 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 16px; transition: all 0.3s;
     }
-    .btn-close-overlay:hover{background:rgba(168,85,247,0.25);box-shadow:0 0 15px rgba(168,85,247,0.3)}
+    .btn-close-overlay:hover { background: rgba(255,0,127,0.25); box-shadow: 0 0 15px var(--neon); }
 
-        body{
-            min-height:100vh;
-            background:radial-gradient(ellipse at top, #1a0025, #0d0015, #050005);
-            display:flex;align-items:center;justify-content:center;
-            overflow:hidden;position:relative;
+        body {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at top, #1a000d, #0d0015, #050002);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; position: relative;
         }
-        .bg-orb{
-            position:fixed;border-radius:50%;filter:blur(130px);opacity:0.3;
-            animation:orbFloat 20s infinite alternate;pointer-events:none;
+        .bg-orb {
+            position: fixed; border-radius: 50%; filter: blur(130px); opacity: 0.3;
+            animation: orbFloat 20s infinite alternate; pointer-events: none;
         }
-        .bg-orb:nth-child(1){width:400px;height:400px;background:#a855f7;top:-100px;left:-100px}
-        .bg-orb:nth-child(2){width:350px;height:350px;background:#ec4899;bottom:-100px;right:-100px;animation-delay:5s}
-        .bg-orb:nth-child(3){width:300px;height:300px;background:#7c3aed;top:50%;left:50%;animation-delay:10s}
-        @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(50px,-50px) scale(1.3)}}
+        .bg-orb:nth-child(1) { width: 400px; height: 400px; background: var(--neon); top: -100px; left: -100px; }
+        .bg-orb:nth-child(2) { width: 350px; height: 350px; background: #ff00aa; bottom: -100px; right: -100px; animation-delay: 5s; }
+        .bg-orb:nth-child(3) { width: 300px; height: 300px; background: #ff007f; top: 50%; left: 50%; animation-delay: 10s; }
+        @keyframes orbFloat { 0% { transform: translate(0,0) scale(1) } 100% { transform: translate(50px,-50px) scale(1.3) } }
 
-        .card{
-            position:relative;z-index:1;width:90%;max-width:420px;
-            background:rgba(168,85,247,0.04);
-            backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
-            border-radius:32px;padding:36px 24px;
-            border:1.5px solid rgba(168,85,247,0.3);
-            box-shadow:0 30px 70px rgba(168,85,247,0.15),0 0 60px rgba(236,72,153,0.1),inset 0 0 30px rgba(168,85,247,0.03);
-            animation:fadeUp 0.8s ease;
+        .card {
+            position: relative; z-index: 1; width: 90%; max-width: 420px;
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(40px);
+            border-radius: 32px; padding: 36px 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 70px rgba(255,0,127,0.2), 0 0 60px rgba(255,0,127,0.1);
+            animation: fadeUp 0.8s ease;
         }
-        .logo{
-            width:70px;height:70px;margin:0 auto 20px;
-            background:linear-gradient(135deg, rgba(168,85,247,0.4), rgba(236,72,153,0.4));
-            border-radius:20px;display:flex;align-items:center;justify-content:center;
-            font-size:36px;border:1.5px solid rgba(168,85,247,0.3);
-            animation:glowPulse 3s ease-in-out infinite;
-            box-shadow:0 0 30px rgba(168,85,247,0.5),0 0 50px rgba(236,72,153,0.3);
+        .logo {
+            width: 70px; height: 70px; margin: 0 auto 20px;
+            background: linear-gradient(135deg, rgba(255,0,127,0.4), rgba(255,0,170,0.4));
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 36px; border: 1px solid rgba(255,0,127,0.3);
+            animation: glowPulse 3s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(255,0,127,0.5);
         }
-        h1{
-            text-align:center;font-size:36px;font-weight:900;
-            background:linear-gradient(135deg, #c084fc, #e879f9, #f472b6);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            margin-bottom:4px;
-            animation:textShimmer 3s linear infinite;
-            background-size:200% auto;
+        h1 {
+            text-align: center; font-size: 36px; font-weight: 900;
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
         }
-        .sub{text-align:center;color:rgba(240,230,255,0.5);font-size:13px;margin-bottom:20px}
+        .sub { text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 20px; }
+        .tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.05); border-radius: 40px; padding: 4px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); }
+        .tab { flex: 1; padding: 12px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; border-radius: 40px; font-size: 14px; transition: all 0.3s; font-weight: 500; }
+        .tab.active { background: linear-gradient(135deg, #ff007f, #ff00aa); color: #fff; box-shadow: 0 8px 25px rgba(255,0,127,0.5); }
 
-        .tabs{display:flex;gap:4px;background:rgba(168,85,247,0.08);border-radius:40px;padding:4px;margin-bottom:24px;border:1px solid rgba(168,85,247,0.1)}
-        .tab{flex:1;padding:12px;background:none;border:none;color:rgba(240,230,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:500}
-        .tab.active{background:linear-gradient(135deg, #a855f7, #ec4899);color:#fff;box-shadow:0 8px 25px rgba(168,85,247,0.5),0 0 40px rgba(236,72,153,0.3)}
+        .form { display: none; animation: fadeIn 0.4s ease; }
+        .form.active { display: block; }
 
-        .form{display:none;animation:fadeIn 0.4s ease}
-        .form.active{display:block}
-
-        input{
-            width:100%;padding:15px 18px;margin:8px 0;
-            border-radius:50px;background:rgba(168,85,247,0.05);
-            border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff;
-            font-size:14px;outline:none;transition:all 0.4s;
+        input {
+            width: 100%; padding: 15px 18px; margin: 8px 0;
+            border-radius: 50px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15); color: #fff;
+            font-size: 14px; outline: none; transition: all 0.4s;
         }
-        input:focus{border-color:rgba(168,85,247,0.7);box-shadow:0 0 25px rgba(168,85,247,0.2),0 0 10px rgba(236,72,153,0.1);background:rgba(168,85,247,0.1)}
-        input::placeholder{color:rgba(240,230,255,0.3)}
+        input:focus { border-color: var(--neon); box-shadow: 0 0 25px rgba(255,0,127,0.3); background: rgba(255,255,255,0.08); }
+        input::placeholder { color: rgba(255,255,255,0.3); }
 
-        button{
-            width:100%;padding:15px;margin-top:18px;
-            background:linear-gradient(135deg, #a855f7, #ec4899);
-            border:none;border-radius:50px;color:#fff;
-            font-weight:bold;font-size:15px;cursor:pointer;
-            transition:all 0.3s;box-shadow:0 10px 35px rgba(168,85,247,0.5),0 0 50px rgba(236,72,153,0.3);
-            letter-spacing:0.5px;
+        button {
+            width: 100%; padding: 15px; margin-top: 18px;
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            border: none; border-radius: 50px; color: #fff;
+            font-weight: bold; font-size: 15px; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 10px 35px rgba(255,0,127,0.5);
+            letter-spacing: 0.5px;
         }
-        button:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(168,85,247,0.7),0 0 70px rgba(236,72,153,0.5)}
-        button:active{transform:scale(0.97)}
-        button:disabled{opacity:0.5;pointer-events:none}
+        button:hover { transform: translateY(-2px); box-shadow: 0 20px 50px rgba(255,0,127,0.7); }
+        button:active { transform: scale(0.97); }
+        button:disabled { opacity: 0.5; pointer-events: none; }
 
-        .msg{text-align:center;color:#fca5a5;font-size:13px;margin-top:12px;min-height:20px}
-        .msg.success{color:#4ade80}
+        .msg { text-align: center; color: #fca5a5; font-size: 13px; margin-top: 12px; min-height: 20px; }
+        .msg.success { color: #4ade80; }
     </style>
 </head>
 <body>
     <div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div>
-
     <div class="card">
-        <div class="logo">🌑</div>
-        <h1>MNAENCA</h1>
-        <p class="sub">Dark Purple Luxury 2026 ✨</p>
-
+        <div class="logo">💜</div>
+        <h1>VØID_X</h1>
+        <p class="sub">Neon Glass Luxury 2026 ✨</p>
         <div class="tabs">
             <button class="tab active" id="tabLogin" onclick="switchTab('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
             <button class="tab" id="tabRegister" onclick="switchTab('register')"><i class="fas fa-user-plus"></i> اشتراك</button>
         </div>
-
         <div id="formLogin" class="form active">
             <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
             <input type="password" id="loginPass" placeholder="🔒 كلمة المرور" autocomplete="current-password">
             <button id="btnLogin" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول</button>
             <div class="msg" id="loginMsg"></div>
         </div>
-
         <div id="formRegister" class="form">
-            <input type="text" id="regName" placeholder="👤 اسم المستخدم" autocomplete="username">
+            <input type="text" id="regName" placeholder="👤 اسم المستخدم">
             <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
             <input type="password" id="regPass" placeholder="🔒 كلمة المرور (6 أحرف على الأقل)" autocomplete="new-password">
             <button id="btnRegister" onclick="doRegister()"><i class="fas fa-heart"></i> إنشاء حساب</button>
             <div class="msg" id="regMsg"></div>
         </div>
     </div>
-
     <script src="firebase-config.js"></script>
     <script>
-        function switchTab(type){
+        function switchTab(type) {
             document.getElementById('tabLogin').classList.remove('active');
             document.getElementById('tabRegister').classList.remove('active');
             document.getElementById('formLogin').classList.remove('active');
             document.getElementById('formRegister').classList.remove('active');
             document.getElementById('loginMsg').innerText = '';
             document.getElementById('regMsg').innerText = '';
-            if(type === 'login'){
+            if(type === 'login') {
                 document.getElementById('tabLogin').classList.add('active');
                 document.getElementById('formLogin').classList.add('active');
             } else {
@@ -203,12 +189,12 @@
             }
         }
 
-        async function doLogin(){
+        async function doLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPass').value;
             const msg = document.getElementById('loginMsg');
             const btn = document.getElementById('btnLogin');
-            if(!email || !password){ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
+            if(!email || !password) { msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
             btn.disabled = true; btn.innerHTML = '⏳ جاري الدخول...'; msg.innerText = ''; msg.className = 'msg';
             try {
                 await auth.signInWithEmailAndPassword(email, password);
@@ -225,16 +211,16 @@
             }
         }
 
-        async function doRegister(){
+        async function doRegister() {
             const username = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPass').value;
             const msg = document.getElementById('regMsg');
             const btn = document.getElementById('btnRegister');
-            if(!username || !email || !password){ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
-            if(username.length < 3){ msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }
-            if(password.length < 6){ msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }
-            if(!email.includes('@') || !email.includes('.')){ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }
+            if(!username || !email || !password) { msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }
+            if(username.length < 3) { msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }
+            if(password.length < 6) { msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }
+            if(!email.includes('@') || !email.includes('.')) { msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }
             btn.disabled = true; btn.innerHTML = '⏳ جاري إنشاء الحساب...'; msg.innerText = ''; msg.className = 'msg';
             try {
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
@@ -260,8 +246,8 @@
                     case 'auth/email-already-in-use': msg.innerText = '❌ البريد الإلكتروني مستخدم بالفعل'; break;
                     case 'auth/weak-password': msg.innerText = '❌ كلمة المرور ضعيفة جداً'; break;
                     case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
-                    case 'auth/operation-not-allowed': msg.innerText = '❌ التسجيل غير مفعل، راجع إعدادات Firebase'; break;
-                    default: msg.innerText = '❌ خطأ: ' + (error.message || 'غير معروف');
+                    case 'auth/operation-not-allowed': msg.innerText = '❌ التسجيل غير مفعل'; break;
+                    default: msg.innerText = '❌ خطأ: ' + error.message;
                 }
             }
         }
@@ -280,7 +266,7 @@
             if(user) { window.location.replace('index.html'); }
         });
 
-        console.log('🌑 MNAENCA Auth Ready');
+        console.log('💜 VØID_X Auth Ready');
     </script>
 </body>
 </html>
