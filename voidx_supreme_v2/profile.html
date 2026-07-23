@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>💜 VØID_X | ملفي</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Cairo:wght@400;700&display=swap');
+    :root {
+        --neon: #ff007f;
+        --bg: #050002;
+        --glass: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.08);
+        --card: rgba(255, 255, 255, 0.05);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: var(--bg);
+        color: #fff;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px var(--neon); } 50% { box-shadow: 0 0 40px var(--neon), 0 0 60px rgba(255,0,127,0.5); } }
+    @keyframes floatMark { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-20px, 40px); } }
+    .spinner {
+        width: 36px; height: 36px;
+        border: 3px solid rgba(255,0,127,0.2);
+        border-top-color: var(--neon);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        margin: 30px auto;
+    }
+    .toast-msg {
+        position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%);
+        background: rgba(5,0,2,0.95); padding: 12px 24px; border-radius: 30px;
+        z-index: 10000; border: 1px solid rgba(255,0,127,0.4); font-size: 13px;
+        opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        box-shadow: 0 8px 32px rgba(255,0,127,0.2);
+    }
+    .toast-msg.show { opacity: 1; }
+    .overlay {
+        position: fixed; inset: 0; background: rgba(5,0,2,0.97);
+        backdrop-filter: blur(40px); z-index: 400; overflow-y: auto;
+        animation: fadeIn 0.3s ease;
+    }
+    .btn-close-overlay {
+        background: rgba(255,0,127,0.1); border: 1px solid rgba(255,255,255,0.1);
+        color: #fff; width: 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 16px; transition: all 0.3s;
+    }
+
+        body { min-height: 100vh; overflow-y: auto; }
+        .cover-section { position: relative; width: 100%; height: 260px; overflow: hidden; background: linear-gradient(135deg, #1a000d, #2d0020); }
+        .cover-img { width: 100%; height: 130%; object-fit: cover; }
+        .cover-gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(5,0,2,0.5) 60%, rgba(5,0,2,0.97) 100%); }
+        .avatar-wrap { display: flex; justify-content: center; margin-top: -60px; z-index: 2; position: relative; }
+        .avatar-lg {
+            width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            padding: 3px; box-shadow: 0 0 35px rgba(255,0,127,0.5);
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+        .avatar-lg img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid var(--bg); }
+        .profile-info { padding: 20px; text-align: center; }
+        .username { font-size: 22px; font-weight: 800; color: #fff; }
+        .stats-row { display: flex; justify-content: center; gap: 30px; margin: 15px; padding: 18px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .stat-item { text-align: center; }
+        .stat-val { font-size: 20px; font-weight: 700; color: var(--neon); }
+        .videos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; padding: 0 8px 100px; }
+        .video-grid-item { aspect-ratio: 9/16; background: #000; overflow: hidden; border-radius: 4px; cursor: pointer; }
+        .video-grid-item img { width: 100%; height: 100%; object-fit: cover; }
+        .btn {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px; border-radius: 25px; color: #fff; cursor: pointer; font-size: 13px;
+            transition: all 0.3s; margin: 5px;
+        }
+        .btn-primary { background: linear-gradient(135deg, #ff007f, #ff00aa); border: none; font-weight: 700; box-shadow: 0 0 20px rgba(255,0,127,0.4); }
+        .btn-danger { background: rgba(255,0,0,0.2); border-color: #ff0000; color: #ff4444; }
+        .btn-success { background: rgba(0,255,0,0.2); border-color: #00ff00; color: #4ade80; }
+        .admin-panel {
+            padding: 20px 8px; margin: 0 8px 100px 8px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 20px; text-align: center;
+        }
+        .admin-section {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 16px; margin-bottom: 16px;
+        }
+        .admin-user-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            gap: 10px;
+        }
+        .admin-actions { display: flex; gap: 8px; }
+        .admin-actions button {
+            padding: 6px 12px; border-radius: 15px; font-size: 11px; border: none; cursor: pointer;
+            font-weight: bold;
+        }
+        .verify-btn { background: #4ade80; color: #000; }
+        .ban-btn { background: #ff4444; color: #fff; }
+        .unban-btn { background: #fbbf24; color: #000; }
+        .delete-btn { background: #ff0000; color: #fff; }
+    </style>
+</head>
+<body>
+<div id="loader" style="display:flex;align-items:center;justify-content:center;min-height:80vh;"><div class="spinner"></div></div>
+<div id="content" style="display:none">
+    <div class="cover-section" id="coverSection"><img class="cover-img" id="coverImg" src="" style="display:none"><div class="cover-gradient"></div></div>
+    <button onclick="window.location.href='index.html'" style="position:fixed;top:20px;right:20px;z-index:50;background:rgba(0,0,0,0.5);width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:16px;"><i class="fas fa-home"></i></button>
+    <div class="avatar-wrap"><div class="avatar-lg"><img id="avatarImg" src=""></div></div>
+    <div class="profile-info">
+        <div class="username" id="nameDisplay"></div>
+        <div class="bio-text" id="bioDisplay" style="opacity:0.7"></div>
+    </div>
+    <div class="stats-row">
+        <div class="stat-item"><div class="stat-val" id="statFollowing">0</div><div class="stat-lbl">يتابع</div></div>
+        <div class="stat-item"><div class="stat-val" id="statFollowers">0</div><div class="stat-lbl">متابع</div></div>
+        <div class="stat-item"><div class="stat-val" id="statLikes">0</div><div class="stat-lbl">إعجابات</div></div>
+    </div>
+    <div style="text-align:center" id="actionsBar"></div>
+    <div class="videos-grid" id="videosGrid"></div>
+    <div id="adminDashboard" style="display:none"></div>
+</div>
+<div class="toast-msg" id="toastMsg">✅ تم</div>
+
+<script src="firebase-config.js"></script>
+<script>
+    let profileUserId = null, currentUser = null, allVideos = [], allUsers = {}, isOwnProfile = false, isAdmin = false;
+
+    auth.onAuthStateChanged(async u => {
+        if(!u) { window.location.href = 'auth.html'; return; }
+        currentUser = u;
+        const params = new URLSearchParams(window.location.search);
+        profileUserId = params.get('uid') || u.uid;
+        isOwnProfile = (profileUserId === u.uid);
+        isAdmin = ADMIN_EMAILS.includes(u.email);
+        
+        await loadAll(); await loadProfile();
+        
+        if(isOwnProfile && isAdmin) {
+            document.getElementById('adminDashboard').style.display = 'block';
+            loadAdminPanel();
+        }
+        
+        document.getElementById('loader').style.display = 'none'; 
+        document.getElementById('content').style.display = 'block';
+    });
+
+    async function loadAll() {
+        const us = await db.ref('users').once('value'); allUsers = us.val() || {};
+        const vs = await db.ref('videos').once('value'); 
+        allVideos = Object.entries(vs.val() || {}).map(([k, v]) => ({id: k, ...v}));
+    }
+
+    async function loadProfile() {
+        const u = allUsers[profileUserId];
+        if(!u) return;
+        document.getElementById('nameDisplay').innerHTML = '@' + (u.username || 'مستخدم') + (u.isVerified ? ' <i class="fas fa-check-circle" style="color:#ff007f"></i>' : '');
+        document.getElementById('bioDisplay').innerText = u.bio || 'VØID_X Member';
+        document.getElementById('statFollowing').innerText = Object.keys(u.following || {}).length;
+        document.getElementById('statFollowers').innerText = Object.keys(u.followers || {}).length;
+        const uvs = allVideos.filter(v => v.sender === profileUserId);
+        document.getElementById('statLikes').innerText = uvs.reduce((s, v) => s + (v.likes || 0), 0);
+        if(u.coverImageUrl) { document.getElementById('coverImg').src = u.coverImageUrl; document.getElementById('coverImg').style.display = 'block'; }
+        else { document.getElementById('coverSection').style.background = u.coverColor || COVER_COLORS[0]; }
+        document.getElementById('avatarImg').src = u.avatarUrl || (DICEBEAR_URL + '?seed=' + profileUserId);
+        const grid = document.getElementById('videosGrid');
+        grid.innerHTML = uvs.length ? uvs.map(v => `<div class="video-grid-item" onclick="window.open('${v.url}','_blank')">${v.thumbnail ? `<img src="${v.thumbnail}">` : ''}</div>`).join('') : '<div style="grid-column:1/-1;text-align:center;padding:40px;opacity:0.5">لا فيديوهات</div>';
+        if(isOwnProfile) {
+            document.getElementById('actionsBar').innerHTML = `<button class="btn btn-primary" onclick="window.location.href='settings.html'"><i class="fas fa-cog"></i> إعدادات</button><button class="btn" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</button>`;
+        }
+    }
+
+    function loadAdminPanel() {
+        const adminDiv = document.getElementById('adminDashboard');
+        const totalUsers = Object.keys(allUsers).length;
+        const totalVideos = allVideos.length;
+        const verifiedUsers = Object.values(allUsers).filter(u => u.isVerified).length;
+        const bannedUsers = Object.values(allUsers).filter(u => u.banned).length;
+
+        let usersHTML = Object.entries(allUsers).slice(0, 20).map(([uid, u]) => `
+            <div class="admin-user-item">
+                <div style="display:flex;align-items:center;gap:10px;flex:1">
+                    <img src="${u.avatarUrl || (DICEBEAR_URL + '?seed=' + uid)}" style="width:35px;height:35px;border-radius:50%">
+                    <div>
+                        <div style="font-weight:600">@${u.username || 'مستخدم'} ${u.isVerified ? '<span style="color:#4ade80"><i class="fas fa-check-circle"></i></span>' : ''} ${u.banned ? '<span style="color:#ff4444">(محظور)</span>' : ''}</div>
+                        <div style="font-size:11px;opacity:0.6">${u.email || ''}</div>
+                    </div>
+                </div>
+                <div class="admin-actions">
+                    ${!u.isVerified ? `<button class="verify-btn" onclick="verifyUser('${uid}')"><i class="fas fa-check"></i> توثيق</button>` : ''}
+                    ${u.banned ? `<button class="unban-btn" onclick="unbanUser('${uid}')"><i class="fas fa-unlock"></i> فك حظر</button>` : `<button class="ban-btn" onclick="banUser('${uid}')"><i class="fas fa-ban"></i> حظر</button>`}
+                </div>
+            </div>
+        `).join('');
+
+        let videosHTML = allVideos.slice(0, 10).map(v => `
+            <div class="admin-user-item">
+                <video src="${v.url}" style="width:50px;height:70px;object-fit:cover;border-radius:8px"></video>
+                <span style="flex:1;font-size:13px">${(v.description||'بدون وصف').substring(0,40)}</span>
+                <button class="delete-btn" onclick="deleteVideo('${v.id}')"><i class="fas fa-trash"></i> حذف</button>
+            </div>
+        `).join('');
+
+        adminDiv.innerHTML = `
+            <div class="admin-panel">
+                <h2 style="color:var(--neon);text-align:center;font-family:'Orbitron';text-shadow:0 0 15px var(--neon);">👑 ADMIN DASHBOARD</h2>
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;">
+                    <div class="stat-card"><div style="font-size:28px;color:var(--neon);font-family:'Orbitron'">${totalUsers}</div><div style="opacity:0.6">👥 مستخدمين</div></div>
+                    <div class="stat-card"><div style="font-size:28px;color:var(--neon);font-family:'Orbitron'">${totalVideos}</div><div style="opacity:0.6">🎬 فيديوهات</div></div>
+                    <div class="stat-card"><div style="font-size:28px;color:var(--neon);font-family:'Orbitron'">${verifiedUsers}</div><div style="opacity:0.6">✅ موثقين</div></div>
+                    <div class="stat-card"><div style="font-size:28px;color:var(--neon);font-family:'Orbitron'">${bannedUsers}</div><div style="opacity:0.6">🚫 محظورين</div></div>
+                </div>
+                <div class="admin-section"><h3 style="color:var(--neon)"><i class="fas fa-users-cog"></i> إدارة المستخدمين</h3>${usersHTML}</div>
+                <div class="admin-section"><h3 style="color:var(--neon)"><i class="fas fa-video"></i> آخر الفيديوهات</h3>${videosHTML}</div>
+            </div>
+        `;
+    }
+
+    window.verifyUser = async (uid) => { if(confirm('توثيق هذا المستخدم؟')) { await db.ref('users/' + uid + '/isVerified').set(true); showToast('✅ تم التوثيق'); loadAll().then(loadProfile); } };
+    window.banUser = async (uid) => { if(confirm('حظر هذا المستخدم؟')) { await db.ref('users/' + uid + '/banned').set(true); showToast('🚫 تم الحظر'); loadAll().then(loadProfile); } };
+    window.unbanUser = async (uid) => { if(confirm('فك حظر هذا المستخدم؟')) { await db.ref('users/' + uid + '/banned').set(false); showToast('✅ تم فك الحظر'); loadAll().then(loadProfile); } };
+    window.deleteVideo = async (id) => { if(confirm('حذف الفيديو نهائياً؟')) { await db.ref('videos/' + id).remove(); showToast('🗑️ تم الحذف'); loadAll().then(loadProfile); } };
+
+    function showToast(msg) { const t=document.getElementById('toastMsg'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+</script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>💜 VØID_X | الرئيسية</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Cairo:wght@400;700&display=swap');
+    :root {
+        --neon: #ff007f;
+        --bg: #050002;
+        --glass: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.08);
+        --card: rgba(255, 255, 255, 0.05);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: var(--bg);
+        color: #fff;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px var(--neon); } 50% { box-shadow: 0 0 40px var(--neon), 0 0 60px rgba(255,0,127,0.5); } }
+    @keyframes floatMark { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-20px, 40px); } }
+    .spinner {
+        width: 36px; height: 36px;
+        border: 3px solid rgba(255,0,127,0.2);
+        border-top-color: var(--neon);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        margin: 30px auto;
+    }
+    .toast-msg {
+        position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%);
+        background: rgba(5,0,2,0.95); padding: 12px 24px; border-radius: 30px;
+        z-index: 10000; border: 1px solid rgba(255,0,127,0.4); font-size: 13px;
+        opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        box-shadow: 0 8px 32px rgba(255,0,127,0.2);
+    }
+    .toast-msg.show { opacity: 1; }
+    .overlay {
+        position: fixed; inset: 0; background: rgba(5,0,2,0.97);
+        backdrop-filter: blur(40px); z-index: 400; overflow-y: auto;
+        animation: fadeIn 0.3s ease;
+    }
+    .btn-close-overlay {
+        background: rgba(255,0,127,0.1); border: 1px solid rgba(255,255,255,0.1);
+        color: #fff; width: 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 16px; transition: all 0.3s;
+    }
+
+        body { height: 100vh; }
+
+        #loaderScreen {
+            position: fixed; inset: 0; z-index: 9999;
+            background: radial-gradient(ellipse at top, #1a000d, #0d0015, #050002);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 16px;
+        }
+        .spinner-big {
+            width: 50px; height: 50px;
+            border: 4px solid rgba(255,0,127,0.2);
+            border-top-color: var(--neon);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        #mainApp { display: none; height: 100vh; position: relative; }
+
+        header {
+            position: fixed; top: 25px; left: 20px; right: 20px; z-index: 500;
+            display: flex; justify-content: space-between; align-items: center;
+            pointer-events: none;
+        }
+        .brand-box {
+            padding: 8px 22px; border-radius: 20px;
+            border-left: 4px solid var(--neon);
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            pointer-events: auto;
+        }
+        .brand-name {
+            font-family: 'Orbitron', sans-serif; font-weight: 900;
+            letter-spacing: 2px; color: #fff;
+            text-shadow: 0 0 15px var(--neon);
+        }
+        .clock {
+            font-family: 'Orbitron', sans-serif; font-size: 11px;
+            color: rgba(255,255,255,0.8); padding: 6px 16px;
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(10px);
+        }
+
+        .videos-wrap {
+            height: 100vh; overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .videos-wrap::-webkit-scrollbar { display: none; }
+        .vid-card {
+            height: 100vh; width: 100vw; scroll-snap-align: start;
+            scroll-snap-stop: always; position: relative; overflow: hidden;
+            background: #000;
+        }
+        .vid-card video {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transform: translateY(60px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+        }
+        .vid-card.active video { opacity: 1; transform: translateY(0); }
+
+        .watermark-overlay {
+            position: absolute; top: 20%; right: 10%;
+            font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+            color: rgba(255,255,255,0.15); z-index: 20;
+            letter-spacing: 4px; animation: floatMark 10s infinite;
+            text-shadow: 0 0 5px var(--neon);
+        }
+
+        .side-actions {
+            position: absolute; left: 20px; bottom: 180px;
+            display: flex; flex-direction: column; gap: 15px; z-index: 100;
+        }
+        .action-btn {
+            width: 55px; height: 55px; border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .action-btn i {
+            font-size: 1.3rem; color: var(--neon);
+            filter: drop-shadow(0 0 8px var(--neon)); transition: 0.3s;
+        }
+        .btn-label {
+            font-size: 9px; font-weight: bold; margin-top: 2px;
+            color: #fff; opacity: 0.7; font-family: 'Orbitron', sans-serif;
+        }
+        .action-btn.liked i { color: #fff; filter: drop-shadow(0 0 15px var(--neon)); animation: likePop 0.4s ease; }
+        @keyframes likePop {
+            0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); }
+        }
+
+        /* ===== UPDATED BOTTOM NAV ===== */
+        nav {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 450px; height: 70px; border-radius: 35px;
+            background: rgba(5, 0, 10, 0.5); backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 200; padding: 0 5px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 0, 127, 0.1);
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 4px; cursor: pointer;
+            transition: all 0.3s ease; padding: 10px 12px; border-radius: 20px;
+            position: relative; color: rgba(255, 255, 255, 0.5);
+            min-width: 55px; text-decoration: none;
+        }
+        .nav-item i {
+            font-size: 1.5rem; transition: all 0.3s ease;
+            filter: drop-shadow(0 0 5px transparent);
+        }
+        .nav-item span {
+            font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+            font-family: 'Orbitron', sans-serif; transition: all 0.3s ease;
+        }
+        .nav-item.active {
+            color: var(--neon);
+            text-shadow: 0 0 15px var(--neon);
+        }
+        .nav-item.active i {
+            filter: drop-shadow(0 0 10px var(--neon));
+        }
+        .nav-item.active span {
+            opacity: 1;
+        }
+        /* Center Upload Button */
+        #upload-nav-btn {
+            background: var(--neon); box-shadow: 0 0 30px var(--neon);
+            cursor: pointer; width: 65px; height: 65px; border-radius: 22px;
+            display: flex; align-items: center; justify-content: center;
+            transform: translateY(-18px); border: 4px solid var(--bg);
+            color: #fff; font-size: 1.6rem; transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+        #upload-nav-btn:hover {
+            box-shadow: 0 0 45px var(--neon); transform: translateY(-20px) scale(1.05);
+        }
+        #upload-nav-btn i {
+            filter: drop-shadow(0 0 10px #fff);
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute; top: 0; right: 5px;
+            background: #ff0040; color: #fff; font-size: 9px;
+            font-weight: bold; width: 18px; height: 18px;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; border: 2px solid var(--bg);
+            box-shadow: 0 0 10px rgba(255, 0, 64, 0.7);
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loaderScreen">
+    <div class="spinner-big"></div>
+    <p style="color: rgba(255,255,255,0.5); font-size: 15px; font-family: 'Orbitron';">💜 VØID_X LOADING...</p>
+</div>
+
+<div id="mainApp">
+    <header>
+        <div class="brand-box"><span class="brand-name">VØID_X</span></div>
+        <div class="clock" id="clock">00:00:00</div>
+    </header>
+
+    <div class="videos-wrap" id="videosWrap">
+        <div style="display: flex; align-items: center; justify-content: center; height: 100vh; color: rgba(255,255,255,0.5); flex-direction: column; gap: 12px;">
+            <i class="fas fa-video" style="font-size: 48px; opacity: 0.3; color: var(--neon);"></i>
+            <p>لا توجد فيديوهات بعد</p>
+            <p style="font-size: 12px; opacity: 0.5;">ارفع أول فيديو! 💜</p>
+        </div>
+    </div>
+
+    <!-- Fullscreen Player -->
+    <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
+        <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
+        <video id="fullscreenVideo" controls playsinline></video>
+    </div>
+
+    <!-- Share Panel -->
+    <div class="share-panel" id="sharePanel">
+        <h3 style="text-align:center;margin-bottom:15px;color:var(--neon)"><i class="fas fa-share-alt"></i> مشاركة</h3>
+        <div class="share-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
+            <div class="share-item" onclick="shareTo('whatsapp')"><div class="share-icon" style="width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(37,211,102,0.15);color:#25D366;margin:0 auto;"><i class="fab fa-whatsapp"></i></div><span style="font-size:11px;">WhatsApp</span></div>
+            <div class="share-item" onclick="shareTo('telegram')"><div class="share-icon" style="width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(0,136,204,0.15);color:#0088cc;margin:0 auto;"><i class="fab fa-telegram"></i></div><span style="font-size:11px;">Telegram</span></div>
+            <div class="share-item" onclick="shareTo('facebook')"><div class="share-icon" style="width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(24,119,242,0.15);color:#1877F2;margin:0 auto;"><i class="fab fa-facebook"></i></div><span style="font-size:11px;">Facebook</span></div>
+            <div class="share-item" onclick="shareTo('copy')"><div class="share-icon" style="width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,0,127,0.15);color:#ff007f;margin:0 auto;"><i class="fas fa-link"></i></div><span style="font-size:11px;">نسخ الرابط</span></div>
+        </div>
+        <div style="display:flex;gap:8px;background:rgba(255,255,255,0.05);border-radius:16px;padding:8px;border:1px solid rgba(255,255,255,0.1);">
+            <input type="text" id="shareUrlInput" value="" readonly dir="ltr" style="flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;outline:none;">
+            <button onclick="shareTo('copy')" style="background:linear-gradient(135deg, #ff007f, #ff00aa);border:none;color:#fff;padding:12px 20px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 0 20px rgba(255,0,127,0.4);"><i class="fas fa-copy"></i> نسخ</button>
+        </div>
+    </div>
+    <div class="overlay" id="shareOverlay" style="display:none;z-index:499" onclick="closeSharePanel()"></div>
+
+    <!-- Comments Panel -->
+    <div class="comments-panel" id="commentsPanel" style="position:fixed;bottom:0;left:0;right:0;background:rgba(5,0,2,0.98);backdrop-filter:blur(40px);border-top:2px solid var(--neon);border-radius:24px 24px 0 0;z-index:500;max-height:70vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);">
+        <div class="comments-header" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.1);">
+            <h3 style="color:#fff"><i class="fas fa-comments" style="color:var(--neon)"></i> التعليقات <span id="commentsCount" style="font-size:13px;opacity:0.5"></span></h3>
+            <button class="btn-close-overlay" onclick="closeCommentsPanel()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="comments-list" id="commentsList" style="flex:1;overflow-y:auto;padding:12px 16px;"></div>
+        <div class="comment-input-row" style="display:flex;gap:8px;padding:12px 16px;border-top:1px solid rgba(255,255,255,0.1);background:rgba(5,0,2,0.95);">
+            <input type="text" id="commentInput" placeholder="أضف تعليقاً..." onkeydown="if(event.key==='Enter')addComment()" style="flex:1;padding:12px 16px;border-radius:30px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px;outline:none;">
+            <button onclick="addComment()" style="background:linear-gradient(135deg, #ff007f, #ff00aa);border:none;color:#fff;padding:10px 18px;border-radius:30px;font-weight:700;cursor:pointer;white-space:nowrap;"><i class="fas fa-paper-plane"></i> نشر</button>
+        </div>
+    </div>
+    <div class="overlay" id="commentsOverlay" style="display:none;z-index:499" onclick="closeCommentsPanel()"></div>
+
+    <!-- ===== UPDATED BOTTOM NAVIGATION ===== -->
+    <nav id="main-nav">
+        <div class="nav-item" id="nav-profile" onclick="window.location.href='profile.html'">
+            <i class="fas fa-user"></i>
+            <span>PROFILE</span>
+        </div>
+        <div class="nav-item" id="nav-chat" onclick="window.location.href='chat.html'">
+            <i class="fas fa-comment-dots"></i>
+            <span>CHAT</span>
+        </div>
+        <div id="upload-nav-btn" onclick="window.location.href='upload.html'">
+            <i class="fas fa-plus"></i>
+        </div>
+        <div class="nav-item" id="nav-explore" onclick="window.location.href='explore.html'">
+            <i class="fas fa-compass"></i>
+            <span>EXPLORE</span>
+        </div>
+        <div class="nav-item" id="nav-notifications" onclick="window.location.href='notifications.html'">
+            <i class="fas fa-bell"></i>
+            <span>ALERTS</span>
+            <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
+        </div>
+    </nav>
+
+    <div class="toast-msg" id="toast">✅ تم</div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script>
+    let currentUser = null, currentUserData = null, allUsers = {}, allVideos = [], isMuted = true;
+    let currentShareUrl = null, currentCommentVideoId = null;
+
+    function closePlayer() {
+        const player = document.getElementById('fullscreenPlayer');
+        const video = document.getElementById('fullscreenVideo');
+        video.pause(); video.src=''; player.classList.remove('active');
+    }
+
+    function openSharePanel(url) {
+        currentShareUrl = url;
+        document.getElementById('shareUrlInput').value = url;
+        document.getElementById('sharePanel').classList.add('show');
+        document.getElementById('shareOverlay').style.display = 'block';
+    }
+    function closeSharePanel() {
+        document.getElementById('sharePanel').classList.remove('show');
+        document.getElementById('shareOverlay').style.display = 'none';
+    }
+    function shareTo(platform) {
+        const url = encodeURIComponent(currentShareUrl);
+        const text = encodeURIComponent('شاهد هذا الفيديو على VØID_X 💜');
+        let shareUrl = '';
+        switch(platform) {
+            case 'whatsapp': shareUrl = 'https://wa.me/?text=' + text + '%20' + url; break;
+            case 'telegram': shareUrl = 'https://t.me/share/url?url=' + url + '&text=' + text; break;
+            case 'facebook': shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + url; break;
+            case 'copy':
+                navigator.clipboard.writeText(currentShareUrl).then(() => {
+                    showToast('✅ تم نسخ الرابط');
+                    closeSharePanel();
+                });
+                return;
+        }
+        if(shareUrl) window.open(shareUrl, '_blank');
+        closeSharePanel();
+    }
+
+    async function openCommentsPanel(videoId) {
+        currentCommentVideoId = videoId;
+        document.getElementById('commentsPanel').style.transform = 'translateY(0)';
+        document.getElementById('commentsOverlay').style.display = 'block';
+        await loadComments();
+    }
+    function closeCommentsPanel() {
+        document.getElementById('commentsPanel').style.transform = 'translateY(100%)';
+        document.getElementById('commentsOverlay').style.display = 'none';
+        currentCommentVideoId = null;
+    }
+    async function loadComments() {
+        if(!currentCommentVideoId) return;
+        const snap = await db.ref('videos/' + currentCommentVideoId + '/comments').get();
+        const comments = snap.val() || {};
+        const commentsArr = Object.entries(comments).map(([id, c]) => ({id, ...c}));
+        commentsArr.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        document.getElementById('commentsCount').innerText = '(' + commentsArr.length + ')';
+        const list = document.getElementById('commentsList');
+        if(!commentsArr.length) {
+            list.innerHTML = '<div style="text-align:center;opacity:0.5;padding:30px"><i class="fas fa-comment-slash" style="font-size:32px;color:var(--neon);margin-bottom:8px;display:block"></i>لا توجد تعليقات</div>';
+            return;
+        }
+        list.innerHTML = commentsArr.map(c => {
+            const user = allUsers[c.userId] || {username: c.username || 'مستخدم'};
+            const avatar = user.avatarUrl || (DICEBEAR_URL + '?seed=' + c.userId);
+            return `<div style="display:flex;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(255,0,127,0.3);"><img src="${avatar}" style="width:100%;height:100%;object-fit:cover;"></div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:13px;color:#fff;">@${user.username} ${user.isVerified ? '<span style="color:var(--neon);font-size:10px"><i class="fas fa-check-circle"></i></span>' : ''}</div><div style="font-size:13px;color:rgba(255,255,255,0.8);">${c.text}</div></div></div>`;
+        }).join('');
+    }
+    async function addComment() {
+        const input = document.getElementById('commentInput');
+        const text = input.value.trim();
+        if(!text || !currentCommentVideoId || !currentUser) return;
+        const commentData = {
+            userId: currentUser.uid,
+            username: currentUserData?.username || 'مستخدم',
+            text: text,
+            timestamp: Date.now()
+        };
+        await db.ref('videos/' + currentCommentVideoId + '/comments').push(commentData);
+        input.value = '';
+        await loadComments();
+    }
+
+    auth.onAuthStateChanged(async (user) => {
+        if(!user) { window.location.replace('auth.html'); return; }
+        currentUser = user;
+        try {
+            const snap = await db.ref('users/' + user.uid).get();
+            if(snap.exists()) currentUserData = {uid: user.uid, ...snap.val()};
+        } catch(e) { console.error('Error loading user:', e); }
+
+        db.ref('users').on('value', s => { allUsers = s.val() || {}; });
+        db.ref('videos').on('value', s => {
+            const data = s.val();
+            if(!data) { allVideos = []; }
+            else {
+                allVideos = Object.entries(data).map(([key, value]) => ({id: key, ...value}));
+                allVideos.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            }
+            renderVideos();
+        });
+
+        // Check notifications
+        db.ref('notifications/' + user.uid).on('value', s => {
+            const ns = s.val() || {};
+            const unread = Object.values(ns).filter(n => !n.read).length;
+            const badge = document.getElementById('notifBadge');
+            if(unread > 0) {
+                badge.style.display = 'flex';
+                badge.innerText = unread > 99 ? '99+' : unread;
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+
+        db.ref('presence/' + user.uid).set(true);
+        db.ref('presence/' + user.uid).onDisconnect().remove();
+        db.ref('users/' + user.uid + '/lastSeen').set(Date.now());
+
+        document.getElementById('loaderScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+    });
+
+    function renderVideos() {
+        const container = document.getElementById('videosWrap');
+        if(!container) return;
+        if(!allVideos.length) {
+            container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:var(--neon)"></i><p>لا توجد فيديوهات بعد</p></div>';
+            return;
+        }
+        container.innerHTML = '';
+        allVideos.forEach(video => {
+            const isLiked = video.likedBy && video.likedBy[currentUser?.uid];
+            const commentsCount = video.comments ? Object.keys(video.comments).length : 0;
+            const div = document.createElement('div');
+            div.className = 'vid-card';
+            div.innerHTML = `
+                <div class="watermark-overlay">VØID_X SUPREME</div>
+                <video loop playsinline muted data-src="${video.url}" poster="${video.thumbnail || ''}"></video>
+                <div class="side-actions">
+                    <div class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${video.id}', this)">
+                        <i class="fas fa-bolt"></i>
+                        <span class="btn-label">${video.likes || 0}</span>
+                    </div>
+                    <div class="action-btn" onclick="openCommentsPanel('${video.id}')">
+                        <i class="fas fa-terminal"></i>
+                        <span class="btn-label">${commentsCount}</span>
+                    </div>
+                    <div class="action-btn" onclick="openSharePanel('${video.url}')">
+                        <i class="fas fa-share-nodes"></i>
+                        <span class="btn-label">SEND</span>
+                    </div>
+                </div>`;
+            const videoEl = div.querySelector('video');
+            videoEl.addEventListener('dblclick', e => {
+                e.stopPropagation();
+                const likeBtn = div.querySelector('.action-btn');
+                if(likeBtn) toggleLike(video.id, likeBtn);
+            });
+            container.appendChild(div);
+        });
+        initObserver();
+    }
+
+    function initObserver() {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if(!video.src) video.src = video.dataset.src;
+                    video.muted = isMuted;
+                    video.play().catch(() => {});
+                } else {
+                    entry.target.classList.remove('active');
+                    video.pause();
+                }
+            });
+        }, {threshold: 0.65});
+        document.querySelectorAll('.vid-card').forEach(seg => observer.observe(seg));
+    }
+
+    async function toggleLike(videoId, btn) {
+        if(!currentUser) return;
+        const ref = db.ref('videos/' + videoId);
+        const snap = await ref.get();
+        const video = snap.val();
+        if(!video) return;
+        let likes = video.likes || 0;
+        let likedBy = video.likedBy || {};
+        if(likedBy[currentUser.uid]) { likes--; delete likedBy[currentUser.uid]; }
+        else { likes++; likedBy[currentUser.uid] = true; }
+        await ref.update({likes, likedBy});
+        btn.classList.toggle('liked');
+        const lbl = btn.querySelector('.btn-label');
+        if(lbl) lbl.innerText = likes;
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    window.closePlayer = closePlayer;
+    window.openSharePanel = openSharePanel;
+    window.closeSharePanel = closeSharePanel;
+    window.shareTo = shareTo;
+    window.openCommentsPanel = openCommentsPanel;
+    window.closeCommentsPanel = closeCommentsPanel;
+    window.toggleLike = toggleLike;
+    window.addComment = addComment;
+
+    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB'); }, 1000);
+
+    console.log('💜 VØID_X v2 Ready');
+</script>
+</body>
+</html>
