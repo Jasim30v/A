@@ -1,6 +1,6 @@
-// 🌸 MNAENCA 2026 - Pink Luxury Configuration
+// 🌑 MNAENCA 2026 - Dark Purple Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: dmqyd0haj
-// ✨ PREMIUM: TikTok Comments + Voice Notes + Share System + Watermark
+// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
 
 const firebaseConfig = {
     apiKey: "AIzaSyCqDvG98pEqmZHKZienquJEq6gS1kNjK8M",
@@ -23,24 +23,24 @@ const CLOUD_NAME = "dmqyd0haj";
 const UPLOAD_PRESET = "s3_gok";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 
-// 🌸 MNAENCA Settings
+// 🌑 MNAENCA Settings
 const ADMIN_EMAILS = ['jasim28v@gmail.com'];
 const DICEBEAR_URL = "https://api.dicebear.com/7.x/big-smile/svg";
 const COVER_COLORS = [
-    "linear-gradient(135deg, #831843, #be185d, #db2777)",
-    "linear-gradient(135deg, #4c0519, #831843, #be185d)",
-    "linear-gradient(135deg, #9d174d, #db2777, #ec4899)",
-    "linear-gradient(135deg, #831843, #ec4899, #f472b6)",
-    "linear-gradient(135deg, #be185d, #f472b6, #fbcfe8)",
-    "linear-gradient(135deg, #4a0e2b, #831843, #db2777)"
+    "linear-gradient(135deg, #1a0020, #2d0040, #4a0060)",
+    "linear-gradient(135deg, #0d0033, #1a0050, #2d0070)",
+    "linear-gradient(135deg, #1a0030, #2d0050, #4a0070)",
+    "linear-gradient(135deg, #200030, #3d0060, #5a0090)",
+    "linear-gradient(135deg, #150025, #280045, #400065)",
+    "linear-gradient(135deg, #0a0a1a, #1a1040, #2d1a60)"
 ];
 
-// 🌸 App Info
+// 🌑 App Info
 const APP_NAME = "MNAENCA";
 const APP_VERSION = "2026.4";
-const PRIMARY_COLOR = "#db2777";
-const SECONDARY_COLOR = "#f472b6";
-const WATERMARK_TEXT = "🌸 MNAENCA";
+const PRIMARY_COLOR = "#a855f7";
+const SECONDARY_COLOR = "#ec4899";
+const WATERMARK_TEXT = "🌑 MNAENCA";
 const WATERMARK_URL = "https://res.cloudinary.com/dmqyd0haj/image/upload/v1/watermark_mnaenca";
 
-console.log('🌸 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #db2777; font-size: 16px; font-weight: bold;');
+console.log('%c🌑 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #a855f7; font-size: 16px; font-weight: bold;');

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌸 MNAENCA | إعدادات</title>
+    <title>🌑 MNAENCA | إعدادات</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -11,24 +11,27 @@
     <style>
         
     :root{
-        --glass:rgba(219,39,119,0.03);
-        --border:rgba(219,39,119,0.12);
-        --accent:#db2777;
+        --glass:rgba(120,40,200,0.03);
+        --border:rgba(120,40,200,0.15);
+        --accent:#a855f7;
         --accent2:#ec4899;
-        --bg:#0a0205;
-        --card:rgba(219,39,119,0.06);
+        --bg:#050005;
+        --card:rgba(120,40,200,0.06);
         --danger:#ef4444;
         --success:#22c55e;
         --warning:#f59e0b;
+        --glow:0 0 20px rgba(168,85,247,0.4), 0 0 40px rgba(236,72,153,0.2);
+        --glow-strong:0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(236,72,153,0.4);
     }
     *{margin:0;padding:0;box-sizing:border-box}
     body{
         font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
         background:var(--bg);
-        color:#fff;
+        color:#f0e6ff;
         -webkit-tap-highlight-color:transparent;
         user-select:none;
         -webkit-user-select:none;
+        letter-spacing:0.3px;
     }
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
@@ -38,10 +41,12 @@
     @keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
     @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
     @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(219,39,119,0.3)}50%{box-shadow:0 0 40px rgba(236,72,153,0.7)}}
+    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(168,85,247,0.3),0 0 35px rgba(236,72,153,0.2)}50%{box-shadow:0 0 40px rgba(168,85,247,0.7),0 0 70px rgba(236,72,153,0.5)}}
+    @keyframes borderGlow{0%,100%{border-color:rgba(168,85,247,0.3)}50%{border-color:rgba(236,72,153,0.6)}}
+    @keyframes textShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
     .spinner{
         width:36px;height:36px;
-        border:3px solid rgba(219,39,119,0.2);
+        border:3px solid rgba(168,85,247,0.2);
         border-top-color:var(--accent);
         border-radius:50%;
         animation:spin 0.7s linear infinite;
@@ -49,14 +54,15 @@
     }
     .toast-msg{
         position:fixed;bottom:120px;left:50%;transform:translateX(-50%);
-        background:rgba(10,2,5,0.95);padding:12px 24px;border-radius:30px;
-        z-index:10000;border:1px solid rgba(219,39,119,0.3);font-size:13px;
+        background:rgba(5,0,5,0.95);padding:12px 24px;border-radius:30px;
+        z-index:10000;border:1px solid rgba(168,85,247,0.4);font-size:13px;
         opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;
-        box-shadow:0 8px 32px rgba(0,0,0,0.4);
+        box-shadow:0 8px 32px rgba(168,85,247,0.3),0 0 20px rgba(236,72,153,0.2);
+        color:#f0e6ff;
     }
     .toast-msg.show{opacity:1}
     .overlay{
-        position:fixed;inset:0;background:rgba(10,2,5,0.97);
+        position:fixed;inset:0;background:rgba(5,0,5,0.97);
         backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
         z-index:400;overflow-y:auto;
         animation:fadeIn 0.3s ease;
@@ -64,34 +70,35 @@
     .overlay-header{
         display:flex;justify-content:space-between;align-items:center;
         padding:16px 20px;border-bottom:1px solid var(--border);
-        position:sticky;top:0;background:rgba(10,2,5,0.9);
+        position:sticky;top:0;background:rgba(5,0,5,0.9);
         backdrop-filter:blur(20px);z-index:5;
     }
-    .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px}
+    .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;color:#e0d0ff}
     .btn-close-overlay{
-        background:rgba(219,39,119,0.1);border:1px solid var(--border);
-        color:#fff;width:36px;height:36px;border-radius:50%;
+        background:rgba(168,85,247,0.1);border:1px solid var(--border);
+        color:#e0d0ff;width:36px;height:36px;border-radius:50%;
         display:flex;align-items:center;justify-content:center;
         cursor:pointer;font-size:16px;transition:all 0.3s;
     }
-    .btn-close-overlay:hover{background:rgba(219,39,119,0.25);box-shadow:0 0 15px rgba(219,39,119,0.3)}
+    .btn-close-overlay:hover{background:rgba(168,85,247,0.25);box-shadow:0 0 15px rgba(168,85,247,0.3)}
 
         body{min-height:100vh;overflow-y:auto}
-        .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,2,5,0.8);backdrop-filter:blur(20px);z-index:10}
-        .btn-back{background:rgba(219,39,119,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}
-        .setting-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s}
-        .setting-item:hover{background:var(--glass)}
+        .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1.5px solid rgba(168,85,247,0.2);position:sticky;top:0;background:rgba(5,0,5,0.8);backdrop-filter:blur(20px);z-index:10}
+        .btn-back{background:rgba(168,85,247,0.1);border:1.5px solid rgba(168,85,247,0.3);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f0e6ff;cursor:pointer;font-size:16px}
+        .setting-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid rgba(168,85,247,0.08);cursor:pointer;transition:background 0.2s;color:#e0d0ff}
+        .setting-item:hover{background:rgba(168,85,247,0.05)}
         .setting-item i{color:var(--accent);font-size:18px;width:30px}
-        .btn-danger{background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block}
+        .btn-danger{background:rgba(239,68,68,0.2);border:1.5px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block;box-shadow:0 0 15px rgba(239,68,68,0.2)}
+        .btn-danger:hover{box-shadow:0 0 25px rgba(239,68,68,0.4)}
     </style>
 </head>
 <body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2><i class="fas fa-cog"></i> الإعدادات</h2></div>
+<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2 style="color:#e0d0ff"><i class="fas fa-cog"></i> الإعدادات</h2></div>
 <div style="padding:8px 0">
     <div class="setting-item" onclick="window.location.href='profile.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user"></i><span>تعديل الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
     <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-lock"></i><span>الخصوصية</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px">العربية</span></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">v2026.4 🌸</span></div>
+    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px;color:#c0b0e0">العربية</span></div>
+    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px;color:#c0b0e0">v2026.4 🌑</span></div>
     <button class="btn-danger" onclick="if(confirm('تسجيل الخروج؟')){auth.signOut();window.location.href='auth.html'}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
 </div>
 <script src="firebase-config.js"></script>

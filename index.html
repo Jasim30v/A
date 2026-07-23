@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🌸 MNAENCA | الرئيسية</title>
+    <title>🌑 MNAENCA | الرئيسية</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -11,24 +11,27 @@
     <style>
         
     :root{
-        --glass:rgba(219,39,119,0.03);
-        --border:rgba(219,39,119,0.12);
-        --accent:#db2777;
+        --glass:rgba(120,40,200,0.03);
+        --border:rgba(120,40,200,0.15);
+        --accent:#a855f7;
         --accent2:#ec4899;
-        --bg:#0a0205;
-        --card:rgba(219,39,119,0.06);
+        --bg:#050005;
+        --card:rgba(120,40,200,0.06);
         --danger:#ef4444;
         --success:#22c55e;
         --warning:#f59e0b;
+        --glow:0 0 20px rgba(168,85,247,0.4), 0 0 40px rgba(236,72,153,0.2);
+        --glow-strong:0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(236,72,153,0.4);
     }
     *{margin:0;padding:0;box-sizing:border-box}
     body{
         font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
         background:var(--bg);
-        color:#fff;
+        color:#f0e6ff;
         -webkit-tap-highlight-color:transparent;
         user-select:none;
         -webkit-user-select:none;
+        letter-spacing:0.3px;
     }
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
@@ -38,10 +41,12 @@
     @keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
     @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
     @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(219,39,119,0.3)}50%{box-shadow:0 0 40px rgba(236,72,153,0.7)}}
+    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(168,85,247,0.3),0 0 35px rgba(236,72,153,0.2)}50%{box-shadow:0 0 40px rgba(168,85,247,0.7),0 0 70px rgba(236,72,153,0.5)}}
+    @keyframes borderGlow{0%,100%{border-color:rgba(168,85,247,0.3)}50%{border-color:rgba(236,72,153,0.6)}}
+    @keyframes textShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
     .spinner{
         width:36px;height:36px;
-        border:3px solid rgba(219,39,119,0.2);
+        border:3px solid rgba(168,85,247,0.2);
         border-top-color:var(--accent);
         border-radius:50%;
         animation:spin 0.7s linear infinite;
@@ -49,14 +54,15 @@
     }
     .toast-msg{
         position:fixed;bottom:120px;left:50%;transform:translateX(-50%);
-        background:rgba(10,2,5,0.95);padding:12px 24px;border-radius:30px;
-        z-index:10000;border:1px solid rgba(219,39,119,0.3);font-size:13px;
+        background:rgba(5,0,5,0.95);padding:12px 24px;border-radius:30px;
+        z-index:10000;border:1px solid rgba(168,85,247,0.4);font-size:13px;
         opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;
-        box-shadow:0 8px 32px rgba(0,0,0,0.4);
+        box-shadow:0 8px 32px rgba(168,85,247,0.3),0 0 20px rgba(236,72,153,0.2);
+        color:#f0e6ff;
     }
     .toast-msg.show{opacity:1}
     .overlay{
-        position:fixed;inset:0;background:rgba(10,2,5,0.97);
+        position:fixed;inset:0;background:rgba(5,0,5,0.97);
         backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
         z-index:400;overflow-y:auto;
         animation:fadeIn 0.3s ease;
@@ -64,29 +70,29 @@
     .overlay-header{
         display:flex;justify-content:space-between;align-items:center;
         padding:16px 20px;border-bottom:1px solid var(--border);
-        position:sticky;top:0;background:rgba(10,2,5,0.9);
+        position:sticky;top:0;background:rgba(5,0,5,0.9);
         backdrop-filter:blur(20px);z-index:5;
     }
-    .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px}
+    .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;color:#e0d0ff}
     .btn-close-overlay{
-        background:rgba(219,39,119,0.1);border:1px solid var(--border);
-        color:#fff;width:36px;height:36px;border-radius:50%;
+        background:rgba(168,85,247,0.1);border:1px solid var(--border);
+        color:#e0d0ff;width:36px;height:36px;border-radius:50%;
         display:flex;align-items:center;justify-content:center;
         cursor:pointer;font-size:16px;transition:all 0.3s;
     }
-    .btn-close-overlay:hover{background:rgba(219,39,119,0.25);box-shadow:0 0 15px rgba(219,39,119,0.3)}
+    .btn-close-overlay:hover{background:rgba(168,85,247,0.25);box-shadow:0 0 15px rgba(168,85,247,0.3)}
 
         body{height:100vh;overflow:hidden;}
         
         #loaderScreen{
             position:fixed;inset:0;z-index:9999;
-            background:radial-gradient(ellipse at top, #2d0a1a, #1a050f, #0a0205);
+            background:radial-gradient(ellipse at top, #1a0025, #0d0015, #050005);
             display:flex;align-items:center;justify-content:center;
             flex-direction:column;gap:16px;
         }
         .spinner-big{
             width:50px;height:50px;
-            border:4px solid rgba(219,39,119,0.2);
+            border:4px solid rgba(168,85,247,0.2);
             border-top-color:var(--accent);
             border-radius:50%;
             animation:spin 0.8s linear infinite;
@@ -98,11 +104,12 @@
             position:fixed;top:10px;left:10px;right:10px;z-index:100;
             display:flex;justify-content:space-between;align-items:center;
             padding:8px 16px;
-            background:rgba(10,2,5,0.7);
+            background:rgba(5,0,5,0.7);
             backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-            border:1px solid var(--border);
+            border:1.5px solid rgba(168,85,247,0.3);
             border-radius:50px;
-            box-shadow:0 8px 32px rgba(219,39,119,0.08);
+            box-shadow:0 8px 32px rgba(168,85,247,0.1),0 0 25px rgba(236,72,153,0.05);
+            animation:borderGlow 3s ease-in-out infinite;
         }
         .logo-icon{
             width:34px;height:34px;
@@ -110,26 +117,29 @@
             border-radius:50%;display:flex;align-items:center;justify-content:center;
             font-weight:900;font-size:12px;
             animation:glowPulse 2s ease-in-out infinite;
+            box-shadow:0 0 20px rgba(168,85,247,0.5),0 0 30px rgba(236,72,153,0.3);
         }
         .logo-text{
             font-weight:800;font-size:17px;
-            background:linear-gradient(to bottom,#fff,#fbcfe8);
+            background:linear-gradient(135deg, #c084fc, #e879f9);
             -webkit-background-clip:text;-webkit-text-fill-color:transparent;
             margin-left:8px;
+            animation:textShimmer 3s linear infinite;
+            background-size:200% auto;
         }
-        .tabs{display:flex;gap:4px;background:var(--glass);border-radius:30px;padding:3px}
+        .tabs{display:flex;gap:4px;background:var(--glass);border-radius:30px;padding:3px;border:1px solid rgba(168,85,247,0.1)}
         .tab{
-            background:none;border:none;color:rgba(255,255,255,0.5);
+            background:none;border:none;color:rgba(240,230,255,0.5);
             padding:7px 16px;cursor:pointer;border-radius:25px;
             font-size:13px;font-weight:500;transition:all 0.3s;
         }
-        .tab.active{background:rgba(219,39,119,0.25);color:#fff}
+        .tab.active{background:rgba(168,85,247,0.3);color:#f0e6ff;box-shadow:0 0 15px rgba(168,85,247,0.3)}
         .top-icons{display:flex;gap:16px}
         .top-icon{
-            background:none;border:none;color:rgba(255,255,255,0.7);
+            background:none;border:none;color:rgba(240,230,255,0.7);
             font-size:18px;cursor:pointer;transition:all 0.3s;position:relative;
         }
-        .top-icon:hover{color:var(--accent2)}
+        .top-icon:hover{color:var(--accent2);text-shadow:0 0 15px rgba(236,72,153,0.6)}
         .notif-badge{
             position:absolute;top:-6px;right:-6px;
             min-width:18px;height:18px;
@@ -139,6 +149,7 @@
             display:none;
             align-items:center;justify-content:center;
             font-size:9px;font-weight:bold;padding:0 5px;
+            box-shadow:0 0 10px rgba(239,68,68,0.5);
         }
 
         .videos-wrap{
@@ -164,37 +175,38 @@
         .author-avatar{
             width:50px;height:50px;border-radius:50%;overflow:hidden;
             cursor:pointer;position:relative;
-            background:linear-gradient(135deg, #db2777, #ec4899, #f472b6);
+            background:linear-gradient(135deg, #a855f7, #ec4899, #c084fc);
             padding:3px;
             animation:storyRing 3s ease-in-out infinite;
             flex-shrink:0;
         }
-        @keyframes storyRing{0%,100%{box-shadow:0 0 15px rgba(219,39,119,0.4)}50%{box-shadow:0 0 25px rgba(236,72,153,0.8)}}
+        @keyframes storyRing{0%,100%{box-shadow:0 0 20px rgba(168,85,247,0.5),0 0 30px rgba(236,72,153,0.3)}50%{box-shadow:0 0 35px rgba(168,85,247,0.8),0 0 50px rgba(236,72,153,0.6)}}
         .author-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--bg)}
         .author-name{
             font-weight:700;font-size:15px;cursor:pointer;
             display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+            color:#f0e6ff;
         }
         .verified-badge-main{
-            background:linear-gradient(135deg, #db2777, #ec4899);
+            background:linear-gradient(135deg, #a855f7, #ec4899);
             color:#fff;font-size:10px;padding:2px 5px;border-radius:50%;
             display:inline-flex;align-items:center;justify-content:center;
             width:18px;height:18px;font-weight:bold;
-            box-shadow:0 0 12px rgba(244,114,182,0.6);
+            box-shadow:0 0 15px rgba(168,85,247,0.7),0 0 25px rgba(236,72,153,0.5);
         }
         .btn-follow{
             background:linear-gradient(135deg,var(--accent),var(--accent2));
             padding:5px 14px;border-radius:20px;font-size:11px;
             font-weight:700;border:none;color:#fff;cursor:pointer;
-            box-shadow:0 4px 15px rgba(219,39,119,0.4);
+            box-shadow:0 4px 20px rgba(168,85,247,0.5),0 0 30px rgba(236,72,153,0.3);
             transition:all 0.3s;white-space:nowrap;
         }
-        .btn-follow:hover{box-shadow:0 8px 25px rgba(219,39,119,0.7);transform:translateY(-1px)}
-        .caption{font-size:14px;margin-bottom:5px;line-height:1.4}
-        .tag{color:var(--accent2);cursor:pointer;font-weight:500}
-        .music{font-size:12px;opacity:0.8;display:flex;align-items:center;gap:6px;cursor:pointer}
+        .btn-follow:hover{box-shadow:0 8px 30px rgba(168,85,247,0.8),0 0 50px rgba(236,72,153,0.6);transform:translateY(-1px)}
+        .caption{font-size:14px;margin-bottom:5px;line-height:1.4;color:#e0d0ff}
+        .tag{color:var(--accent2);cursor:pointer;font-weight:500;text-shadow:0 0 10px rgba(236,72,153,0.5)}
+        .music{font-size:12px;opacity:0.8;display:flex;align-items:center;gap:6px;cursor:pointer;color:#d0c0f0}
         .music-wave{display:flex;gap:2px;align-items:flex-end;height:16px}
-        .music-wave span{width:2px;background:var(--accent2);border-radius:1px;animation:musicWave 1s ease-in-out infinite}
+        .music-wave span{width:2px;background:var(--accent2);border-radius:1px;animation:musicWave 1s ease-in-out infinite;box-shadow:0 0 8px rgba(236,72,153,0.5)}
         .music-wave span:nth-child(1){height:8px;animation-delay:0s}
         .music-wave span:nth-child(2){height:14px;animation-delay:0.15s}
         .music-wave span:nth-child(3){height:6px;animation-delay:0.3s}
@@ -207,14 +219,13 @@
             position:absolute;top:20px;right:20px;
             z-index:15;pointer-events:none;
             display:flex;align-items:center;gap:6px;
-            opacity:0.6;
+            opacity:0.7;
         }
         .watermark-overlay span{
             font-weight:700;font-size:13px;
-            text-shadow:0 2px 8px rgba(0,0,0,0.6);
-            color:#fff;
+            text-shadow:0 2px 8px rgba(0,0,0,0.6),0 0 15px rgba(168,85,247,0.5);
+            color:#f0e6ff;
         }
-        .watermark-overlay img{width:24px;height:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))}
 
         .side-btns{
             position:absolute;right:14px;bottom:130px;
@@ -222,19 +233,19 @@
         }
         .sbtn{
             display:flex;flex-direction:column;align-items:center;gap:3px;
-            background:none;border:none;color:#fff;cursor:pointer;
+            background:none;border:none;color:#f0e6ff;cursor:pointer;
             font-size:10px;transition:transform 0.15s;
         }
         .sbtn:active{transform:scale(0.85)}
-        .sbtn i{font-size:28px;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.5))}
-        .sbtn.liked i{color:var(--accent);animation:likePop 0.4s ease}
+        .sbtn i{font-size:28px;filter:drop-shadow(0 3px 8px rgba(168,85,247,0.5))}
+        .sbtn.liked i{color:var(--accent2);animation:likePop 0.4s ease;filter:drop-shadow(0 0 15px rgba(236,72,153,0.8))}
         @keyframes likePop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
         .sbtn .cnt{font-weight:700;font-size:11px}
 
         /* 📤 Share Panel */
         .share-panel{
             position:fixed;bottom:0;left:0;right:0;
-            background:rgba(10,2,5,0.98);
+            background:rgba(5,0,5,0.98);
             backdrop-filter:blur(40px);
             border-top:2px solid var(--accent);
             border-radius:24px 24px 0 0;
@@ -242,9 +253,10 @@
             z-index:500;
             transform:translateY(100%);
             transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            box-shadow:0 -10px 40px rgba(168,85,247,0.3),0 0 60px rgba(236,72,153,0.2);
         }
         .share-panel.show{transform:translateY(0)}
-        .share-panel h3{font-size:17px;font-weight:700;margin-bottom:20px;text-align:center;color:var(--accent2)}
+        .share-panel h3{font-size:17px;font-weight:700;margin-bottom:20px;text-align:center;color:var(--accent2);text-shadow:0 0 15px rgba(236,72,153,0.5)}
         .share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
         .share-item{
             display:flex;flex-direction:column;align-items:center;gap:8px;
@@ -255,28 +267,30 @@
             width:56px;height:56px;border-radius:16px;
             display:flex;align-items:center;justify-content:center;
             font-size:24px;transition:all 0.3s;
+            border:1px solid rgba(168,85,247,0.2);
         }
-        .share-item span{font-size:11px;opacity:0.7}
+        .share-item span{font-size:11px;opacity:0.7;color:#d0c0f0}
         .share-copy-row{
             display:flex;gap:8px;align-items:center;
-            background:rgba(219,39,119,0.06);border-radius:16px;
-            padding:8px;border:1px solid var(--border);
+            background:rgba(168,85,247,0.08);border-radius:16px;
+            padding:8px;border:1.5px solid rgba(168,85,247,0.2);
         }
         .share-copy-row input{
             flex:1;padding:12px;border-radius:12px;
-            background:rgba(219,39,119,0.04);border:1px solid var(--border);
-            color:#fff;font-size:13px;outline:none;direction:ltr;
+            background:rgba(168,85,247,0.05);border:1px solid var(--border);
+            color:#f0e6ff;font-size:13px;outline:none;direction:ltr;
         }
         .share-copy-row button{
             background:linear-gradient(135deg,var(--accent),var(--accent2));
             border:none;color:#fff;padding:12px 20px;border-radius:12px;
             font-weight:700;cursor:pointer;white-space:nowrap;
+            box-shadow:0 0 20px rgba(168,85,247,0.4);
         }
 
         /* 💬 TikTok Style Comments */
         .comments-panel{
             position:fixed;bottom:0;left:0;right:0;
-            background:rgba(10,2,5,0.98);
+            background:rgba(5,0,5,0.98);
             backdrop-filter:blur(40px);
             border-top:2px solid var(--accent);
             border-radius:24px 24px 0 0;
@@ -286,56 +300,59 @@
             display:flex;flex-direction:column;
             transform:translateY(100%);
             transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            box-shadow:0 -10px 40px rgba(168,85,247,0.3);
         }
         .comments-panel.show{transform:translateY(0)}
         .comments-header{
             display:flex;justify-content:space-between;align-items:center;
-            padding:16px 20px;border-bottom:1px solid var(--border);
+            padding:16px 20px;border-bottom:1px solid rgba(168,85,247,0.15);
             flex-shrink:0;
         }
-        .comments-header h3{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+        .comments-header h3{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;color:#e0d0ff}
         .comments-list{
             flex:1;overflow-y:auto;padding:12px 16px;
         }
         .comment-item{
             display:flex;gap:10px;padding:12px 0;
-            border-bottom:1px solid rgba(219,39,119,0.06);
+            border-bottom:1px solid rgba(168,85,247,0.08);
             animation:fadeIn 0.3s ease;
         }
         .comment-avatar{
             width:36px;height:36px;border-radius:50%;
             overflow:hidden;flex-shrink:0;
-            border:2px solid rgba(219,39,119,0.2);
+            border:2px solid rgba(168,85,247,0.3);
+            box-shadow:0 0 10px rgba(168,85,247,0.2);
         }
         .comment-avatar img{width:100%;height:100%;object-fit:cover}
         .comment-body{flex:1;min-width:0}
-        .comment-user{font-weight:600;font-size:13px;margin-bottom:2px;display:flex;align-items:center;gap:5px}
-        .comment-text{font-size:13px;line-height:1.4;word-break:break-word}
+        .comment-user{font-weight:600;font-size:13px;margin-bottom:2px;display:flex;align-items:center;gap:5px;color:#d0c0f0}
+        .comment-text{font-size:13px;line-height:1.4;word-break:break-word;color:#c0b0e0}
         .comment-actions{display:flex;gap:16px;margin-top:6px;font-size:11px}
-        .comment-actions span{cursor:pointer;opacity:0.6;display:flex;align-items:center;gap:4px;transition:opacity 0.2s}
-        .comment-actions span:hover{opacity:1}
+        .comment-actions span{cursor:pointer;opacity:0.6;display:flex;align-items:center;gap:4px;transition:opacity 0.2s;color:#c0b0e0}
+        .comment-actions span:hover{opacity:1;text-shadow:0 0 10px rgba(168,85,247,0.5)}
         .comment-time{font-size:10px;opacity:0.4}
         .reply-item{
             margin-right:46px;padding:8px 0;
-            border-bottom:1px solid rgba(219,39,119,0.04);
+            border-bottom:1px solid rgba(168,85,247,0.05);
             display:flex;gap:8px;
         }
         .reply-item .comment-avatar{width:28px;height:28px}
         .comment-input-row{
             display:flex;gap:8px;padding:12px 16px;
-            border-top:1px solid var(--border);
-            background:rgba(10,2,5,0.95);
+            border-top:1px solid rgba(168,85,247,0.15);
+            background:rgba(5,0,5,0.95);
             flex-shrink:0;
         }
         .comment-input-row input{
             flex:1;padding:12px 16px;border-radius:30px;
-            background:rgba(219,39,119,0.04);border:1px solid var(--border);
-            color:#fff;font-size:13px;outline:none;
+            background:rgba(168,85,247,0.05);border:1.5px solid rgba(168,85,247,0.2);
+            color:#f0e6ff;font-size:13px;outline:none;
         }
         .comment-input-row button{
             background:linear-gradient(135deg,var(--accent),var(--accent2));
             border:none;color:#fff;padding:10px 18px;border-radius:30px;
             font-weight:700;cursor:pointer;white-space:nowrap;font-size:13px;
+            box-shadow:0 0 20px rgba(168,85,247,0.4);
         }
 
         /* ☁️ Fullscreen Video Player */
@@ -352,65 +369,68 @@
             display:flex;align-items:center;justify-content:space-between;
             background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);
             border-radius:50px;padding:10px 20px;
-            border:1px solid rgba(219,39,119,0.3);z-index:10000;color:#fff;gap:12px;flex-wrap:wrap;
+            border:1.5px solid rgba(168,85,247,0.4);z-index:10000;color:#f0e6ff;gap:12px;flex-wrap:wrap;
+            box-shadow:0 0 30px rgba(168,85,247,0.3);
         }
-        .player-controls button{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;transition:color 0.2s;padding:5px}
-        .player-controls button:hover{color:#f472b6}
+        .player-controls button{background:none;border:none;color:#f0e6ff;font-size:20px;cursor:pointer;transition:all 0.2s;padding:5px}
+        .player-controls button:hover{color:#e879f9;text-shadow:0 0 15px rgba(236,72,153,0.6)}
         .progress-wrap{flex:1;display:flex;align-items:center;gap:8px;min-width:100px}
-        .progress-bar{flex:1;height:4px;background:rgba(255,255,255,0.2);border-radius:4px;cursor:pointer;position:relative}
-        .progress-fill{height:100%;background:linear-gradient(90deg,#db2777,#ec4899);border-radius:4px;width:0%}
+        .progress-bar{flex:1;height:4px;background:rgba(168,85,247,0.2);border-radius:4px;cursor:pointer;position:relative}
+        .progress-fill{height:100%;background:linear-gradient(90deg,#a855f7,#ec4899);border-radius:4px;width:0%;box-shadow:0 0 10px rgba(168,85,247,0.5)}
         .close-player{
             position:absolute;top:20px;left:20px;
             background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);
-            border:1px solid rgba(219,39,119,0.4);color:#fff;
+            border:1.5px solid rgba(168,85,247,0.5);color:#f0e6ff;
             width:44px;height:44px;border-radius:50%;
             display:flex;align-items:center;justify-content:center;
             cursor:pointer;font-size:20px;z-index:10001;transition:all 0.3s;
         }
-        .close-player:hover{background:rgba(219,39,119,0.3);box-shadow:0 0 20px rgba(219,39,119,0.5)}
+        .close-player:hover{background:rgba(168,85,247,0.3);box-shadow:0 0 25px rgba(168,85,247,0.6)}
 
         /* 📱 FLOATING BOTTOM NAV */
         .nav-bottom{
             position:fixed;bottom:12px;left:12px;right:12px;
             display:flex;justify-content:space-around;align-items:center;
             padding:8px 0;
-            background:rgba(10,2,5,0.8);
+            background:rgba(5,0,5,0.85);
             backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
             z-index:100;
-            border:1px solid var(--border);
+            border:1.5px solid rgba(168,85,247,0.3);
             border-radius:40px;
-            box-shadow:0 -8px 32px rgba(219,39,119,0.06);
+            box-shadow:0 -8px 32px rgba(168,85,247,0.1),0 0 30px rgba(236,72,153,0.08);
+            animation:borderGlow 3s ease-in-out infinite;
         }
         .nav-item{
             display:flex;flex-direction:column;align-items:center;gap:3px;
-            background:none;border:none;color:rgba(255,255,255,0.5);
+            background:none;border:none;color:rgba(240,230,255,0.5);
             font-size:10px;cursor:pointer;transition:all 0.3s;text-decoration:none;
         }
         .nav-item i{font-size:22px}
-        .nav-item.active{color:var(--accent2)}
+        .nav-item.active{color:var(--accent2);text-shadow:0 0 15px rgba(236,72,153,0.6)}
         .btn-add{
             width:48px;height:48px;
             background:linear-gradient(135deg,var(--accent),var(--accent2));
             border-radius:50%;display:flex;align-items:center;justify-content:center;
             margin-top:-30px;cursor:pointer;
-            box-shadow:0 10px 30px rgba(219,39,119,0.6),0 0 40px rgba(219,39,119,0.2);
+            box-shadow:0 10px 30px rgba(168,85,247,0.6),0 0 50px rgba(236,72,153,0.4);
             border:none;color:#fff;font-size:20px;
             z-index:101;transition:all 0.3s;text-decoration:none;
+            animation:glowPulse 2s ease-in-out infinite;
         }
-        .btn-add:hover{transform:scale(1.1);box-shadow:0 15px 40px rgba(219,39,119,0.8)}
+        .btn-add:hover{transform:scale(1.1);box-shadow:0 15px 40px rgba(168,85,247,0.8),0 0 70px rgba(236,72,153,0.6)}
     </style>
 </head>
 <body>
 
 <div id="loaderScreen">
     <div class="spinner-big"></div>
-    <p style="color:rgba(255,255,255,0.5);font-size:15px">🌸 MNAENCA جاري التحميل...</p>
+    <p style="color:rgba(240,230,255,0.5);font-size:15px">🌑 MNAENCA جاري التحميل...</p>
 </div>
 
 <div id="mainApp">
     <div class="topbar">
         <div style="display:flex;align-items:center">
-            <div class="logo-icon">🌸</div>
+            <div class="logo-icon">🌑</div>
             <span class="logo-text">MNAENCA</span>
         </div>
         <div class="tabs">
@@ -424,14 +444,14 @@
     </div>
 
     <div class="videos-wrap" id="videosWrap">
-        <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
-            <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#db2777"></i>
+        <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(240,230,255,0.5);flex-direction:column;gap:12px">
+            <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#a855f7"></i>
             <p>لا توجد فيديوهات بعد</p>
-            <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! 🌸</p>
+            <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! 🌑</p>
         </div>
     </div>
 
-    <!-- ☁️ Fullscreen Video Player -->
+    <!-- 🌑 Fullscreen Video Player -->
     <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
         <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
         <video id="fullscreenVideo" controls playsinline></video>
@@ -447,7 +467,7 @@
                 <span id="duration">0:00</span>
             </div>
             <button onclick="toggleMutePlayer()"><i class="fas fa-volume-up" id="muteIcon"></i></button>
-            <a id="downloadLink" href="#" download style="color:#f472b6;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
+            <a id="downloadLink" href="#" download style="color:#e879f9;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
         </div>
     </div>
 
@@ -480,11 +500,11 @@
                 <span>بريد</span>
             </div>
             <div class="share-item" onclick="shareTo('copy')">
-                <div class="share-icon" style="background:rgba(219,39,119,0.15);color:#db2777"><i class="fas fa-link"></i></div>
+                <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i class="fas fa-link"></i></div>
                 <span>نسخ الرابط</span>
             </div>
             <div class="share-item" onclick="shareTo('embed')">
-                <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i class="fas fa-code"></i></div>
+                <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#c084fc"><i class="fas fa-code"></i></div>
                 <span>تضمين</span>
             </div>
         </div>
@@ -534,7 +554,6 @@
     let currentCommentVideoId = null;
     let replyingTo = null;
 
-    // 🌸 Player Functions
     function openPlayer(url, title) {
         const player = document.getElementById('fullscreenPlayer');
         const video = document.getElementById('fullscreenVideo');
@@ -579,7 +598,6 @@
         if(playerVideo){playerVideo.muted=!playerVideo.muted;document.getElementById('muteIcon').className=playerVideo.muted?'fas fa-volume-mute':'fas fa-volume-up';}
     }
 
-    // 📤 Share Functions
     function openSharePanel(url) {
         currentShareUrl = url;
         document.getElementById('shareUrlInput').value = url;
@@ -592,7 +610,7 @@
     }
     function shareTo(platform) {
         const url = encodeURIComponent(currentShareUrl);
-        const text = encodeURIComponent('شاهد هذا الفيديو على MNAENCA 🌸');
+        const text = encodeURIComponent('🌑 شاهد هذا الفيديو على MNAENCA');
         let shareUrl = '';
         switch(platform) {
             case 'whatsapp': shareUrl = 'https://wa.me/?text=' + text + '%20' + url; break;
@@ -619,7 +637,6 @@
         closeSharePanel();
     }
 
-    // 💬 Comments Functions
     async function openCommentsPanel(videoId) {
         currentCommentVideoId = videoId;
         replyingTo = null;
@@ -771,7 +788,7 @@
         if(!container) return;
         let filtered = currentFeed === 'forYou' ? allVideos : allVideos.filter(v => currentUserData?.following?.[v.sender]);
         if(!filtered.length) {
-            container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#db2777"></i><p>${currentFeed === 'forYou' ? 'لا توجد فيديوهات بعد' : 'تابع مستخدمين لرؤية فيديوهاتهم'}</p></div>`;
+            container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(240,230,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#a855f7"></i><p>${currentFeed === 'forYou' ? 'لا توجد فيديوهات بعد' : 'تابع مستخدمين لرؤية فيديوهاتهم'}</p></div>`;
             return;
         }
         container.innerHTML = '';
@@ -788,7 +805,7 @@
             const div = document.createElement('div');
             div.className = 'vid-card';
             div.innerHTML = `
-                <div class="watermark-overlay"><span>🌸 MNAENCA</span></div>
+                <div class="watermark-overlay"><span>🌑 MNAENCA</span></div>
                 <video loop playsinline muted data-src="${video.url}" poster="${video.thumbnail || ''}"></video>
                 <div class="vid-info">
                     <div class="author-row">
@@ -887,12 +904,12 @@
         const items = Object.values(ns).reverse();
         let notifHTML = '';
         if(!items.length) {
-            notifHTML = '<div style="text-align:center;opacity:0.5;padding:40px"><i class="fas fa-bell" style="font-size:48px;color:#db2777;margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';
+            notifHTML = '<div style="text-align:center;opacity:0.5;padding:40px"><i class="fas fa-bell" style="font-size:48px;color:#a855f7;margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';
         } else {
             items.forEach(n => {
-                notifHTML += `<div style="display:flex;gap:12px;padding:14px;border-bottom:1px solid rgba(219,39,119,0.1);align-items:center;animation:fadeIn 0.3s ease">
-                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(219,39,119,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;color:#db2777"><i class="fas fa-bell"></i></div>
-                    <div><div style="font-weight:600">${n.from || 'مستخدم'}</div><div style="font-size:12px;opacity:0.6;margin-top:2px">${n.msg || ''}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${new Date(n.timestamp).toLocaleString('ar-SA')}</div></div></div>`;
+                notifHTML += `<div style="display:flex;gap:12px;padding:14px;border-bottom:1px solid rgba(168,85,247,0.1);align-items:center;animation:fadeIn 0.3s ease">
+                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(168,85,247,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;color:#a855f7"><i class="fas fa-bell"></i></div>
+                    <div><div style="font-weight:600;color:#e0d0ff">${n.from || 'مستخدم'}</div><div style="font-size:12px;opacity:0.6;margin-top:2px;color:#d0c0f0">${n.msg || ''}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${new Date(n.timestamp).toLocaleString('ar-SA')}</div></div></div>`;
             });
         }
         await db.ref('notifications/' + currentUser.uid).remove();
@@ -902,14 +919,14 @@
     }
 
     function openSearch() {
-        showOverlay('🔍 بحث', `<input type="text" id="searchQ" onkeyup="doSearch()" placeholder="ابحث عن مستخدمين، فيديوهات..." style="width:100%;padding:14px;border-radius:30px;background:rgba(219,39,119,0.04);border:1px solid rgba(219,39,119,0.15);color:#fff;font-size:14px;outline:none;margin-bottom:16px"><div id="searchR"></div>`);
+        showOverlay('🔍 بحث', `<input type="text" id="searchQ" onkeyup="doSearch()" placeholder="ابحث عن مستخدمين، فيديوهات..." style="width:100%;padding:14px;border-radius:30px;background:rgba(168,85,247,0.05);border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff;font-size:14px;outline:none;margin-bottom:16px"><div id="searchR"></div>`);
         window.doSearch = function() {
             const query = document.getElementById('searchQ').value.toLowerCase();
             const resultsDiv = document.getElementById('searchR');
             if(!query) { resultsDiv.innerHTML = ''; return; }
             const users = Object.values(allUsers).filter(u => u.username?.toLowerCase().includes(query));
             const vids = allVideos.filter(v => (v.description || '').toLowerCase().includes(query));
-            resultsDiv.innerHTML = `${users.length ? `<div style="margin-bottom:16px"><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-users"></i> مستخدمين</h4>${users.map(u => `<div onclick="openUserProfile('${u.uid || Object.keys(allUsers).find(k=>allUsers[k]===u)}')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(219,39,119,0.1)"><img src="${u.avatarUrl || (DICEBEAR_URL + '?seed=' + (u.uid || u.username))}" style="width:40px;height:40px;border-radius:50%"><div>@${u.username} ${u.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}</div></div>`).join('')}</div>` : ''}${vids.length ? `<div><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-video"></i> فيديوهات</h4>${vids.map(v => `<div onclick="openPlayer('${v.url}', 'video.mp4')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(219,39,119,0.1)"><i class="fas fa-play-circle" style="color:#db2777;font-size:20px"></i><span style="font-size:13px">${(v.description || 'فيديو').substring(0, 40)}</span></div>`).join('')}</div>` : ''}${!users.length && !vids.length ? '<div style="text-align:center;opacity:0.5;padding:30px">لا توجد نتائج</div>' : ''}`;
+            resultsDiv.innerHTML = `${users.length ? `<div style="margin-bottom:16px"><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px;color:#d0c0f0"><i class="fas fa-users"></i> مستخدمين</h4>${users.map(u => `<div onclick="openUserProfile('${u.uid || Object.keys(allUsers).find(k=>allUsers[k]===u)}')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(168,85,247,0.1)"><img src="${u.avatarUrl || (DICEBEAR_URL + '?seed=' + (u.uid || u.username))}" style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(168,85,247,0.3)"><div style="color:#e0d0ff">@${u.username} ${u.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}</div></div>`).join('')}</div>` : ''}${vids.length ? `<div><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px;color:#d0c0f0"><i class="fas fa-video"></i> فيديوهات</h4>${vids.map(v => `<div onclick="openPlayer('${v.url}', 'video.mp4')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(168,85,247,0.1)"><i class="fas fa-play-circle" style="color:#a855f7;font-size:20px"></i><span style="font-size:13px;color:#d0c0f0">${(v.description || 'فيديو').substring(0, 40)}</span></div>`).join('')}</div>` : ''}${!users.length && !vids.length ? '<div style="text-align:center;opacity:0.5;padding:30px;color:#d0c0f0">لا توجد نتائج</div>' : ''}`;
         };
         setTimeout(() => { const input = document.getElementById('searchQ'); if(input) input.focus(); }, 300);
     }
@@ -947,7 +964,6 @@
         return new Date(ts).toLocaleDateString('ar-SA');
     }
 
-    // Make functions globally accessible
     window.closePlayer = closePlayer;
     window.togglePlayPause = togglePlayPause;
     window.skipTime = skipTime;
@@ -963,7 +979,7 @@
     window.toggleLike = toggleLike;
     window.formatTime = formatTime;
 
-    console.log('🌸 MNAENCA Index Ready ✨');
+    console.log('🌑 MNAENCA Index Ready ✨');
 </script>
 </body>
 </html>
