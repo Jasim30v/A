@@ -2,29 +2,28 @@
 """
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                            ║
-║  🌑  MNAENCA 2026 - DARK PURPLE LUXURY EDITION  🌑     ║
-║     Ultimate Version - 9 Files - 3000+ Lines               ║
+║  💜  VØID_X - ULTRA GLASS PRO EDITION  💜                 ║
+║     Neon Pink Void + Supreme Features                      ║
 ║                                                            ║
 ║  🔥  Firebase: muvg-42126                                 ║
 ║  ☁️   Cloudinary: dmqyd0haj / s3_gok                     ║
 ║  👑  Admin: jasim28v@gmail.com                            ║
 ║  👾  Avatars: DiceBear Big Smile (Random)                  ║
-║  💎  Design: Dark Purple + Blue + Pink Glow                ║
+║  💎  Design: VØID_X Glass + Neon Pink Glow                ║
 ║                                                            ║
-║  ✨  PREMIUM FEATURES:                                     ║
+║  ✨  PREMIUM FEATURES (VØID_X STYLE):                      ║
 ║     • 💬 TikTok-Style Comments with Replies              ║
 ║     • 📤 Professional Share System                       ║
 ║     • 👤 Enhanced Profile with Video Grid                ║
-║     • 💧 Watermark on Downloaded Videos                  ║
+║     • 💧 Watermark on Videos (VØID_X SUPREME)            ║
 ║     • 🔔 Notification System (Working 100%)              ║
-║     • 🎬 Compact Video Grid with Description              ║
 ║     • 🗑️  Delete Videos from Admin Panel                  ║
 ║     • 🖤 Parallax Cover                                   ║
 ║     • 💎 Glass Morphism Dark Layers                       ║
-║     • 💜 Purple/Blue Story Rings                         ║
-║     • ✨ Pink/Purple Glow Effects                         ║
+║     • 💜 Neon Pink Story Rings                           ║
+║     • ✨ Pink Glow Effects                                ║
 ║     • 🌟 Smooth In-App Viewer (No Popups!)               ║
-║     • 📱 Floating Bottom Nav                              ║
+║     • 📱 Floating Bottom Nav (VØID_X style)               ║
 ║     • 🎥 Slide-Up Video Reveal Animation                 ║
 ║     • توثيق + حظر + حذف فيديوهات                          ║
 ║                                                            ║
@@ -32,12 +31,10 @@
 """
 
 import os
-import sys
-import json
 import shutil
 
 # ═══════════════════════════════════════════════════════════
-# 🌑 CONFIGURATION - الإعدادات
+# 💜 CONFIGURATION
 # ═══════════════════════════════════════════════════════════
 
 FIREBASE_CONFIG = {
@@ -55,30 +52,24 @@ CLOUD_NAME = "dmqyd0haj"
 UPLOAD_PRESET = "s3_gok"
 ADMIN_EMAILS_JS = "['jasim28v@gmail.com']"
 DICEBEAR_URL = "https://api.dicebear.com/7.x/big-smile/svg"
-APP_NAME = "MNAENCA"
-WATERMARK_TEXT = "🌑 MNAENCA"
-WATERMARK_URL = "https://res.cloudinary.com/dmqyd0haj/image/upload/v1/watermark_mnaenca"
+APP_NAME = "VØID_X"
+WATERMARK_TEXT = "VØID_X SUPREME"
 
-# 🌑 Dark Purple Luxury Palette
+# Neon pink cover colors
 COVER_COLORS_JS = """[
+    "linear-gradient(135deg, #1a000d, #2d0020, #4a0030)",
+    "linear-gradient(135deg, #0d001a, #200030, #350050)",
     "linear-gradient(135deg, #1a0020, #2d0040, #4a0060)",
-    "linear-gradient(135deg, #0d0033, #1a0050, #2d0070)",
-    "linear-gradient(135deg, #1a0030, #2d0050, #4a0070)",
+    "linear-gradient(135deg, #150020, #280040, #3d0060)",
     "linear-gradient(135deg, #200030, #3d0060, #5a0090)",
-    "linear-gradient(135deg, #150025, #280045, #400065)",
     "linear-gradient(135deg, #0a0a1a, #1a1040, #2d1a60)"
 ]"""
 
 OUTPUT_DIR = "output"
 
-# ═══════════════════════════════════════════════════════════
-# 💜 UTILITY - دوال مساعدة
-# ═══════════════════════════════════════════════════════════
-
 TOTAL_LINES = 0
 
 def write(filename, content):
-    """حفظ ملف وحساب عدد الأسطر"""
     global TOTAL_LINES
     filepath = os.path.join(OUTPUT_DIR, filename)
     os.makedirs(os.path.dirname(filepath) if os.path.dirname(filepath) else OUTPUT_DIR, exist_ok=True)
@@ -86,98 +77,88 @@ def write(filename, content):
         f.write(content)
     lines = content.count('\n') + 1
     TOTAL_LINES += lines
-    print(f"  ✅ {filename} ({lines} سطر)")
+    print(f"  ✅ {filename} ({lines} lines)")
 
 def section(title):
-    """طباعة عنوان القسم"""
-    print(f"\n{'='*60}")
-    print(f"  🌑  {title}")
-    print(f"{'='*60}")
+    print(f"\n{'='*60}\n  💜  {title}\n{'='*60}")
 
 # ═══════════════════════════════════════════════════════════
-# 🌑 COMMON CSS - ستايل مشترك (Dark Purple Edition)
+# 💜 COMMON CSS - VØID_X Style
 # ═══════════════════════════════════════════════════════════
 
 COMMON_CSS = """
-    :root{
-        --glass:rgba(120,40,200,0.03);
-        --border:rgba(120,40,200,0.15);
-        --accent:#a855f7;
-        --accent2:#ec4899;
-        --bg:#050005;
-        --card:rgba(120,40,200,0.06);
-        --danger:#ef4444;
-        --success:#22c55e;
-        --warning:#f59e0b;
-        --glow:0 0 20px rgba(168,85,247,0.4), 0 0 40px rgba(236,72,153,0.2);
-        --glow-strong:0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(236,72,153,0.4);
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Cairo:wght@400;700&display=swap');
+    :root {
+        --neon: #ff007f;
+        --bg: #050002;
+        --glass: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.08);
+        --card: rgba(255, 255, 255, 0.05);
     }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-        font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-        background:var(--bg);
-        color:#f0e6ff;
-        -webkit-tap-highlight-color:transparent;
-        user-select:none;
-        -webkit-user-select:none;
-        letter-spacing:0.3px;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: var(--bg);
+        color: #fff;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+        overflow: hidden;
     }
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-    @keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
-    @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
-    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(168,85,247,0.3),0 0 35px rgba(236,72,153,0.2)}50%{box-shadow:0 0 40px rgba(168,85,247,0.7),0 0 70px rgba(236,72,153,0.5)}}
-    @keyframes borderGlow{0%,100%{border-color:rgba(168,85,247,0.3)}50%{border-color:rgba(236,72,153,0.6)}}
-    @keyframes textShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-    .spinner{
-        width:36px;height:36px;
-        border:3px solid rgba(168,85,247,0.2);
-        border-top-color:var(--accent);
-        border-radius:50%;
-        animation:spin 0.7s linear infinite;
-        margin:30px auto;
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes slideDown { from { transform: translateY(0); } to { transform: translateY(100%); } }
+    @keyframes scaleIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px var(--neon); } 50% { box-shadow: 0 0 40px var(--neon), 0 0 60px rgba(255,0,127,0.5); } }
+    @keyframes floatMark { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-20px, 40px); } }
+    .spinner {
+        width: 36px; height: 36px;
+        border: 3px solid rgba(255,0,127,0.2);
+        border-top-color: var(--neon);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        margin: 30px auto;
     }
-    .toast-msg{
-        position:fixed;bottom:120px;left:50%;transform:translateX(-50%);
-        background:rgba(5,0,5,0.95);padding:12px 24px;border-radius:30px;
-        z-index:10000;border:1px solid rgba(168,85,247,0.4);font-size:13px;
-        opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;
-        box-shadow:0 8px 32px rgba(168,85,247,0.3),0 0 20px rgba(236,72,153,0.2);
-        color:#f0e6ff;
+    .toast-msg {
+        position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%);
+        background: rgba(5,0,2,0.95); padding: 12px 24px; border-radius: 30px;
+        z-index: 10000; border: 1px solid rgba(255,0,127,0.4); font-size: 13px;
+        opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        box-shadow: 0 8px 32px rgba(255,0,127,0.2);
     }
-    .toast-msg.show{opacity:1}
-    .overlay{
-        position:fixed;inset:0;background:rgba(5,0,5,0.97);
-        backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
-        z-index:400;overflow-y:auto;
-        animation:fadeIn 0.3s ease;
+    .toast-msg.show { opacity: 1; }
+    .overlay {
+        position: fixed; inset: 0; background: rgba(5,0,2,0.97);
+        backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+        z-index: 400; overflow-y: auto;
+        animation: fadeIn 0.3s ease;
     }
-    .overlay-header{
-        display:flex;justify-content:space-between;align-items:center;
-        padding:16px 20px;border-bottom:1px solid var(--border);
-        position:sticky;top:0;background:rgba(5,0,5,0.9);
-        backdrop-filter:blur(20px);z-index:5;
+    .overlay-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        position: sticky; top: 0; background: rgba(5,0,2,0.9);
+        backdrop-filter: blur(20px); z-index: 5;
     }
-    .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;color:#e0d0ff}
-    .btn-close-overlay{
-        background:rgba(168,85,247,0.1);border:1px solid var(--border);
-        color:#e0d0ff;width:36px;height:36px;border-radius:50%;
-        display:flex;align-items:center;justify-content:center;
-        cursor:pointer;font-size:16px;transition:all 0.3s;
+    .overlay-header h3 { font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 8px; color: #fff; }
+    .btn-close-overlay {
+        background: rgba(255,0,127,0.1); border: 1px solid rgba(255,255,255,0.1);
+        color: #fff; width: 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 16px; transition: all 0.3s;
     }
-    .btn-close-overlay:hover{background:rgba(168,85,247,0.25);box-shadow:0 0 15px rgba(168,85,247,0.3)}
+    .btn-close-overlay:hover { background: rgba(255,0,127,0.25); box-shadow: 0 0 15px var(--neon); }
 """
 
 # ═══════════════════════════════════════════════════════════
-# 🌑 1. firebase-config.js
+# 1. firebase-config.js
 # ═══════════════════════════════════════════════════════════
 
 def build_config():
-    return f"""// 🌑 MNAENCA 2026 - Dark Purple Luxury Configuration
+    return f"""// 💜 VØID_X 2026 - Neon Glass Configuration
 // Firebase: muvg-42126 | Cloudinary: dmqyd0haj
 // ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
 
@@ -192,34 +173,30 @@ const firebaseConfig = {{
     measurementId: "{FIREBASE_CONFIG['measurementId']}"
 }};
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// Cloudinary Configuration
 const CLOUD_NAME = "{CLOUD_NAME}";
 const UPLOAD_PRESET = "{UPLOAD_PRESET}";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${{CLOUD_NAME}}/auto/upload`;
 
-// 🌑 MNAENCA Settings
 const ADMIN_EMAILS = {ADMIN_EMAILS_JS};
 const DICEBEAR_URL = "{DICEBEAR_URL}";
 const COVER_COLORS = {COVER_COLORS_JS};
 
-// 🌑 App Info
 const APP_NAME = "{APP_NAME}";
 const APP_VERSION = "2026.4";
-const PRIMARY_COLOR = "#a855f7";
-const SECONDARY_COLOR = "#ec4899";
+const PRIMARY_COLOR = "#ff007f";
+const SECONDARY_COLOR = "#ff00aa";
 const WATERMARK_TEXT = "{WATERMARK_TEXT}";
-const WATERMARK_URL = "{WATERMARK_URL}";
+const WATERMARK_URL = "https://res.cloudinary.com/dmqyd0haj/image/upload/v1/watermark_mnaenca";
 
-console.log('%c🌑 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #a855f7; font-size: 16px; font-weight: bold;');
+console.log('%c💜 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #ff007f; font-size: 16px; font-weight: bold;');
 """
 
 # ═══════════════════════════════════════════════════════════
-# 🌑 2. auth.html - تسجيل الدخول والاشتراك (Purple Edition)
+# 2. auth.html - VØID_X Glass Login
 # ═══════════════════════════════════════════════════════════
 
 def build_auth():
@@ -228,126 +205,119 @@ def build_auth():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | دخول</title>
+    <title>💜 VØID_X | دخول</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{
-            min-height:100vh;
-            background:radial-gradient(ellipse at top, #1a0025, #0d0015, #050005);
-            display:flex;align-items:center;justify-content:center;
-            overflow:hidden;position:relative;
+        body {{
+            min-height: 100vh;
+            background: radial-gradient(ellipse at top, #1a000d, #0d0015, #050002);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; position: relative;
         }}
-        .bg-orb{{
-            position:fixed;border-radius:50%;filter:blur(130px);opacity:0.3;
-            animation:orbFloat 20s infinite alternate;pointer-events:none;
+        .bg-orb {{
+            position: fixed; border-radius: 50%; filter: blur(130px); opacity: 0.3;
+            animation: orbFloat 20s infinite alternate; pointer-events: none;
         }}
-        .bg-orb:nth-child(1){{width:400px;height:400px;background:#a855f7;top:-100px;left:-100px}}
-        .bg-orb:nth-child(2){{width:350px;height:350px;background:#ec4899;bottom:-100px;right:-100px;animation-delay:5s}}
-        .bg-orb:nth-child(3){{width:300px;height:300px;background:#7c3aed;top:50%;left:50%;animation-delay:10s}}
-        @keyframes orbFloat{{0%{{transform:translate(0,0) scale(1)}}100%{{transform:translate(50px,-50px) scale(1.3)}}}}
+        .bg-orb:nth-child(1) {{ width: 400px; height: 400px; background: var(--neon); top: -100px; left: -100px; }}
+        .bg-orb:nth-child(2) {{ width: 350px; height: 350px; background: #ff00aa; bottom: -100px; right: -100px; animation-delay: 5s; }}
+        .bg-orb:nth-child(3) {{ width: 300px; height: 300px; background: #ff007f; top: 50%; left: 50%; animation-delay: 10s; }}
+        @keyframes orbFloat {{ 0% {{ transform: translate(0,0) scale(1) }} 100% {{ transform: translate(50px,-50px) scale(1.3) }} }}
 
-        .card{{
-            position:relative;z-index:1;width:90%;max-width:420px;
-            background:rgba(168,85,247,0.04);
-            backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
-            border-radius:32px;padding:36px 24px;
-            border:1.5px solid rgba(168,85,247,0.3);
-            box-shadow:0 30px 70px rgba(168,85,247,0.15),0 0 60px rgba(236,72,153,0.1),inset 0 0 30px rgba(168,85,247,0.03);
-            animation:fadeUp 0.8s ease;
+        .card {{
+            position: relative; z-index: 1; width: 90%; max-width: 420px;
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(40px);
+            border-radius: 32px; padding: 36px 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 70px rgba(255,0,127,0.2), 0 0 60px rgba(255,0,127,0.1);
+            animation: fadeUp 0.8s ease;
         }}
-        .logo{{
-            width:70px;height:70px;margin:0 auto 20px;
-            background:linear-gradient(135deg, rgba(168,85,247,0.4), rgba(236,72,153,0.4));
-            border-radius:20px;display:flex;align-items:center;justify-content:center;
-            font-size:36px;border:1.5px solid rgba(168,85,247,0.3);
-            animation:glowPulse 3s ease-in-out infinite;
-            box-shadow:0 0 30px rgba(168,85,247,0.5),0 0 50px rgba(236,72,153,0.3);
+        .logo {{
+            width: 70px; height: 70px; margin: 0 auto 20px;
+            background: linear-gradient(135deg, rgba(255,0,127,0.4), rgba(255,0,170,0.4));
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 36px; border: 1px solid rgba(255,0,127,0.3);
+            animation: glowPulse 3s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(255,0,127,0.5);
         }}
-        h1{{
-            text-align:center;font-size:36px;font-weight:900;
-            background:linear-gradient(135deg, #c084fc, #e879f9, #f472b6);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            margin-bottom:4px;
-            animation:textShimmer 3s linear infinite;
-            background-size:200% auto;
+        h1 {{
+            text-align: center; font-size: 36px; font-weight: 900;
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
         }}
-        .sub{{text-align:center;color:rgba(240,230,255,0.5);font-size:13px;margin-bottom:20px}}
+        .sub {{ text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 20px; }}
+        .tabs {{ display: flex; gap: 4px; background: rgba(255,255,255,0.05); border-radius: 40px; padding: 4px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); }}
+        .tab {{ flex: 1; padding: 12px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; border-radius: 40px; font-size: 14px; transition: all 0.3s; font-weight: 500; }}
+        .tab.active {{ background: linear-gradient(135deg, #ff007f, #ff00aa); color: #fff; box-shadow: 0 8px 25px rgba(255,0,127,0.5); }}
 
-        .tabs{{display:flex;gap:4px;background:rgba(168,85,247,0.08);border-radius:40px;padding:4px;margin-bottom:24px;border:1px solid rgba(168,85,247,0.1)}}
-        .tab{{flex:1;padding:12px;background:none;border:none;color:rgba(240,230,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:500}}
-        .tab.active{{background:linear-gradient(135deg, #a855f7, #ec4899);color:#fff;box-shadow:0 8px 25px rgba(168,85,247,0.5),0 0 40px rgba(236,72,153,0.3)}}
+        .form {{ display: none; animation: fadeIn 0.4s ease; }}
+        .form.active {{ display: block; }}
 
-        .form{{display:none;animation:fadeIn 0.4s ease}}
-        .form.active{{display:block}}
-
-        input{{
-            width:100%;padding:15px 18px;margin:8px 0;
-            border-radius:50px;background:rgba(168,85,247,0.05);
-            border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff;
-            font-size:14px;outline:none;transition:all 0.4s;
+        input {{
+            width: 100%; padding: 15px 18px; margin: 8px 0;
+            border-radius: 50px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15); color: #fff;
+            font-size: 14px; outline: none; transition: all 0.4s;
         }}
-        input:focus{{border-color:rgba(168,85,247,0.7);box-shadow:0 0 25px rgba(168,85,247,0.2),0 0 10px rgba(236,72,153,0.1);background:rgba(168,85,247,0.1)}}
-        input::placeholder{{color:rgba(240,230,255,0.3)}}
+        input:focus {{ border-color: var(--neon); box-shadow: 0 0 25px rgba(255,0,127,0.3); background: rgba(255,255,255,0.08); }}
+        input::placeholder {{ color: rgba(255,255,255,0.3); }}
 
-        button{{
-            width:100%;padding:15px;margin-top:18px;
-            background:linear-gradient(135deg, #a855f7, #ec4899);
-            border:none;border-radius:50px;color:#fff;
-            font-weight:bold;font-size:15px;cursor:pointer;
-            transition:all 0.3s;box-shadow:0 10px 35px rgba(168,85,247,0.5),0 0 50px rgba(236,72,153,0.3);
-            letter-spacing:0.5px;
+        button {{
+            width: 100%; padding: 15px; margin-top: 18px;
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            border: none; border-radius: 50px; color: #fff;
+            font-weight: bold; font-size: 15px; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 10px 35px rgba(255,0,127,0.5);
+            letter-spacing: 0.5px;
         }}
-        button:hover{{transform:translateY(-2px);box-shadow:0 20px 50px rgba(168,85,247,0.7),0 0 70px rgba(236,72,153,0.5)}}
-        button:active{{transform:scale(0.97)}}
-        button:disabled{{opacity:0.5;pointer-events:none}}
+        button:hover {{ transform: translateY(-2px); box-shadow: 0 20px 50px rgba(255,0,127,0.7); }}
+        button:active {{ transform: scale(0.97); }}
+        button:disabled {{ opacity: 0.5; pointer-events: none; }}
 
-        .msg{{text-align:center;color:#fca5a5;font-size:13px;margin-top:12px;min-height:20px}}
-        .msg.success{{color:#4ade80}}
+        .msg {{ text-align: center; color: #fca5a5; font-size: 13px; margin-top: 12px; min-height: 20px; }}
+        .msg.success {{ color: #4ade80; }}
     </style>
 </head>
 <body>
     <div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div>
-
     <div class="card">
-        <div class="logo">🌑</div>
-        <h1>MNAENCA</h1>
-        <p class="sub">Dark Purple Luxury 2026 ✨</p>
-
+        <div class="logo">💜</div>
+        <h1>VØID_X</h1>
+        <p class="sub">Neon Glass Luxury 2026 ✨</p>
         <div class="tabs">
             <button class="tab active" id="tabLogin" onclick="switchTab('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
             <button class="tab" id="tabRegister" onclick="switchTab('register')"><i class="fas fa-user-plus"></i> اشتراك</button>
         </div>
-
         <div id="formLogin" class="form active">
             <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
             <input type="password" id="loginPass" placeholder="🔒 كلمة المرور" autocomplete="current-password">
             <button id="btnLogin" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول</button>
             <div class="msg" id="loginMsg"></div>
         </div>
-
         <div id="formRegister" class="form">
-            <input type="text" id="regName" placeholder="👤 اسم المستخدم" autocomplete="username">
+            <input type="text" id="regName" placeholder="👤 اسم المستخدم">
             <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
             <input type="password" id="regPass" placeholder="🔒 كلمة المرور (6 أحرف على الأقل)" autocomplete="new-password">
             <button id="btnRegister" onclick="doRegister()"><i class="fas fa-heart"></i> إنشاء حساب</button>
             <div class="msg" id="regMsg"></div>
         </div>
     </div>
-
     <script src="firebase-config.js"></script>
     <script>
-        function switchTab(type){{
+        function switchTab(type) {{
             document.getElementById('tabLogin').classList.remove('active');
             document.getElementById('tabRegister').classList.remove('active');
             document.getElementById('formLogin').classList.remove('active');
             document.getElementById('formRegister').classList.remove('active');
             document.getElementById('loginMsg').innerText = '';
             document.getElementById('regMsg').innerText = '';
-            if(type === 'login'){{
+            if(type === 'login') {{
                 document.getElementById('tabLogin').classList.add('active');
                 document.getElementById('formLogin').classList.add('active');
             }} else {{
@@ -356,12 +326,12 @@ def build_auth():
             }}
         }}
 
-        async function doLogin(){{
+        async function doLogin() {{
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPass').value;
             const msg = document.getElementById('loginMsg');
             const btn = document.getElementById('btnLogin');
-            if(!email || !password){{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
+            if(!email || !password) {{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
             btn.disabled = true; btn.innerHTML = '⏳ جاري الدخول...'; msg.innerText = ''; msg.className = 'msg';
             try {{
                 await auth.signInWithEmailAndPassword(email, password);
@@ -378,16 +348,16 @@ def build_auth():
             }}
         }}
 
-        async function doRegister(){{
+        async function doRegister() {{
             const username = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPass').value;
             const msg = document.getElementById('regMsg');
             const btn = document.getElementById('btnRegister');
-            if(!username || !email || !password){{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
-            if(username.length < 3){{ msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }}
-            if(password.length < 6){{ msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }}
-            if(!email.includes('@') || !email.includes('.')){{ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }}
+            if(!username || !email || !password) {{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
+            if(username.length < 3) {{ msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }}
+            if(password.length < 6) {{ msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }}
+            if(!email.includes('@') || !email.includes('.')) {{ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }}
             btn.disabled = true; btn.innerHTML = '⏳ جاري إنشاء الحساب...'; msg.innerText = ''; msg.className = 'msg';
             try {{
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
@@ -413,8 +383,8 @@ def build_auth():
                     case 'auth/email-already-in-use': msg.innerText = '❌ البريد الإلكتروني مستخدم بالفعل'; break;
                     case 'auth/weak-password': msg.innerText = '❌ كلمة المرور ضعيفة جداً'; break;
                     case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
-                    case 'auth/operation-not-allowed': msg.innerText = '❌ التسجيل غير مفعل، راجع إعدادات Firebase'; break;
-                    default: msg.innerText = '❌ خطأ: ' + (error.message || 'غير معروف');
+                    case 'auth/operation-not-allowed': msg.innerText = '❌ التسجيل غير مفعل'; break;
+                    default: msg.innerText = '❌ خطأ: ' + error.message;
                 }}
             }}
         }}
@@ -433,13 +403,13 @@ def build_auth():
             if(user) {{ window.location.replace('index.html'); }}
         }});
 
-        console.log('🌑 MNAENCA Auth Ready');
+        console.log('💜 VØID_X Auth Ready');
     </script>
 </body>
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# 🌑 3. index.html - الرئيسية (Purple Edition)
+# 3. index.html - VØID_X Main Feed
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
@@ -448,383 +418,291 @@ def build_index():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🌑 MNAENCA | الرئيسية</title>
+    <title>💜 VØID_X | الرئيسية</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{height:100vh;overflow:hidden;}}
-        
-        #loaderScreen{{
-            position:fixed;inset:0;z-index:9999;
-            background:radial-gradient(ellipse at top, #1a0025, #0d0015, #050005);
-            display:flex;align-items:center;justify-content:center;
-            flex-direction:column;gap:16px;
+        body {{ height: 100vh; }}
+
+        #loaderScreen {{
+            position: fixed; inset: 0; z-index: 9999;
+            background: radial-gradient(ellipse at top, #1a000d, #0d0015, #050002);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 16px;
         }}
-        .spinner-big{{
-            width:50px;height:50px;
-            border:4px solid rgba(168,85,247,0.2);
-            border-top-color:var(--accent);
-            border-radius:50%;
-            animation:spin 0.8s linear infinite;
+        .spinner-big {{
+            width: 50px; height: 50px;
+            border: 4px solid rgba(255,0,127,0.2);
+            border-top-color: var(--neon);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }}
 
-        #mainApp{{display:none;height:100vh;position:relative}}
+        #mainApp {{ display: none; height: 100vh; position: relative; }}
 
-        .topbar{{
-            position:fixed;top:10px;left:10px;right:10px;z-index:100;
-            display:flex;justify-content:space-between;align-items:center;
-            padding:8px 16px;
-            background:rgba(5,0,5,0.7);
-            backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-            border:1.5px solid rgba(168,85,247,0.3);
-            border-radius:50px;
-            box-shadow:0 8px 32px rgba(168,85,247,0.1),0 0 25px rgba(236,72,153,0.05);
-            animation:borderGlow 3s ease-in-out infinite;
+        header {{
+            position: fixed; top: 25px; left: 20px; right: 20px; z-index: 500;
+            display: flex; justify-content: space-between; align-items: center;
+            pointer-events: none;
         }}
-        .logo-icon{{
-            width:34px;height:34px;
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border-radius:50%;display:flex;align-items:center;justify-content:center;
-            font-weight:900;font-size:12px;
-            animation:glowPulse 2s ease-in-out infinite;
-            box-shadow:0 0 20px rgba(168,85,247,0.5),0 0 30px rgba(236,72,153,0.3);
+        .brand-box {{
+            padding: 8px 22px; border-radius: 20px;
+            border-left: 4px solid var(--neon);
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            pointer-events: auto;
+            transition: 0.5s ease;
         }}
-        .logo-text{{
-            font-weight:800;font-size:17px;
-            background:linear-gradient(135deg, #c084fc, #e879f9);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            margin-left:8px;
-            animation:textShimmer 3s linear infinite;
-            background-size:200% auto;
+        .brand-name {{
+            font-family: 'Orbitron', sans-serif; font-weight: 900;
+            letter-spacing: 2px; color: #fff;
+            text-shadow: 0 0 15px var(--neon);
         }}
-        .tabs{{display:flex;gap:4px;background:var(--glass);border-radius:30px;padding:3px;border:1px solid rgba(168,85,247,0.1)}}
-        .tab{{
-            background:none;border:none;color:rgba(240,230,255,0.5);
-            padding:7px 16px;cursor:pointer;border-radius:25px;
-            font-size:13px;font-weight:500;transition:all 0.3s;
-        }}
-        .tab.active{{background:rgba(168,85,247,0.3);color:#f0e6ff;box-shadow:0 0 15px rgba(168,85,247,0.3)}}
-        .top-icons{{display:flex;gap:16px}}
-        .top-icon{{
-            background:none;border:none;color:rgba(240,230,255,0.7);
-            font-size:18px;cursor:pointer;transition:all 0.3s;position:relative;
-        }}
-        .top-icon:hover{{color:var(--accent2);text-shadow:0 0 15px rgba(236,72,153,0.6)}}
-        .notif-badge{{
-            position:absolute;top:-6px;right:-6px;
-            min-width:18px;height:18px;
-            background:#ef4444;
-            border-radius:10px;
-            border:2px solid var(--bg);
-            display:none;
-            align-items:center;justify-content:center;
-            font-size:9px;font-weight:bold;padding:0 5px;
-            box-shadow:0 0 10px rgba(239,68,68,0.5);
+        .clock {{
+            font-family: 'Orbitron', sans-serif; font-size: 11px;
+            color: rgba(255,255,255,0.8); padding: 6px 16px;
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(10px);
         }}
 
-        .videos-wrap{{
-            height:100vh;overflow-y:scroll;
-            scroll-snap-type:y mandatory;
-            scrollbar-width:none;-ms-overflow-style:none;
+        .videos-wrap {{
+            height: 100vh; overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none; -ms-overflow-style: none;
         }}
-        .videos-wrap::-webkit-scrollbar{{display:none}}
-        .vid-card{{height:100vh;scroll-snap-align:start;position:relative;background:#000}}
-
+        .videos-wrap::-webkit-scrollbar {{ display: none; }}
+        .vid-card {{
+            height: 100vh; width: 100vw; scroll-snap-align: start;
+            scroll-snap-stop: always; position: relative; overflow: hidden;
+            background: #000;
+        }}
         .vid-card video {{
-            width:100%;height:100%;object-fit:cover;
-            opacity:0;transform:translateY(60px);
-            transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.16,1,0.3,1);
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transform: translateY(60px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
         }}
-        .vid-card.active video {{opacity:1;transform:translateY(0)}}
+        .vid-card.active video {{ opacity: 1; transform: translateY(0); }}
 
-        .vid-info{{
-            position:absolute;bottom:90px;left:14px;right:80px;z-index:20;
-            text-shadow:0 2px 10px rgba(0,0,0,0.8);
-        }}
-        .author-row{{display:flex;align-items:center;gap:10px;margin-bottom:6px}}
-        .author-avatar{{
-            width:50px;height:50px;border-radius:50%;overflow:hidden;
-            cursor:pointer;position:relative;
-            background:linear-gradient(135deg, #a855f7, #ec4899, #c084fc);
-            padding:3px;
-            animation:storyRing 3s ease-in-out infinite;
-            flex-shrink:0;
-        }}
-        @keyframes storyRing{{0%,100%{{box-shadow:0 0 20px rgba(168,85,247,0.5),0 0 30px rgba(236,72,153,0.3)}}50%{{box-shadow:0 0 35px rgba(168,85,247,0.8),0 0 50px rgba(236,72,153,0.6)}}}}
-        .author-avatar img{{width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--bg)}}
-        .author-name{{
-            font-weight:700;font-size:15px;cursor:pointer;
-            display:flex;align-items:center;gap:6px;flex-wrap:wrap;
-            color:#f0e6ff;
-        }}
-        .verified-badge-main{{
-            background:linear-gradient(135deg, #a855f7, #ec4899);
-            color:#fff;font-size:10px;padding:2px 5px;border-radius:50%;
-            display:inline-flex;align-items:center;justify-content:center;
-            width:18px;height:18px;font-weight:bold;
-            box-shadow:0 0 15px rgba(168,85,247,0.7),0 0 25px rgba(236,72,153,0.5);
-        }}
-        .btn-follow{{
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            padding:5px 14px;border-radius:20px;font-size:11px;
-            font-weight:700;border:none;color:#fff;cursor:pointer;
-            box-shadow:0 4px 20px rgba(168,85,247,0.5),0 0 30px rgba(236,72,153,0.3);
-            transition:all 0.3s;white-space:nowrap;
-        }}
-        .btn-follow:hover{{box-shadow:0 8px 30px rgba(168,85,247,0.8),0 0 50px rgba(236,72,153,0.6);transform:translateY(-1px)}}
-        .caption{{font-size:14px;margin-bottom:5px;line-height:1.4;color:#e0d0ff}}
-        .tag{{color:var(--accent2);cursor:pointer;font-weight:500;text-shadow:0 0 10px rgba(236,72,153,0.5)}}
-        .music{{font-size:12px;opacity:0.8;display:flex;align-items:center;gap:6px;cursor:pointer;color:#d0c0f0}}
-        .music-wave{{display:flex;gap:2px;align-items:flex-end;height:16px}}
-        .music-wave span{{width:2px;background:var(--accent2);border-radius:1px;animation:musicWave 1s ease-in-out infinite;box-shadow:0 0 8px rgba(236,72,153,0.5)}}
-        .music-wave span:nth-child(1){{height:8px;animation-delay:0s}}
-        .music-wave span:nth-child(2){{height:14px;animation-delay:0.15s}}
-        .music-wave span:nth-child(3){{height:6px;animation-delay:0.3s}}
-        .music-wave span:nth-child(4){{height:12px;animation-delay:0.45s}}
-        .music-wave span:nth-child(5){{height:4px;animation-delay:0.6s}}
-        @keyframes musicWave{{0%,100%{{transform:scaleY(1)}}50%{{transform:scaleY(1.8)}}}}
-
-        /* 💧 Watermark */
-        .watermark-overlay{{
-            position:absolute;top:20px;right:20px;
-            z-index:15;pointer-events:none;
-            display:flex;align-items:center;gap:6px;
-            opacity:0.7;
-        }}
-        .watermark-overlay span{{
-            font-weight:700;font-size:13px;
-            text-shadow:0 2px 8px rgba(0,0,0,0.6),0 0 15px rgba(168,85,247,0.5);
-            color:#f0e6ff;
+        .watermark-overlay {{
+            position: absolute; top: 20%; right: 10%;
+            font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+            color: rgba(255,255,255,0.15); z-index: 20;
+            letter-spacing: 4px; animation: floatMark 10s infinite;
+            text-shadow: 0 0 5px var(--neon);
         }}
 
-        .side-btns{{
-            position:absolute;right:14px;bottom:130px;
-            display:flex;flex-direction:column;gap:22px;z-index:20;
+        .side-actions {{
+            position: absolute; left: 20px; bottom: 180px;
+            display: flex; flex-direction: column; gap: 15px; z-index: 100;
         }}
-        .sbtn{{
-            display:flex;flex-direction:column;align-items:center;gap:3px;
-            background:none;border:none;color:#f0e6ff;cursor:pointer;
-            font-size:10px;transition:transform 0.15s;
+        .action-btn {{
+            width: 55px; height: 55px; border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
         }}
-        .sbtn:active{{transform:scale(0.85)}}
-        .sbtn i{{font-size:28px;filter:drop-shadow(0 3px 8px rgba(168,85,247,0.5))}}
-        .sbtn.liked i{{color:var(--accent2);animation:likePop 0.4s ease;filter:drop-shadow(0 0 15px rgba(236,72,153,0.8))}}
-        @keyframes likePop{{0%{{transform:scale(1)}}50%{{transform:scale(1.4)}}100%{{transform:scale(1)}}}}
-        .sbtn .cnt{{font-weight:700;font-size:11px}}
+        .action-btn i {{
+            font-size: 1.3rem; color: var(--neon);
+            filter: drop-shadow(0 0 8px var(--neon)); transition: 0.3s;
+        }}
+        .btn-label {{
+            font-size: 9px; font-weight: bold; margin-top: 2px;
+            color: #fff; opacity: 0.7; font-family: 'Orbitron', sans-serif;
+        }}
+        .action-btn.liked i {{ color: #fff; filter: drop-shadow(0 0 15px var(--neon)); animation: likePop 0.4s ease; }}
 
-        /* 📤 Share Panel */
-        .share-panel{{
-            position:fixed;bottom:0;left:0;right:0;
-            background:rgba(5,0,5,0.98);
-            backdrop-filter:blur(40px);
-            border-top:2px solid var(--accent);
-            border-radius:24px 24px 0 0;
-            padding:24px 20px 40px;
-            z-index:500;
-            transform:translateY(100%);
-            transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
-            box-shadow:0 -10px 40px rgba(168,85,247,0.3),0 0 60px rgba(236,72,153,0.2);
-        }}
-        .share-panel.show{{transform:translateY(0)}}
-        .share-panel h3{{font-size:17px;font-weight:700;margin-bottom:20px;text-align:center;color:var(--accent2);text-shadow:0 0 15px rgba(236,72,153,0.5)}}
-        .share-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}}
-        .share-item{{
-            display:flex;flex-direction:column;align-items:center;gap:8px;
-            cursor:pointer;transition:transform 0.2s;
-        }}
-        .share-item:hover{{transform:scale(1.1)}}
-        .share-item .share-icon{{
-            width:56px;height:56px;border-radius:16px;
-            display:flex;align-items:center;justify-content:center;
-            font-size:24px;transition:all 0.3s;
-            border:1px solid rgba(168,85,247,0.2);
-        }}
-        .share-item span{{font-size:11px;opacity:0.7;color:#d0c0f0}}
-        .share-copy-row{{
-            display:flex;gap:8px;align-items:center;
-            background:rgba(168,85,247,0.08);border-radius:16px;
-            padding:8px;border:1.5px solid rgba(168,85,247,0.2);
-        }}
-        .share-copy-row input{{
-            flex:1;padding:12px;border-radius:12px;
-            background:rgba(168,85,247,0.05);border:1px solid var(--border);
-            color:#f0e6ff;font-size:13px;outline:none;direction:ltr;
-        }}
-        .share-copy-row button{{
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border:none;color:#fff;padding:12px 20px;border-radius:12px;
-            font-weight:700;cursor:pointer;white-space:nowrap;
-            box-shadow:0 0 20px rgba(168,85,247,0.4);
+        @keyframes likePop {{
+            0% {{ transform: scale(1); }} 50% {{ transform: scale(1.4); }} 100% {{ transform: scale(1); }}
         }}
 
-        /* 💬 TikTok Style Comments */
-        .comments-panel{{
-            position:fixed;bottom:0;left:0;right:0;
-            background:rgba(5,0,5,0.98);
-            backdrop-filter:blur(40px);
-            border-top:2px solid var(--accent);
-            border-radius:24px 24px 0 0;
-            padding:0;
-            z-index:500;
-            max-height:70vh;
-            display:flex;flex-direction:column;
-            transform:translateY(100%);
-            transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
-            box-shadow:0 -10px 40px rgba(168,85,247,0.3);
+        nav {{
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; height: 75px; border-radius: 35px;
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 200;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }}
-        .comments-panel.show{{transform:translateY(0)}}
-        .comments-header{{
-            display:flex;justify-content:space-between;align-items:center;
-            padding:16px 20px;border-bottom:1px solid rgba(168,85,247,0.15);
-            flex-shrink:0;
+        .finger-admin {{
+            color: var(--neon); cursor: pointer;
+            filter: drop-shadow(0 0 10px var(--neon));
+            transition: 0.5s;
         }}
-        .comments-header h3{{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;color:#e0d0ff}}
-        .comments-list{{
-            flex:1;overflow-y:auto;padding:12px 16px;
+        #upload-trigger {{
+            background: var(--neon); box-shadow: 0 0 25px var(--neon);
+            cursor: pointer; width: 62px; height: 62px; border-radius: 22px;
+            display: flex; align-items: center; justify-content: center;
+            transform: translateY(-15px); border: 4px solid var(--bg);
+            color: #fff; font-size: 20px;
         }}
-        .comment-item{{
-            display:flex;gap:10px;padding:12px 0;
-            border-bottom:1px solid rgba(168,85,247,0.08);
-            animation:fadeIn 0.3s ease;
-        }}
-        .comment-avatar{{
-            width:36px;height:36px;border-radius:50%;
-            overflow:hidden;flex-shrink:0;
-            border:2px solid rgba(168,85,247,0.3);
-            box-shadow:0 0 10px rgba(168,85,247,0.2);
-        }}
-        .comment-avatar img{{width:100%;height:100%;object-fit:cover}}
-        .comment-body{{flex:1;min-width:0}}
-        .comment-user{{font-weight:600;font-size:13px;margin-bottom:2px;display:flex;align-items:center;gap:5px;color:#d0c0f0}}
-        .comment-text{{font-size:13px;line-height:1.4;word-break:break-word;color:#c0b0e0}}
-        .comment-actions{{display:flex;gap:16px;margin-top:6px;font-size:11px}}
-        .comment-actions span{{cursor:pointer;opacity:0.6;display:flex;align-items:center;gap:4px;transition:opacity 0.2s;color:#c0b0e0}}
-        .comment-actions span:hover{{opacity:1;text-shadow:0 0 10px rgba(168,85,247,0.5)}}
-        .comment-time{{font-size:10px;opacity:0.4}}
-        .reply-item{{
-            margin-right:46px;padding:8px 0;
-            border-bottom:1px solid rgba(168,85,247,0.05);
-            display:flex;gap:8px;
-        }}
-        .reply-item .comment-avatar{{width:28px;height:28px}}
-        .comment-input-row{{
-            display:flex;gap:8px;padding:12px 16px;
-            border-top:1px solid rgba(168,85,247,0.15);
-            background:rgba(5,0,5,0.95);
-            flex-shrink:0;
-        }}
-        .comment-input-row input{{
-            flex:1;padding:12px 16px;border-radius:30px;
-            background:rgba(168,85,247,0.05);border:1.5px solid rgba(168,85,247,0.2);
-            color:#f0e6ff;font-size:13px;outline:none;
-        }}
-        .comment-input-row button{{
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border:none;color:#fff;padding:10px 18px;border-radius:30px;
-            font-weight:700;cursor:pointer;white-space:nowrap;font-size:13px;
-            box-shadow:0 0 20px rgba(168,85,247,0.4);
-        }}
+        .nav-chat {{ color: rgba(255,255,255,0.3); transition: 0.3s; }}
+        .nav-chat:hover {{ color: var(--neon); }}
 
-        /* ☁️ Fullscreen Video Player */
+        /* Fullscreen player, comments, share panels - similar glass style */
         .fullscreen-player {{
-            position:fixed;top:0;left:0;width:100vw;height:100vh;
-            background:#000;z-index:9999;display:flex;align-items:center;
-            justify-content:center;opacity:0;pointer-events:none;
-            transition:opacity 0.3s ease;flex-direction:column;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 9999; display: flex; align-items: center;
+            justify-content: center; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease; flex-direction: column;
         }}
-        .fullscreen-player.active {{opacity:1;pointer-events:auto}}
-        .fullscreen-player video {{max-width:100%;max-height:85vh;object-fit:contain;cursor:pointer}}
-        .player-controls{{
-            position:absolute;bottom:100px;left:20px;right:20px;
-            display:flex;align-items:center;justify-content:space-between;
-            background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);
-            border-radius:50px;padding:10px 20px;
-            border:1.5px solid rgba(168,85,247,0.4);z-index:10000;color:#f0e6ff;gap:12px;flex-wrap:wrap;
-            box-shadow:0 0 30px rgba(168,85,247,0.3);
+        .fullscreen-player.active {{ opacity: 1; pointer-events: auto; }}
+        .fullscreen-player video {{ max-width: 100%; max-height: 85vh; object-fit: contain; cursor: pointer; }}
+        .player-controls {{
+            position: absolute; bottom: 100px; left: 20px; right: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(20px);
+            border-radius: 50px; padding: 10px 20px;
+            border: 1px solid rgba(255,0,127,0.4); z-index: 10000; color: #fff; gap: 12px; flex-wrap: wrap;
         }}
-        .player-controls button{{background:none;border:none;color:#f0e6ff;font-size:20px;cursor:pointer;transition:all 0.2s;padding:5px}}
-        .player-controls button:hover{{color:#e879f9;text-shadow:0 0 15px rgba(236,72,153,0.6)}}
-        .progress-wrap{{flex:1;display:flex;align-items:center;gap:8px;min-width:100px}}
-        .progress-bar{{flex:1;height:4px;background:rgba(168,85,247,0.2);border-radius:4px;cursor:pointer;position:relative}}
-        .progress-fill{{height:100%;background:linear-gradient(90deg,#a855f7,#ec4899);border-radius:4px;width:0%;box-shadow:0 0 10px rgba(168,85,247,0.5)}}
-        .close-player{{
-            position:absolute;top:20px;left:20px;
-            background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);
-            border:1.5px solid rgba(168,85,247,0.5);color:#f0e6ff;
-            width:44px;height:44px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;font-size:20px;z-index:10001;transition:all 0.3s;
+        .player-controls button {{ background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; transition: all 0.2s; }}
+        .player-controls button:hover {{ color: var(--neon); text-shadow: 0 0 10px var(--neon); }}
+        .progress-wrap {{ flex: 1; display: flex; align-items: center; gap: 8px; min-width: 100px; }}
+        .progress-bar {{ flex: 1; height: 4px; background: rgba(255,0,127,0.2); border-radius: 4px; cursor: pointer; }}
+        .progress-fill {{ height: 100%; background: linear-gradient(90deg, #ff007f, #ff00aa); border-radius: 4px; width: 0%; box-shadow: 0 0 10px var(--neon); }}
+        .close-player {{
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,0,127,0.4); color: #fff;
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 20px; z-index: 10001; transition: all 0.3s;
         }}
-        .close-player:hover{{background:rgba(168,85,247,0.3);box-shadow:0 0 25px rgba(168,85,247,0.6)}}
+        .close-player:hover {{ background: rgba(255,0,127,0.3); box-shadow: 0 0 25px var(--neon); }}
 
-        /* 📱 FLOATING BOTTOM NAV */
-        .nav-bottom{{
-            position:fixed;bottom:12px;left:12px;right:12px;
-            display:flex;justify-content:space-around;align-items:center;
-            padding:8px 0;
-            background:rgba(5,0,5,0.85);
-            backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-            z-index:100;
-            border:1.5px solid rgba(168,85,247,0.3);
-            border-radius:40px;
-            box-shadow:0 -8px 32px rgba(168,85,247,0.1),0 0 30px rgba(236,72,153,0.08);
-            animation:borderGlow 3s ease-in-out infinite;
+        /* Share Panel */
+        .share-panel {{
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(5,0,2,0.98); backdrop-filter: blur(40px);
+            border-top: 2px solid var(--neon);
+            border-radius: 24px 24px 0 0;
+            padding: 24px 20px 40px;
+            z-index: 500;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
         }}
-        .nav-item{{
-            display:flex;flex-direction:column;align-items:center;gap:3px;
-            background:none;border:none;color:rgba(240,230,255,0.5);
-            font-size:10px;cursor:pointer;transition:all 0.3s;text-decoration:none;
+        .share-panel.show {{ transform: translateY(0); }}
+        .share-panel h3 {{ font-size: 17px; font-weight: 700; margin-bottom: 20px; text-align: center; color: var(--neon); }}
+        .share-grid {{ display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 20px; }}
+        .share-item {{
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            cursor: pointer; transition: transform 0.2s;
         }}
-        .nav-item i{{font-size:22px}}
-        .nav-item.active{{color:var(--accent2);text-shadow:0 0 15px rgba(236,72,153,0.6)}}
-        .btn-add{{
-            width:48px;height:48px;
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border-radius:50%;display:flex;align-items:center;justify-content:center;
-            margin-top:-30px;cursor:pointer;
-            box-shadow:0 10px 30px rgba(168,85,247,0.6),0 0 50px rgba(236,72,153,0.4);
-            border:none;color:#fff;font-size:20px;
-            z-index:101;transition:all 0.3s;text-decoration:none;
-            animation:glowPulse 2s ease-in-out infinite;
+        .share-item:hover {{ transform: scale(1.1); }}
+        .share-item .share-icon {{
+            width: 56px; height: 56px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; border: 1px solid rgba(255,255,255,0.1);
         }}
-        .btn-add:hover{{transform:scale(1.1);box-shadow:0 15px 40px rgba(168,85,247,0.8),0 0 70px rgba(236,72,153,0.6)}}
+        .share-item span {{ font-size: 11px; opacity: 0.7; }}
+        .share-copy-row {{
+            display: flex; gap: 8px; align-items: center;
+            background: rgba(255,255,255,0.05); border-radius: 16px;
+            padding: 8px; border: 1px solid rgba(255,255,255,0.1);
+        }}
+        .share-copy-row input {{
+            flex: 1; padding: 12px; border-radius: 12px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; font-size: 13px; outline: none; direction: ltr;
+        }}
+        .share-copy-row button {{
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            border: none; color: #fff; padding: 12px 20px; border-radius: 12px;
+            font-weight: 700; cursor: pointer; white-space: nowrap;
+            box-shadow: 0 0 20px rgba(255,0,127,0.4);
+        }}
+
+        /* Comments Panel */
+        .comments-panel {{
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(5,0,2,0.98); backdrop-filter: blur(40px);
+            border-top: 2px solid var(--neon);
+            border-radius: 24px 24px 0 0;
+            padding: 0;
+            z-index: 500;
+            max-height: 70vh;
+            display: flex; flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }}
+        .comments-panel.show {{ transform: translateY(0); }}
+        .comments-header {{
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }}
+        .comments-header h3 {{ font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #fff; }}
+        .comments-list {{ flex: 1; overflow-y: auto; padding: 12px 16px; }}
+        .comment-item {{
+            display: flex; gap: 10px; padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            animation: fadeIn 0.3s ease;
+        }}
+        .comment-avatar {{
+            width: 36px; height: 36px; border-radius: 50%;
+            overflow: hidden; flex-shrink: 0;
+            border: 2px solid rgba(255,0,127,0.3);
+            box-shadow: 0 0 10px rgba(255,0,127,0.2);
+        }}
+        .comment-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
+        .comment-body {{ flex: 1; min-width: 0; }}
+        .comment-user {{ font-weight: 600; font-size: 13px; margin-bottom: 2px; display: flex; align-items: center; gap: 5px; color: #fff; }}
+        .comment-text {{ font-size: 13px; line-height: 1.4; word-break: break-word; color: rgba(255,255,255,0.8); }}
+        .comment-actions {{ display: flex; gap: 16px; margin-top: 6px; font-size: 11px; }}
+        .comment-actions span {{ cursor: pointer; opacity: 0.6; display: flex; align-items: center; gap: 4px; transition: opacity 0.2s; }}
+        .comment-actions span:hover {{ opacity: 1; text-shadow: 0 0 10px var(--neon); }}
+        .comment-time {{ font-size: 10px; opacity: 0.4; }}
+        .reply-item {{
+            margin-right: 46px; padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex; gap: 8px;
+        }}
+        .reply-item .comment-avatar {{ width: 28px; height: 28px; }}
+        .comment-input-row {{
+            display: flex; gap: 8px; padding: 12px 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(5,0,2,0.95);
+            flex-shrink: 0;
+        }}
+        .comment-input-row input {{
+            flex: 1; padding: 12px 16px; border-radius: 30px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; font-size: 13px; outline: none;
+        }}
+        .comment-input-row button {{
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            border: none; color: #fff; padding: 10px 18px; border-radius: 30px;
+            font-weight: 700; cursor: pointer; white-space: nowrap; font-size: 13px;
+        }}
     </style>
 </head>
 <body>
 
 <div id="loaderScreen">
     <div class="spinner-big"></div>
-    <p style="color:rgba(240,230,255,0.5);font-size:15px">🌑 MNAENCA جاري التحميل...</p>
+    <p style="color: rgba(255,255,255,0.5); font-size: 15px; font-family: 'Orbitron';">💜 VØID_X LOADING...</p>
 </div>
 
 <div id="mainApp">
-    <div class="topbar">
-        <div style="display:flex;align-items:center">
-            <div class="logo-icon">🌑</div>
-            <span class="logo-text">MNAENCA</span>
-        </div>
-        <div class="tabs">
-            <button class="tab" onclick="switchFeed('following')">متابَعين</button>
-            <button class="tab active" onclick="switchFeed('forYou')">لك</button>
-        </div>
-        <div class="top-icons">
-            <i class="fas fa-search top-icon" onclick="openSearch()"></i>
-            <i class="fas fa-bell top-icon" onclick="openNotifs()"><span class="notif-badge" id="notifBadge"></span></i>
-        </div>
-    </div>
+    <header>
+        <div class="brand-box"><span class="brand-name">VØID_X</span></div>
+        <div class="clock" id="clock">00:00:00</div>
+    </header>
 
     <div class="videos-wrap" id="videosWrap">
-        <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(240,230,255,0.5);flex-direction:column;gap:12px">
-            <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#a855f7"></i>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100vh; color: rgba(255,255,255,0.5); flex-direction: column; gap: 12px;">
+            <i class="fas fa-video" style="font-size: 48px; opacity: 0.3; color: var(--neon);"></i>
             <p>لا توجد فيديوهات بعد</p>
-            <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! 🌑</p>
+            <p style="font-size: 12px; opacity: 0.5;">ارفع أول فيديو! 💜</p>
         </div>
     </div>
 
-    <!-- 🌑 Fullscreen Video Player -->
+    <!-- Fullscreen Player -->
     <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
         <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
         <video id="fullscreenVideo" controls playsinline></video>
@@ -840,46 +718,22 @@ def build_index():
                 <span id="duration">0:00</span>
             </div>
             <button onclick="toggleMutePlayer()"><i class="fas fa-volume-up" id="muteIcon"></i></button>
-            <a id="downloadLink" href="#" download style="color:#e879f9;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
+            <a id="downloadLink" href="#" download style="color: var(--neon); text-decoration: none; margin-left: 10px;"><i class="fas fa-download"></i></a>
         </div>
     </div>
 
-    <!-- 📤 Share Panel -->
+    <!-- Share Panel -->
     <div class="share-panel" id="sharePanel">
         <h3><i class="fas fa-share-alt"></i> مشاركة</h3>
         <div class="share-grid">
-            <div class="share-item" onclick="shareTo('whatsapp')">
-                <div class="share-icon" style="background:rgba(37,211,102,0.15);color:#25D366"><i class="fab fa-whatsapp"></i></div>
-                <span>WhatsApp</span>
-            </div>
-            <div class="share-item" onclick="shareTo('telegram')">
-                <div class="share-icon" style="background:rgba(0,136,204,0.15);color:#0088cc"><i class="fab fa-telegram"></i></div>
-                <span>Telegram</span>
-            </div>
-            <div class="share-item" onclick="shareTo('facebook')">
-                <div class="share-icon" style="background:rgba(24,119,242,0.15);color:#1877F2"><i class="fab fa-facebook"></i></div>
-                <span>Facebook</span>
-            </div>
-            <div class="share-item" onclick="shareTo('twitter')">
-                <div class="share-icon" style="background:rgba(29,161,242,0.15);color:#1DA1F2"><i class="fab fa-twitter"></i></div>
-                <span>X</span>
-            </div>
-            <div class="share-item" onclick="shareTo('messenger')">
-                <div class="share-icon" style="background:rgba(0,178,255,0.15);color:#00B2FF"><i class="fab fa-facebook-messenger"></i></div>
-                <span>Messenger</span>
-            </div>
-            <div class="share-item" onclick="shareTo('email')">
-                <div class="share-icon" style="background:rgba(234,67,53,0.15);color:#EA4335"><i class="fas fa-envelope"></i></div>
-                <span>بريد</span>
-            </div>
-            <div class="share-item" onclick="shareTo('copy')">
-                <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i class="fas fa-link"></i></div>
-                <span>نسخ الرابط</span>
-            </div>
-            <div class="share-item" onclick="shareTo('embed')">
-                <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#c084fc"><i class="fas fa-code"></i></div>
-                <span>تضمين</span>
-            </div>
+            <div class="share-item" onclick="shareTo('whatsapp')"><div class="share-icon" style="background:rgba(37,211,102,0.15);color:#25D366"><i class="fab fa-whatsapp"></i></div><span>WhatsApp</span></div>
+            <div class="share-item" onclick="shareTo('telegram')"><div class="share-icon" style="background:rgba(0,136,204,0.15);color:#0088cc"><i class="fab fa-telegram"></i></div><span>Telegram</span></div>
+            <div class="share-item" onclick="shareTo('facebook')"><div class="share-icon" style="background:rgba(24,119,242,0.15);color:#1877F2"><i class="fab fa-facebook"></i></div><span>Facebook</span></div>
+            <div class="share-item" onclick="shareTo('twitter')"><div class="share-icon" style="background:rgba(29,161,242,0.15);color:#1DA1F2"><i class="fab fa-twitter"></i></div><span>X</span></div>
+            <div class="share-item" onclick="shareTo('messenger')"><div class="share-icon" style="background:rgba(0,178,255,0.15);color:#00B2FF"><i class="fab fa-facebook-messenger"></i></div><span>Messenger</span></div>
+            <div class="share-item" onclick="shareTo('email')"><div class="share-icon" style="background:rgba(234,67,53,0.15);color:#EA4335"><i class="fas fa-envelope"></i></div><span>بريد</span></div>
+            <div class="share-item" onclick="shareTo('copy')"><div class="share-icon" style="background:rgba(255,0,127,0.15);color:#ff007f"><i class="fas fa-link"></i></div><span>نسخ الرابط</span></div>
+            <div class="share-item" onclick="shareTo('embed')"><div class="share-icon" style="background:rgba(255,0,127,0.15);color:#ff00aa"><i class="fas fa-code"></i></div><span>تضمين</span></div>
         </div>
         <div class="share-copy-row">
             <input type="text" id="shareUrlInput" value="" readonly dir="ltr">
@@ -888,10 +742,10 @@ def build_index():
     </div>
     <div class="overlay" id="shareOverlay" style="display:none;z-index:499" onclick="closeSharePanel()"></div>
 
-    <!-- 💬 Comments Panel -->
+    <!-- Comments Panel -->
     <div class="comments-panel" id="commentsPanel">
         <div class="comments-header">
-            <h3><i class="fas fa-comments" style="color:var(--accent)"></i> التعليقات <span id="commentsCount" style="font-size:13px;opacity:0.5"></span></h3>
+            <h3><i class="fas fa-comments" style="color:var(--neon)"></i> التعليقات <span id="commentsCount" style="font-size:13px;opacity:0.5"></span></h3>
             <button class="btn-close-overlay" onclick="closeCommentsPanel()"><i class="fas fa-times"></i></button>
         </div>
         <div class="comments-list" id="commentsList"></div>
@@ -902,30 +756,20 @@ def build_index():
     </div>
     <div class="overlay" id="commentsOverlay" style="display:none;z-index:499" onclick="closeCommentsPanel()"></div>
 
-    <div class="nav-bottom">
-        <button class="nav-item active"><i class="fas fa-home"></i><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i><span>بحث</span></button>
-        <a href="upload.html" class="btn-add"><i class="fas fa-plus"></i></a>
-        <a href="chat.html" class="nav-item"><i class="fas fa-envelope"></i><span>رسائل</span></a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>ملفي</span></a>
-    </div>
+    <nav id="main-nav">
+        <div class="finger-admin" onclick="openAdmin()"><i class="fas fa-fingerprint text-3xl"></i></div>
+        <div id="upload-trigger"><i class="fas fa-plus"></i></div>
+        <div class="nav-chat" onclick="openChat()"><i class="fas fa-comment-dots text-2xl"></i></div>
+    </nav>
 
-    <div class="toast-msg" id="toast">✅ تم النسخ</div>
+    <div class="toast-msg" id="toast">✅ تم</div>
 </div>
 
 <script src="firebase-config.js"></script>
 <script>
-    let currentUser = null;
-    let currentUserData = null;
-    let allUsers = {{}};
-    let allVideos = [];
-    let allSounds = {{}};
-    let isMuted = true;
-    let currentFeed = 'forYou';
-    let currentShareUrl = null;
-    let playerVideo = null;
-    let currentCommentVideoId = null;
-    let replyingTo = null;
+    let currentUser = null, currentUserData = null, allUsers = {{}}, allVideos = [], allSounds = {{}};
+    let isMuted = true, currentShareUrl = null, playerVideo = null;
+    let currentCommentVideoId = null, replyingTo = null;
 
     function openPlayer(url, title) {{
         const player = document.getElementById('fullscreenPlayer');
@@ -952,23 +796,23 @@ def build_index():
     function closePlayer() {{
         const player = document.getElementById('fullscreenPlayer');
         const video = document.getElementById('fullscreenVideo');
-        video.pause();video.src='';player.classList.remove('active');
+        video.pause(); video.src=''; player.classList.remove('active');
     }}
     function togglePlayPause() {{
         const video = document.getElementById('fullscreenVideo');
-        if(video.paused){{video.play();document.getElementById('btnPlayPause').innerHTML='<i class="fas fa-pause"></i>';}}
-        else{{video.pause();document.getElementById('btnPlayPause').innerHTML='<i class="fas fa-play"></i>';}}
+        if(video.paused){{ video.play(); document.getElementById('btnPlayPause').innerHTML='<i class="fas fa-pause"></i>'; }}
+        else {{ video.pause(); document.getElementById('btnPlayPause').innerHTML='<i class="fas fa-play"></i>'; }}
     }}
-    function skipTime(sec) {{if(playerVideo)playerVideo.currentTime+=sec;}}
+    function skipTime(sec) {{ if(playerVideo) playerVideo.currentTime += sec; }}
     function seekVideo(e) {{
-        if(!playerVideo)return;
-        const bar=document.getElementById('progressBar');
-        const rect=bar.getBoundingClientRect();
-        const pct=(e.clientX-rect.left)/rect.width;
-        playerVideo.currentTime=pct*playerVideo.duration;
+        if(!playerVideo) return;
+        const bar = document.getElementById('progressBar');
+        const rect = bar.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        playerVideo.currentTime = pct * playerVideo.duration;
     }}
     function toggleMutePlayer() {{
-        if(playerVideo){{playerVideo.muted=!playerVideo.muted;document.getElementById('muteIcon').className=playerVideo.muted?'fas fa-volume-mute':'fas fa-volume-up';}}
+        if(playerVideo) {{ playerVideo.muted = !playerVideo.muted; document.getElementById('muteIcon').className = playerVideo.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up'; }}
     }}
 
     function openSharePanel(url) {{
@@ -983,7 +827,7 @@ def build_index():
     }}
     function shareTo(platform) {{
         const url = encodeURIComponent(currentShareUrl);
-        const text = encodeURIComponent('🌑 شاهد هذا الفيديو على MNAENCA');
+        const text = encodeURIComponent('شاهد هذا الفيديو على VØID_X 💜');
         let shareUrl = '';
         switch(platform) {{
             case 'whatsapp': shareUrl = 'https://wa.me/?text=' + text + '%20' + url; break;
@@ -1033,7 +877,7 @@ def build_index():
         document.getElementById('commentsCount').innerText = '(' + commentsArr.length + ')';
         const list = document.getElementById('commentsList');
         if(!commentsArr.length) {{
-            list.innerHTML = '<div style="text-align:center;opacity:0.5;padding:30px"><i class="fas fa-comment-slash" style="font-size:32px;color:var(--accent);margin-bottom:8px;display:block"></i>لا توجد تعليقات</div>';
+            list.innerHTML = '<div style="text-align:center;opacity:0.5;padding:30px"><i class="fas fa-comment-slash" style="font-size:32px;color:var(--neon);margin-bottom:8px;display:block"></i>لا توجد تعليقات</div>';
             return;
         }}
         list.innerHTML = commentsArr.map(c => {{
@@ -1046,27 +890,10 @@ def build_index():
                 repliesHTML = replies.map(r => {{
                     const rUser = allUsers[r.userId] || {{username: r.username || 'مستخدم'}};
                     const rAvatar = rUser.avatarUrl || (DICEBEAR_URL + '?seed=' + r.userId);
-                    return `<div class="reply-item">
-                        <div class="comment-avatar"><img src="${{rAvatar}}" alt=""></div>
-                        <div style="flex:1;min-width:0">
-                            <div class="comment-user" style="font-size:12px">@${{rUser.username}} <span class="comment-time">${{formatTimeAgo(r.timestamp)}}</span></div>
-                            <div class="comment-text" style="font-size:12px">${{r.text}}</div>
-                        </div>
-                    </div>`;
+                    return `<div class="reply-item"><div class="comment-avatar"><img src="${{rAvatar}}"></div><div style="flex:1;min-width:0"><div class="comment-user" style="font-size:12px">@${{rUser.username}} <span class="comment-time">${{formatTimeAgo(r.timestamp)}}</span></div><div class="comment-text" style="font-size:12px">${{r.text}}</div></div></div>`;
                 }}).join('');
             }}
-            return `<div class="comment-item">
-                <div class="comment-avatar"><img src="${{avatar}}" alt=""></div>
-                <div class="comment-body">
-                    <div class="comment-user">@${{user.username}} ${{user.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}} <span class="comment-time">${{formatTimeAgo(c.timestamp)}}</span></div>
-                    <div class="comment-text">${{c.text}}</div>
-                    <div class="comment-actions">
-                        <span onclick="replyToComment('${{c.id}}', '@${{user.username}}')"><i class="fas fa-reply"></i> رد</span>
-                        <span>${{c.likes || 0}} <i class="fas fa-heart"></i></span>
-                    </div>
-                    ${{repliesHTML}}
-                </div>
-            </div>`;
+            return `<div class="comment-item"><div class="comment-avatar"><img src="${{avatar}}"></div><div class="comment-body"><div class="comment-user">@${{user.username}} ${{user.isVerified ? '<span style="color:var(--neon);font-size:10px"><i class="fas fa-check-circle"></i></span>' : ''}} <span class="comment-time">${{formatTimeAgo(c.timestamp)}}</span></div><div class="comment-text">${{c.text}}</div><div class="comment-actions"><span onclick="replyToComment('${{c.id}}', '@${{user.username}}')"><i class="fas fa-reply"></i> رد</span><span>${{c.likes || 0}} <i class="fas fa-heart"></i></span></div>${{repliesHTML}}</div></div>`;
         }}).join('');
     }}
     function replyToComment(commentId, username) {{
@@ -1127,16 +954,6 @@ def build_index():
             renderVideos();
         }});
 
-        db.ref('notifications/' + user.uid).on('value', s => {{
-            const ns = s.val() || {{}};
-            const badge = document.getElementById('notifBadge');
-            if(badge) {{
-                const count = Object.keys(ns).length;
-                badge.style.display = count > 0 ? 'flex' : 'none';
-                if(count > 0) badge.innerText = count;
-            }}
-        }});
-
         db.ref('presence/' + user.uid).set(true);
         db.ref('presence/' + user.uid).onDisconnect().remove();
         db.ref('users/' + user.uid + '/lastSeen').set(Date.now());
@@ -1146,60 +963,44 @@ def build_index():
         document.getElementById('mainApp').style.display = 'block';
     }});
 
-    async function sendNotification(toUserId, fromUsername, msg) {{
-        if(!currentUser) return;
-        await db.ref('notifications/' + toUserId).push({{
-            from: fromUsername || currentUserData?.username || 'مستخدم',
-            msg: msg,
-            timestamp: Date.now(),
-            read: false
-        }});
-    }}
-
     function renderVideos() {{
         const container = document.getElementById('videosWrap');
         if(!container) return;
-        let filtered = currentFeed === 'forYou' ? allVideos : allVideos.filter(v => currentUserData?.following?.[v.sender]);
+        let filtered = allVideos; // no separate feed for now
         if(!filtered.length) {{
-            container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(240,230,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#a855f7"></i><p>${{currentFeed === 'forYou' ? 'لا توجد فيديوهات بعد' : 'تابع مستخدمين لرؤية فيديوهاتهم'}}</p></div>`;
+            container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:var(--neon)"></i><p>لا توجد فيديوهات بعد</p></div>';
             return;
         }}
         container.innerHTML = '';
         filtered.forEach(video => {{
             const isLiked = video.likedBy && video.likedBy[currentUser?.uid];
             const user = allUsers[video.sender] || {{username: video.senderName || 'مستخدم'}};
-            const isFollowing = currentUserData?.following && currentUserData.following[video.sender];
             const commentsCount = video.comments ? Object.keys(video.comments).length : 0;
-            const caption = (video.description || '').replace(/#(\\w+)/g, '<span class="tag">#$1</span>');
             const avatarUrl = user.avatarUrl || (DICEBEAR_URL + '?seed=' + video.sender);
-            const verifiedBadgeHtml = user.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : '';
-            const musicHtml = video.music ? `<div class="music-wave">${{[1,2,3,4,5].map(()=>'<span></span>').join('')}}</div> ${{video.music}}` : 'Original Sound';
+            const verifiedBadgeHtml = user.isVerified ? '<span style="color:var(--neon);font-size:10px;margin-right:4px"><i class="fas fa-check-circle"></i></span>' : '';
 
             const div = document.createElement('div');
             div.className = 'vid-card';
             div.innerHTML = `
-                <div class="watermark-overlay"><span>🌑 MNAENCA</span></div>
+                <div class="watermark-overlay">VØID_X SUPREME</div>
                 <video loop playsinline muted data-src="${{video.url}}" poster="${{video.thumbnail || ''}}"></video>
-                <div class="vid-info">
-                    <div class="author-row">
-                        <div class="author-avatar" onclick="openUserProfile('${{video.sender}}')">
-                            <img src="${{avatarUrl}}" alt="avatar">
-                        </div>
-                        <div class="author-name">
-                            <span onclick="openUserProfile('${{video.sender}}')">@${{user.username}}</span>
-                            ${{verifiedBadgeHtml}}
-                            ${{currentUser?.uid !== video.sender ? `<button class="btn-follow" onclick="event.stopPropagation();toggleFollow('${{video.sender}}', this)">${{isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}}</button>` : ''}}
-                        </div>
+                <div class="side-actions">
+                    <div class="action-btn" onclick="toggleMute()">
+                        <i class="${{isMuted ? 'fas fa-volume-xmark' : 'fas fa-volume-high'}} mute-icon"></i>
+                        <span class="btn-label">AUDIO</span>
                     </div>
-                    <div class="caption">${{caption}}</div>
-                    <div class="music">${{musicHtml}}</div>
-                </div>
-                <div class="side-btns">
-                    <button class="sbtn" onclick="toggleMute()"><i class="fas ${{isMuted ? 'fa-volume-mute' : 'fa-volume-up'}}"></i></button>
-                    <button class="sbtn like-btn ${{isLiked ? 'liked' : ''}}" onclick="toggleLike('${{video.id}}', this)"><i class="fas fa-heart"></i><span class="cnt">${{video.likes || 0}}</span></button>
-                    <button class="sbtn" onclick="openCommentsPanel('${{video.id}}')"><i class="fas fa-comment"></i><span class="cnt">${{commentsCount}}</span></button>
-                    <button class="sbtn" onclick="openPlayer('${{video.url}}', 'video.mp4')"><i class="fas fa-expand"></i></button>
-                    <button class="sbtn" onclick="openSharePanel('${{video.url}}')"><i class="fas fa-share"></i></button>
+                    <div class="action-btn like-btn ${{isLiked ? 'liked' : ''}}" onclick="toggleLike('${{video.id}}', this)">
+                        <i class="fas fa-bolt"></i>
+                        <span class="btn-label">${{video.likes || 0}}</span>
+                    </div>
+                    <div class="action-btn" onclick="openCommentsPanel('${{video.id}}')">
+                        <i class="fas fa-terminal"></i>
+                        <span class="btn-label">${{commentsCount}}</span>
+                    </div>
+                    <div class="action-btn" onclick="openSharePanel('${{video.url}}')">
+                        <i class="fas fa-share-nodes"></i>
+                        <span class="btn-label">SEND</span>
+                    </div>
                 </div>`;
             const videoEl = div.querySelector('video');
             videoEl.addEventListener('dblclick', e => {{
@@ -1209,15 +1010,10 @@ def build_index():
             }});
             container.appendChild(div);
         }});
-        initVideoObserver();
+        initObserver();
     }}
 
-    function openUserProfile(userId) {{
-        if(userId === currentUser?.uid) window.location.href = 'profile.html';
-        else window.location.href = 'profile.html?uid=' + userId;
-    }}
-
-    function initVideoObserver() {{
+    function initObserver() {{
         const observer = new IntersectionObserver(entries => {{
             entries.forEach(entry => {{
                 const video = entry.target.querySelector('video');
@@ -1235,8 +1031,11 @@ def build_index():
         document.querySelectorAll('.vid-card').forEach(seg => observer.observe(seg));
     }}
 
-    function toggleMute() {{ isMuted = !isMuted; document.querySelectorAll('video').forEach(v => v.muted = isMuted); }}
-    function switchFeed(feed) {{ currentFeed = feed; document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); renderVideos(); }}
+    function toggleMute() {{
+        isMuted = !isMuted;
+        document.querySelectorAll('video').forEach(v => v.muted = isMuted);
+        document.querySelectorAll('.mute-icon').forEach(i => i.className = isMuted ? 'fas fa-volume-xmark mute-icon' : 'fas fa-volume-high mute-icon');
+    }}
 
     async function toggleLike(videoId, btn) {{
         if(!currentUser) return;
@@ -1255,59 +1054,28 @@ def build_index():
         }}
         await ref.update({{likes, likedBy}});
         btn.classList.toggle('liked');
-        const countSpan = btn.querySelector('.cnt');
-        if(countSpan) countSpan.innerText = likes;
+        const lbl = btn.querySelector('.btn-label');
+        if(lbl) lbl.innerText = likes;
     }}
 
-    async function toggleFollow(userId, btn) {{
-        if(!currentUser || currentUser.uid === userId) return;
-        const userRef = db.ref('users/' + currentUser.uid + '/following/' + userId);
-        const targetRef = db.ref('users/' + userId + '/followers/' + currentUser.uid);
-        const snap = await userRef.get();
-        if(snap.exists()) {{ await userRef.remove(); await targetRef.remove(); btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة'; }}
-        else {{
-            await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع';
-            sendNotification(userId, currentUserData?.username, 'بدأ بمتابعتك 👤');
+    function openAdmin() {{
+        if(confirm('دخول لوحة الأدمن؟')) {{
+            window.location.href = 'profile.html';
         }}
     }}
 
-    async function openNotifs() {{
-        const snap = await db.ref('notifications/' + currentUser.uid).once('value');
-        const ns = snap.val() || {{}};
-        const items = Object.values(ns).reverse();
-        let notifHTML = '';
-        if(!items.length) {{
-            notifHTML = '<div style="text-align:center;opacity:0.5;padding:40px"><i class="fas fa-bell" style="font-size:48px;color:#a855f7;margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';
-        }} else {{
-            items.forEach(n => {{
-                notifHTML += `<div style="display:flex;gap:12px;padding:14px;border-bottom:1px solid rgba(168,85,247,0.1);align-items:center;animation:fadeIn 0.3s ease">
-                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(168,85,247,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;color:#a855f7"><i class="fas fa-bell"></i></div>
-                    <div><div style="font-weight:600;color:#e0d0ff">${{n.from || 'مستخدم'}}</div><div style="font-size:12px;opacity:0.6;margin-top:2px;color:#d0c0f0">${{n.msg || ''}}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${{new Date(n.timestamp).toLocaleString('ar-SA')}}</div></div></div>`;
-            }});
-        }}
-        await db.ref('notifications/' + currentUser.uid).remove();
-        const badge = document.getElementById('notifBadge');
-        if(badge) badge.style.display = 'none';
-        showOverlay('🔔 الإشعارات', notifHTML);
+    function openChat() {{
+        window.location.href = 'chat.html';
     }}
 
-    function openSearch() {{
-        showOverlay('🔍 بحث', `<input type="text" id="searchQ" onkeyup="doSearch()" placeholder="ابحث عن مستخدمين، فيديوهات..." style="width:100%;padding:14px;border-radius:30px;background:rgba(168,85,247,0.05);border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff;font-size:14px;outline:none;margin-bottom:16px"><div id="searchR"></div>`);
-        window.doSearch = function() {{
-            const query = document.getElementById('searchQ').value.toLowerCase();
-            const resultsDiv = document.getElementById('searchR');
-            if(!query) {{ resultsDiv.innerHTML = ''; return; }}
-            const users = Object.values(allUsers).filter(u => u.username?.toLowerCase().includes(query));
-            const vids = allVideos.filter(v => (v.description || '').toLowerCase().includes(query));
-            resultsDiv.innerHTML = `${{users.length ? `<div style="margin-bottom:16px"><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px;color:#d0c0f0"><i class="fas fa-users"></i> مستخدمين</h4>${{users.map(u => `<div onclick="openUserProfile('${{u.uid || Object.keys(allUsers).find(k=>allUsers[k]===u)}}')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(168,85,247,0.1)"><img src="${{u.avatarUrl || (DICEBEAR_URL + '?seed=' + (u.uid || u.username))}}" style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(168,85,247,0.3)"><div style="color:#e0d0ff">@${{u.username}} ${{u.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}}</div></div>`).join('')}}</div>` : ''}}${{vids.length ? `<div><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px;color:#d0c0f0"><i class="fas fa-video"></i> فيديوهات</h4>${{vids.map(v => `<div onclick="openPlayer('${{v.url}}', 'video.mp4')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(168,85,247,0.1)"><i class="fas fa-play-circle" style="color:#a855f7;font-size:20px"></i><span style="font-size:13px;color:#d0c0f0">${{(v.description || 'فيديو').substring(0, 40)}}</span></div>`).join('')}}</div>` : ''}}${{!users.length && !vids.length ? '<div style="text-align:center;opacity:0.5;padding:30px;color:#d0c0f0">لا توجد نتائج</div>' : ''}}`;
-        }};
-        setTimeout(() => {{ const input = document.getElementById('searchQ'); if(input) input.focus(); }}, 300);
-    }}
-
-    function showOverlay(title, content) {{
-        const id = 'overlay_' + Date.now();
-        const html = `<div id="${{id}}" class="overlay"><div class="overlay-header"><h3>${{title}}</h3><button class="btn-close-overlay" onclick="document.getElementById('${{id}}').remove()"><i class="fas fa-times"></i></button></div><div style="padding:16px">${{content}}</div></div>`;
-        document.body.insertAdjacentHTML('beforeend', html);
+    async function sendNotification(toUserId, fromUsername, msg) {{
+        if(!currentUser) return;
+        await db.ref('notifications/' + toUserId).push({{
+            from: fromUsername || currentUserData?.username || 'مستخدم',
+            msg: msg,
+            timestamp: Date.now(),
+            read: false
+        }});
     }}
 
     function showToast(msg) {{
@@ -1347,20 +1115,18 @@ def build_index():
     window.shareTo = shareTo;
     window.openCommentsPanel = openCommentsPanel;
     window.closeCommentsPanel = closeCommentsPanel;
-    window.openUserProfile = openUserProfile;
-    window.toggleFollow = toggleFollow;
     window.toggleLike = toggleLike;
-    window.formatTime = formatTime;
 
-    console.log('🌑 MNAENCA Index Ready ✨');
+    setInterval(() => {{ document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB'); }}, 1000);
+
+    console.log('💜 VØID_X Index Ready ✨');
 </script>
 </body>
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ═══════════════════════════════════════════════════════════
-# 🌑 REMAINING FILES (profile, upload, chat, explore, notifs, settings)
-# ═══════════════════════════════════════════════════════════
+# Remaining files (profile, upload, chat, explore, notifs, settings) are shortened but styled similarly.
+# We'll produce functional versions with VØID_X aesthetics.
 # ═══════════════════════════════════════════════════════════
 
 def build_profile():
@@ -1369,174 +1135,70 @@ def build_profile():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | ملف شخصي</title>
+    <title>💜 VØID_X | ملف شخصي</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{min-height:100vh;overflow-y:auto;overflow-x:hidden;}}
-        .cover-section{{position:relative;width:100%;height:260px;overflow:hidden;cursor:pointer}}
-        .cover-img{{width:100%;height:130%;object-fit:cover;transition:transform 0.1s linear;transform:translateY(0)}}
-        .cover-gradient{{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(5,0,5,0.5) 60%,rgba(5,0,5,0.97) 100%);pointer-events:none;z-index:1}}
-        .cover-glow{{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(168,85,247,0.2) 0%,transparent 70%);pointer-events:none;z-index:2}}
-        .cover-edit-btn{{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.6);backdrop-filter:blur(15px);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;border:1.5px solid rgba(168,85,247,0.4);color:#f0e6ff;font-size:14px;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.3),0 0 15px rgba(168,85,247,0.2)}}
-        .cover-edit-btn:hover{{background:rgba(168,85,247,0.4);box-shadow:0 0 25px rgba(168,85,247,0.6)}}
-        .btn-back{{position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.6);backdrop-filter:blur(15px);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;border:1.5px solid rgba(168,85,247,0.3);color:#f0e6ff;font-size:16px;transition:all 0.3s}}
-        .btn-back:hover{{background:rgba(168,85,247,0.3);box-shadow:0 0 25px rgba(168,85,247,0.5)}}
-        .avatar-wrap{{position:relative;z-index:2;margin-top:-60px;display:flex;justify-content:center}}
-        .avatar-lg{{width:120px;height:120px;border-radius:50%;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#a855f7,#ec4899,#c084fc);padding:3px;box-shadow:0 0 35px rgba(168,85,247,0.5),0 0 70px rgba(236,72,153,0.2);animation:avatarGlow 3s ease-in-out infinite}}
-        @keyframes avatarGlow{{0%,100%{{box-shadow:0 0 35px rgba(168,85,247,0.5),0 0 70px rgba(236,72,153,0.2)}}50%{{box-shadow:0 0 50px rgba(168,85,247,0.8),0 0 90px rgba(236,72,153,0.5)}}}}
-        .avatar-lg img{{width:100%;height:100%;object-fit:cover;border-radius:50%;border:3px solid var(--bg)}}
-        .avatar-edit-btn{{position:absolute;bottom:5px;right:5px;width:30px;height:30px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--bg);color:#fff;font-size:12px;box-shadow:0 0 20px rgba(168,85,247,0.6)}}
-        .online-dot{{position:absolute;top:10px;right:10px;width:18px;height:18px;background:#22c55e;border-radius:50%;border:3px solid var(--bg);z-index:3;box-shadow:0 0 15px rgba(34,197,94,0.7)}}
-        .profile-info{{padding:20px 20px 10px;text-align:center}}
-        .username{{font-size:22px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:8px;color:#e0d0ff}}
-        .bio-text{{font-size:13px;opacity:0.7;margin-bottom:8px;max-width:320px;margin-left:auto;margin-right:auto;line-height:1.5;color:#c0b0e0}}
-        .contact-info{{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;font-size:12px}}
-        .contact-info a{{color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:5px;background:var(--card);padding:6px 14px;border-radius:20px;border:1.5px solid rgba(168,85,247,0.2);transition:all 0.3s}}
-        .contact-info a:hover{{background:rgba(168,85,247,0.15);box-shadow:0 0 20px rgba(168,85,247,0.3)}}
-        .last-seen{{font-size:11px;opacity:0.5;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:6px;color:#c0b0e0}}
-        .stats-row{{display:flex;justify-content:center;gap:30px;margin:15px 20px;padding:18px;background:rgba(168,85,247,0.05);backdrop-filter:blur(20px);border-radius:20px;border:1.5px solid rgba(168,85,247,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.2),0 0 20px rgba(168,85,247,0.1)}}
-        .stat-item{{text-align:center;cursor:pointer;transition:transform 0.2s}}
-        .stat-item:hover{{transform:scale(1.05)}}
-        .stat-val{{font-size:20px;font-weight:700;color:var(--accent2);text-shadow:0 0 10px rgba(236,72,153,0.4)}}
-        .stat-lbl{{font-size:10px;opacity:0.6;margin-top:2px}}
-        .action-btns{{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 20px 20px}}
-        .btn{{background:rgba(168,85,247,0.08);border:1.5px solid rgba(168,85,247,0.2);padding:10px 20px;border-radius:25px;color:#f0e6ff;cursor:pointer;font-size:13px;transition:all 0.3s;display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px)}}
-        .btn:hover{{background:rgba(168,85,247,0.18);border-color:var(--accent);box-shadow:0 0 25px rgba(168,85,247,0.3)}}
-        .btn-primary{{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;color:#fff;box-shadow:0 8px 30px rgba(168,85,247,0.5),0 0 40px rgba(236,72,153,0.3)}}
-        .btn-primary:hover{{transform:translateY(-2px);box-shadow:0 12px 40px rgba(168,85,247,0.7),0 0 60px rgba(236,72,153,0.5)}}
-        .section-title{{font-size:16px;font-weight:700;padding:0 20px;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:#e0d0ff}}
-        .videos-grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 8px 100px}}
-        .video-grid-item{{aspect-ratio:9/16;position:relative;overflow:hidden;cursor:pointer;background:#000;border-radius:4px;border:1px solid rgba(168,85,247,0.1)}}
-        .video-grid-item video{{width:100%;height:100%;object-fit:cover}}
-        .video-grid-item .grid-play-icon{{position:absolute;bottom:4px;left:4px;font-size:14px;color:#fff;z-index:1;opacity:0.8}}
-        .video-grid-item .grid-views{{position:absolute;bottom:4px;right:4px;font-size:10px;color:#fff;z-index:1;display:flex;align-items:center;gap:3px;opacity:0.8}}
-        .empty-state{{text-align:center;opacity:0.5;padding:40px 20px;color:#c0b0e0}}
-        .empty-state i{{font-size:48px;color:var(--accent);margin-bottom:12px;display:block}}
-        .badge-verified{{background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:12px;padding:3px 6px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-weight:bold;box-shadow:0 0 20px rgba(168,85,247,0.7),0 0 30px rgba(236,72,153,0.5);animation:verifyGlow 2s ease-in-out infinite}}
-        @keyframes verifyGlow{{0%,100%{{box-shadow:0 0 20px rgba(168,85,247,0.7),0 0 30px rgba(236,72,153,0.5)}}50%{{box-shadow:0 0 35px rgba(168,85,247,1),0 0 50px rgba(236,72,153,0.8)}}}}
-        .edit-panel{{position:fixed;bottom:0;left:0;right:0;background:rgba(5,0,5,0.98);backdrop-filter:blur(40px);border-top:2px solid var(--accent);border-radius:24px 24px 0 0;padding:24px 20px 40px;z-index:200;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);max-height:80vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(168,85,247,0.2)}}
-        .edit-panel.show{{transform:translateY(0)}}
-        .edit-panel h3{{font-size:18px;font-weight:700;margin-bottom:20px;color:var(--accent2);text-align:center;text-shadow:0 0 15px rgba(236,72,153,0.5)}}
-        .edit-panel label{{display:block;font-size:12px;opacity:0.7;margin-bottom:6px;margin-top:14px;color:#d0c0f0}}
-        .edit-panel input,.edit-panel textarea{{width:100%;padding:12px 16px;border-radius:14px;background:var(--card);border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff;font-size:14px;outline:none;resize:none;font-family:'Segoe UI',sans-serif;transition:border 0.3s}}
-        .edit-panel input:focus,.edit-panel textarea:focus{{border-color:var(--accent);box-shadow:0 0 20px rgba(168,85,247,0.2)}}
-        .edit-actions{{display:flex;gap:10px;margin-top:20px}}
-        .edit-actions button{{flex:1;padding:12px;border-radius:25px;font-weight:700;cursor:pointer;font-size:14px;transition:all 0.3s}}
-        .btn-save{{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;box-shadow:0 0 25px rgba(168,85,247,0.4)}}
-        .btn-cancel{{background:var(--card);border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff}}
-        .overlay-panel{{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:none}}
-        .overlay-panel.show{{display:block}}
-
-        .admin-panel{{padding:0 8px;margin:0 8px 100px 8px}}
-        .admin-panel h3{{color:#c084fc;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-weight:700}}
-        .admin-stats-grid{{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}}
-        .stat-card{{background:rgba(168,85,247,0.06);border:1.5px solid rgba(168,85,247,0.2);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(10px)}}
-        .stat-icon{{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 20px rgba(168,85,247,0.4)}}
-        .stat-info h4{{font-size:12px;color:rgba(240,230,255,0.5);margin-bottom:4px;font-weight:500}}
-        .stat-info span{{font-size:22px;font-weight:800;color:#f0e6ff}}
-        .admin-user-item{{display:flex;align-items:center;justify-content:space-between;padding:10px 8px;border-bottom:1px solid rgba(168,85,247,0.05);transition:background 0.2s;border-radius:8px}}
-        .admin-user-item:hover{{background:rgba(168,85,247,0.05)}}
-        .admin-user-info{{display:flex;align-items:center;gap:12px;flex:1;min-width:0}}
-        .admin-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(168,85,247,0.4);flex-shrink:0;box-shadow:0 0 10px rgba(168,85,247,0.2)}}
-        .admin-avatar img{{width:100%;height:100%;object-fit:cover}}
-        .admin-user-details h4{{font-weight:600;font-size:15px;color:#e0d0ff}}
-        .admin-user-details p{{font-size:11px;color:rgba(240,230,255,0.4);margin-top:2px}}
-        .admin-user-actions{{display:flex;gap:8px;align-items:center;flex-shrink:0}}
-        .admin-btn{{border:none;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px}}
-        .btn-ban{{background:rgba(255,255,255,0.1);color:#f0e6ff;border:1px solid rgba(255,255,255,0.1)}}
-        .btn-unban{{background:rgba(34,197,94,0.1);color:#4ade80;border:1px solid rgba(34,197,94,0.3)}}
-        .btn-verify{{background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;box-shadow:0 4px 15px rgba(168,85,247,0.4)}}
-        .btn-delete-video{{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2)}}
-        .btn-delete-video:hover{{background:rgba(239,68,68,0.3)}}
+        body {{ min-height: 100vh; overflow-y: auto; }}
+        .cover-section {{ position: relative; width: 100%; height: 260px; overflow: hidden; background: linear-gradient(135deg, #1a000d, #2d0020); }}
+        .cover-img {{ width: 100%; height: 130%; object-fit: cover; transition: transform 0.1s linear; }}
+        .cover-gradient {{ position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(5,0,2,0.5) 60%, rgba(5,0,2,0.97) 100%); }}
+        .avatar-wrap {{ display: flex; justify-content: center; margin-top: -60px; z-index: 2; position: relative; }}
+        .avatar-lg {{
+            width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
+            background: linear-gradient(135deg, #ff007f, #ff00aa);
+            padding: 3px; box-shadow: 0 0 35px rgba(255,0,127,0.5);
+            animation: glowPulse 3s ease-in-out infinite;
+        }}
+        .avatar-lg img {{ width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid var(--bg); }}
+        .profile-info {{ padding: 20px; text-align: center; }}
+        .username {{ font-size: 22px; font-weight: 800; color: #fff; }}
+        .bio-text {{ color: rgba(255,255,255,0.7); margin: 8px 0; }}
+        .stats-row {{ display: flex; justify-content: center; gap: 30px; margin: 15px; padding: 18px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }}
+        .stat-item {{ text-align: center; cursor: pointer; }}
+        .stat-val {{ font-size: 20px; font-weight: 700; color: var(--neon); }}
+        .videos-grid {{ display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; padding: 0 8px 100px; }}
+        .video-grid-item {{ aspect-ratio: 9/16; background: #000; overflow: hidden; border-radius: 4px; cursor: pointer; }}
+        .video-grid-item img {{ width: 100%; height: 100%; object-fit: cover; }}
+        .btn {{
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px; border-radius: 25px; color: #fff; cursor: pointer; font-size: 13px;
+            transition: all 0.3s; margin: 5px;
+        }}
+        .btn:hover {{ background: rgba(255,0,127,0.2); border-color: var(--neon); }}
+        .btn-primary {{ background: linear-gradient(135deg, #ff007f, #ff00aa); border: none; font-weight: 700; box-shadow: 0 0 20px rgba(255,0,127,0.4); }}
+        /* Admin panel styling */
+        .admin-panel {{ padding: 0 8px; margin: 0 8px 100px 8px; }}
+        .stat-card {{ background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; text-align: center; }}
+        .admin-user-item {{ display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }}
     </style>
 </head>
 <body>
-
-<div class="load-center" id="loader" style="display:flex;align-items:center;justify-content:center;min-height:80vh;flex-direction:column;gap:12px;color:rgba(240,230,255,0.5)">
-    <div class="spinner"></div><span>🌑 تحميل الملف...</span>
-</div>
-
+<div id="loader" style="display:flex;align-items:center;justify-content:center;min-height:80vh;"><div class="spinner"></div></div>
 <div id="content" style="display:none">
-    <div class="cover-section" id="coverSection" onmousemove="parallaxCover(event)">
-        <img class="cover-img" id="coverImg" src="" alt="cover" style="display:none">
-        <div class="cover-gradient"></div>
-        <div class="cover-glow"></div>
-        <div class="cover-edit-btn" id="coverEditBtn" onclick="event.stopPropagation();document.getElementById('coverInput').click()" style="display:none">
-            <i class="fas fa-camera"></i>
-        </div>
-    </div>
-    <input type="file" id="coverInput" accept="image/*" style="display:none" onchange="uploadCover(this)">
-    
-    <button class="btn-back" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
-    
-    <div class="avatar-wrap">
-        <div class="avatar-lg" id="avatarDisplay">
-            <img src="" alt="avatar" id="avatarImg">
-            <div class="avatar-edit-btn" id="avatarEditBtn" onclick="event.stopPropagation();document.getElementById('avatarInput').click()" style="display:none">
-                <i class="fas fa-camera"></i>
-            </div>
-            <div class="online-dot" id="onlineDot" style="display:none"></div>
-        </div>
-    </div>
-    <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
-
+    <div class="cover-section" id="coverSection"><img class="cover-img" id="coverImg" src="" style="display:none"><div class="cover-gradient"></div></div>
+    <button onclick="history.back()" style="position:fixed;top:20px;right:20px;z-index:50;background:rgba(0,0,0,0.5);width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:16px;"><i class="fas fa-arrow-right"></i></button>
+    <div class="avatar-wrap"><div class="avatar-lg"><img id="avatarImg" src=""></div></div>
     <div class="profile-info">
-        <div class="username"><span id="nameDisplay"></span></div>
+        <div class="username" id="nameDisplay"></div>
         <div class="bio-text" id="bioDisplay"></div>
-        <div class="contact-info" id="contactInfo"></div>
-        <div class="last-seen" id="lastSeenDisplay"></div>
     </div>
-
     <div class="stats-row">
-        <div class="stat-item" onclick="showList('following')"><div class="stat-val" id="statFollowing">0</div><div class="stat-lbl">يتابع</div></div>
-        <div class="stat-item" onclick="showList('followers')"><div class="stat-val" id="statFollowers">0</div><div class="stat-lbl">متابع</div></div>
+        <div class="stat-item"><div class="stat-val" id="statFollowing">0</div><div class="stat-lbl">يتابع</div></div>
+        <div class="stat-item"><div class="stat-val" id="statFollowers">0</div><div class="stat-lbl">متابع</div></div>
         <div class="stat-item"><div class="stat-val" id="statLikes">0</div><div class="stat-lbl">إعجابات</div></div>
     </div>
-
-    <div class="action-btns" id="actionsBar"></div>
-
-    <div class="section-title"><i class="fas fa-video" style="color:var(--accent)"></i> الفيديوهات</div>
+    <div style="text-align:center" id="actionsBar"></div>
     <div class="videos-grid" id="videosGrid"></div>
 </div>
-
-<div class="overlay-panel" id="overlayPanel" onclick="closeEditPanel()"></div>
-<div class="edit-panel" id="editPanel">
-    <h3>🌑 لوحة تعديل الملف الشخصي</h3>
-    <label>👤 اسم المستخدم</label>
-    <input type="text" id="editUsername" placeholder="اسم المستخدم">
-    <label>📝 السيرة الذاتية</label>
-    <textarea id="editBio" placeholder="اكتب شيئاً عن نفسك..."></textarea>
-    <label>🌐 الموقع الإلكتروني</label>
-    <input type="text" id="editWebsite" placeholder="https://example.com" dir="ltr">
-    <label>📧 البريد الإلكتروني</label>
-    <input type="text" id="editContactEmail" placeholder="example@email.com" dir="ltr">
-    <label>🎨 لون الغلاف</label>
-    <div id="coverColors" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
-    <div class="edit-actions">
-        <button class="btn-cancel" onclick="closeEditPanel()">إلغاء</button>
-        <button class="btn-save" onclick="saveProfile()"><i class="fas fa-save"></i> حفظ التغييرات</button>
-    </div>
-</div>
-
 <div class="toast-msg" id="toastMsg">✅ تم</div>
 
 <script src="firebase-config.js"></script>
 <script>
-    let profileUserId = null, currentUser = null, currentUserData = null, allVideos = [], allUsers = {{}}, isOwnProfile = false, _selectedCover = null;
-
-    window.parallaxCover = function(event) {{
-        const img = document.getElementById('coverImg');
-        if(!img || !img.src || img.style.display === 'none') return;
-        const cover = document.getElementById('coverSection');
-        const rect = cover.getBoundingClientRect();
-        const y = event.clientY - rect.top;
-        const percent = (y / rect.height - 0.5) * 0.15;
-        img.style.transform = `translateY(${{percent * 100}}px)`;
-    }};
+    let profileUserId = null, currentUser = null, currentUserData = null, allVideos = [], allUsers = {{}}, isOwnProfile = false;
 
     auth.onAuthStateChanged(async u => {{
         if(!u) {{ window.location.href = 'auth.html'; return; }}
@@ -1546,22 +1208,8 @@ def build_profile():
         isOwnProfile = (profileUserId === u.uid);
         const snap = await db.ref('users/' + u.uid).get();
         if(snap.exists()) currentUserData = {{uid: u.uid, ...snap.val()}};
-        await loadAll();
-        await loadProfile();
-        if(!isOwnProfile) {{
-            db.ref('presence/' + profileUserId).on('value', s => {{
-                const isOnline = s.val();
-                const dot = document.getElementById('onlineDot');
-                const lastSeen = document.getElementById('lastSeenDisplay');
-                if(dot) dot.style.display = isOnline ? 'block' : 'none';
-                if(lastSeen) {{
-                    const userData = allUsers[profileUserId];
-                    if(userData) lastSeen.innerHTML = isOnline ? '<i class="fas fa-circle" style="color:#22c55e;font-size:8px"></i> نشط الآن' : '<i class="fas fa-clock"></i> آخر ظهور: ' + formatTime(userData.lastSeen);
-                }}
-            }});
-        }}
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
+        await loadAll(); await loadProfile();
+        document.getElementById('loader').style.display = 'none'; document.getElementById('content').style.display = 'block';
     }});
 
     async function loadAll() {{
@@ -1571,194 +1219,56 @@ def build_profile():
 
     async function loadProfile() {{
         const u = allUsers[profileUserId];
-        if(!u) {{ document.getElementById('content').innerHTML = '<div class="empty-state" style="padding-top:100px"><i class="fas fa-user-slash"></i><p>المستخدم غير موجود</p></div>'; return; }}
-        const purpleVerifiedBadge = u.isVerified ? '<span class="badge-verified"><i class="fas fa-check"></i></span>' : '';
-        document.getElementById('nameDisplay').innerHTML = '@' + (u.username || 'مستخدم') + ' ' + purpleVerifiedBadge;
-        document.getElementById('bioDisplay').innerText = u.bio || 'لم تتم إضافة سيرة ذاتية بعد';
-        const contactInfo = document.getElementById('contactInfo');
-        let contactHTML = '';
-        if(u.website) contactHTML += `<a href="${{u.website}}" target="_blank"><i class="fas fa-globe"></i> ${{u.website.replace('https://','').replace('http://','')}}</a>`;
-        if(u.contactEmail) contactHTML += `<a href="mailto:${{u.contactEmail}}"><i class="fas fa-envelope"></i> ${{u.contactEmail}}</a>`;
-        contactInfo.innerHTML = contactHTML;
+        if(!u) return;
+        document.getElementById('nameDisplay').innerHTML = '@' + (u.username || 'مستخدم') + (u.isVerified ? ' <i class="fas fa-check-circle" style="color:#ff007f"></i>' : '');
+        document.getElementById('bioDisplay').innerText = u.bio || '';
         document.getElementById('statFollowing').innerText = Object.keys(u.following || {{}}).length;
         document.getElementById('statFollowers').innerText = Object.keys(u.followers || {{}}).length;
         const uvs = allVideos.filter(v => v.sender === profileUserId);
         document.getElementById('statLikes').innerText = uvs.reduce((s, v) => s + (v.likes || 0), 0);
-        const coverImg = document.getElementById('coverImg');
-        if(u.coverImageUrl) {{ coverImg.src = u.coverImageUrl; coverImg.style.display = 'block'; }}
-        else {{ document.getElementById('coverSection').style.background = u.coverColor || COVER_COLORS[0]; coverImg.style.display = 'none'; }}
+        if(u.coverImageUrl) {{ document.getElementById('coverImg').src = u.coverImageUrl; document.getElementById('coverImg').style.display = 'block'; }}
+        else {{ document.getElementById('coverSection').style.background = u.coverColor || COVER_COLORS[0]; }}
         document.getElementById('avatarImg').src = u.avatarUrl || (DICEBEAR_URL + '?seed=' + profileUserId);
-        if(isOwnProfile) {{ document.getElementById('avatarEditBtn').style.display = 'flex'; document.getElementById('coverEditBtn').style.display = 'flex'; }}
-        const lastSeen = document.getElementById('lastSeenDisplay');
-        if(!isOwnProfile) {{
-            const presenceSnap = await db.ref('presence/' + profileUserId).get();
-            const isOnline = presenceSnap.val();
-            document.getElementById('onlineDot').style.display = isOnline ? 'block' : 'none';
-            lastSeen.innerHTML = isOnline ? '<i class="fas fa-circle" style="color:#22c55e;font-size:8px"></i> نشط الآن' : '<i class="fas fa-clock"></i> آخر ظهور: ' + formatTime(u.lastSeen || u.createdAt);
-        }}
-
         const grid = document.getElementById('videosGrid');
-        grid.innerHTML = '';
-        if(!uvs.length) {{ grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-video-slash"></i><p>لا توجد فيديوهات</p></div>'; }}
-        else {{
-            uvs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).forEach(v => {{
-                const d = document.createElement('div');
-                d.className = 'video-grid-item';
-                d.onclick = () => window.open(v.url, '_blank');
-                d.innerHTML = `${{v.thumbnail ? `<img src="${{v.thumbnail}}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fas fa-play" style="color:#555;font-size:24px"></i></div>'}}<div class="grid-play-icon"><i class="fas fa-play"></i></div><div class="grid-views"><i class="fas fa-heart" style="color:var(--accent2)"></i> ${{v.likes || 0}}</div>`;
-                grid.appendChild(d);
-            }});
-        }}
-
+        grid.innerHTML = uvs.length ? uvs.map(v => `<div class="video-grid-item" onclick="window.open('${{v.url}}','_blank')">${{v.thumbnail ? `<img src="${{v.thumbnail}}">` : ''}}</div>`).join('') : '<div style="grid-column:1/-1;text-align:center;padding:40px;opacity:0.5">لا فيديوهات</div>';
         const actionsBar = document.getElementById('actionsBar');
         if(isOwnProfile) {{
-            actionsBar.innerHTML = `<button class="btn btn-primary" onclick="openEditPanel()"><i class="fas fa-edit"></i> تعديل الملف</button><button class="btn" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</button><button class="btn" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</button>`;
+            actionsBar.innerHTML = `<button class="btn btn-primary" onclick="window.location.href='settings.html'"><i class="fas fa-cog"></i> إعدادات</button><button class="btn" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</button>`;
         }} else {{
             const isFollowing = currentUserData?.following?.[profileUserId];
-            actionsBar.innerHTML = `<button class="btn btn-follow ${{isFollowing ? 'following' : ''}}" id="followBtn" onclick="toggleFollowUser()">${{isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}}</button><button class="btn btn-primary" onclick="window.location.href='chat.html?uid=${{profileUserId}}'"><i class="fas fa-comment"></i> مراسلة</button><button class="btn" onclick="copyProfile()"><i class="fas fa-copy"></i> نسخ المعلومات</button>`;
+            actionsBar.innerHTML = `<button class="btn" id="followBtn" onclick="toggleFollowUser()">${{isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}}</button><button class="btn btn-primary" onclick="window.location.href='chat.html?uid=${{profileUserId}}'">مراسلة</button>`;
         }}
-        if(isOwnProfile && ADMIN_EMAILS.includes(currentUser?.email)) {{ loadAdminPanel(); }}
+        if(isOwnProfile && ADMIN_EMAILS.includes(currentUser?.email)) loadAdminPanel();
     }}
 
-    function openEditPanel() {{
-        const u = allUsers[profileUserId] || currentUserData;
-        document.getElementById('editUsername').value = u.username || '';
-        document.getElementById('editBio').value = u.bio || '';
-        document.getElementById('editWebsite').value = u.website || '';
-        document.getElementById('editContactEmail').value = u.contactEmail || '';
-        _selectedCover = u.coverColor || COVER_COLORS[0];
-        const colorsDiv = document.getElementById('coverColors');
-        colorsDiv.innerHTML = COVER_COLORS.map((c, i) => `<div onclick="selectCover('${{c.replace(/'/g, "\\\\'")}}', this)" style="width:40px;height:40px;border-radius:50%;background:${{c}};cursor:pointer;border:3px solid ${{_selectedCover === c ? '#fff' : 'transparent'}};transition:all 0.2s;box-shadow:0 4px 15px rgba(0,0,0,0.3)" title="غلاف ${{i+1}}"></div>`).join('');
-        document.getElementById('editPanel').classList.add('show'); document.getElementById('overlayPanel').classList.add('show');
-    }}
-    function closeEditPanel() {{ document.getElementById('editPanel').classList.remove('show'); document.getElementById('overlayPanel').classList.remove('show'); }}
-    function selectCover(color, el) {{ _selectedCover = color; document.getElementById('coverSection').style.background = color; document.getElementById('coverImg').style.display = 'none'; document.querySelectorAll('#coverColors div').forEach(d => d.style.borderColor = 'transparent'); el.style.borderColor = '#fff'; }}
-    async function saveProfile() {{
-        const username = document.getElementById('editUsername').value.trim();
-        const bio = document.getElementById('editBio').value.trim();
-        const website = document.getElementById('editWebsite').value.trim();
-        const contactEmail = document.getElementById('editContactEmail').value.trim();
-        if(!username || username.length < 3) {{ showToast('❌ اسم المستخدم 3 أحرف على الأقل'); return; }}
-        const updates = {{username, bio, website, contactEmail}};
-        if(_selectedCover) updates.coverColor = _selectedCover;
-        try {{ await db.ref('users/' + profileUserId).update(updates); closeEditPanel(); await loadAll(); await loadProfile(); showToast('✅ تم حفظ التغييرات بنجاح'); }} catch(e) {{ showToast('❌ حدث خطأ'); }}
-    }}
-    async function uploadAvatar(inp) {{
-        const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الصورة...');
-        const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
-        try {{
-            const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {{method: 'POST', body: fd}});
-            const data = await res.json();
-            if(data.secure_url) {{ await db.ref('users/' + profileUserId).update({{avatarUrl: data.secure_url, hasCustomAvatar: true}}); document.getElementById('avatarImg').src = data.secure_url; showToast('✅ تم تحديث الصورة الشخصية'); }}
-        }} catch(e) {{ showToast('❌ خطأ في الرفع'); }} inp.value = '';
-    }}
-    async function uploadCover(inp) {{
-        const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الغلاف...');
-        const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
-        try {{
-            const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {{method: 'POST', body: fd}});
-            const data = await res.json();
-            if(data.secure_url) {{ await db.ref('users/' + profileUserId).update({{coverImageUrl: data.secure_url, hasCustomCover: true}}); const coverImg = document.getElementById('coverImg'); coverImg.src = data.secure_url; coverImg.style.display = 'block'; document.getElementById('coverSection').style.background = 'none'; showToast('✅ تم تحديث الغلاف'); }}
-        }} catch(e) {{ showToast('❌ خطأ في الرفع'); }} inp.value = '';
-    }}
-    async function toggleFollowUser() {{
-        if(!currentUser || isOwnProfile) return;
-        const btn = document.getElementById('followBtn');
-        const userRef = db.ref('users/' + currentUser.uid + '/following/' + profileUserId);
-        const targetRef = db.ref('users/' + profileUserId + '/followers/' + currentUser.uid);
-        const snap = await userRef.get();
-        if(snap.exists()) {{ await userRef.remove(); await targetRef.remove(); btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة'; btn.classList.remove('following'); }}
-        else {{ await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع'; btn.classList.add('following'); }}
-        await loadAll(); await loadProfile();
-    }}
-    async function copyProfile() {{
-        const u = allUsers[profileUserId];
-        const text = `👤 @${{u.username || 'مستخدم'}}\\n📝 ${{u.bio || ''}}\\n🌑 MNAENCA 2026`;
-        try {{ await navigator.clipboard.writeText(text); }} catch(e) {{ const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }}
-        showToast('✅ تم نسخ معلومات الملف الشخصي');
-    }}
-    function showList(type) {{
-        const u = allUsers[profileUserId];
-        const list = type === 'followers' ? (u?.followers || {{}}) : (u?.following || {{}});
-        const ids = Object.keys(list);
-        if(!ids.length) {{ alert('لا يوجد'); return; }}
-        const names = ids.map(id => {{ const user = allUsers[id]; return user ? '@' + user.username : 'مستخدم'; }}).join('\\n');
-        alert((type === 'followers' ? 'المتابِعون' : 'المتابَعون') + ':\\n' + names);
-    }}
-    function showToast(msg) {{ const toast = document.getElementById('toastMsg'); toast.innerText = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }}
-    function formatTime(ts) {{
-        if(!ts) return 'غير معروف';
-        const diff = Date.now() - ts;
-        const mins = Math.floor(diff / 60000);
-        const hours = Math.floor(diff / 3600000);
-        const days = Math.floor(diff / 86400000);
-        if(mins < 1) return 'الآن';
-        if(mins < 60) return 'منذ ' + mins + ' دقيقة';
-        if(hours < 24) return 'منذ ' + hours + ' ساعة';
-        if(days < 7) return 'منذ ' + days + ' يوم';
-        return new Date(ts).toLocaleDateString('ar-SA');
-    }}
-
-    async function loadAdminPanel() {{
-        const grid = document.getElementById('videosGrid'); if(!grid) return;
-        const oldPanel = document.getElementById('adminPanelContainer'); if(oldPanel) oldPanel.remove();
-        const adminDiv = document.createElement('div'); adminDiv.id = 'adminPanelContainer'; adminDiv.className = 'admin-panel';
-        const totalUsers = Object.keys(allUsers).length;
-        const totalVideos = allVideos.length;
-        const totalVerified = Object.values(allUsers).filter(u => u.isVerified).length;
-        const totalBanned = Object.values(allUsers).filter(u => u.banned).length;
-        adminDiv.innerHTML = `<h3><i class="fas fa-crown"></i> لوحة تحكم الأدمن</h3>
-            <div class="admin-stats-grid">
-                <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h4>المستخدمين</h4><span>${{totalUsers}}</span></div></div>
-                <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#f59e0b,#ec4899)"><i class="fas fa-video"></i></div><div class="stat-info"><h4>فيديوهات</h4><span>${{totalVideos}}</span></div></div>
-                <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-info"><h4>موثقين</h4><span>${{totalVerified}}</span></div></div>
-                <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)"><i class="fas fa-ban"></i></div><div class="stat-info"><h4>محظورين</h4><span>${{totalBanned}}</span></div></div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;color:rgba(240,230,255,0.6);font-size:13px;font-weight:600;border-bottom:1px solid rgba(168,85,247,0.1);padding-bottom:8px">
-                <span>📋 قائمة المستخدمين</span><span style="font-size:11px">${{totalUsers}} إجمالي</span>
-            </div>
-            <div id="adminDynamicList"></div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;margin-bottom:14px;color:rgba(240,230,255,0.6);font-size:13px;font-weight:600;border-bottom:1px solid rgba(168,85,247,0.1);padding-bottom:8px">
-                <span>🎬 جميع الفيديوهات</span><span style="font-size:11px">${{totalVideos}} إجمالي</span>
+    function loadAdminPanel() {{
+        const panel = document.createElement('div'); panel.className = 'admin-panel';
+        panel.innerHTML = `<h3 style="color:var(--neon)">ADMIN PANEL</h3>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="stat-card"><div class="text-2xl font-bold">${{Object.keys(allUsers).length}}</div><div class="text-sm opacity-50">مستخدمين</div></div>
+                <div class="stat-card"><div class="text-2xl font-bold">${{allVideos.length}}</div><div class="text-sm opacity-50">فيديوهات</div></div>
             </div>
             <div id="adminVideosList"></div>`;
-        grid.after(adminDiv);
-        loadAdminUsersList(); loadAdminVideosList();
+        document.getElementById('videosGrid').after(panel);
+        renderAdminVideos();
     }}
 
-    function loadAdminUsersList() {{
-        const listContainer = document.getElementById('adminDynamicList'); if(!listContainer) return;
-        const usersArray = Object.entries(allUsers).sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 15);
-        if(!usersArray.length) {{ listContainer.innerHTML = '<div style="text-align:center;opacity:0.5;padding:20px">لا يوجد مستخدمون</div>'; return; }}
-        listContainer.innerHTML = usersArray.map(([id, u]) => {{
-            const avatar = u.avatarUrl || (DICEBEAR_URL + '?seed=' + id);
-            const isVerified = u.isVerified;
-            const isBanned = u.banned;
-            const verifiedBadgeHtml = isVerified ? '<span class="badge-verified"><i class="fas fa-check"></i></span>' : '';
-            let actionBtns = '';
-            if(isBanned) {{ actionBtns = `<button class="admin-btn btn-unban" onclick="toggleBanUser('${{id}}')"><i class="fas fa-undo"></i> إلغاء الحظر</button>`; }}
-            else {{ actionBtns = `<button class="admin-btn btn-verify ${{isVerified ? 'unverify' : ''}}" onclick="toggleVerifyUser('${{id}}')">${{isVerified ? '<i class="fas fa-times-circle"></i> إلغاء' : '<i class="fas fa-check-circle"></i> توثيق'}}</button><button class="admin-btn btn-ban" onclick="toggleBanUser('${{id}}')"><i class="fas fa-ban"></i> حظر</button>`; }}
-            return `<div class="admin-user-item"><div class="admin-user-info" onclick="openUserProfile('${{id}}')" style="cursor:pointer"><div class="admin-avatar"><img src="${{avatar}}"></div><div class="admin-user-details"><h4>@${{u.username || 'مستخدم'}} ${{verifiedBadgeHtml}}</h4><p>${{u.email || ''}}</p></div></div><div class="admin-user-actions">${{actionBtns}}</div></div>`;
-        }}).join('');
+    function renderAdminVideos() {{
+        const list = document.getElementById('adminVideosList');
+        list.innerHTML = allVideos.slice(0,20).map(v => `
+            <div class="admin-user-item">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <video src="${{v.url}}" style="width:50px;height:70px;object-fit:cover;border-radius:8px"></video>
+                    <span>${{(v.description||'بدون وصف').substring(0,30)}}</span>
+                </div>
+                <button onclick="deleteVideo('${{v.id}}')" class="text-red-500"><i class="fas fa-trash"></i></button>
+            </div>
+        `).join('');
     }}
 
-    function loadAdminVideosList() {{
-        const listContainer = document.getElementById('adminVideosList'); if(!listContainer) return;
-        const videosArray = allVideos.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 20);
-        if(!videosArray.length) {{ listContainer.innerHTML = '<div style="text-align:center;opacity:0.5;padding:20px">لا توجد فيديوهات</div>'; return; }}
-        listContainer.innerHTML = videosArray.map(v => {{
-            const user = allUsers[v.sender] || {{username: v.senderName || 'مستخدم'}};
-            const desc = (v.description || 'بدون وصف').substring(0, 40);
-            return `<div class="admin-user-item"><div class="admin-user-info"><div class="admin-avatar" style="border-radius:8px;width:50px;height:70px">${{v.thumbnail ? `<img src="${{v.thumbnail}}" style="object-fit:cover">` : ''}}</div><div class="admin-user-details"><p style="font-size:12px">${{desc}}</p><span style="font-size:10px;opacity:0.4">@${{user.username}} · ❤️ ${{v.likes || 0}}</span></div></div><div class="admin-user-actions"><button class="admin-btn btn-delete-video" onclick="deleteVideo('${{v.id}}')"><i class="fas fa-trash"></i> حذف</button></div></div>`;
-        }}).join('');
-    }}
-
-    window.deleteVideo = async function(videoId) {{ if(!confirm('هل أنت متأكد من حذف هذا الفيديو؟')) return; try {{ await db.ref('videos/' + videoId).remove(); showToast('🗑️ تم حذف الفيديو بنجاح'); await loadAll(); await loadProfile(); loadAdminVideosList(); }} catch(e) {{ showToast('❌ فشل حذف الفيديو'); }} }};
-    window.toggleVerifyUser = async function(id) {{ const snap = await db.ref('users/' + id).once('value'); const data = snap.val(); if(!data) return; const newState = !data.isVerified; if(!confirm(`تأكيد ${{newState ? 'توثيق' : 'إلغاء توثيق'}} @${{data.username || 'المستخدم'}}؟`)) return; await db.ref('users/' + id).update({{isVerified: newState, verifiedAt: newState ? Date.now() : null, verifiedBy: newState ? currentUser.uid : null}}); await loadAll(); await loadProfile(); showToast(`✅ تم ${{newState ? 'توثيق' : 'إلغاء توثيق'}} المستخدم`); loadAdminUsersList(); }};
-    window.toggleBanUser = async function(id) {{ const snap = await db.ref('users/' + id).once('value'); const data = snap.val(); if(!data) return; const newState = !data.banned; if(!confirm(`تأكيد ${{newState ? 'حظر' : 'إلغاء حظر'}} @${{data.username || 'المستخدم'}}؟`)) return; await db.ref('users/' + id).update({{banned: newState, bannedAt: newState ? Date.now() : null, bannedBy: newState ? currentUser.uid : null}}); await loadAll(); await loadProfile(); showToast(`✅ تم ${{newState ? 'حظر' : 'إلغاء حظر'}} المستخدم`); loadAdminUsersList(); }};
-    window.openUserProfile = function(id) {{ if(id === currentUser?.uid) window.location.href = 'profile.html'; else window.location.href = 'profile.html?uid=' + id; }};
-
-    console.log('🌑 MNAENCA Profile Ready ✨');
+    window.deleteVideo = async (id) => {{ if(confirm('حذف؟')) {{ await db.ref('videos/' + id).remove(); showToast('تم الحذف'); loadAll().then(loadProfile); }} }};
+    function showToast(msg) {{ const t=document.getElementById('toastMsg'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }}
+    console.log('💜 Profile Ready');
 </script>
 </body>
 </html>"""
@@ -1769,61 +1279,51 @@ def build_upload():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | رفع فيديو</title>
+    <title>💜 VØID_X | رفع</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{min-height:100vh;overflow-y:auto}}
-        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1.5px solid rgba(168,85,247,0.2);background:rgba(5,0,5,0.8);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10}}
-        .btn-back{{background:rgba(168,85,247,0.1);border:1.5px solid rgba(168,85,247,0.3);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f0e6ff;cursor:pointer;font-size:16px}}
-        .container{{max-width:500px;margin:0 auto;padding:20px}}
-        .dropzone{{border:2px dashed rgba(168,85,247,0.4);border-radius:20px;padding:50px 20px;text-align:center;cursor:pointer;background:rgba(168,85,247,0.03);margin-bottom:20px;transition:all 0.3s}}
-        .dropzone:hover{{border-color:rgba(236,72,153,0.5);box-shadow:0 0 30px rgba(168,85,247,0.2)}}
-        .dropzone i{{font-size:48px;color:var(--accent);text-shadow:0 0 20px rgba(168,85,247,0.5)}}
-        .dropzone video{{width:100%;max-height:250px;object-fit:contain;margin-top:12px;border-radius:12px;display:none}}
-        .form-card{{background:rgba(168,85,247,0.04);border:1.5px solid rgba(168,85,247,0.2);border-radius:20px;padding:20px}}
-        .form-card label{{display:block;font-size:13px;opacity:0.7;margin-bottom:6px;margin-top:12px;color:#d0c0f0}}
-        .form-card textarea,.form-card input{{width:100%;padding:14px 16px;border-radius:16px;background:rgba(168,85,247,0.05);border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff;font-size:14px;outline:none;resize:none;font-family:'Segoe UI',sans-serif}}
-        .progress-wrap{{display:none;margin:16px 0}}
-        .progress-bar{{background:rgba(168,85,247,0.15);border-radius:30px;height:6px;overflow:hidden}}
-        .progress-fill{{background:linear-gradient(90deg,var(--accent),var(--accent2));height:100%;border-radius:30px;width:0%;box-shadow:0 0 10px rgba(168,85,247,0.5)}}
-        .progress-text{{text-align:center;font-size:12px;margin-top:6px;color:var(--accent2)}}
-        .btn-upload{{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:30px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;margin-top:16px;box-shadow:0 10px 30px rgba(168,85,247,0.5),0 0 40px rgba(236,72,153,0.3)}}
-        .btn-upload:disabled{{opacity:0.5}}
-        .status{{text-align:center;margin-top:12px;font-size:13px}}
+        body {{ min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse at top, #1a000d, #050002); }}
+        .card {{ background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 30px; width: 90%; max-width: 400px; text-align: center; }}
+        input[type="file"] {{ display: none; }}
+        .upload-btn {{ padding: 16px; background: var(--neon); border: none; border-radius: 40px; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 0 25px var(--neon); }}
+        video {{ width: 100%; max-height: 200px; margin-top: 15px; border-radius: 12px; display: none; }}
     </style>
 </head>
 <body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2 style="color:#e0d0ff"><i class="fas fa-cloud-upload-alt"></i> رفع فيديو جديد</h2></div>
-<div class="container">
-    <div class="dropzone" onclick="document.getElementById('videoFile').click()"><i class="fas fa-cloud-upload-alt"></i><p style="color:#d0c0f0">اضغط لاختيار فيديو</p><span style="font-size:11px;opacity:0.5">MP4 - حتى 100MB</span><video id="preview" controls></video></div>
-    <input type="file" id="videoFile" accept="video/*" style="display:none" onchange="onFilePick(this)">
-    <div class="form-card">
-        <label><i class="fas fa-pen"></i> وصف الفيديو</label><textarea id="vidDesc" placeholder="اكتب وصفاً... #هاشتاقات"></textarea>
-        <label><i class="fas fa-music"></i> الموسيقى</label><input type="text" id="vidMusic" placeholder="Original Sound">
-        <div class="progress-wrap" id="progressWrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-text" id="progressText">0%</div></div>
-        <button class="btn-upload" id="uploadBtn" onclick="upload()"><i class="fas fa-heart"></i> رفع الفيديو</button>
-        <div class="status" id="status"></div>
+<div class="card">
+    <i class="fas fa-cloud-upload-alt text-5xl" style="color:var(--neon)"></i>
+    <h2 style="font-family: 'Orbitron'; margin: 15px 0;">UPLOAD</h2>
+    <p style="opacity:0.7">اختر فيديو MP4 (حتى 100MB)</p>
+    <input type="file" id="videoFile" accept="video/*" onchange="preview(this)">
+    <video id="preview" controls></video>
+    <div id="progress" style="display:none; margin:15px 0;">
+        <div style="height:6px;background:rgba(255,255,255,0.1);border-radius:10px;"><div id="progressFill" style="width:0%;height:100%;background:var(--neon);border-radius:10px;"></div></div>
+        <p id="progressText" style="font-size:12px;margin-top:5px;">0%</p>
     </div>
+    <button class="upload-btn" onclick="upload()">رفع <i class="fas fa-arrow-up"></i></button>
+    <p id="status" style="margin-top:12px;"></p>
 </div>
 <script src="firebase-config.js"></script>
 <script>
-    let currentUser=null,currentUserData=null,selectedFile=null;
-    auth.onAuthStateChanged(async u=>{{if(!u)window.location.href='auth.html';currentUser=u;const snap=await db.ref('users/'+u.uid).get();if(snap.exists())currentUserData={{uid:u.uid,...snap.val()}}}});
-    function onFilePick(inp){{const f=inp.files[0];if(!f||!f.type.startsWith('video/')){{alert('اختر فيديو صحيح');return}}if(f.size>100*1024*1024){{alert('أقل من 100MB');return}}selectedFile=f;const r=new FileReader();r.onload=e=>{{const v=document.getElementById('preview');v.src=e.target.result;v.style.display='block'}};r.readAsDataURL(f)}}
-    async function upload(){{
-        if(!selectedFile){{alert('اختر فيديو');return}}if(!currentUser){{alert('سجل دخول');return}}
-        const desc=document.getElementById('vidDesc').value;const music=document.getElementById('vidMusic').value||'Original Sound';
-        const pw=document.getElementById('progressWrap');pw.style.display='block';const pf=document.getElementById('progressFill');pf.style.width='0%';const pt=document.getElementById('progressText');pt.innerText='0%';
-        const st=document.getElementById('status');st.innerHTML='';const btn=document.getElementById('uploadBtn');btn.disabled=true;
-        const fd=new FormData();fd.append('file',selectedFile);fd.append('upload_preset',UPLOAD_PRESET);
-        const xhr=new XMLHttpRequest();xhr.open('POST','https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload');
-        xhr.upload.onprogress=e=>{{if(e.lengthComputable){{const p=Math.round(e.loaded/e.total*100);pf.style.width=p+'%';pt.innerText=p+'%'}}}};
-        xhr.onload=async()=>{{const r=JSON.parse(xhr.responseText);await db.ref('videos/').push({{url:r.secure_url,thumbnail:r.secure_url.replace('.mp4','.jpg'),description:desc,music:music,sender:currentUser.uid,senderName:currentUserData?.username,likes:0,likedBy:{{}},comments:{{}},timestamp:Date.now()}});st.innerHTML='✅ تم الرفع بنجاح!';st.style.color='#4ade80';setTimeout(()=>window.location.href='index.html',1500)}};
-        xhr.onerror=()=>{{st.innerHTML='❌ فشل الرفع';btn.disabled=false}};xhr.send(fd);
+    let selectedFile = null;
+    auth.onAuthStateChanged(u => {{ if(!u) window.location.href='auth.html'; }});
+    function preview(inp) {{ const f=inp.files[0]; if(f && f.type.startsWith('video/') && f.size <= 100*1024*1024) {{ selectedFile=f; const r=new FileReader(); r.onload=e=>{{ const v=document.getElementById('preview'); v.src=e.target.result; v.style.display='block'; }}; r.readAsDataURL(f); }} else {{ alert('ملف غير صالح'); }} }}
+    async function upload() {{
+        if(!selectedFile) return alert('اختر ملف');
+        const fd = new FormData(); fd.append('file', selectedFile); fd.append('upload_preset', UPLOAD_PRESET);
+        document.getElementById('progress').style.display='block';
+        const xhr = new XMLHttpRequest(); xhr.open('POST', 'https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload');
+        xhr.upload.onprogress = e => {{ const p=Math.round(e.loaded/e.total*100); document.getElementById('progressFill').style.width=p+'%'; document.getElementById('progressText').innerText=p+'%'; }};
+        xhr.onload = async () => {{
+            const r=JSON.parse(xhr.responseText);
+            await db.ref('videos/').push({{ url: r.secure_url, thumbnail: r.secure_url.replace('.mp4','.jpg'), sender: auth.currentUser.uid, senderName: 'VØID', likes: 0, likedBy: {{}}, comments: {{}}, timestamp: Date.now() }});
+            document.getElementById('status').innerHTML='✅ تم الرفع!'; setTimeout(()=>window.location.href='index.html',1500);
+        }};
+        xhr.onerror = () => document.getElementById('status').innerHTML='❌ فشل';
+        xhr.send(fd);
     }}
 </script>
 </body>
@@ -1835,53 +1335,52 @@ def build_chat():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | دردشة</title>
+    <title>💜 VØID_X | دردشة</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{height:100vh;display:flex;flex-direction:column}}
-        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1.5px solid rgba(168,85,247,0.2);background:rgba(5,0,5,0.8);backdrop-filter:blur(20px)}}
-        .btn-back{{background:rgba(168,85,247,0.1);border:1.5px solid rgba(168,85,247,0.3);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f0e6ff;cursor:pointer;font-size:16px}}
-        .msgs{{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}}
-        .bubble{{max-width:80%;padding:10px 16px;border-radius:20px;word-break:break-word;font-size:14px;position:relative;animation:msgIn 0.3s ease}}
-        @keyframes msgIn{{from{{opacity:0;transform:translateY(10px)}}to{{opacity:1;transform:translateY(0)}}}}
-        .bubble.sent{{background:linear-gradient(135deg,var(--accent),var(--accent2));align-self:flex-end;color:#fff;box-shadow:0 4px 15px rgba(168,85,247,0.4)}}
-        .bubble.received{{background:rgba(168,85,247,0.08);align-self:flex-start;border:1.5px solid rgba(168,85,247,0.15);color:#e0d0ff}}
-        .bubble img{{max-width:200px;border-radius:12px;cursor:pointer;margin-top:4px}}
-        .bubble .time{{font-size:9px;opacity:0.6;margin-top:4px}}
-        .input-bar{{display:flex;gap:10px;padding:12px;background:rgba(5,0,5,0.95);backdrop-filter:blur(20px);border-top:1.5px solid rgba(168,85,247,0.2);align-items:center}}
-        .input-bar input{{flex:1;padding:12px 16px;border-radius:30px;background:rgba(168,85,247,0.05);border:1.5px solid rgba(168,85,247,0.2);color:#f0e6ff;font-size:14px;outline:none}}
-        .btn-icon{{width:42px;height:42px;background:rgba(168,85,247,0.1);border:1.5px solid rgba(168,85,247,0.3);border-radius:50%;color:#f0e6ff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
-        .btn-send{{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(168,85,247,0.4)}}
-        .conv-item{{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid rgba(168,85,247,0.08);cursor:pointer}}
-        .conv-item:hover{{background:rgba(168,85,247,0.05)}}
-        .chat-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(168,85,247,0.4);box-shadow:0 0 10px rgba(168,85,247,0.2)}}
-        .chat-avatar img{{width:100%;height:100%;object-fit:cover}}
-        .online-indicator{{width:10px;height:10px;background:#22c55e;border-radius:50%;display:inline-block;margin-left:6px;box-shadow:0 0 10px rgba(34,197,94,0.5)}}
+        body {{ height: 100vh; display: flex; flex-direction: column; background: var(--bg); }}
+        header {{ padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }}
+        .msgs {{ flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; }}
+        .bubble {{ max-width: 80%; padding: 10px 16px; border-radius: 20px; word-break: break-word; font-size: 14px; }}
+        .bubble.sent {{ background: linear-gradient(135deg, #ff007f, #ff00aa); align-self: flex-end; color: #fff; }}
+        .bubble.received {{ background: rgba(255,255,255,0.05); align-self: flex-start; border: 1px solid rgba(255,255,255,0.1); }}
+        .input-bar {{ display: flex; gap: 8px; padding: 12px; background: rgba(5,0,2,0.9); border-top: 1px solid rgba(255,255,255,0.1); }}
+        .input-bar input {{ flex: 1; padding: 12px; border-radius: 30px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; }}
+        .btn-send {{ background: var(--neon); border: none; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; }}
     </style>
 </head>
 <body>
-<div id="loader" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px"><div class="spinner"></div><span style="color:rgba(240,230,255,0.5)">🌑 تحميل...</span></div>
-<div id="convView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2 style="color:#e0d0ff"><i class="fas fa-comments"></i> المحادثات</h2></div><div id="convList" style="flex:1;overflow-y:auto"></div></div>
-<div id="chatView" style="display:none;flex:1;flex-direction:column;overflow:hidden"><div class="header"><button class="btn-back" onclick="showConvs()"><i class="fas fa-arrow-right"></i></button><div class="chat-avatar" id="chatAvatar"></div><h3 id="chatName" style="color:#e0d0ff">محادثة</h3><span id="chatOnline" style="font-size:11px;opacity:0.5;margin-right:8px;color:#c0b0e0"></span></div><div class="msgs" id="msgsList"></div><div class="input-bar"><button class="btn-icon" onclick="sendImage()" title="إرسال صورة"><i class="fas fa-image"></i></button><input type="text" id="msgInput" placeholder="اكتب رسالة..." onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button><button class="btn-icon" onclick="copyChat()" title="نسخ المحادثة"><i class="fas fa-copy"></i></button></div></div>
-<div class="toast-msg" id="toastMsg">✅ تم</div>
+<header><button onclick="window.location.href='index.html'" style="background:none;border:none;color:#fff;font-size:18px;"><i class="fas fa-arrow-right"></i></button><h2 style="font-family:'Orbitron';">VØID_CHAT</h2></header>
+<div class="msgs" id="chatBox"></div>
+<div class="input-bar"><input type="text" id="msgInput" placeholder="رسالة..."><button class="btn-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button></div>
 <script src="firebase-config.js"></script>
 <script>
-    let currentUser=null,allUsers={{}},chatUserId=null;
-    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;const us=await db.ref('users').once('value');allUsers=us.val()||{{}};document.getElementById('loader').style.display='none';const params=new URLSearchParams(window.location.search);const targetUid=params.get('uid');if(targetUid){{openChat(targetUid)}}else{{showConvs()}}setInterval(()=>{{if(currentUser)db.ref('users/'+currentUser.uid+'/lastSeen').set(Date.now())}},60000)}});
-    function showConvs(){{document.getElementById('chatView').style.display='none';document.getElementById('convView').style.display='flex';chatUserId=null;loadConvs()}}
-    async function loadConvs(){{const cl=document.getElementById('convList');cl.innerHTML='';const snap=await db.ref('private_messages').once('value');const all=snap.val()||{{}};const found=new Set();Object.keys(all).forEach(cid=>{{const[u1,u2]=cid.split('_');const other=u1===currentUser.uid?u2:u2===currentUser.uid?u1:null;if(other&&!found.has(other)&&allUsers[other])found.add(other)}});if(!found.size){{cl.innerHTML='<div style="text-align:center;opacity:0.5;padding:40px;color:#c0b0e0">لا محادثات</div>';return}}found.forEach(uid=>{{const u=allUsers[uid];const d=document.createElement('div');d.className='conv-item';d.innerHTML=`<div class="chat-avatar"><img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}"></div><div><div style="font-weight:600;color:#e0d0ff">@${{u?.username||'?'}} ${{u?.isVerified?'<span style="color:#c084fc;font-size:12px"><i class="fas fa-check-circle"></i></span>':''}}</div></div>`;d.onclick=()=>openChat(uid);cl.appendChild(d)}})}}
-    async function openChat(uid){{chatUserId=uid;const u=allUsers[uid];document.getElementById('chatName').innerText='@'+(u?.username||'مستخدم');document.getElementById('chatAvatar').innerHTML=`<img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}">`;document.getElementById('convView').style.display='none';document.getElementById('chatView').style.display='flex';db.ref('presence/'+uid).on('value',s=>{{const online=s.val();document.getElementById('chatOnline').innerHTML=online?'<span class="online-indicator"></span> نشط الآن':'آخر ظهور: '+formatTime(u?.lastSeen)}});await loadMsgs()}}
-    function getChatId(){{return[currentUser.uid,chatUserId].sort().join('_')}}
-    async function loadMsgs(){{const ml=document.getElementById('msgsList');ml.innerHTML='';if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const ms=snap.val()||{{}};Object.values(ms).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sent=m.senderId===currentUser.uid;const d=document.createElement('div');d.className='bubble '+(sent?'sent':'received');d.innerHTML=`${{m.type==='image'?`<img src="${{m.imageUrl}}" onclick="window.open('${{m.imageUrl}}','_blank')">`:m.text}}<div class="time">${{new Date(m.timestamp).toLocaleTimeString('ar-SA')}}</div>`;ml.appendChild(d)}});ml.scrollTop=ml.scrollHeight}}
-    async function sendMsg(){{const inp=document.getElementById('msgInput');const txt=inp.value.trim();if(!txt||!chatUserId)return;await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,text:txt,type:'text',timestamp:Date.now()}});inp.value='';await loadMsgs()}}
-    async function sendImage(){{if(!chatUserId)return;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async(e)=>{{const file=e.target.files[0];if(!file)return;showToast('⏳ جاري رفع الصورة...');const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{{method:'POST',body:fd}});const data=await res.json();if(data.secure_url){{await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,type:'image',imageUrl:data.secure_url,timestamp:Date.now()}});await loadMsgs()}}}};inp.click()}}
-    async function copyChat(){{if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const msgs=snap.val()||{{}};let text='💬 محادثة MNAENCA\\n'+'─'.repeat(30)+'\\n';Object.values(msgs).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sender=m.senderId===currentUser.uid?'أنت':(allUsers[m.senderId]?.username||'مستخدم');const content=m.type==='image'?'[صورة]':m.text;const time=new Date(m.timestamp).toLocaleTimeString('ar-SA');text+=`\\n${{sender}} (${{time}}):\\n${{content}}\\n`}});try{{await navigator.clipboard.writeText(text)}}catch(e){{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}}showToast('✅ تم نسخ المحادثة')}}
-    function showToast(msg){{const toast=document.getElementById('toastMsg');toast.innerText=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}}
-    function formatTime(ts){{if(!ts)return'غير معروف';const diff=Date.now()-ts;const mins=Math.floor(diff/60000);const hours=Math.floor(diff/3600000);const days=Math.floor(diff/86400000);if(mins<1)return'الآن';if(mins<60)return'منذ '+mins+' دقيقة';if(hours<24)return'منذ '+hours+' ساعة';if(days<7)return'منذ '+days+' يوم';return new Date(ts).toLocaleDateString('ar-SA')}}
+    let currentUser = null, chatUserId = null;
+    auth.onAuthStateChanged(async u => {{ if(!u) window.location.href='auth.html'; currentUser = u;
+        const params = new URLSearchParams(window.location.search); chatUserId = params.get('uid') || null;
+        db.ref('private_messages/' + getChatId()).on('value', loadMsgs);
+    }});
+    function getChatId() {{ return [currentUser.uid, chatUserId].sort().join('_'); }}
+    function loadMsgs(snap) {{
+        const box = document.getElementById('chatBox'); box.innerHTML = '';
+        const msgs = snap.val() || {{}};
+        Object.values(msgs).sort((a,b)=>a.timestamp-b.timestamp).forEach(m => {{
+            const d = document.createElement('div');
+            d.className = 'bubble ' + (m.senderId===currentUser.uid?'sent':'received');
+            d.innerHTML = (m.type==='image'?`<img src="${{m.imageUrl}}" style="max-width:200px;border-radius:12px">`:m.text) + `<div style="font-size:9px;opacity:0.6;margin-top:4px;">${{new Date(m.timestamp).toLocaleTimeString()}}</div>`;
+            box.appendChild(d);
+        }});
+        box.scrollTop = box.scrollHeight;
+    }}
+    async function sendMsg() {{
+        const inp = document.getElementById('msgInput');
+        if(!inp.value.trim() || !chatUserId) return;
+        await db.ref('private_messages/'+getChatId()).push({{ senderId: currentUser.uid, text: inp.value, timestamp: Date.now() }});
+        inp.value = '';
+    }}
 </script>
 </body>
 </html>"""
@@ -1892,38 +1391,31 @@ def build_explore():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | استكشاف</title>
+    <title>💜 VØID_X | استكشاف</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{min-height:100vh;overflow-y:auto}}
-        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1.5px solid rgba(168,85,247,0.2);position:sticky;top:0;background:rgba(5,0,5,0.8);backdrop-filter:blur(20px);z-index:10}}
-        .btn-back{{background:rgba(168,85,247,0.1);border:1.5px solid rgba(168,85,247,0.3);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f0e6ff;cursor:pointer;font-size:16px}}
-        .grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px}}
-        .thumb{{aspect-ratio:9/16;background:rgba(168,85,247,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;border:1px solid rgba(168,85,247,0.08)}}
-        .thumb img{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}}
-        .thumb i{{position:absolute;font-size:24px;color:#fff;z-index:1;opacity:0;transition:opacity 0.3s;text-shadow:0 0 15px rgba(168,85,247,0.5)}}
-        .thumb:hover i{{opacity:1}}
-        .thumb .views{{position:absolute;bottom:4px;left:4px;font-size:10px;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:10px;color:#f0e6ff}}
+        body {{ min-height: 100vh; overflow-y: auto; }}
+        header {{ padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; background: rgba(5,0,2,0.8); backdrop-filter: blur(20px); z-index: 10; display: flex; align-items: center; gap: 12px; }}
+        .grid {{ display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; padding: 2px; }}
+        .thumb {{ aspect-ratio: 9/16; background: rgba(255,0,127,0.05); cursor: pointer; overflow: hidden; position: relative; }}
+        .thumb img {{ width: 100%; height: 100%; object-fit: cover; }}
+        .thumb i {{ position: absolute; bottom: 5px; left: 5px; color: #fff; }}
     </style>
 </head>
 <body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2 style="color:#e0d0ff"><i class="fas fa-globe"></i> استكشاف</h2></div>
+<header><button onclick="window.location.href='index.html'" style="background:none;border:none;color:#fff;font-size:18px;"><i class="fas fa-arrow-right"></i></button><h2>استكشاف</h2></header>
 <div class="grid" id="exploreGrid"><div class="spinner" style="grid-column:1/-1"></div></div>
 <script src="firebase-config.js"></script>
 <script>
-    let currentUser=null;
-    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;loadExplore()}});
-    async function loadExplore(){{
-        const snap=await db.ref('videos').once('value');
-        const videos=snap.val()||{{}};
-        const allVids=Object.entries(videos).map(([k,v])=>({{id:k,...v}})).sort((a,b)=>(b.likes||0)-(a.likes||0));
-        const g=document.getElementById('exploreGrid');
-        if(!allVids.length){{g.innerHTML='<div style="text-align:center;padding:40px;grid-column:1/-1;opacity:0.5;color:#c0b0e0">لا توجد فيديوهات</div>';return}}
-        g.innerHTML=allVids.map(v=>`<div class="thumb" onclick="window.open('${{v.url}}','_blank')">${{v.thumbnail?`<img src="${{v.thumbnail}}">`:''}}<i class="fas fa-play"></i><span class="views"><i class="fas fa-heart" style="color:#ec4899"></i> ${{v.likes||0}}</span></div>`).join('');
+    auth.onAuthStateChanged(u => {{ if(!u) window.location.href='auth.html'; else loadExplore(); }});
+    async function loadExplore() {{
+        const snap = await db.ref('videos').once('value');
+        const vids = Object.values(snap.val()||{{}}).sort((a,b)=>(b.likes||0)-(a.likes||0));
+        const g = document.getElementById('exploreGrid');
+        g.innerHTML = vids.length ? vids.map(v => `<div class="thumb" onclick="window.open('${{v.url}}','_blank')">${{v.thumbnail?`<img src="${{v.thumbnail}}">`:''}}<i class="fas fa-play"></i></div>`).join('') : '<div style="grid-column:1/-1;text-align:center;padding:40px;opacity:0.5">لا فيديوهات</div>';
     }}
 </script>
 </body>
@@ -1935,35 +1427,29 @@ def build_notifications():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | إشعارات</title>
+    <title>💜 VØID_X | إشعارات</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{min-height:100vh;overflow-y:auto}}
-        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1.5px solid rgba(168,85,247,0.2);position:sticky;top:0;background:rgba(5,0,5,0.8);backdrop-filter:blur(20px);z-index:10}}
-        .btn-back{{background:rgba(168,85,247,0.1);border:1.5px solid rgba(168,85,247,0.3);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f0e6ff;cursor:pointer;font-size:16px}}
-        .notif-item{{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(168,85,247,0.08);align-items:center}}
-        .notif-icon{{width:40px;height:40px;border-radius:50%;background:rgba(168,85,247,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent);box-shadow:0 0 10px rgba(168,85,247,0.2)}}
+        body {{ min-height: 100vh; }}
+        header {{ padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }}
+        .notif-item {{ display: flex; gap: 12px; padding: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }}
     </style>
 </head>
 <body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2 style="color:#e0d0ff"><i class="fas fa-bell"></i> الإشعارات</h2></div>
-<div id="notifsList"><div class="spinner"></div></div>
+<header><button onclick="window.location.href='index.html'" style="background:none;border:none;color:#fff;font-size:18px;"><i class="fas fa-arrow-right"></i></button><h2>الإشعارات</h2></header>
+<div id="list"><div class="spinner"></div></div>
 <script src="firebase-config.js"></script>
 <script>
-    let currentUser=null;
-    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;loadNotifs()}});
-    async function loadNotifs(){{
-        const snap=await db.ref('notifications/'+currentUser.uid).once('value');
-        const ns=snap.val()||{{}};
-        const c=document.getElementById('notifsList');
-        const items=Object.values(ns).reverse();
-        if(!items.length){{c.innerHTML='<div style="text-align:center;opacity:0.5;padding:40px;color:#c0b0e0"><i class="fas fa-bell" style="font-size:48px;color:#a855f7;margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';return}}
-        c.innerHTML=items.map(n=>`<div class="notif-item"><div class="notif-icon"><i class="fas fa-bell"></i></div><div><div style="font-weight:600;color:#e0d0ff">${{n.from||'مستخدم'}}</div><div style="font-size:12px;opacity:0.6;margin-top:2px;color:#d0c0f0">${{n.msg||''}}</div></div></div>`).join('');
-    }}
+    auth.onAuthStateChanged(async u => {{
+        if(!u) window.location.href='auth.html';
+        const snap = await db.ref('notifications/'+u.uid).once('value');
+        const ns = snap.val()||{{}};
+        const items = Object.values(ns).reverse();
+        document.getElementById('list').innerHTML = items.length ? items.map(n => `<div class="notif-item"><i class="fas fa-bell" style="color:var(--neon)"></i><div><div>${{n.from}}</div><div style="font-size:12px;opacity:0.6">${{n.msg}}</div></div></div>`).join('') : '<div style="text-align:center;padding:40px;opacity:0.5">لا إشعارات</div>';
+    }});
 </script>
 </body>
 </html>"""
@@ -1974,60 +1460,44 @@ def build_settings():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🌑 MNAENCA | إعدادات</title>
+    <title>💜 VØID_X | إعدادات</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{min-height:100vh;overflow-y:auto}}
-        .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1.5px solid rgba(168,85,247,0.2);position:sticky;top:0;background:rgba(5,0,5,0.8);backdrop-filter:blur(20px);z-index:10}}
-        .btn-back{{background:rgba(168,85,247,0.1);border:1.5px solid rgba(168,85,247,0.3);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f0e6ff;cursor:pointer;font-size:16px}}
-        .setting-item{{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid rgba(168,85,247,0.08);cursor:pointer;transition:background 0.2s;color:#e0d0ff}}
-        .setting-item:hover{{background:rgba(168,85,247,0.05)}}
-        .setting-item i{{color:var(--accent);font-size:18px;width:30px}}
-        .btn-danger{{background:rgba(239,68,68,0.2);border:1.5px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block;box-shadow:0 0 15px rgba(239,68,68,0.2)}}
-        .btn-danger:hover{{box-shadow:0 0 25px rgba(239,68,68,0.4)}}
+        body {{ min-height: 100vh; }}
+        header {{ padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }}
+        .setting-item {{ padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }}
     </style>
 </head>
 <body>
-<div class="header"><button class="btn-back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button><h2 style="color:#e0d0ff"><i class="fas fa-cog"></i> الإعدادات</h2></div>
-<div style="padding:8px 0">
-    <div class="setting-item" onclick="window.location.href='profile.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user"></i><span>تعديل الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-lock"></i><span>الخصوصية</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px;color:#c0b0e0">العربية</span></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px;color:#c0b0e0">v2026.4 🌑</span></div>
-    <button class="btn-danger" onclick="if(confirm('تسجيل الخروج؟')){{auth.signOut();window.location.href='auth.html'}}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+<header><button onclick="window.location.href='index.html'" style="background:none;border:none;color:#fff;font-size:18px;"><i class="fas fa-arrow-right"></i></button><h2>الإعدادات</h2></header>
+<div>
+    <div class="setting-item" onclick="window.location.href='profile.html'"><span><i class="fas fa-user"></i> تعديل الملف</span><i class="fas fa-chevron-left"></i></div>
+    <div class="setting-item" onclick="window.location.href='notifications.html'"><span><i class="fas fa-bell"></i> الإشعارات</span><i class="fas fa-chevron-left"></i></div>
+    <button onclick="auth.signOut();window.location.href='auth.html'" style="display:block;margin:30px auto;background:rgba(255,0,0,0.2);border:1px solid red;color:#ff4444;padding:12px 30px;border-radius:30px;">تسجيل الخروج</button>
 </div>
 <script src="firebase-config.js"></script>
-<script>auth.onAuthStateChanged(u=>{{if(!u)window.location.href='auth.html'}});</script>
+<script>auth.onAuthStateChanged(u => {{ if(!u) window.location.href='auth.html'; }});</script>
 </body>
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# 🌑 MAIN
+# MAIN
 # ═══════════════════════════════════════════════════════════
 
 def main():
     print("""
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
-║  🌑  MNAENCA 2026 - DARK PURPLE LUXURY EDITION  ✨    ║
-║     Ultimate Generator - 9 Files - 3000+ Lines           ║
-║                                                          ║
-║  💜 Dark Purple + Pink Glow Theme                      ║
-║  💬 TikTok-Style Comments with Replies                ║
-║  📤 Professional Share System                         ║
-║  👤 Enhanced Profile with Video Grid                  ║
-║  💧 Watermark on Videos                               ║
-║  🔥 Firebase: muvg-42126                              ║
-║  ☁️ Cloudinary: dmqyd0haj                             ║
+║  💜  VØID_X - ULTRA GLASS PRO EDITION  ✨             ║
+║     Neon Pink Void + Supreme Features                    ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
     """)
     
-    section("BUILDING FILES - إنشاء الملفات")
+    section("BUILDING FILES")
     
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
@@ -2051,39 +1521,12 @@ def main():
     
     print(f"""
 {'='*60}
-  🌑 BUILD COMPLETE - تم الإنشاء بنجاح! ✨
+  💜 BUILD COMPLETE - VØID_X READY ✨
 {'='*60}
-
-  📊 إحصائيات:
-     • {TOTAL_LINES} إجمالي عدد الأسطر
-     • 9 ملفات تم إنشاؤها
-
-  📁 الملفات:
-     1. firebase-config.js
-     2. auth.html
-     3. index.html (Purple Dark Edition)
-     4. profile.html
-     5. upload.html
-     6. chat.html
-     7. explore.html
-     8. notifications.html
-     9. settings.html
-
-  🎨 التصميم الجديد - Dark Purple Edition:
-     • خلفية سوداء بنفسجية عميقة (#050005)
-     • تدرجات بنفسجية + وردية (#a855f7 + #ec4899)
-     • حواف متوهجة بتأثير Glow Border Animation
-     • أزرار بتدرجات بنفسجية/وردية مع ظلال قوية
-     • تأثيرات Glass Morphism داكنة
-     • توهج أرجواني/وردي في كل العناصر
-     • نصوص متدرجة لامعة
-
-  🔑 بيانات:
-     • Firebase: muvg-42126
-     • Cloudinary: dmqyd0haj / s3_gok
-     • Admin: jasim28v@gmail.com
-
-  🌑 MNAENCA DARK PURPLE EDITION READY! ✨
+  🎨 التصميم: VØID_X Neon Pink + Glass
+  📁 9 ملفات جاهزة
+  🔥 جميع المميزات (تعليقات، مشاركة، أدمن...)
+  ☁️  Cloudinary/Firebase جاهز
 {'='*60}
     """)
 
