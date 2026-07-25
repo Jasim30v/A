@@ -27,7 +27,7 @@
 ║     • 📱 Floating Bottom Nav                              ║
 ║     • 🎥 Slide-Up Video Reveal Animation                 ║
 ║     • توثيق + حظر + حذف فيديوهات                          ║
-║     • 📱 iPad Responsive Side Icons                      ║
+║     • 📱 iPad Landscape: أيقونات يمين | فيديوهات يسار      ║
 ║                                                            ║
 ╚══════════════════════════════════════════════════════════════╝
 """
@@ -425,7 +425,7 @@ def build_auth():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 3. index.html - الرئيسية مع تعليقات تيك توك + مشاركة احترافية + iPad Responsive
+# ☁️ 3. index.html - الرئيسية مع iPad Landscape: أيقونات يمين، فيديو يسار
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
@@ -459,6 +459,7 @@ def build_index():
 
         #mainApp{{display:none;height:100vh;position:relative}}
 
+        /* 🔝 TOP BAR */
         .topbar{{
             position:fixed;top:10px;left:10px;right:10px;z-index:100;
             display:flex;justify-content:space-between;align-items:center;
@@ -506,6 +507,22 @@ def build_index():
             font-size:9px;font-weight:bold;padding:0 5px;
         }}
 
+        /* 📦 MAIN LAYOUT CONTAINER */
+        .main-layout {{
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            position: relative;
+        }}
+
+        /* 🎥 VIDEO AREA - Left side */
+        .video-area {{
+            flex: 1;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }}
+
         .videos-wrap{{
             height:100vh;overflow-y:scroll;
             scroll-snap-type:y mandatory;
@@ -521,8 +538,9 @@ def build_index():
         }}
         .vid-card.active video {{opacity:1;transform:translateY(0)}}
 
+        /* 📝 VIDEO INFO */
         .vid-info{{
-            position:absolute;bottom:90px;left:14px;right:80px;z-index:20;
+            position:absolute;bottom:90px;left:14px;right:14px;z-index:20;
             text-shadow:0 2px 10px rgba(0,0,0,0.8);
         }}
         .author-row{{display:flex;align-items:center;gap:10px;margin-bottom:6px}}
@@ -579,11 +597,22 @@ def build_index():
             text-shadow:0 2px 8px rgba(0,0,0,0.6);
             color:#fff;
         }}
-        .watermark-overlay img{{width:24px;height:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))}}
 
-        /* 📱 SIDE BUTTONS - Responsive for iPad */
+        /* ⭐ SIDE BUTTONS BAR - Right side */
+        .side-btns-bar {{
+            width: 80px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            z-index: 20;
+            background: transparent;
+            flex-shrink: 0;
+        }}
+
         .side-btns{{
-            position:absolute;right:14px;bottom:130px;
             display:flex;flex-direction:column;gap:22px;z-index:20;
         }}
         .sbtn{{
@@ -597,15 +626,46 @@ def build_index():
         @keyframes likePop{{0%{{transform:scale(1)}}50%{{transform:scale(1.4)}}100%{{transform:scale(1)}}}}
         .sbtn .cnt{{font-weight:700;font-size:11px}}
 
-        /* 📱 iPad Responsive Styles */
-        @media (min-width: 768px) {{
+        /* 📱 MOBILE: Overlay side buttons on video */
+        @media (max-width: 767px) {{
+            .main-layout {{
+                flex-direction: column;
+            }}
+            .side-btns-bar {{
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: auto;
+                height: 100vh;
+                background: transparent;
+                pointer-events: none;
+            }}
             .side-btns {{
-                right: 40px;
-                bottom: 140px;
-                gap: 28px;
+                position: absolute;
+                right: 14px;
+                bottom: 130px;
+                pointer-events: auto;
+            }}
+            .vid-info {{
+                right: 80px;
+                left: 14px;
+            }}
+        }}
+
+        /* 📱 iPAD LANDSCAPE: أيقونات يمين | فيديو يسار */
+        @media (min-width: 768px) and (orientation: landscape) {{
+            .side-btns-bar {{
+                width: 100px;
+                background: rgba(2,6,23,0.3);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-right: 1px solid var(--border);
+            }}
+            .side-btns {{
+                gap: 35px;
             }}
             .sbtn i {{
-                font-size: 34px;
+                font-size: 36px;
             }}
             .sbtn .cnt {{
                 font-size: 13px;
@@ -614,9 +674,9 @@ def build_index():
                 font-size: 12px;
             }}
             .vid-info {{
-                right: 120px;
                 left: 30px;
-                bottom: 120px;
+                right: 30px;
+                bottom: 100px;
             }}
             .author-avatar {{
                 width: 60px;
@@ -631,7 +691,6 @@ def build_index():
             .topbar {{
                 left: 20px;
                 right: 20px;
-                padding: 10px 24px;
             }}
             .logo-icon {{
                 width: 40px;
@@ -640,44 +699,65 @@ def build_index():
             .logo-text {{
                 font-size: 20px;
             }}
+            /* Hide bottom nav on landscape iPad */
             .nav-bottom {{
-                left: 20px;
-                right: 20px;
-                bottom: 16px;
-                padding: 10px 0;
+                display: none;
             }}
-            .btn-add {{
-                width: 56px;
-                height: 56px;
-            }}
-            .nav-item i {{
-                font-size: 26px;
+            /* Show side nav instead */
+            .side-nav {{
+                display: flex !important;
             }}
         }}
-        @media (min-width: 1024px) {{
+
+        /* 📱 iPAD PORTRAIT */
+        @media (min-width: 768px) and (orientation: portrait) {{
+            .main-layout {{
+                flex-direction: column;
+            }}
+            .side-btns-bar {{
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: auto;
+                height: 100vh;
+                background: transparent;
+                pointer-events: none;
+            }}
             .side-btns {{
-                right: 60px;
-                bottom: 160px;
-                gap: 32px;
+                position: absolute;
+                right: 30px;
+                bottom: 140px;
+                pointer-events: auto;
+                gap: 28px;
             }}
             .sbtn i {{
-                font-size: 38px;
+                font-size: 34px;
             }}
             .sbtn .cnt {{
-                font-size: 14px;
+                font-size: 13px;
             }}
             .vid-info {{
-                right: 160px;
+                right: 110px;
+                left: 30px;
+                bottom: 120px;
+            }}
+        }}
+
+        /* 🖥️ DESKTOP LARGE SCREENS */
+        @media (min-width: 1024px) and (orientation: landscape) {{
+            .side-btns-bar {{
+                width: 120px;
+            }}
+            .side-btns {{
+                gap: 40px;
+            }}
+            .sbtn i {{
+                font-size: 40px;
+            }}
+            .vid-info {{
                 left: 50px;
-                bottom: 140px;
-            }}
-            .topbar {{
-                left: 40px;
-                right: 40px;
-            }}
-            .nav-bottom {{
-                left: 40px;
-                right: 40px;
+                right: 50px;
+                bottom: 120px;
             }}
         }}
 
@@ -823,7 +903,7 @@ def build_index():
         }}
         .close-player:hover{{background:rgba(14,165,233,0.3);box-shadow:0 0 20px rgba(14,165,233,0.5)}}
 
-        /* 📱 FLOATING BOTTOM NAV */
+        /* 📱 FLOATING BOTTOM NAV - Mobile Only */
         .nav-bottom{{
             position:fixed;bottom:12px;left:12px;right:12px;
             display:flex;justify-content:space-around;align-items:center;
@@ -852,6 +932,69 @@ def build_index():
             z-index:101;transition:all 0.3s;text-decoration:none;
         }}
         .btn-add:hover{{transform:scale(1.1);box-shadow:0 15px 40px rgba(14,165,233,0.8)}}
+
+        /* 📱 SIDE NAVIGATION - iPad Landscape */
+        .side-nav {{
+            display: none;
+            position: fixed;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            flex-direction: column;
+            gap: 20px;
+            z-index: 100;
+        }}
+        .side-nav-item {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: rgba(2,6,23,0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 12px;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 10px;
+            min-width: 60px;
+        }}
+        .side-nav-item:hover {{
+            color: var(--accent2);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(14,165,233,0.3);
+        }}
+        .side-nav-item.active {{
+            color: var(--accent2);
+            border-color: var(--accent2);
+            background: rgba(14,165,233,0.15);
+        }}
+        .side-nav-item i {{
+            font-size: 22px;
+        }}
+        .side-nav-add {{
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(14,165,233,0.5);
+            transition: all 0.3s;
+            text-decoration: none;
+        }}
+        .side-nav-add:hover {{
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(14,165,233,0.8);
+        }}
     </style>
 </head>
 <body>
@@ -862,6 +1005,7 @@ def build_index():
 </div>
 
 <div id="mainApp">
+    <!-- 🔝 TOP BAR -->
     <div class="topbar">
         <div style="display:flex;align-items:center">
             <div class="logo-icon">☁️</div>
@@ -877,11 +1021,24 @@ def build_index():
         </div>
     </div>
 
-    <div class="videos-wrap" id="videosWrap">
-        <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
-            <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i>
-            <p>لا توجد فيديوهات بعد</p>
-            <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! ☁️</p>
+    <!-- 📦 MAIN LAYOUT: Video Left | Side Buttons Right -->
+    <div class="main-layout">
+        <!-- 🎥 VIDEO AREA -->
+        <div class="video-area">
+            <div class="videos-wrap" id="videosWrap">
+                <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
+                    <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i>
+                    <p>لا توجد فيديوهات بعد</p>
+                    <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! ☁️</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ⭐ SIDE BUTTONS BAR -->
+        <div class="side-btns-bar">
+            <div class="side-btns" id="sideBtnsContainer">
+                <!-- Dynamically filled by JS -->
+            </div>
         </div>
     </div>
 
@@ -963,12 +1120,22 @@ def build_index():
     </div>
     <div class="overlay" id="commentsOverlay" style="display:none;z-index:499" onclick="closeCommentsPanel()"></div>
 
-    <div class="nav-bottom">
+    <!-- 📱 BOTTOM NAV - Mobile -->
+    <div class="nav-bottom" id="bottomNav">
         <button class="nav-item active"><i class="fas fa-home"></i><span>الرئيسية</span></button>
         <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i><span>بحث</span></button>
         <a href="upload.html" class="btn-add"><i class="fas fa-plus"></i></a>
         <a href="chat.html" class="nav-item"><i class="fas fa-envelope"></i><span>رسائل</span></a>
         <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>ملفي</span></a>
+    </div>
+
+    <!-- 📱 SIDE NAV - iPad Landscape -->
+    <div class="side-nav" id="sideNav">
+        <a href="index.html" class="side-nav-item active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <span class="side-nav-item" onclick="openSearch()"><i class="fas fa-search"></i><span>بحث</span></span>
+        <a href="upload.html" class="side-nav-add"><i class="fas fa-plus"></i></a>
+        <a href="chat.html" class="side-nav-item"><i class="fas fa-envelope"></i><span>رسائل</span></a>
+        <a href="profile.html" class="side-nav-item"><i class="fas fa-user"></i><span>ملفي</span></a>
     </div>
 
     <div class="toast-msg" id="toast">✅ تم النسخ</div>
@@ -987,6 +1154,7 @@ def build_index():
     let playerVideo = null;
     let currentCommentVideoId = null;
     let replyingTo = null;
+    let activeVideoId = null;
 
     // ☁️ Player Functions
     function openPlayer(url, title) {{
@@ -1168,6 +1336,27 @@ def build_index():
     window.addComment = addComment;
     window.replyToComment = replyToComment;
 
+    // 📱 Responsive Nav Handler
+    function updateNavigation() {{
+        const isLandscape = window.innerWidth >= 768 && window.matchMedia("(orientation: landscape)").matches;
+        const bottomNav = document.getElementById('bottomNav');
+        const sideNav = document.getElementById('sideNav');
+        
+        if (isLandscape) {{
+            bottomNav.style.display = 'none';
+            sideNav.style.display = 'flex';
+        }} else {{
+            bottomNav.style.display = 'flex';
+            sideNav.style.display = 'none';
+        }}
+    }}
+
+    window.addEventListener('resize', updateNavigation);
+    window.addEventListener('orientationchange', () => {{
+        setTimeout(updateNavigation, 100);
+    }});
+    updateNavigation();
+
     auth.onAuthStateChanged(async (user) => {{
         if(!user) {{ window.location.replace('auth.html'); return; }}
         currentUser = user;
@@ -1208,6 +1397,7 @@ def build_index():
 
         document.getElementById('loaderScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
+        updateNavigation();
     }});
 
     async function sendNotification(toUserId, fromUsername, msg) {{
@@ -1220,6 +1410,21 @@ def build_index():
         }});
     }}
 
+    function updateSideButtons(video) {{
+        const container = document.getElementById('sideBtnsContainer');
+        if(!container) return;
+        const isLiked = video.likedBy && video.likedBy[currentUser?.uid];
+        const commentsCount = video.comments ? Object.keys(video.comments).length : 0;
+        
+        container.innerHTML = `
+            <button class="sbtn" onclick="toggleMute()"><i class="fas ${{isMuted ? 'fa-volume-mute' : 'fa-volume-up'}}"></i></button>
+            <button class="sbtn like-btn ${{isLiked ? 'liked' : ''}}" onclick="toggleLike('${{video.id}}', this)"><i class="fas fa-heart"></i><span class="cnt">${{video.likes || 0}}</span></button>
+            <button class="sbtn" onclick="openCommentsPanel('${{video.id}}')"><i class="fas fa-comment"></i><span class="cnt">${{commentsCount}}</span></button>
+            <button class="sbtn" onclick="openPlayer('${{video.url}}', 'video.mp4')"><i class="fas fa-expand"></i></button>
+            <button class="sbtn" onclick="openSharePanel('${{video.url}}')"><i class="fas fa-share"></i></button>
+        `;
+    }}
+
     function renderVideos() {{
         const container = document.getElementById('videosWrap');
         if(!container) return;
@@ -1229,11 +1434,10 @@ def build_index():
             return;
         }}
         container.innerHTML = '';
-        filtered.forEach(video => {{
+        filtered.forEach((video, index) => {{
             const isLiked = video.likedBy && video.likedBy[currentUser?.uid];
             const user = allUsers[video.sender] || {{username: video.senderName || 'مستخدم'}};
             const isFollowing = currentUserData?.following && currentUserData.following[video.sender];
-            const commentsCount = video.comments ? Object.keys(video.comments).length : 0;
             const caption = (video.description || '').replace(/#(\\w+)/g, '<span class="tag">#$1</span>');
             const avatarUrl = user.avatarUrl || (DICEBEAR_URL + '?seed=' + video.sender);
             const verifiedBadgeHtml = user.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : '';
@@ -1241,6 +1445,7 @@ def build_index():
 
             const div = document.createElement('div');
             div.className = 'vid-card';
+            div.setAttribute('data-video-id', video.id);
             div.innerHTML = `
                 <div class="watermark-overlay"><span>☁️ MNAENCA</span></div>
                 <video loop playsinline muted data-src="${{video.url}}" poster="${{video.thumbnail || ''}}"></video>
@@ -1257,21 +1462,18 @@ def build_index():
                     </div>
                     <div class="caption">${{caption}}</div>
                     <div class="music">${{musicHtml}}</div>
-                </div>
-                <div class="side-btns">
-                    <button class="sbtn" onclick="toggleMute()"><i class="fas ${{isMuted ? 'fa-volume-mute' : 'fa-volume-up'}}"></i></button>
-                    <button class="sbtn like-btn ${{isLiked ? 'liked' : ''}}" onclick="toggleLike('${{video.id}}', this)"><i class="fas fa-heart"></i><span class="cnt">${{video.likes || 0}}</span></button>
-                    <button class="sbtn" onclick="openCommentsPanel('${{video.id}}')"><i class="fas fa-comment"></i><span class="cnt">${{commentsCount}}</span></button>
-                    <button class="sbtn" onclick="openPlayer('${{video.url}}', 'video.mp4')"><i class="fas fa-expand"></i></button>
-                    <button class="sbtn" onclick="openSharePanel('${{video.url}}')"><i class="fas fa-share"></i></button>
                 </div>`;
             const videoEl = div.querySelector('video');
             videoEl.addEventListener('dblclick', e => {{
                 e.stopPropagation();
-                const likeBtn = div.querySelector('.like-btn');
-                if(likeBtn) toggleLike(video.id, likeBtn);
+                toggleLike(video.id, document.querySelector('.like-btn'));
             }});
             container.appendChild(div);
+
+            // Update side buttons for first video
+            if(index === 0) {{
+                updateSideButtons(video);
+            }}
         }});
         initVideoObserver();
     }}
@@ -1285,11 +1487,18 @@ def build_index():
         const observer = new IntersectionObserver(entries => {{
             entries.forEach(entry => {{
                 const video = entry.target.querySelector('video');
+                const videoId = entry.target.getAttribute('data-video-id');
                 if(entry.isIntersecting) {{
                     entry.target.classList.add('active');
                     if(!video.src) video.src = video.dataset.src;
                     video.muted = isMuted;
                     video.play().catch(() => {{}});
+                    
+                    // Update side buttons for active video
+                    const activeVideo = allVideos.find(v => v.id === videoId);
+                    if(activeVideo) {{
+                        updateSideButtons(activeVideo);
+                    }}
                 }} else {{
                     entry.target.classList.remove('active');
                     video.pause();
@@ -1318,9 +1527,11 @@ def build_index():
             }}
         }}
         await ref.update({{likes, likedBy}});
-        btn.classList.toggle('liked');
-        const countSpan = btn.querySelector('.cnt');
-        if(countSpan) countSpan.innerText = likes;
+        if(btn) {{
+            btn.classList.toggle('liked');
+            const countSpan = btn.querySelector('.cnt');
+            if(countSpan) countSpan.innerText = likes;
+        }}
     }}
 
     async function toggleFollow(userId, btn) {{
@@ -1422,9 +1633,8 @@ def build_index():
 </body>
 </html>"""
 
-# ═══════════════════════════════════════════════════════════
-# ☁️ 4. profile.html - ملف شخصي محترف مع فيديوهات + iPad Responsive
-# ═══════════════════════════════════════════════════════════
+# باقي الملفات (4-9) تبقى كما هي بدون تغيير كبير...
+# [ملفات profile, upload, chat, explore, notifications, settings - نفس الكود السابق]
 
 def build_profile():
     return f"""<!DOCTYPE html>
@@ -1494,7 +1704,6 @@ def build_profile():
         .overlay-panel{{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:none}}
         .overlay-panel.show{{display:block}}
 
-        /* 📱 iPad Responsive Styles */
         @media (min-width: 768px) {{
             .cover-section {{ height: 350px; }}
             .avatar-lg {{ width: 150px; height: 150px; }}
@@ -1854,10 +2063,6 @@ def build_profile():
 </body>
 </html>"""
 
-# ═══════════════════════════════════════════════════════════
-# ☁️ 5-9. الملفات المتبقية (upload, chat, explore, notifications, settings)
-# ═══════════════════════════════════════════════════════════
-
 def build_upload():
     return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -2113,7 +2318,7 @@ def main():
 ║                                                          ║
 ║  ☁️  MNAENCA 2026 - SKY BLUE LUXURY EDITION  ✨      ║
 ║     Ultimate Generator - 9 Files - 3000+ Lines           ║
-║     📱 iPad Responsive Edition                        ║
+║     📱 iPad Landscape: أيقونات يمين | فيديوهات يسار    ║
 ║                                                          ║
 ║  💬 TikTok-Style Comments with Replies                ║
 ║  📤 Professional Share System                         ║
@@ -2161,30 +2366,23 @@ def main():
   📁 الملفات:
      1. firebase-config.js   → إعدادات Firebase + Cloudinary
      2. auth.html            → تسجيل دخول + اشتراك
-     3. index.html           → الرئيسية + تعليقات تيك توك + مشاركة + iPad
-     4. profile.html         → ملف شخصي محترف + شبكة فيديوهات + iPad
+     3. index.html           → الرئيسية + iPad Landscape
+     4. profile.html         → ملف شخصي محترف + شبكة فيديوهات
      5. upload.html          → رفع فيديو
      6. chat.html            → دردشة خاصة
-     7. explore.html         → استكشاف + iPad Grid
+     7. explore.html         → استكشاف
      8. notifications.html   → صفحة الإشعارات
      9. settings.html        → إعدادات
 
-  ✨ المميزات الجديدة:
-     • 💬 تعليقات بتصميم تيك توك مع نظام ردود كامل
-     • 📤 لوحة مشاركة احترافية (8 منصات + نسخ + تضمين)
-     • 👤 ملف شخصي مطور مع شبكة فيديوهات
-     • 💧 علامة مائية MNAENCA على الفيديوهات
-     • 🎥 أنيميشن انزلاق الفيديو عند التمرير
-     • 🎥 مشغل فيديو احترافي داخلي
-     • 🔔 نظام إشعارات شغال 100%
-     • 🗑️ حذف فيديوهات من لوحة الأدمن
-     • 🛡️ توثيق + حظر
-     • 📱 دعم iPad كامل مع Media Queries:
-        - 768px: أيقونات جانبية أكبر ومسافات أوسع
-        - 1024px: تحسينات إضافية للشاشات الكبيرة
-        - شبكة فيديوهات متجاوبة (3→4→5 أعمدة)
-        - أزرار تفاعل جانبية بحجم مناسب للتابلت
-        - مسافات وأحجام خطوط محسّنة
+  ✨ المميزات الجديدة في iPad Landscape:
+     • 📱 تقسيم احترافي: فيديو يسار | أيقونات يمين
+     • ⭐ شريط جانبي شفاف للأيقونات مع blur effect
+     • 🎯 أيقونات تفاعلية متجاوبة مع الفيديو النشط
+     • 📍 شريط تنقل جانبي بدلاً من السفلي
+     • 📐 أحجام محسّنة للأيقونات (40px)
+     • 🖥️ دعم كامل لـ 768px و 1024px+
+     • 📱 Bottom Nav يختفي تلقائياً في الوضع الأفقي
+     • 🧭 Side Nav يظهر مع أزرار التنقل
 
   🔑 بيانات:
      • Firebase: muvg-42126
