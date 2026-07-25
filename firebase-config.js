@@ -1,4 +1,4 @@
-// 💜 VØID_X 2026 - Neon Glass Configuration
+// ☁️ MNAENCA 2026 - Sky Blue Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: dmqyd0haj
 // ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
 
@@ -13,30 +13,34 @@ const firebaseConfig = {
     measurementId: "G-4VP8E6WJ48"
 };
 
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
+// Cloudinary Configuration
 const CLOUD_NAME = "dmqyd0haj";
 const UPLOAD_PRESET = "s3_gok";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 
+// ☁️ MNAENCA Settings
 const ADMIN_EMAILS = ['jasim28v@gmail.com'];
 const DICEBEAR_URL = "https://api.dicebear.com/7.x/big-smile/svg";
 const COVER_COLORS = [
-    "linear-gradient(135deg, #1a000d, #2d0020, #4a0030)",
-    "linear-gradient(135deg, #0d001a, #200030, #350050)",
-    "linear-gradient(135deg, #1a0020, #2d0040, #4a0060)",
-    "linear-gradient(135deg, #150020, #280040, #3d0060)",
-    "linear-gradient(135deg, #200030, #3d0060, #5a0090)",
-    "linear-gradient(135deg, #0a0a1a, #1a1040, #2d1a60)"
+    "linear-gradient(135deg, #0c4a6e, #0369a1, #0284c7)",
+    "linear-gradient(135deg, #082f49, #0c4a6e, #0369a1)",
+    "linear-gradient(135deg, #164e63, #155e75, #0e7490)",
+    "linear-gradient(135deg, #1e3a8a, #2563eb, #3b82f6)",
+    "linear-gradient(135deg, #0284c7, #38bdf8, #7dd3fc)",
+    "linear-gradient(135deg, #0a1628, #0f2847, #0369a1)"
 ];
 
-const APP_NAME = "VØID_X";
-const APP_VERSION = "2026.4";
-const PRIMARY_COLOR = "#ff007f";
-const SECONDARY_COLOR = "#ff00aa";
-const WATERMARK_TEXT = "VØID_X SUPREME";
+// ☁️ App Info
+const APP_NAME = "MNAENCA";
+const APP_VERSION = "2026.3";
+const PRIMARY_COLOR = "#0ea5e9";
+const SECONDARY_COLOR = "#38bdf8";
+const WATERMARK_TEXT = "☁️ MNAENCA";
 const WATERMARK_URL = "https://res.cloudinary.com/dmqyd0haj/image/upload/v1/watermark_mnaenca";
 
-console.log('%c💜 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #ff007f; font-size: 16px; font-weight: bold;');
+console.log('☁️ %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #0ea5e9; font-size: 16px; font-weight: bold;');
