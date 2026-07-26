@@ -10,23 +10,7 @@
 ║  👑  Admin: jasim28v@gmail.com                            ║
 ║  👾  Avatars: DiceBear Big Smile (Random)                  ║
 ║  💎  Design: Sky Blue Glass Luxury                        ║
-║                                                            ║
-║  ✨  PREMIUM FEATURES:                                     ║
-║     • 💬 TikTok-Style Comments with Replies              ║
-║     • 📤 Professional Share System                       ║
-║     • 👤 Enhanced Profile with Video Grid                ║
-║     • 💧 Watermark on Downloaded Videos                  ║
-║     • 🔔 Notification System (Working 100%)              ║
-║     • 🎬 Compact Video Grid with Description              ║
-║     • 🗑️  Delete Videos from Admin Panel                  ║
-║     • 🖤 Parallax Cover                                   ║
-║     • 💎 Glass Morphism Dark Layers                       ║
-║     • 💙 Sky Blue Story Rings                            ║
-║     • ✨ Blue/Cyan Glow Effects                           ║
-║     • 🌟 Smooth In-App Viewer (No Popups!)               ║
-║     • 📱 Floating Bottom Nav                              ║
-║     • 🎥 Slide-Up Video Reveal Animation                 ║
-║     • توثيق + حظر + حذف فيديوهات                          ║
+║  ✨  RESPONSIVE (Mobile + Desktop/Landscape)            ║
 ║                                                            ║
 ╚══════════════════════════════════════════════════════════════╝
 """
@@ -95,7 +79,7 @@ def section(title):
     print(f"{'='*60}")
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ COMMON CSS - ستايل مشترك
+# ☁️ COMMON CSS - ستايل مشترك (معدل ليدعم الأفقي والعمودي)
 # ═══════════════════════════════════════════════════════════
 
 COMMON_CSS = """
@@ -118,6 +102,7 @@ COMMON_CSS = """
         -webkit-tap-highlight-color:transparent;
         user-select:none;
         -webkit-user-select:none;
+        height:100vh;overflow:hidden;
     }
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
@@ -164,6 +149,85 @@ COMMON_CSS = """
         cursor:pointer;font-size:16px;transition:all 0.3s;
     }
     .btn-close-overlay:hover{background:rgba(14,165,233,0.25);box-shadow:0 0 15px rgba(14,165,233,0.3)}
+
+    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
+    
+    /* الوضع العمودي (الافتراضي - للموبايل) */
+    #mainApp {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+    }
+
+    /* إخفاء عناصر الأفقي في الموبايل */
+    .desktop-sidebar { display: none; }
+    .desktop-header { display: none; }
+
+    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
+    @media screen and (min-width: 800px) {
+        body { overflow: hidden; }
+        
+        #mainApp {
+            flex-direction: row; /* تحويل التخطيط لأفقي */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* القائمة الجانبية (الأفقي) */
+        .desktop-sidebar {
+            display: flex;
+            flex-direction: column;
+            width: 280px;
+            height: 100vh;
+            padding: 24px 16px;
+            border-right: 1px solid var(--border);
+            background: rgba(2,6,23,0.6);
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        /* تنسيقات القائمة الجانبية */
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom,#fff,#7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sidebar-nav-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 16px; margin-bottom: 6px;
+            border-radius: 16px; cursor: pointer;
+            font-size: 15px; font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s;
+        }
+        .sidebar-nav-item:hover, .sidebar-nav-item.active {
+            background: rgba(14,165,233,0.1);
+            color: #fff;
+        }
+        .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
+        
+        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
+        .topbar { display: none !important; }
+        .nav-bottom { display: none !important; }
+
+        /* ضبط منطقة الفيديوهات لتملأ الشاشة المتبقية */
+        .videos-wrap {
+            flex: 1;
+            height: 100vh;
+            width: auto;
+        }
+        .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
+        
+        /* تعديل مساحة العناصر الجانبية للأفقي */
+        .side-btns { bottom: 40px; right: 30px; }
+        .vid-info { bottom: 40px; left: 30px; right: 90px; }
+    }
 """
 
 # ═══════════════════════════════════════════════════════════
@@ -424,7 +488,7 @@ def build_auth():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 3. index.html - الرئيسية مع تعليقات تيك توك + مشاركة احترافية
+# ☁️ 3. index.html - الرئيسية (مع تعديل هيكلية HTML لتناسب الأفقي)
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
@@ -440,7 +504,6 @@ def build_index():
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        body{{height:100vh;overflow:hidden;}}
         
         #loaderScreen{{
             position:fixed;inset:0;z-index:9999;
@@ -456,8 +519,7 @@ def build_index():
             animation:spin 0.8s linear infinite;
         }}
 
-        #mainApp{{display:none;height:100vh;position:relative}}
-
+        /* ----- Mobile Layout (Vertical) ----- */
         .topbar{{
             position:fixed;top:10px;left:10px;right:10px;z-index:100;
             display:flex;justify-content:space-between;align-items:center;
@@ -772,116 +834,136 @@ def build_index():
 </div>
 
 <div id="mainApp">
-    <div class="topbar">
-        <div style="display:flex;align-items:center">
-            <div class="logo-icon">☁️</div>
-            <span class="logo-text">MNAENCA</span>
-        </div>
-        <div class="tabs">
-            <button class="tab" onclick="switchFeed('following')">متابَعين</button>
-            <button class="tab active" onclick="switchFeed('forYou')">لك</button>
-        </div>
-        <div class="top-icons">
-            <i class="fas fa-search top-icon" onclick="openSearch()"></i>
-            <i class="fas fa-bell top-icon" onclick="openNotifs()"><span class="notif-badge" id="notifBadge"></span></i>
-        </div>
-    </div>
-
-    <div class="videos-wrap" id="videosWrap">
-        <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
-            <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i>
-            <p>لا توجد فيديوهات بعد</p>
-            <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! ☁️</p>
+    <!-- ✨ الهيكل الخاص بالوضع الأفقي (يظهر فقط عند التدوير) -->
+    <div class="desktop-sidebar">
+        <div class="sidebar-logo"><div class="logo-icon">☁️</div> MNAENCA</div>
+        
+        <div class="sidebar-nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> الرئيسية</div>
+        <div class="sidebar-nav-item" onclick="openSearch()"><i class="fas fa-search"></i> بحث</div>
+        <div class="sidebar-nav-item" onclick="openNotifs()"><i class="fas fa-bell"></i> الإشعارات</div>
+        <div class="sidebar-nav-item" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</div>
+        <div class="sidebar-nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user"></i> ملفي</div>
+        
+        <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 20px;">
+            <div class="sidebar-nav-item" onclick="window.location.href='upload.html'"><i class="fas fa-plus-circle" style="color: var(--accent);"></i> رفع فيديو</div>
+            <div class="sidebar-nav-item" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</div>
         </div>
     </div>
 
-    <!-- ☁️ Fullscreen Video Player -->
-    <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
-        <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
-        <video id="fullscreenVideo" controls playsinline></video>
-        <div class="player-controls">
-            <button onclick="skipTime(-10)"><i class="fas fa-backward"></i></button>
-            <button id="btnPlayPause" onclick="togglePlayPause()"><i class="fas fa-pause"></i></button>
-            <button onclick="skipTime(10)"><i class="fas fa-forward"></i></button>
-            <div class="progress-wrap">
-                <span id="currentTime">0:00</span>
-                <div class="progress-bar" id="progressBar" onclick="seekVideo(event)">
-                    <div class="progress-fill" id="progressFill"></div>
+    <!-- ✨ محتوى الموقع الأساسي -->
+    <div style="flex: 1; display: flex; flex-direction: column; height: 100vh; position: relative; background: #000;">
+        <!-- الشريط العلوي للموبايل -->
+        <div class="topbar">
+            <div style="display:flex;align-items:center">
+                <div class="logo-icon">☁️</div>
+                <span class="logo-text">MNAENCA</span>
+            </div>
+            <div class="tabs">
+                <button class="tab" onclick="switchFeed('following')">متابَعين</button>
+                <button class="tab active" onclick="switchFeed('forYou')">لك</button>
+            </div>
+            <div class="top-icons">
+                <i class="fas fa-search top-icon" onclick="openSearch()"></i>
+                <i class="fas fa-bell top-icon" onclick="openNotifs()"><span class="notif-badge" id="notifBadge"></span></i>
+            </div>
+        </div>
+
+        <div class="videos-wrap" id="videosWrap">
+            <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
+                <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i>
+                <p>لا توجد فيديوهات بعد</p>
+                <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! ☁️</p>
+            </div>
+        </div>
+
+        <!-- ☁️ Fullscreen Video Player -->
+        <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
+            <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
+            <video id="fullscreenVideo" controls playsinline></video>
+            <div class="player-controls">
+                <button onclick="skipTime(-10)"><i class="fas fa-backward"></i></button>
+                <button id="btnPlayPause" onclick="togglePlayPause()"><i class="fas fa-pause"></i></button>
+                <button onclick="skipTime(10)"><i class="fas fa-forward"></i></button>
+                <div class="progress-wrap">
+                    <span id="currentTime">0:00</span>
+                    <div class="progress-bar" id="progressBar" onclick="seekVideo(event)">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span id="duration">0:00</span>
                 </div>
-                <span id="duration">0:00</span>
+                <button onclick="toggleMutePlayer()"><i class="fas fa-volume-up" id="muteIcon"></i></button>
+                <a id="downloadLink" href="#" download style="color:#38bdf8;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
             </div>
-            <button onclick="toggleMutePlayer()"><i class="fas fa-volume-up" id="muteIcon"></i></button>
-            <a id="downloadLink" href="#" download style="color:#38bdf8;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
         </div>
-    </div>
 
-    <!-- 📤 Share Panel -->
-    <div class="share-panel" id="sharePanel">
-        <h3><i class="fas fa-share-alt"></i> مشاركة</h3>
-        <div class="share-grid">
-            <div class="share-item" onclick="shareTo('whatsapp')">
-                <div class="share-icon" style="background:rgba(37,211,102,0.15);color:#25D366"><i class="fab fa-whatsapp"></i></div>
-                <span>WhatsApp</span>
+        <!-- 📤 Share Panel -->
+        <div class="share-panel" id="sharePanel">
+            <h3><i class="fas fa-share-alt"></i> مشاركة</h3>
+            <div class="share-grid">
+                <div class="share-item" onclick="shareTo('whatsapp')">
+                    <div class="share-icon" style="background:rgba(37,211,102,0.15);color:#25D366"><i class="fab fa-whatsapp"></i></div>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="share-item" onclick="shareTo('telegram')">
+                    <div class="share-icon" style="background:rgba(0,136,204,0.15);color:#0088cc"><i class="fab fa-telegram"></i></div>
+                    <span>Telegram</span>
+                </div>
+                <div class="share-item" onclick="shareTo('facebook')">
+                    <div class="share-icon" style="background:rgba(24,119,242,0.15);color:#1877F2"><i class="fab fa-facebook"></i></div>
+                    <span>Facebook</span>
+                </div>
+                <div class="share-item" onclick="shareTo('twitter')">
+                    <div class="share-icon" style="background:rgba(29,161,242,0.15);color:#1DA1F2"><i class="fab fa-twitter"></i></div>
+                    <span>X</span>
+                </div>
+                <div class="share-item" onclick="shareTo('messenger')">
+                    <div class="share-icon" style="background:rgba(0,178,255,0.15);color:#00B2FF"><i class="fab fa-facebook-messenger"></i></div>
+                    <span>Messenger</span>
+                </div>
+                <div class="share-item" onclick="shareTo('email')">
+                    <div class="share-icon" style="background:rgba(234,67,53,0.15);color:#EA4335"><i class="fas fa-envelope"></i></div>
+                    <span>بريد</span>
+                </div>
+                <div class="share-item" onclick="shareTo('copy')">
+                    <div class="share-icon" style="background:rgba(14,165,233,0.15);color:#0ea5e9"><i class="fas fa-link"></i></div>
+                    <span>نسخ الرابط</span>
+                </div>
+                <div class="share-item" onclick="shareTo('embed')">
+                    <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i class="fas fa-code"></i></div>
+                    <span>تضمين</span>
+                </div>
             </div>
-            <div class="share-item" onclick="shareTo('telegram')">
-                <div class="share-icon" style="background:rgba(0,136,204,0.15);color:#0088cc"><i class="fab fa-telegram"></i></div>
-                <span>Telegram</span>
-            </div>
-            <div class="share-item" onclick="shareTo('facebook')">
-                <div class="share-icon" style="background:rgba(24,119,242,0.15);color:#1877F2"><i class="fab fa-facebook"></i></div>
-                <span>Facebook</span>
-            </div>
-            <div class="share-item" onclick="shareTo('twitter')">
-                <div class="share-icon" style="background:rgba(29,161,242,0.15);color:#1DA1F2"><i class="fab fa-twitter"></i></div>
-                <span>X</span>
-            </div>
-            <div class="share-item" onclick="shareTo('messenger')">
-                <div class="share-icon" style="background:rgba(0,178,255,0.15);color:#00B2FF"><i class="fab fa-facebook-messenger"></i></div>
-                <span>Messenger</span>
-            </div>
-            <div class="share-item" onclick="shareTo('email')">
-                <div class="share-icon" style="background:rgba(234,67,53,0.15);color:#EA4335"><i class="fas fa-envelope"></i></div>
-                <span>بريد</span>
-            </div>
-            <div class="share-item" onclick="shareTo('copy')">
-                <div class="share-icon" style="background:rgba(14,165,233,0.15);color:#0ea5e9"><i class="fas fa-link"></i></div>
-                <span>نسخ الرابط</span>
-            </div>
-            <div class="share-item" onclick="shareTo('embed')">
-                <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i class="fas fa-code"></i></div>
-                <span>تضمين</span>
+            <div class="share-copy-row">
+                <input type="text" id="shareUrlInput" value="" readonly dir="ltr">
+                <button onclick="shareTo('copy')"><i class="fas fa-copy"></i> نسخ</button>
             </div>
         </div>
-        <div class="share-copy-row">
-            <input type="text" id="shareUrlInput" value="" readonly dir="ltr">
-            <button onclick="shareTo('copy')"><i class="fas fa-copy"></i> نسخ</button>
-        </div>
-    </div>
-    <div class="overlay" id="shareOverlay" style="display:none;z-index:499" onclick="closeSharePanel()"></div>
+        <div class="overlay" id="shareOverlay" style="display:none;z-index:499" onclick="closeSharePanel()"></div>
 
-    <!-- 💬 Comments Panel -->
-    <div class="comments-panel" id="commentsPanel">
-        <div class="comments-header">
-            <h3><i class="fas fa-comments" style="color:var(--accent)"></i> التعليقات <span id="commentsCount" style="font-size:13px;opacity:0.5"></span></h3>
-            <button class="btn-close-overlay" onclick="closeCommentsPanel()"><i class="fas fa-times"></i></button>
+        <!-- 💬 Comments Panel -->
+        <div class="comments-panel" id="commentsPanel">
+            <div class="comments-header">
+                <h3><i class="fas fa-comments" style="color:var(--accent)"></i> التعليقات <span id="commentsCount" style="font-size:13px;opacity:0.5"></span></h3>
+                <button class="btn-close-overlay" onclick="closeCommentsPanel()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="comments-list" id="commentsList"></div>
+            <div class="comment-input-row">
+                <input type="text" id="commentInput" placeholder="أضف تعليقاً..." onkeydown="if(event.key==='Enter')addComment()">
+                <button onclick="addComment()"><i class="fas fa-paper-plane"></i> نشر</button>
+            </div>
         </div>
-        <div class="comments-list" id="commentsList"></div>
-        <div class="comment-input-row">
-            <input type="text" id="commentInput" placeholder="أضف تعليقاً..." onkeydown="if(event.key==='Enter')addComment()">
-            <button onclick="addComment()"><i class="fas fa-paper-plane"></i> نشر</button>
+        <div class="overlay" id="commentsOverlay" style="display:none;z-index:499" onclick="closeCommentsPanel()"></div>
+
+        <div class="nav-bottom">
+            <button class="nav-item active"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+            <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i><span>بحث</span></button>
+            <a href="upload.html" class="btn-add"><i class="fas fa-plus"></i></a>
+            <a href="chat.html" class="nav-item"><i class="fas fa-envelope"></i><span>رسائل</span></a>
+            <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>ملفي</span></a>
         </div>
-    </div>
-    <div class="overlay" id="commentsOverlay" style="display:none;z-index:499" onclick="closeCommentsPanel()"></div>
 
-    <div class="nav-bottom">
-        <button class="nav-item active"><i class="fas fa-home"></i><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i><span>بحث</span></button>
-        <a href="upload.html" class="btn-add"><i class="fas fa-plus"></i></a>
-        <a href="chat.html" class="nav-item"><i class="fas fa-envelope"></i><span>رسائل</span></a>
-        <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>ملفي</span></a>
+        <div class="toast-msg" id="toast">✅ تم النسخ</div>
     </div>
-
-    <div class="toast-msg" id="toast">✅ تم النسخ</div>
 </div>
 
 <script src="firebase-config.js"></script>
@@ -1117,7 +1199,7 @@ def build_index():
         setInterval(() => {{ db.ref('users/' + user.uid + '/lastSeen').set(Date.now()); }}, 60000);
 
         document.getElementById('loaderScreen').style.display = 'none';
-        document.getElementById('mainApp').style.display = 'block';
+        document.getElementById('mainApp').style.display = 'flex';
     }});
 
     async function sendNotification(toUserId, fromUsername, msg) {{
@@ -1240,7 +1322,7 @@ def build_index():
         const snap = await userRef.get();
         if(snap.exists()) {{ await userRef.remove(); await targetRef.remove(); btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة'; }}
         else {{
-            await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع';
+            await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع'; 
             sendNotification(userId, currentUserData?.username, 'بدأ بمتابعتك 👤');
         }}
     }}
@@ -1804,7 +1886,7 @@ def build_upload():
         const fd=new FormData();fd.append('file',selectedFile);fd.append('upload_preset',UPLOAD_PRESET);
         const xhr=new XMLHttpRequest();xhr.open('POST','https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload');
         xhr.upload.onprogress=e=>{{if(e.lengthComputable){{const p=Math.round(e.loaded/e.total*100);pf.style.width=p+'%';pt.innerText=p+'%'}}}};
-        xhr.onload=async()=>{{const r=JSON.parse(xhr.responseText);await db.ref('videos/').push({{url:r.secure_url,thumbnail:r.secure_url.replace('.mp4','.jpg'),description:desc,music:music,sender:currentUser.uid,senderName:currentUserData?.username,likes:0,likedBy:{{}},comments:{{}},timestamp:Date.now()}});st.innerHTML='✅ تم الرفع بنجاح!';st.style.color='#4ade80';setTimeout(()=>window.location.href='index.html',1500)}};
+        xhr.onload=async()=>{{const r=JSON.parse(xhr.response.text);await db.ref('videos/').push({{url:r.secure_url,thumbnail:r.secure_url.replace('.mp4','.jpg'),description:desc,music:music,sender:currentUser.uid,senderName:currentUserData?.username,likes:0,likedBy:{{}},comments:{{}},timestamp:Date.now()}});st.innerHTML='✅ تم الرفع بنجاح!';st.style.color='#4ade80';setTimeout(()=>window.location.href='index.html',1500)}};
         xhr.onerror=()=>{{st.innerHTML='❌ فشل الرفع';btn.disabled=false}};xhr.send(fd);
     }}
 </script>
@@ -1996,6 +2078,7 @@ def main():
 ║                                                          ║
 ║  ☁️  MNAENCA 2026 - SKY BLUE LUXURY EDITION  ✨      ║
 ║     Ultimate Generator - 9 Files - 3000+ Lines           ║
+║     ✅ NOW RESPONSIVE (Vertical ↔ Horizontal)        ║
 ║                                                          ║
 ║  💬 TikTok-Style Comments with Replies                ║
 ║  📤 Professional Share System                         ║
@@ -2043,7 +2126,7 @@ def main():
   📁 الملفات:
      1. firebase-config.js   → إعدادات Firebase + Cloudinary
      2. auth.html            → تسجيل دخول + اشتراك
-     3. index.html           → الرئيسية + تعليقات تيك توك + مشاركة
+     3. index.html           → الرئيسية + (شكل عمودي / أفقي حسب الشاشة)
      4. profile.html         → ملف شخصي محترف + شبكة فيديوهات
      5. upload.html          → رفع فيديو
      6. chat.html            → دردشة خاصة
@@ -2051,21 +2134,9 @@ def main():
      8. notifications.html   → صفحة الإشعارات
      9. settings.html        → إعدادات
 
-  ✨ المميزات الجديدة:
-     • 💬 تعليقات بتصميم تيك توك مع نظام ردود كامل
-     • 📤 لوحة مشاركة احترافية (8 منصات + نسخ + تضمين)
-     • 👤 ملف شخصي مطور مع شبكة فيديوهات 3 أعمدة
-     • 💧 علامة مائية MNAENCA على الفيديوهات
-     • 🎥 أنيميشن انزلاق الفيديو عند التمرير
-     • 🎥 مشغل فيديو احترافي داخلي
-     • 🔔 نظام إشعارات شغال 100%
-     • 🗑️ حذف فيديوهات من لوحة الأدمن
-     • 🛡️ توثيق + حظر
-
-  🔑 بيانات:
-     • Firebase: muvg-42126
-     • Cloudinary: dmqyd0haj / s3_gok
-     • Admin: jasim28v@gmail.com
+  ✨ تم إضافة خاصية التصميم المتجاوب (Responsive):
+     • في الموبايل: يظهر كشريط سفلي (صورة 2)
+     • في الكمبيوتر/التدوير: يتحول لقائمة جانبية أفقية (صورة 1)
 
   ☁️ MNAENCA SKY BLUE READY! ✨
 {'='*60}
