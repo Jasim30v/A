@@ -9,8 +9,8 @@
 ║  ☁️   Cloudinary: dmqyd0haj / s3_gok                     ║
 ║  👑  Admin: jasim28v@gmail.com                            ║
 ║  👾  Avatars: DiceBear Big Smile (Random)                  ║
-║  💎  Design: Sky Blue Glass Luxury                        ║
-║  ✨  RESPONSIVE (Mobile + Desktop/Landscape)            ║
+║  💎  Design: Modern Card UI + Glassmorphism               ║
+║  ✨  Stories Shelf + Floating Bottom Bar                  ║
 ║                                                            ║
 ╚══════════════════════════════════════════════════════════════╝
 """
@@ -79,20 +79,21 @@ def section(title):
     print(f"{'='*60}")
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ COMMON CSS - ستايل مشترك (معدل ليطابق الصورة)
+# ☁️ COMMON CSS - ستايل مشترك (نمط البطاقات والزجاج)
 # ═══════════════════════════════════════════════════════════
 
 COMMON_CSS = """
     :root{
-        --glass:rgba(14,165,233,0.03);
-        --border:rgba(14,165,233,0.12);
+        --glass:rgba(255, 255, 255, 0.05);
+        --border:rgba(255, 255, 255, 0.1);
         --accent:#0ea5e9;
-        --accent2:#06b6d4;
+        --accent2:#38bdf8;
         --bg:#020617;
-        --card:rgba(14,165,233,0.06);
+        --card:rgba(255, 255, 255, 0.03);
         --danger:#ef4444;
         --success:#22c55e;
         --warning:#f59e0b;
+        --radius:24px;
     }
     *{margin:0;padding:0;box-sizing:border-box}
     body{
@@ -111,11 +112,10 @@ COMMON_CSS = """
     @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
     @keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
     @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
-    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
     @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(14,165,233,0.3)}50%{box-shadow:0 0 40px rgba(6,182,212,0.7)}}
     .spinner{
         width:36px;height:36px;
-        border:3px solid rgba(14,165,233,0.2);
+        border:3px solid rgba(255,255,255,0.1);
         border-top-color:var(--accent);
         border-radius:50%;
         animation:spin 0.7s linear infinite;
@@ -124,7 +124,7 @@ COMMON_CSS = """
     .toast-msg{
         position:fixed;bottom:120px;left:50%;transform:translateX(-50%);
         background:rgba(2,6,23,0.95);padding:12px 24px;border-radius:30px;
-        z-index:10000;border:1px solid rgba(14,165,233,0.3);font-size:13px;
+        z-index:10000;border:1px solid rgba(255,255,255,0.1);font-size:13px;
         opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;
         box-shadow:0 8px 32px rgba(0,0,0,0.4);
     }
@@ -143,168 +143,12 @@ COMMON_CSS = """
     }
     .overlay-header h3{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px}
     .btn-close-overlay{
-        background:rgba(14,165,233,0.1);border:1px solid var(--border);
+        background:rgba(255,255,255,0.05);border:1px solid var(--border);
         color:#fff;width:36px;height:36px;border-radius:50%;
         display:flex;align-items:center;justify-content:center;
         cursor:pointer;font-size:16px;transition:all 0.3s;
     }
-    .btn-close-overlay:hover{background:rgba(14,165,233,0.25);box-shadow:0 0 15px rgba(14,165,233,0.3)}
-
-    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Tablet/Desktop (Horizontal) ✨ */
-    
-    /* الوضع العمودي (الافتراضي - للموبايل) */
-    #mainApp {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        width: 100vw;
-        position: relative;
-        background: #000;
-    }
-
-    /* إخفاء عناصر الأفقي في الموبايل */
-    .desktop-sidebar { display: none; }
-    .desktop-topbar { display: none; }
-
-    /* --- عند التدوير (أو شاشات أكبر من 900px) --- */
-    @media screen and (min-width: 900px) {
-        body { overflow: hidden; background: #020617; }
-        
-        #mainApp {
-            flex-direction: row; /* تحويل التخطيط لأفقي */
-            height: 100vh;
-            width: 100vw;
-            background: var(--bg);
-        }
-
-        /* القائمة الجانبية (الأفقي - حسب الصورة) */
-        .desktop-sidebar {
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            height: 100vh;
-            padding: 24px 20px;
-            border-right: 1px solid var(--border);
-            background: var(--bg);
-            flex-shrink: 0;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .sidebar-logo-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 24px;
-            padding: 0 8px;
-        }
-        .sidebar-logo-icon {
-            width: 36px; height: 36px;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px;
-        }
-
-        .sidebar-tabs {
-            display: flex;
-            gap: 6px;
-            background: rgba(2,6,23,0.4);
-            border-radius: 40px;
-            padding: 4px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border);
-        }
-        .sidebar-tab {
-            flex: 1;
-            padding: 10px 0;
-            background: none; border: none;
-            color: rgba(255,255,255,0.6);
-            border-radius: 30px;
-            font-size: 14px; font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .sidebar-tab.active {
-            background: rgba(14, 165, 233, 0.2);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-
-        .sidebar-nav-list {
-            display: flex; flex-direction: column; gap: 6px; flex: 1;
-        }
-        .sidebar-nav-item {
-            display: flex; align-items: center; gap: 14px;
-            padding: 12px 16px; border-radius: 12px;
-            cursor: pointer; font-size: 16px; font-weight: 600;
-            color: rgba(255,255,255,0.6);
-            transition: all 0.2s; text-decoration: none;
-        }
-        .sidebar-nav-item:hover, .sidebar-nav-item.active {
-            color: #fff;
-            background: rgba(255,255,255,0.03);
-        }
-        .sidebar-nav-item i {
-            font-size: 20px; width: 24px; text-align: center;
-        }
-        .sidebar-nav-item.active i { color: var(--accent); }
-
-        .sidebar-add-btn {
-            position: absolute;
-            bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 56px; height: 56px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 24px;
-            box-shadow: 0 8px 25px rgba(14,165,233,0.5);
-            cursor: pointer; text-decoration: none;
-            transition: all 0.3s;
-        }
-        .sidebar-add-btn:hover { transform: translateX(-50%) scale(1.1); }
-
-        /* الشريط العلوي للأفقي */
-        .desktop-topbar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 16px;
-            padding: 20px 24px;
-            position: absolute;
-            top: 0; right: 0; left: 0;
-            z-index: 10;
-            pointer-events: none;
-        }
-        .desktop-topbar .top-icon {
-            pointer-events: auto;
-            background: rgba(2,6,23,0.8); backdrop-filter: blur(10px);
-            width: 44px; height: 44px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 18px; cursor: pointer;
-            border: 1px solid var(--border); transition: all 0.3s;
-        }
-        .desktop-topbar .top-icon:hover { background: rgba(14,165,233,0.2); border-color: var(--accent); }
-
-        /* إخفاء الشريط السفلي والشريط العلوي القديم */
-        .topbar { display: none !important; }
-        .nav-bottom { display: none !important; }
-
-        /* ضبط منطقة الفيديوهات لتملأ الشاشة المتبقية */
-        .videos-wrap {
-            flex: 1;
-            height: 100vh;
-            width: auto;
-            background: #000;
-        }
-        .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
-        
-        /* تعديل مساحة العناصر الجانبية للأفقي */
-        .side-btns { bottom: 40px; right: 30px; }
-        .vid-info { bottom: 60px; left: 24px; right: 100px; }
-    }
+    .btn-close-overlay:hover{background:rgba(14,165,233,0.2);}
 """
 
 # ═══════════════════════════════════════════════════════════
@@ -387,10 +231,10 @@ def build_auth():
 
         .card{{
             position:relative;z-index:1;width:90%;max-width:420px;
-            background:rgba(14,165,233,0.03);
+            background:rgba(255,255,255,0.03);
             backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
             border-radius:32px;padding:36px 24px;
-            border:1px solid rgba(14,165,233,0.2);
+            border:1px solid rgba(255,255,255,0.1);
             box-shadow:0 30px 70px rgba(14,165,233,0.1),inset 0 0 30px rgba(14,165,233,0.02);
             animation:fadeUp 0.8s ease;
         }}
@@ -404,7 +248,7 @@ def build_auth():
         h1{{text-align:center;font-size:36px;font-weight:900;background:linear-gradient(to bottom, #fff, #7dd3fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}}
         .sub{{text-align:center;color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:20px}}
 
-        .tabs{{display:flex;gap:4px;background:rgba(14,165,233,0.06);border-radius:40px;padding:4px;margin-bottom:24px}}
+        .tabs{{display:flex;gap:4px;background:rgba(255,255,255,0.03);border-radius:40px;padding:4px;margin-bottom:24px}}
         .tab{{flex:1;padding:12px;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:500}}
         .tab.active{{background:linear-gradient(135deg, #0ea5e9, #06b6d4);color:#fff;box-shadow:0 8px 20px rgba(14,165,233,0.4)}}
 
@@ -413,8 +257,8 @@ def build_auth():
 
         input{{
             width:100%;padding:15px 18px;margin:8px 0;
-            border-radius:50px;background:rgba(14,165,233,0.04);
-            border:1px solid rgba(14,165,233,0.15);color:#fff;
+            border-radius:50px;background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.1);color:#fff;
             font-size:14px;outline:none;transition:all 0.4s;
         }}
         input:focus{{border-color:rgba(14,165,233,0.6);box-shadow:0 0 20px rgba(14,165,233,0.1);background:rgba(14,165,233,0.08)}}
@@ -565,7 +409,7 @@ def build_auth():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 3. index.html - الرئيسية (معدلة لتحاكي الصورة المطلوبة)
+# ☁️ 3. index.html - الرئيسية (التصميم الجديد)
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
@@ -590,317 +434,183 @@ def build_index():
         }}
         .spinner-big{{
             width:50px;height:50px;
-            border:4px solid rgba(14,165,233,0.2);
+            border:4px solid rgba(255,255,255,0.1);
             border-top-color:var(--accent);
             border-radius:50%;
             animation:spin 0.8s linear infinite;
         }}
 
-        /* ----- Mobile Layout (Vertical) ----- */
-        .topbar{{
-            position:fixed;top:10px;left:10px;right:10px;z-index:100;
+        #mainApp{{display:none;height:100vh;position:relative;flex-direction:column;}}
+
+        /* 🌟 شريط العنوان العلوي */
+        .top-header{{
             display:flex;justify-content:space-between;align-items:center;
-            padding:8px 16px;
-            background:rgba(2,6,23,0.7);
-            backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-            border:1px solid var(--border);
-            border-radius:50px;
-            box-shadow:0 8px 32px rgba(14,165,233,0.08);
+            padding:16px 20px 8px;
+            position:sticky;top:0;z-index:20;
+            background:var(--bg);
         }}
-        .logo-icon{{
-            width:34px;height:34px;
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border-radius:50%;display:flex;align-items:center;justify-content:center;
-            font-weight:900;font-size:12px;
-            animation:glowPulse 2s ease-in-out infinite;
+        .top-header .menu-icon{{
+            width:44px;height:44px;border-radius:50%;
+            background:rgba(255,255,255,0.03);border:1px solid var(--border);
+            display:flex;align-items:center;justify-content:center;cursor:pointer;
         }}
-        .logo-text{{
-            font-weight:800;font-size:17px;
-            background:linear-gradient(to bottom,#fff,#7dd3fc);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            margin-left:8px;
+        .top-header .header-actions{{display:flex;gap:12px;align-items:center}}
+        .top-header .action-icon{{
+            width:44px;height:44px;border-radius:50%;
+            background:rgba(255,255,255,0.03);border:1px solid var(--border);
+            display:flex;align-items:center;justify-content:center;
+            font-size:18px;cursor:pointer;position:relative;color:rgba(255,255,255,0.6);
         }}
-        .tabs{{display:flex;gap:4px;background:var(--glass);border-radius:30px;padding:3px}}
-        .tab{{
-            background:none;border:none;color:rgba(255,255,255,0.5);
-            padding:7px 16px;cursor:pointer;border-radius:25px;
-            font-size:13px;font-weight:500;transition:all 0.3s;
-        }}
-        .tab.active{{background:rgba(14,165,233,0.25);color:#fff}}
-        .top-icons{{display:flex;gap:16px}}
-        .top-icon{{
-            background:none;border:none;color:rgba(255,255,255,0.7);
-            font-size:18px;cursor:pointer;transition:all 0.3s;position:relative;
-        }}
-        .top-icon:hover{{color:var(--accent2)}}
-        .notif-badge{{
-            position:absolute;top:-6px;right:-6px;
-            min-width:18px;height:18px;
-            background:#ef4444;
-            border-radius:10px;
-            border:2px solid var(--bg);
-            display:none;
-            align-items:center;justify-content:center;
-            font-size:9px;font-weight:bold;padding:0 5px;
+        .top-header .action-icon .notif-badge{{
+            position:absolute;top:-4px;right:-4px;width:8px;height:8px;
+            background:#ef4444;border-radius:50%;display:none;
         }}
 
-        .videos-wrap{{
-            height:100vh;overflow-y:scroll;
-            scroll-snap-type:y mandatory;
+        /* 🌟 شريط التبويبات العلوي */
+        .tabs-row{{
+            display:flex;gap:20px;padding:0 20px;margin-bottom:16px;
+            border-bottom:1px solid rgba(255,255,255,0.05);position:sticky;top:65px;
+            background:var(--bg);z-index:10;padding-bottom:12px;
+        }}
+        .tabs-row .tab-btn{{
+            background:none;border:none;color:rgba(255,255,255,0.5);font-size:16px;font-weight:600;cursor:pointer;padding-bottom:12px;border-bottom:2px solid transparent;transition:all 0.3s;
+        }}
+        .tabs-row .tab-btn.active{{color:#fff;border-bottom-color:var(--accent);}}
+
+        /* 🌟 شريط القصص الأفقي (Stories Shelf) */
+        .stories-scroll{{
+            display:flex;gap:12px;padding:0 20px;overflow-x:auto;margin-bottom:16px;
             scrollbar-width:none;-ms-overflow-style:none;
         }}
-        .videos-wrap::-webkit-scrollbar{{display:none}}
-        .vid-card{{height:100vh;scroll-snap-align:start;position:relative;background:#000}}
-
-        .vid-card video {{
-            width:100%;height:100%;object-fit:cover;
-            opacity:0;transform:translateY(60px);
-            transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.16,1,0.3,1);
+        .stories-scroll::-webkit-scrollbar{{display:none}}
+        .story-item{{
+            flex-shrink:0;width:70px;display:flex;flex-direction:column;align-items:center;gap:6px;
         }}
-        .vid-card.active video {{opacity:1;transform:translateY(0)}}
+        .story-ring{{
+            width:70px;height:70px;border-radius:50%;padding:3px;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            cursor:pointer;
+        }}
+        .story-ring img{{width:100%;height:100%;border-radius:50%;object-fit:cover;border:2px solid var(--bg)}}
+        .story-ring.add-story{{background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;}}
+        .story-name{{font-size:11px;color:rgba(255,255,255,0.7);text-align:center;width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}}
+
+        /* 📹 تخطيط الفيديوهات (Cards) */
+        .videos-wrap{{
+            flex:1;overflow-y:auto;padding:0 16px 140px;
+            scroll-behavior:smooth;
+        }}
+        .videos-wrap::-webkit-scrollbar{{display:none}}
+        
+        .vid-card{{
+            position:relative;margin-bottom:20px;border-radius:var(--radius);
+            overflow:hidden;background:#0f111a;aspect-ratio:9/16;box-shadow:0 10px 40px rgba(0,0,0,0.5);
+            animation:fadeUp 0.5s ease;
+        }}
+        .vid-card video{{
+            width:100%;height:100%;object-fit:cover;display:block;
+        }}
 
         .vid-info{{
-            position:absolute;bottom:90px;left:14px;right:80px;z-index:20;
-            text-shadow:0 2px 10px rgba(0,0,0,0.8);
+            position:absolute;bottom:16px;left:16px;right:70px;z-index:10;
         }}
-        .author-row{{display:flex;align-items:center;gap:10px;margin-bottom:6px}}
+        .author-row{{display:flex;align-items:center;gap:8px;margin-bottom:4px}}
         .author-avatar{{
-            width:50px;height:50px;border-radius:50%;overflow:hidden;
-            cursor:pointer;position:relative;
-            background:linear-gradient(135deg, #0ea5e9, #06b6d4, #7dd3fc);
-            padding:3px;
-            animation:storyRing 3s ease-in-out infinite;
-            flex-shrink:0;
+            width:32px;height:32px;border-radius:50%;overflow:hidden;
+            cursor:pointer;flex-shrink:0;border:1px solid rgba(255,255,255,0.2);
         }}
-        @keyframes storyRing{{0%,100%{{box-shadow:0 0 15px rgba(14,165,233,0.4)}}50%{{box-shadow:0 0 25px rgba(6,182,212,0.8)}}}}
-        .author-avatar img{{width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--bg)}}
-        .author-name{{
-            font-weight:700;font-size:15px;cursor:pointer;
-            display:flex;align-items:center;gap:6px;flex-wrap:wrap;
-        }}
-        .verified-badge-main{{
-            background:linear-gradient(135deg, #0ea5e9, #06b6d4);
-            color:#fff;font-size:10px;padding:2px 5px;border-radius:50%;
-            display:inline-flex;align-items:center;justify-content:center;
-            width:18px;height:18px;font-weight:bold;
-            box-shadow:0 0 12px rgba(56,189,248,0.6);
-        }}
+        .author-avatar img{{width:100%;height:100%;object-fit:cover}}
+        .author-name{{font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px}}
         .btn-follow{{
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            padding:5px 14px;border-radius:20px;font-size:11px;
-            font-weight:700;border:none;color:#fff;cursor:pointer;
-            box-shadow:0 4px 15px rgba(14,165,233,0.4);
-            transition:all 0.3s;white-space:nowrap;
+            background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
+            padding:2px 12px;border-radius:12px;font-size:10px;font-weight:600;color:#fff;cursor:pointer;
         }}
-        .btn-follow:hover{{box-shadow:0 8px 25px rgba(14,165,233,0.7);transform:translateY(-1px)}}
-        .caption{{font-size:14px;margin-bottom:5px;line-height:1.4}}
-        .tag{{color:var(--accent2);cursor:pointer;font-weight:500}}
-        .music{{font-size:12px;opacity:0.8;display:flex;align-items:center;gap:6px;cursor:pointer}}
-        .music-wave{{display:flex;gap:2px;align-items:flex-end;height:16px}}
-        .music-wave span{{width:2px;background:var(--accent2);border-radius:1px;animation:musicWave 1s ease-in-out infinite}}
-        .music-wave span:nth-child(1){{height:8px;animation-delay:0s}}
-        .music-wave span:nth-child(2){{height:14px;animation-delay:0.15s}}
-        .music-wave span:nth-child(3){{height:6px;animation-delay:0.3s}}
-        .music-wave span:nth-child(4){{height:12px;animation-delay:0.45s}}
-        .music-wave span:nth-child(5){{height:4px;animation-delay:0.6s}}
-        @keyframes musicWave{{0%,100%{{transform:scaleY(1)}}50%{{transform:scaleY(1.8)}}}}
+        .caption{{font-size:12px;opacity:0.8;margin:4px 0;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
+        .music{{font-size:11px;opacity:0.5;display:flex;align-items:center;gap:4px}}
 
-        /* 💧 Watermark */
-        .watermark-overlay{{
-            position:absolute;top:20px;right:20px;
-            z-index:15;pointer-events:none;
-            display:flex;align-items:center;gap:6px;
-            opacity:0.6;
-        }}
-        .watermark-overlay span{{
-            font-weight:700;font-size:13px;
-            text-shadow:0 2px 8px rgba(0,0,0,0.6);
-            color:#fff;
-        }}
-        .watermark-overlay img{{width:24px;height:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))}}
-
+        /* 🎛️ أزرار التفاعل (Glassmorphism) */
         .side-btns{{
-            position:absolute;right:14px;bottom:130px;
-            display:flex;flex-direction:column;gap:22px;z-index:20;
+            position:absolute;right:10px;bottom:20px;
+            display:flex;flex-direction:column;gap:14px;z-index:20;
         }}
         .sbtn{{
-            display:flex;flex-direction:column;align-items:center;gap:3px;
-            background:none;border:none;color:#fff;cursor:pointer;
-            font-size:10px;transition:transform 0.15s;
+            display:flex;flex-direction:column;align-items:center;gap:2px;
+            background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);
+            border:1px solid rgba(255,255,255,0.1);
+            width:44px;height:44px;border-radius:50%;
+            color:#fff;cursor:pointer;font-size:10px;transition:all 0.2s;
+            justify-content:center;box-shadow:0 4px 15px rgba(0,0,0,0.3);
         }}
         .sbtn:active{{transform:scale(0.85)}}
-        .sbtn i{{font-size:28px;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.5))}}
-        .sbtn.liked i{{color:var(--accent);animation:likePop 0.4s ease}}
+        .sbtn i{{font-size:18px}}
+        .sbtn.liked{{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.5);color:#f87171;}}
+        .sbtn.liked i{{animation:likePop 0.4s ease}}
         @keyframes likePop{{0%{{transform:scale(1)}}50%{{transform:scale(1.4)}}100%{{transform:scale(1)}}}}
-        .sbtn .cnt{{font-weight:700;font-size:11px}}
+        .sbtn .cnt{{font-weight:600;font-size:10px;}}
 
         /* 📤 Share Panel */
         .share-panel{{
             position:fixed;bottom:0;left:0;right:0;
-            background:rgba(2,6,23,0.98);
-            backdrop-filter:blur(40px);
-            border-top:2px solid var(--accent);
-            border-radius:24px 24px 0 0;
-            padding:24px 20px 40px;
-            z-index:500;
-            transform:translateY(100%);
-            transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            background:rgba(2,6,23,0.98);backdrop-filter:blur(40px);
+            border-top:2px solid var(--accent);border-radius:var(--radius) var(--radius) 0 0;
+            padding:24px 20px 40px;z-index:500;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
         }}
         .share-panel.show{{transform:translateY(0)}}
-        .share-panel h3{{font-size:17px;font-weight:700;margin-bottom:20px;text-align:center;color:var(--accent2)}}
+        .share-panel h3{{font-size:17px;font-weight:700;margin-bottom:20px;text-align:center;}}
         .share-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}}
-        .share-item{{
-            display:flex;flex-direction:column;align-items:center;gap:8px;
-            cursor:pointer;transition:transform 0.2s;
-        }}
+        .share-item{{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform 0.2s}}
         .share-item:hover{{transform:scale(1.1)}}
-        .share-item .share-icon{{
-            width:56px;height:56px;border-radius:16px;
-            display:flex;align-items:center;justify-content:center;
-            font-size:24px;transition:all 0.3s;
-        }}
+        .share-item .share-icon{{width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}}
         .share-item span{{font-size:11px;opacity:0.7}}
-        .share-copy-row{{
-            display:flex;gap:8px;align-items:center;
-            background:rgba(14,165,233,0.06);border-radius:16px;
-            padding:8px;border:1px solid var(--border);
-        }}
-        .share-copy-row input{{
-            flex:1;padding:12px;border-radius:12px;
-            background:rgba(14,165,233,0.04);border:1px solid var(--border);
-            color:#fff;font-size:13px;outline:none;direction:ltr;
-        }}
-        .share-copy-row button{{
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border:none;color:#fff;padding:12px 20px;border-radius:12px;
-            font-weight:700;cursor:pointer;white-space:nowrap;
-        }}
+        .share-copy-row{{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,0.03);border-radius:16px;padding:8px;border:1px solid var(--border);}}
+        .share-copy-row input{{flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:#fff;font-size:13px;outline:none;direction:ltr;}}
+        .share-copy-row button{{background:var(--accent);border:none;color:#fff;padding:12px 20px;border-radius:12px;font-weight:700;cursor:pointer;}}
 
-        /* 💬 TikTok Style Comments */
+        /* 💬 Comments Panel */
         .comments-panel{{
-            position:fixed;bottom:0;left:0;right:0;
-            background:rgba(2,6,23,0.98);
-            backdrop-filter:blur(40px);
-            border-top:2px solid var(--accent);
-            border-radius:24px 24px 0 0;
-            padding:0;
-            z-index:500;
-            max-height:70vh;
-            display:flex;flex-direction:column;
-            transform:translateY(100%);
-            transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            position:fixed;bottom:0;left:0;right:0;background:rgba(2,6,23,0.98);backdrop-filter:blur(40px);
+            border-top:2px solid var(--accent);border-radius:var(--radius) var(--radius) 0 0;padding:0;z-index:500;max-height:70vh;display:flex;flex-direction:column;
+            transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
         }}
         .comments-panel.show{{transform:translateY(0)}}
-        .comments-header{{
-            display:flex;justify-content:space-between;align-items:center;
-            padding:16px 20px;border-bottom:1px solid var(--border);
-            flex-shrink:0;
-        }}
-        .comments-header h3{{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}}
-        .comments-list{{
-            flex:1;overflow-y:auto;padding:12px 16px;
-        }}
-        .comment-item{{
-            display:flex;gap:10px;padding:12px 0;
-            border-bottom:1px solid rgba(14,165,233,0.06);
-            animation:fadeIn 0.3s ease;
-        }}
-        .comment-avatar{{
-            width:36px;height:36px;border-radius:50%;
-            overflow:hidden;flex-shrink:0;
-            border:2px solid rgba(14,165,233,0.2);
-        }}
-        .comment-avatar img{{width:100%;height:100%;object-fit:cover}}
+        .comments-header{{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}}
+        .comments-list{{flex:1;overflow-y:auto;padding:12px 16px;}}
+        .comment-item{{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.03);}}
+        .comment-avatar{{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);}}
         .comment-body{{flex:1;min-width:0}}
-        .comment-user{{font-weight:600;font-size:13px;margin-bottom:2px;display:flex;align-items:center;gap:5px}}
+        .comment-user{{font-weight:600;font-size:13px;display:flex;align-items:center;gap:5px}}
         .comment-text{{font-size:13px;line-height:1.4;word-break:break-word}}
-        .comment-actions{{display:flex;gap:16px;margin-top:6px;font-size:11px}}
-        .comment-actions span{{cursor:pointer;opacity:0.6;display:flex;align-items:center;gap:4px;transition:opacity 0.2s}}
-        .comment-actions span:hover{{opacity:1}}
-        .comment-time{{font-size:10px;opacity:0.4}}
-        .reply-item{{
-            margin-right:46px;padding:8px 0;
-            border-bottom:1px solid rgba(14,165,233,0.04);
-            display:flex;gap:8px;
-        }}
-        .reply-item .comment-avatar{{width:28px;height:28px}}
-        .comment-input-row{{
-            display:flex;gap:8px;padding:12px 16px;
-            border-top:1px solid var(--border);
-            background:rgba(2,6,23,0.95);
-            flex-shrink:0;
-        }}
-        .comment-input-row input{{
-            flex:1;padding:12px 16px;border-radius:30px;
-            background:rgba(14,165,233,0.04);border:1px solid var(--border);
-            color:#fff;font-size:13px;outline:none;
-        }}
-        .comment-input-row button{{
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border:none;color:#fff;padding:10px 18px;border-radius:30px;
-            font-weight:700;cursor:pointer;white-space:nowrap;font-size:13px;
-        }}
+        .comment-actions{{display:flex;gap:16px;margin-top:6px;font-size:11px;opacity:0.6}}
+        .reply-item{{margin-right:40px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.02);display:flex;gap:8px;}}
+        .comment-input-row{{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border);background:rgba(2,6,23,0.95);flex-shrink:0;}}
+        .comment-input-row input{{flex:1;padding:10px 16px;border-radius:40px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:#fff;font-size:13px;outline:none;}}
+        .comment-input-row button{{background:var(--accent);border:none;color:#fff;padding:8px 18px;border-radius:40px;font-weight:700;cursor:pointer;font-size:13px;}}
 
+        /* 📱 FLOATING BOTTOM NAV (شريط سفلي ذكي) */
+        .nav-bottom{{
+            position:fixed;bottom:16px;left:16px;right:16px;
+            display:flex;justify-content:space-between;align-items:center;
+            padding:12px 20px;background:rgba(2,6,23,0.85);backdrop-filter:blur(20px);
+            border:1px solid rgba(255,255,255,0.05);border-radius:50px;z-index:100;
+            box-shadow:0 8px 32px rgba(0,0,0,0.6);
+        }}
+        .nav-item{{display:flex;align-items:center;justify-content:center;background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;transition:all 0.3s;width:44px;height:44px;border-radius:50%;}}
+        .nav-item.active{{color:var(--accent);background:rgba(14,165,233,0.1);}}
+        .nav-item:hover{{color:#fff;}}
+        .nav-add-btn{{
+            width:52px;height:52px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#fff;font-size:20px;box-shadow:0 4px 20px rgba(14,165,233,0.6);transition:transform 0.2s;
+        }}
+        .nav-add-btn:active{{transform:scale(0.9);}}
+        
         /* ☁️ Fullscreen Video Player */
         .fullscreen-player {{
-            position:fixed;top:0;left:0;width:100vw;height:100vh;
-            background:#000;z-index:9999;display:flex;align-items:center;
-            justify-content:center;opacity:0;pointer-events:none;
-            transition:opacity 0.3s ease;flex-direction:column;
+            position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease;flex-direction:column;
         }}
         .fullscreen-player.active {{opacity:1;pointer-events:auto}}
         .fullscreen-player video {{max-width:100%;max-height:85vh;object-fit:contain;cursor:pointer}}
-        .player-controls{{
-            position:absolute;bottom:100px;left:20px;right:20px;
-            display:flex;align-items:center;justify-content:space-between;
-            background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);
-            border-radius:50px;padding:10px 20px;
-            border:1px solid rgba(14,165,233,0.3);z-index:10000;color:#fff;gap:12px;flex-wrap:wrap;
-        }}
-        .player-controls button{{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;transition:color 0.2s;padding:5px}}
-        .player-controls button:hover{{color:#38bdf8}}
-        .progress-wrap{{flex:1;display:flex;align-items:center;gap:8px;min-width:100px}}
-        .progress-bar{{flex:1;height:4px;background:rgba(255,255,255,0.2);border-radius:4px;cursor:pointer;position:relative}}
-        .progress-fill{{height:100%;background:linear-gradient(90deg,#0ea5e9,#06b6d4);border-radius:4px;width:0%}}
-        .close-player{{
-            position:absolute;top:20px;left:20px;
-            background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);
-            border:1px solid rgba(14,165,233,0.4);color:#fff;
-            width:44px;height:44px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;font-size:20px;z-index:10001;transition:all 0.3s;
-        }}
-        .close-player:hover{{background:rgba(14,165,233,0.3);box-shadow:0 0 20px rgba(14,165,233,0.5)}}
-
-        /* 📱 FLOATING BOTTOM NAV */
-        .nav-bottom{{
-            position:fixed;bottom:12px;left:12px;right:12px;
-            display:flex;justify-content:space-around;align-items:center;
-            padding:8px 0;
-            background:rgba(2,6,23,0.8);
-            backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-            z-index:100;
-            border:1px solid var(--border);
-            border-radius:40px;
-            box-shadow:0 -8px 32px rgba(14,165,233,0.06);
-        }}
-        .nav-item{{
-            display:flex;flex-direction:column;align-items:center;gap:3px;
-            background:none;border:none;color:rgba(255,255,255,0.5);
-            font-size:10px;cursor:pointer;transition:all 0.3s;text-decoration:none;
-        }}
-        .nav-item i{{font-size:22px}}
-        .nav-item.active{{color:var(--accent2)}}
-        .btn-add{{
-            width:48px;height:48px;
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border-radius:50%;display:flex;align-items:center;justify-content:center;
-            margin-top:-30px;cursor:pointer;
-            box-shadow:0 10px 30px rgba(14,165,233,0.6),0 0 40px rgba(14,165,233,0.2);
-            border:none;color:#fff;font-size:20px;
-            z-index:101;transition:all 0.3s;text-decoration:none;
-        }}
-        .btn-add:hover{{transform:scale(1.1);box-shadow:0 15px 40px rgba(14,165,233,0.8)}}
+        .player-controls{{position:absolute;bottom:40px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);border-radius:50px;padding:10px 20px;border:1px solid rgba(255,255,255,0.1);z-index:10000;color:#fff;gap:12px;flex-wrap:wrap;}}
+        .close-player{{position:absolute;top:20px;left:20px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;z-index:10001;}}
     </style>
 </head>
 <body>
@@ -911,149 +621,47 @@ def build_index():
 </div>
 
 <div id="mainApp">
-    <!-- ✨ الهيكل الخاص بالوضع الأفقي (يظهر فقط عند التدوير) -->
-    <div class="desktop-sidebar">
-        <div class="sidebar-logo-wrap">
-            <div class="sidebar-logo-icon">☁️</div>
-            <span>MNAENCA</span>
+    <!-- ✨ رأس الصفحة العلوي -->
+    <div class="top-header">
+        <div class="menu-icon" onclick="window.location.href='settings.html'"><i class="fas fa-bars" style="font-size:18px;color:rgba(255,255,255,0.6)"></i></div>
+        <div class="header-actions">
+            <div class="action-icon" onclick="openNotifs()"><i class="fas fa-bell"></i><span class="notif-badge" id="notifBadge"></span></div>
+            <div class="action-icon" onclick="openSearch()"><i class="fas fa-search"></i></div>
         </div>
-        
-        <div class="sidebar-tabs">
-            <button class="sidebar-tab active" onclick="switchDesktopFeed('forYou')">لك</button>
-            <button class="sidebar-tab" onclick="switchDesktopFeed('following')">متابعين</button>
-        </div>
-
-        <div class="sidebar-nav-list">
-            <div class="sidebar-nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> الرئيسية</div>
-            <div class="sidebar-nav-item" onclick="openSearch()"><i class="fas fa-search"></i> بحث</div>
-            <div class="sidebar-nav-item" onclick="openNotifs()"><i class="fas fa-bell"></i> الإشعارات</div>
-            <div class="sidebar-nav-item" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</div>
-            <div class="sidebar-nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user"></i> ملفي</div>
-        </div>
-        
-        <a href="upload.html" class="sidebar-add-btn"><i class="fas fa-plus"></i></a>
     </div>
 
-    <!-- ✨ محتوى الموقع الأساسي -->
-    <div style="flex: 1; display: flex; flex-direction: column; height: 100vh; position: relative; background: #000;">
-        <!-- الشريط العلوي للموبايل -->
-        <div class="topbar">
-            <div style="display:flex;align-items:center">
-                <div class="logo-icon">☁️</div>
-                <span class="logo-text">MNAENCA</span>
-            </div>
-            <div class="tabs">
-                <button class="tab" onclick="switchFeed('following')">متابَعين</button>
-                <button class="tab active" onclick="switchFeed('forYou')">لك</button>
-            </div>
-            <div class="top-icons">
-                <i class="fas fa-search top-icon" onclick="openSearch()"></i>
-                <i class="fas fa-bell top-icon" onclick="openNotifs()"><span class="notif-badge" id="notifBadge"></span></i>
-            </div>
-        </div>
-
-        <!-- الشريط العلوي للوضع الأفقي (بحث + إشعارات فقط) -->
-        <div class="desktop-topbar">
-            <div class="top-icon" onclick="openNotifs()"><i class="fas fa-bell"></i></div>
-            <div class="top-icon" onclick="openSearch()"><i class="fas fa-search"></i></div>
-        </div>
-
-        <div class="videos-wrap" id="videosWrap">
-            <div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
-                <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i>
-                <p>لا توجد فيديوهات بعد</p>
-                <p style="font-size:12px;opacity:0.5">ارفع أول فيديو! ☁️</p>
-            </div>
-        </div>
-
-        <!-- ☁️ Fullscreen Video Player -->
-        <div class="fullscreen-player" id="fullscreenPlayer" onclick="if(event.target===this)closePlayer()">
-            <button class="close-player" onclick="closePlayer()"><i class="fas fa-times"></i></button>
-            <video id="fullscreenVideo" controls playsinline></video>
-            <div class="player-controls">
-                <button onclick="skipTime(-10)"><i class="fas fa-backward"></i></button>
-                <button id="btnPlayPause" onclick="togglePlayPause()"><i class="fas fa-pause"></i></button>
-                <button onclick="skipTime(10)"><i class="fas fa-forward"></i></button>
-                <div class="progress-wrap">
-                    <span id="currentTime">0:00</span>
-                    <div class="progress-bar" id="progressBar" onclick="seekVideo(event)">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <span id="duration">0:00</span>
-                </div>
-                <button onclick="toggleMutePlayer()"><i class="fas fa-volume-up" id="muteIcon"></i></button>
-                <a id="downloadLink" href="#" download style="color:#38bdf8;text-decoration:none;margin-left:10px;"><i class="fas fa-download"></i></a>
-            </div>
-        </div>
-
-        <!-- 📤 Share Panel -->
-        <div class="share-panel" id="sharePanel">
-            <h3><i class="fas fa-share-alt"></i> مشاركة</h3>
-            <div class="share-grid">
-                <div class="share-item" onclick="shareTo('whatsapp')">
-                    <div class="share-icon" style="background:rgba(37,211,102,0.15);color:#25D366"><i class="fab fa-whatsapp"></i></div>
-                    <span>WhatsApp</span>
-                </div>
-                <div class="share-item" onclick="shareTo('telegram')">
-                    <div class="share-icon" style="background:rgba(0,136,204,0.15);color:#0088cc"><i class="fab fa-telegram"></i></div>
-                    <span>Telegram</span>
-                </div>
-                <div class="share-item" onclick="shareTo('facebook')">
-                    <div class="share-icon" style="background:rgba(24,119,242,0.15);color:#1877F2"><i class="fab fa-facebook"></i></div>
-                    <span>Facebook</span>
-                </div>
-                <div class="share-item" onclick="shareTo('twitter')">
-                    <div class="share-icon" style="background:rgba(29,161,242,0.15);color:#1DA1F2"><i class="fab fa-twitter"></i></div>
-                    <span>X</span>
-                </div>
-                <div class="share-item" onclick="shareTo('messenger')">
-                    <div class="share-icon" style="background:rgba(0,178,255,0.15);color:#00B2FF"><i class="fab fa-facebook-messenger"></i></div>
-                    <span>Messenger</span>
-                </div>
-                <div class="share-item" onclick="shareTo('email')">
-                    <div class="share-icon" style="background:rgba(234,67,53,0.15);color:#EA4335"><i class="fas fa-envelope"></i></div>
-                    <span>بريد</span>
-                </div>
-                <div class="share-item" onclick="shareTo('copy')">
-                    <div class="share-icon" style="background:rgba(14,165,233,0.15);color:#0ea5e9"><i class="fas fa-link"></i></div>
-                    <span>نسخ الرابط</span>
-                </div>
-                <div class="share-item" onclick="shareTo('embed')">
-                    <div class="share-icon" style="background:rgba(168,85,247,0.15);color:#a855f7"><i class="fas fa-code"></i></div>
-                    <span>تضمين</span>
-                </div>
-            </div>
-            <div class="share-copy-row">
-                <input type="text" id="shareUrlInput" value="" readonly dir="ltr">
-                <button onclick="shareTo('copy')"><i class="fas fa-copy"></i> نسخ</button>
-            </div>
-        </div>
-        <div class="overlay" id="shareOverlay" style="display:none;z-index:499" onclick="closeSharePanel()"></div>
-
-        <!-- 💬 Comments Panel -->
-        <div class="comments-panel" id="commentsPanel">
-            <div class="comments-header">
-                <h3><i class="fas fa-comments" style="color:var(--accent)"></i> التعليقات <span id="commentsCount" style="font-size:13px;opacity:0.5"></span></h3>
-                <button class="btn-close-overlay" onclick="closeCommentsPanel()"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="comments-list" id="commentsList"></div>
-            <div class="comment-input-row">
-                <input type="text" id="commentInput" placeholder="أضف تعليقاً..." onkeydown="if(event.key==='Enter')addComment()">
-                <button onclick="addComment()"><i class="fas fa-paper-plane"></i> نشر</button>
-            </div>
-        </div>
-        <div class="overlay" id="commentsOverlay" style="display:none;z-index:499" onclick="closeCommentsPanel()"></div>
-
-        <div class="nav-bottom">
-            <button class="nav-item active"><i class="fas fa-home"></i><span>الرئيسية</span></button>
-            <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i><span>بحث</span></button>
-            <a href="upload.html" class="btn-add"><i class="fas fa-plus"></i></a>
-            <a href="chat.html" class="nav-item"><i class="fas fa-envelope"></i><span>رسائل</span></a>
-            <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>ملفي</span></a>
-        </div>
-
-        <div class="toast-msg" id="toast">✅ تم النسخ</div>
+    <!-- ✨ شريط التبويبات -->
+    <div class="tabs-row">
+        <button class="tab-btn active" onclick="switchFeed('forYou', this)">لك</button>
+        <button class="tab-btn" onclick="switchFeed('following', this)">متابَعين</button>
     </div>
+
+    <!-- ✨ شريط القصص (ثابت حالياً، يمكن ربطه لاحقاً) -->
+    <div class="stories-scroll">
+        <div class="story-item"><div class="story-ring add-story"><i class="fas fa-plus"></i></div><div class="story-name">قصتي</div></div>
+        <div class="story-item"><div class="story-ring"><img src="https://api.dicebear.com/7.x/big-smile/svg?seed=user1" alt=""></div><div class="story-name">سارة</div></div>
+        <div class="story-item"><div class="story-ring"><img src="https://api.dicebear.com/7.x/big-smile/svg?seed=user2" alt=""></div><div class="story-name">أحمد</div></div>
+        <div class="story-item"><div class="story-ring"><img src="https://api.dicebear.com/7.x/big-smile/svg?seed=user3" alt=""></div><div class="story-name">ليلى</div></div>
+        <div class="story-item"><div class="story-ring"><img src="https://api.dicebear.com/7.x/big-smile/svg?seed=user4" alt=""></div><div class="story-name">خالد</div></div>
+    </div>
+
+    <div class="videos-wrap" id="videosWrap">
+        <div style="display:flex;align-items:center;justify-content:center;height:50vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px">
+            <i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i>
+            <p>لا توجد فيديوهات بعد</p>
+        </div>
+    </div>
+
+    <!-- 📱 شريط سفلي عائم -->
+    <div class="nav-bottom">
+        <button class="nav-item active"><i class="fas fa-home"></i></button>
+        <button class="nav-item" onclick="openSearch()"><i class="fas fa-search"></i></button>
+        <button class="nav-add-btn" onclick="window.location.href='upload.html'"><i class="fas fa-plus"></i></button>
+        <button class="nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user"></i></button>
+        <button class="nav-item" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i></button>
+    </div>
+
+    <div class="toast-msg" id="toast">✅ تم النسخ</div>
 </div>
 
 <script src="firebase-config.js"></script>
@@ -1278,8 +886,7 @@ def build_index():
             const badge = document.getElementById('notifBadge');
             if(badge) {{
                 const count = Object.keys(ns).length;
-                badge.style.display = count > 0 ? 'flex' : 'none';
-                if(count > 0) badge.innerText = count;
+                badge.style.display = count > 0 ? 'block' : 'none';
             }}
         }});
 
@@ -1302,12 +909,21 @@ def build_index():
         }});
     }}
 
+    // دالة التبديل الجديدة للتبويبات
+    function switchFeed(feed, btn) {{
+        currentFeed = feed;
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        renderVideos();
+    }}
+    window.switchFeed = switchFeed;
+
     function renderVideos() {{
         const container = document.getElementById('videosWrap');
         if(!container) return;
         let filtered = currentFeed === 'forYou' ? allVideos : allVideos.filter(v => currentUserData?.following?.[v.sender]);
         if(!filtered.length) {{
-            container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i><p>${{currentFeed === 'forYou' ? 'لا توجد فيديوهات بعد' : 'تابع مستخدمين لرؤية فيديوهاتهم'}}</p></div>`;
+            container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:50vh;color:rgba(255,255,255,0.5);flex-direction:column;gap:12px"><i class="fas fa-video" style="font-size:48px;opacity:0.3;color:#0ea5e9"></i><p>${{currentFeed === 'forYou' ? 'لا توجد فيديوهات بعد' : 'تابع مستخدمين لرؤية فيديوهاتهم'}}</p></div>`;
             return;
         }}
         container.innerHTML = '';
@@ -1316,42 +932,32 @@ def build_index():
             const user = allUsers[video.sender] || {{username: video.senderName || 'مستخدم'}};
             const isFollowing = currentUserData?.following && currentUserData.following[video.sender];
             const commentsCount = video.comments ? Object.keys(video.comments).length : 0;
-            const caption = (video.description || '').replace(/#(\\w+)/g, '<span class="tag">#$1</span>');
+            const caption = (video.description || '').replace(/#(\\w+)/g, '<span class="tag" style="color:var(--accent2)">#$1</span>');
             const avatarUrl = user.avatarUrl || (DICEBEAR_URL + '?seed=' + video.sender);
-            const verifiedBadgeHtml = user.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : '';
-            const musicHtml = video.music ? `<div class="music-wave">${{[1,2,3,4,5].map(()=>'<span></span>').join('')}}</div> ${{video.music}}` : 'Original Sound';
-
-            const div = document.createElement('div');
-            div.className = 'vid-card';
+            
+            const div = document.createElement('div'); div.className = 'vid-card';
             div.innerHTML = `
-                <div class="watermark-overlay"><span>☁️ MNAENCA</span></div>
                 <video loop playsinline muted data-src="${{video.url}}" poster="${{video.thumbnail || ''}}"></video>
                 <div class="vid-info">
                     <div class="author-row">
-                        <div class="author-avatar" onclick="openUserProfile('${{video.sender}}')">
-                            <img src="${{avatarUrl}}" alt="avatar">
-                        </div>
+                        <div class="author-avatar" onclick="openUserProfile('${{video.sender}}')"><img src="${{avatarUrl}}" alt="avatar"></div>
                         <div class="author-name">
                             <span onclick="openUserProfile('${{video.sender}}')">@${{user.username}}</span>
-                            ${{verifiedBadgeHtml}}
-                            ${{currentUser?.uid !== video.sender ? `<button class="btn-follow" onclick="event.stopPropagation();toggleFollow('${{video.sender}}', this)">${{isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}}</button>` : ''}}
+                            ${{currentUser?.uid !== video.sender ? `<button class="btn-follow" onclick="event.stopPropagation();toggleFollow('${{video.sender}}', this)">${{isFollowing ? 'متابَع' : '+ متابعة'}}</button>` : ''}}
                         </div>
                     </div>
                     <div class="caption">${{caption}}</div>
-                    <div class="music">${{musicHtml}}</div>
+                    <div class="music"><i class="fas fa-music" style="font-size:11px"></i> ${{video.music || 'Original Sound'}}</div>
                 </div>
                 <div class="side-btns">
-                    <button class="sbtn" onclick="toggleMute()"><i class="fas ${{isMuted ? 'fa-volume-mute' : 'fa-volume-up'}}"></i></button>
+                    <button class="sbtn" onclick="toggleMute()"><i class="fas ${{isMuted ? 'fa-volume-mute' : 'fa-volume-up'}}" style="font-size:14px"></i></button>
                     <button class="sbtn like-btn ${{isLiked ? 'liked' : ''}}" onclick="toggleLike('${{video.id}}', this)"><i class="fas fa-heart"></i><span class="cnt">${{video.likes || 0}}</span></button>
                     <button class="sbtn" onclick="openCommentsPanel('${{video.id}}')"><i class="fas fa-comment"></i><span class="cnt">${{commentsCount}}</span></button>
-                    <button class="sbtn" onclick="openPlayer('${{video.url}}', 'video.mp4')"><i class="fas fa-expand"></i></button>
                     <button class="sbtn" onclick="openSharePanel('${{video.url}}')"><i class="fas fa-share"></i></button>
                 </div>`;
             const videoEl = div.querySelector('video');
             videoEl.addEventListener('dblclick', e => {{
-                e.stopPropagation();
-                const likeBtn = div.querySelector('.like-btn');
-                if(likeBtn) toggleLike(video.id, likeBtn);
+                e.stopPropagation(); const likeBtn = div.querySelector('.like-btn'); if(likeBtn) toggleLike(video.id, likeBtn);
             }});
             container.appendChild(div);
         }});
@@ -1367,30 +973,13 @@ def build_index():
         const observer = new IntersectionObserver(entries => {{
             entries.forEach(entry => {{
                 const video = entry.target.querySelector('video');
-                if(entry.isIntersecting) {{
-                    entry.target.classList.add('active');
-                    if(!video.src) video.src = video.dataset.src;
-                    video.muted = isMuted;
-                    video.play().catch(() => {{}});
-                }} else {{
-                    entry.target.classList.remove('active');
-                    video.pause();
-                }}
+                if(entry.isIntersecting) {{ if(!video.src) video.src = video.dataset.src; video.muted = isMuted; video.play().catch(() => {{}}); }} else {{ video.pause(); }}
             }});
-        }}, {{threshold: 0.65}});
+        }}, {{threshold: 0.6}});
         document.querySelectorAll('.vid-card').forEach(seg => observer.observe(seg));
     }}
 
     function toggleMute() {{ isMuted = !isMuted; document.querySelectorAll('video').forEach(v => v.muted = isMuted); }}
-    function switchFeed(feed) {{ currentFeed = feed; document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); renderVideos(); }}
-    
-    function switchDesktopFeed(feed) {{
-        currentFeed = feed; 
-        document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
-        event.target.classList.add('active');
-        renderVideos();
-    }}
-    window.switchDesktopFeed = switchDesktopFeed;
 
     async function toggleLike(videoId, btn) {{
         if(!currentUser) return;
@@ -1418,9 +1007,9 @@ def build_index():
         const userRef = db.ref('users/' + currentUser.uid + '/following/' + userId);
         const targetRef = db.ref('users/' + userId + '/followers/' + currentUser.uid);
         const snap = await userRef.get();
-        if(snap.exists()) {{ await userRef.remove(); await targetRef.remove(); btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة'; }}
+        if(snap.exists()) {{ await userRef.remove(); await targetRef.remove(); btn.innerText = '+ متابعة'; }}
         else {{
-            await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع'; 
+            await userRef.set(true); await targetRef.set(true); btn.innerText = 'متابَع'; 
             sendNotification(userId, currentUserData?.username, 'بدأ بمتابعتك 👤');
         }}
     }}
@@ -1434,7 +1023,7 @@ def build_index():
             notifHTML = '<div style="text-align:center;opacity:0.5;padding:40px"><i class="fas fa-bell" style="font-size:48px;color:#0ea5e9;margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';
         }} else {{
             items.forEach(n => {{
-                notifHTML += `<div style="display:flex;gap:12px;padding:14px;border-bottom:1px solid rgba(14,165,233,0.1);align-items:center;animation:fadeIn 0.3s ease">
+                notifHTML += `<div style="display:flex;gap:12px;padding:14px;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;animation:fadeIn 0.3s ease">
                     <div style="width:40px;height:40px;border-radius:50%;background:rgba(14,165,233,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;color:#0ea5e9"><i class="fas fa-bell"></i></div>
                     <div><div style="font-weight:600">${{n.from || 'مستخدم'}}</div><div style="font-size:12px;opacity:0.6;margin-top:2px">${{n.msg || ''}}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${{new Date(n.timestamp).toLocaleString('ar-SA')}}</div></div></div>`;
             }});
@@ -1446,14 +1035,14 @@ def build_index():
     }}
 
     function openSearch() {{
-        showOverlay('🔍 بحث', `<input type="text" id="searchQ" onkeyup="doSearch()" placeholder="ابحث عن مستخدمين، فيديوهات..." style="width:100%;padding:14px;border-radius:30px;background:rgba(14,165,233,0.04);border:1px solid rgba(14,165,233,0.15);color:#fff;font-size:14px;outline:none;margin-bottom:16px"><div id="searchR"></div>`);
+        showOverlay('🔍 بحث', `<input type="text" id="searchQ" onkeyup="doSearch()" placeholder="ابحث عن مستخدمين، فيديوهات..." style="width:100%;padding:14px;border-radius:30px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:14px;outline:none;margin-bottom:16px"><div id="searchR"></div>`);
         window.doSearch = function() {{
             const query = document.getElementById('searchQ').value.toLowerCase();
             const resultsDiv = document.getElementById('searchR');
             if(!query) {{ resultsDiv.innerHTML = ''; return; }}
             const users = Object.values(allUsers).filter(u => u.username?.toLowerCase().includes(query));
             const vids = allVideos.filter(v => (v.description || '').toLowerCase().includes(query));
-            resultsDiv.innerHTML = `${{users.length ? `<div style="margin-bottom:16px"><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-users"></i> مستخدمين</h4>${{users.map(u => `<div onclick="openUserProfile('${{u.uid || Object.keys(allUsers).find(k=>allUsers[k]===u)}}')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(14,165,233,0.1)"><img src="${{u.avatarUrl || (DICEBEAR_URL + '?seed=' + (u.uid || u.username))}}" style="width:40px;height:40px;border-radius:50%"><div>@${{u.username}} ${{u.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}}</div></div>`).join('')}}</div>` : ''}}${{vids.length ? `<div><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-video"></i> فيديوهات</h4>${{vids.map(v => `<div onclick="openPlayer('${{v.url}}', 'video.mp4')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(14,165,233,0.1)"><i class="fas fa-play-circle" style="color:#0ea5e9;font-size:20px"></i><span style="font-size:13px">${{(v.description || 'فيديو').substring(0, 40)}}</span></div>`).join('')}}</div>` : ''}}${{!users.length && !vids.length ? '<div style="text-align:center;opacity:0.5;padding:30px">لا توجد نتائج</div>' : ''}}`;
+            resultsDiv.innerHTML = `${{users.length ? `<div style="margin-bottom:16px"><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-users"></i> مستخدمين</h4>${{users.map(u => `<div onclick="openUserProfile('${{u.uid || Object.keys(allUsers).find(k=>allUsers[k]===u)}}')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05)"><img src="${{u.avatarUrl || (DICEBEAR_URL + '?seed=' + (u.uid || u.username))}}" style="width:40px;height:40px;border-radius:50%"><div>@${{u.username}} ${{u.isVerified ? '<span class="verified-badge-main"><i class="fas fa-check"></i></span>' : ''}}</div></div>`).join('')}}</div>` : ''}}${{vids.length ? `<div><h4 style="font-size:12px;opacity:0.5;margin-bottom:8px"><i class="fas fa-video"></i> فيديوهات</h4>${{vids.map(v => `<div onclick="openPlayer('${{v.url}}', 'video.mp4')" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05)"><i class="fas fa-play-circle" style="color:#0ea5e9;font-size:20px"></i><span style="font-size:13px">${{(v.description || 'فيديو').substring(0, 40)}}</span></div>`).join('')}}</div>` : ''}}${{!users.length && !vids.length ? '<div style="text-align:center;opacity:0.5;padding:30px">لا توجد نتائج</div>' : ''}}`;
         }};
         setTimeout(() => {{ const input = document.getElementById('searchQ'); if(input) input.focus(); }}, 300);
     }}
@@ -1491,7 +1080,6 @@ def build_index():
         return new Date(ts).toLocaleDateString('ar-SA');
     }}
 
-    // Make functions globally accessible
     window.closePlayer = closePlayer;
     window.togglePlayPause = togglePlayPause;
     window.skipTime = skipTime;
@@ -1513,7 +1101,7 @@ def build_index():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 4. profile.html - ملف شخصي محترف مع فيديوهات
+# ☁️ 4. profile.html
 # ═══════════════════════════════════════════════════════════
 
 def build_profile():
@@ -1534,10 +1122,10 @@ def build_profile():
         .cover-img{{width:100%;height:130%;object-fit:cover;transition:transform 0.1s linear;transform:translateY(0)}}
         .cover-gradient{{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(2,6,23,0.4) 60%,rgba(2,6,23,0.95) 100%);pointer-events:none;z-index:1}}
         .cover-glow{{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(14,165,233,0.15) 0%,transparent 70%);pointer-events:none;z-index:2}}
-        .cover-edit-btn{{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);backdrop-filter:blur(15px);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;border:1px solid rgba(14,165,233,0.3);color:#fff;font-size:14px;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.3)}}
-        .cover-edit-btn:hover{{background:rgba(14,165,233,0.4);box-shadow:0 0 20px rgba(14,165,233,0.5)}}
-        .btn-back{{position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.5);backdrop-filter:blur(15px);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;border:1px solid var(--border);color:#fff;font-size:16px;transition:all 0.3s}}
-        .btn-back:hover{{background:rgba(14,165,233,0.3);box-shadow:0 0 20px rgba(14,165,233,0.4)}}
+        .cover-edit-btn{{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);backdrop-filter:blur(15px);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:14px;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.3)}}
+        .cover-edit-btn:hover{{background:rgba(14,165,233,0.4);}}
+        .btn-back{{position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.5);backdrop-filter:blur(15px);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:16px;transition:all 0.3s}}
+        .btn-back:hover{{background:rgba(14,165,233,0.3);}}
         .avatar-wrap{{position:relative;z-index:2;margin-top:-60px;display:flex;justify-content:center}}
         .avatar-lg{{width:120px;height:120px;border-radius:50%;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#0ea5e9,#06b6d4,#7dd3fc);padding:3px;box-shadow:0 0 30px rgba(14,165,233,0.4),0 0 60px rgba(14,165,233,0.1);animation:avatarGlow 3s ease-in-out infinite}}
         @keyframes avatarGlow{{0%,100%{{box-shadow:0 0 30px rgba(14,165,233,0.4),0 0 60px rgba(14,165,233,0.1)}}50%{{box-shadow:0 0 40px rgba(6,182,212,0.7),0 0 80px rgba(14,165,233,0.3)}}}}
@@ -1548,19 +1136,19 @@ def build_profile():
         .username{{font-size:22px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:8px}}
         .bio-text{{font-size:13px;opacity:0.7;margin-bottom:8px;max-width:320px;margin-left:auto;margin-right:auto;line-height:1.5}}
         .contact-info{{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;font-size:12px}}
-        .contact-info a{{color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:5px;background:var(--card);padding:6px 14px;border-radius:20px;border:1px solid var(--border);transition:all 0.3s}}
-        .contact-info a:hover{{background:rgba(14,165,233,0.15);box-shadow:0 0 15px rgba(14,165,233,0.2)}}
+        .contact-info a{{color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.03);padding:6px 14px;border-radius:20px;border:1px solid var(--border);transition:all 0.3s}}
+        .contact-info a:hover{{background:rgba(14,165,233,0.1);}}
         .last-seen{{font-size:11px;opacity:0.5;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:6px}}
-        .stats-row{{display:flex;justify-content:center;gap:30px;margin:15px 20px;padding:18px;background:rgba(14,165,233,0.04);backdrop-filter:blur(20px);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.2)}}
+        .stats-row{{display:flex;justify-content:center;gap:30px;margin:15px 20px;padding:18px;background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.2)}}
         .stat-item{{text-align:center;cursor:pointer;transition:transform 0.2s}}
         .stat-item:hover{{transform:scale(1.05)}}
         .stat-val{{font-size:20px;font-weight:700;color:var(--accent2)}}
         .stat-lbl{{font-size:10px;opacity:0.6;margin-top:2px}}
         .action-btns{{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 20px 20px}}
-        .btn{{background:rgba(14,165,233,0.06);border:1px solid var(--border);padding:10px 20px;border-radius:25px;color:#fff;cursor:pointer;font-size:13px;transition:all 0.3s;display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px)}}
-        .btn:hover{{background:rgba(14,165,233,0.15);border-color:var(--accent);box-shadow:0 0 20px rgba(14,165,233,0.2)}}
+        .btn{{background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:10px 20px;border-radius:25px;color:#fff;cursor:pointer;font-size:13px;transition:all 0.3s;display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px)}}
+        .btn:hover{{background:rgba(14,165,233,0.1);border-color:var(--accent);}}
         .btn-primary{{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;color:#fff;box-shadow:0 8px 25px rgba(14,165,233,0.4)}}
-        .btn-primary:hover{{transform:translateY(-2px);box-shadow:0 12px 35px rgba(14,165,233,0.6)}}
+        .btn-primary:hover{{transform:translateY(-2px);}}
         .section-title{{font-size:16px;font-weight:700;padding:0 20px;margin-bottom:12px;display:flex;align-items:center;gap:8px}}
         .videos-grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 8px 100px}}
         .video-grid-item{{aspect-ratio:9/16;position:relative;overflow:hidden;cursor:pointer;background:#000;border-radius:4px}}
@@ -1571,20 +1159,20 @@ def build_profile():
         .empty-state i{{font-size:48px;color:var(--accent);margin-bottom:12px;display:block}}
         .badge-verified{{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;font-size:12px;padding:3px 6px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-weight:bold;box-shadow:0 0 15px rgba(56,189,248,0.6);animation:verifyGlow 2s ease-in-out infinite}}
         @keyframes verifyGlow{{0%,100%{{box-shadow:0 0 15px rgba(56,189,248,0.6)}}50%{{box-shadow:0 0 25px rgba(56,189,248,0.9)}}}}
-        .edit-panel{{position:fixed;bottom:0;left:0;right:0;background:rgba(2,6,23,0.98);backdrop-filter:blur(40px);border-top:2px solid var(--accent);border-radius:24px 24px 0 0;padding:24px 20px 40px;z-index:200;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);max-height:80vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(14,165,233,0.1)}}
+        .edit-panel{{position:fixed;bottom:0;left:0;right:0;background:rgba(2,6,23,0.98);backdrop-filter:blur(40px);border-top:2px solid var(--accent);border-radius:var(--radius) var(--radius) 0 0;padding:24px 20px 40px;z-index:200;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);max-height:80vh;overflow-y:auto;}}
         .edit-panel.show{{transform:translateY(0)}}
         .edit-panel h3{{font-size:18px;font-weight:700;margin-bottom:20px;color:var(--accent2);text-align:center}}
         .edit-panel label{{display:block;font-size:12px;opacity:0.7;margin-bottom:6px;margin-top:14px}}
-        .edit-panel input,.edit-panel textarea{{width:100%;padding:12px 16px;border-radius:14px;background:var(--card);border:1px solid var(--border);color:#fff;font-size:14px;outline:none;resize:none;font-family:'Segoe UI',sans-serif;transition:border 0.3s}}
-        .edit-panel input:focus,.edit-panel textarea:focus{{border-color:var(--accent);box-shadow:0 0 15px rgba(14,165,233,0.15)}}
+        .edit-panel input,.edit-panel textarea{{width:100%;padding:12px 16px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:#fff;font-size:14px;outline:none;resize:none;font-family:'Segoe UI',sans-serif;transition:border 0.3s}}
+        .edit-panel input:focus,.edit-panel textarea:focus{{border-color:var(--accent);}}
         .edit-actions{{display:flex;gap:10px;margin-top:20px}}
         .edit-actions button{{flex:1;padding:12px;border-radius:25px;font-weight:700;cursor:pointer;font-size:14px;transition:all 0.3s}}
         .btn-save{{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff}}
-        .btn-cancel{{background:var(--card);border:1px solid var(--border);color:#fff}}
+        .btn-cancel{{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:#fff}}
         .overlay-panel{{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:none}}
         .overlay-panel.show{{display:block}}
 
-        /* Admin Panel */
+        /* Admin Panel (بقية الكود كما هو) */
         .admin-panel{{padding:0 8px;margin:0 8px 100px 8px}}
         .admin-panel h3{{color:#38bdf8;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-weight:700}}
         .admin-stats-grid{{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}}
@@ -1751,20 +1339,14 @@ def build_profile():
             lastSeen.innerHTML = isOnline ? '<i class="fas fa-circle" style="color:#22c55e;font-size:8px"></i> نشط الآن' : '<i class="fas fa-clock"></i> آخر ظهور: ' + formatTime(u.lastSeen || u.createdAt);
         }}
 
-        // Render video grid
         const grid = document.getElementById('videosGrid');
         grid.innerHTML = '';
         if(!uvs.length) {{ grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-video-slash"></i><p>لا توجد فيديوهات</p></div>'; }}
         else {{
             uvs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).forEach(v => {{
-                const d = document.createElement('div');
-                d.className = 'video-grid-item';
+                const d = document.createElement('div'); d.className = 'video-grid-item';
                 d.onclick = () => window.open(v.url, '_blank');
-                d.innerHTML = `
-                    ${{v.thumbnail ? `<img src="${{v.thumbnail}}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fas fa-play" style="color:#555;font-size:24px"></i></div>'}}
-                    <div class="grid-play-icon"><i class="fas fa-play"></i></div>
-                    <div class="grid-views"><i class="fas fa-heart" style="color:var(--accent)"></i> ${{v.likes || 0}}</div>
-                `;
+                d.innerHTML = `${{v.thumbnail ? `<img src="${{v.thumbnail}}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fas fa-play" style="color:#555;font-size:24px"></i></div>'}}<div class="grid-play-icon"><i class="fas fa-play"></i></div><div class="grid-views"><i class="fas fa-heart" style="color:var(--accent)"></i> ${{v.likes || 0}}</div>`;
                 grid.appendChild(d);
             }});
         }}
@@ -2011,16 +1593,16 @@ def build_chat():
         .bubble{{max-width:80%;padding:10px 16px;border-radius:20px;word-break:break-word;font-size:14px;position:relative;animation:msgIn 0.3s ease}}
         @keyframes msgIn{{from{{opacity:0;transform:translateY(10px)}}to{{opacity:1;transform:translateY(0)}}}}
         .bubble.sent{{background:linear-gradient(135deg,var(--accent),var(--accent2));align-self:flex-end;color:#fff}}
-        .bubble.received{{background:rgba(14,165,233,0.06);align-self:flex-start;border:1px solid rgba(14,165,233,0.1)}}
+        .bubble.received{{background:rgba(255,255,255,0.03);align-self:flex-start;border:1px solid rgba(255,255,255,0.1)}}
         .bubble img{{max-width:200px;border-radius:12px;cursor:pointer;margin-top:4px}}
         .bubble .time{{font-size:9px;opacity:0.6;margin-top:4px}}
         .input-bar{{display:flex;gap:10px;padding:12px;background:rgba(2,6,23,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);align-items:center}}
-        .input-bar input{{flex:1;padding:12px 16px;border-radius:30px;background:var(--glass);border:1px solid var(--border);color:#fff;font-size:14px;outline:none}}
-        .btn-icon{{width:42px;height:42px;background:rgba(14,165,233,0.1);border:1px solid var(--border);border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
+        .input-bar input{{flex:1;padding:12px 16px;border-radius:30px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:#fff;font-size:14px;outline:none}}
+        .btn-icon{{width:42px;height:42px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
         .btn-send{{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}}
         .conv-item{{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--border);cursor:pointer}}
-        .conv-item:hover{{background:rgba(14,165,233,0.04)}}
-        .chat-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(14,165,233,0.3)}}
+        .conv-item:hover{{background:rgba(255,255,255,0.03)}}
+        .chat-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.2)}}
         .chat-avatar img{{width:100%;height:100%;object-fit:cover}}
         .online-indicator{{width:10px;height:10px;background:#22c55e;border-radius:50%;display:inline-block;margin-left:6px}}
     </style>
@@ -2108,7 +1690,7 @@ def build_notifications():
         .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(2,6,23,0.8);backdrop-filter:blur(20px);z-index:10}}
         .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
         .notif-item{{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center}}
-        .notif-icon{{width:40px;height:40px;border-radius:50%;background:rgba(14,165,233,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}}
+        .notif-icon{{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}}
     </style>
 </head>
 <body>
@@ -2147,7 +1729,7 @@ def build_settings():
         .header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(2,6,23,0.8);backdrop-filter:blur(20px);z-index:10}}
         .btn-back{{background:rgba(14,165,233,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}}
         .setting-item{{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s}}
-        .setting-item:hover{{background:var(--glass)}}
+        .setting-item:hover{{background:rgba(255,255,255,0.03)}}
         .setting-item i{{color:var(--accent);font-size:18px;width:30px}}
         .btn-danger{{background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block}}
     </style>
@@ -2176,14 +1758,7 @@ def main():
 ║                                                          ║
 ║  ☁️  MNAENCA 2026 - SKY BLUE LUXURY EDITION  ✨      ║
 ║     Ultimate Generator - 9 Files - 3000+ Lines           ║
-║     ✅ FIXED DESKTOP LAYOUT (Based on your image)    ║
-║                                                          ║
-║  💬 TikTok-Style Comments with Replies                ║
-║  📤 Professional Share System                         ║
-║  👤 Enhanced Profile with Video Grid                  ║
-║  💧 Watermark on Videos                               ║
-║  🔥 Firebase: muvg-42126                              ║
-║  ☁️ Cloudinary: dmqyd0haj                             ║
+║     ✅ NEW MODERN UI (Cards + Stories + Glass)        ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
     """)
@@ -2221,22 +1796,14 @@ def main():
      • {TOTAL_LINES} إجمالي عدد الأسطر
      • 9 ملفات تم إنشاؤها
 
-  📁 الملفات:
-     1. firebase-config.js   → إعدادات Firebase + Cloudinary
-     2. auth.html            → تسجيل دخول + اشتراك
-     3. index.html           → الرئيسية (شكل جانبي + علوي مطابق للصورة)
-     4. profile.html         → ملف شخصي محترف + شبكة فيديوهات
-     5. upload.html          → رفع فيديو
-     6. chat.html            → دردشة خاصة
-     7. explore.html         → استكشاف
-     8. notifications.html   → صفحة الإشعارات
-     9. settings.html        → إعدادات
+  ✨ الميزات الجديدة (تحديث التصميم):
+     • شريط القصص (Stories) في الأعلى.
+     • فيديوهات داخل بطاقات (Cards) بتصميم ناعم.
+     • أزرار تفاعل بتأثير الزجاج (Glassmorphism).
+     • شريط سفلي عائم بتصميم حديث.
+     • شريط علوي نظيف مع تبويبات نصية.
 
-  ✨ التعديلات الحالية (حسب الصورة):
-     • القائمة الجانبية تحتوي على: لوغو، تبويبات (لك/متابعين)، أزرار تنقل، زر رفع +.
-     • الشريط العلوي في الوضع الأفقي يحتوي فقط على: زر الإشعارات وزر البحث.
-
-  ☁️ MNAENCA SKY BLUE READY! ✨
+  ☁️ MNAENCA READY! ✨
 {'='*60}
     """)
 
