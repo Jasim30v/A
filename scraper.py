@@ -79,7 +79,7 @@ def section(title):
     print(f"{'='*60}")
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ COMMON CSS - ستايل مشترك (معدل ليدعم الأفقي والعمودي)
+# ☁️ COMMON CSS - ستايل مشترك (معدل ليطابق الصورة)
 # ═══════════════════════════════════════════════════════════
 
 COMMON_CSS = """
@@ -150,7 +150,7 @@ COMMON_CSS = """
     }
     .btn-close-overlay:hover{background:rgba(14,165,233,0.25);box-shadow:0 0 15px rgba(14,165,233,0.3)}
 
-    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
+    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Tablet/Desktop (Horizontal) ✨ */
     
     /* الوضع العمودي (الافتراضي - للموبايل) */
     #mainApp {
@@ -159,60 +159,136 @@ COMMON_CSS = """
         height: 100vh;
         width: 100vw;
         position: relative;
+        background: #000;
     }
 
     /* إخفاء عناصر الأفقي في الموبايل */
     .desktop-sidebar { display: none; }
-    .desktop-header { display: none; }
+    .desktop-topbar { display: none; }
 
-    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
-    @media screen and (min-width: 800px) {
-        body { overflow: hidden; }
+    /* --- عند التدوير (أو شاشات أكبر من 900px) --- */
+    @media screen and (min-width: 900px) {
+        body { overflow: hidden; background: #020617; }
         
         #mainApp {
             flex-direction: row; /* تحويل التخطيط لأفقي */
             height: 100vh;
             width: 100vw;
+            background: var(--bg);
         }
 
-        /* القائمة الجانبية (الأفقي) */
+        /* القائمة الجانبية (الأفقي - حسب الصورة) */
         .desktop-sidebar {
             display: flex;
             flex-direction: column;
-            width: 280px;
+            width: 300px;
             height: 100vh;
-            padding: 24px 16px;
+            padding: 24px 20px;
             border-right: 1px solid var(--border);
-            background: rgba(2,6,23,0.6);
+            background: var(--bg);
             flex-shrink: 0;
             overflow-y: auto;
+            position: relative;
         }
 
-        /* تنسيقات القائمة الجانبية */
-        .sidebar-logo {
-            font-size: 24px;
+        .sidebar-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
             font-weight: 800;
-            margin-bottom: 30px;
-            background: linear-gradient(to bottom,#fff,#7dd3fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 24px;
+            padding: 0 8px;
+        }
+        .sidebar-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            gap: 6px;
+            background: rgba(2,6,23,0.4);
+            border-radius: 40px;
+            padding: 4px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+        .sidebar-tab {
+            flex: 1;
+            padding: 10px 0;
+            background: none; border: none;
+            color: rgba(255,255,255,0.6);
+            border-radius: 30px;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sidebar-tab.active {
+            background: rgba(14, 165, 233, 0.2);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .sidebar-nav-list {
+            display: flex; flex-direction: column; gap: 6px; flex: 1;
         }
         .sidebar-nav-item {
             display: flex; align-items: center; gap: 14px;
-            padding: 12px 16px; margin-bottom: 6px;
-            border-radius: 16px; cursor: pointer;
-            font-size: 15px; font-weight: 500;
-            color: rgba(255,255,255,0.7);
-            transition: all 0.3s;
+            padding: 12px 16px; border-radius: 12px;
+            cursor: pointer; font-size: 16px; font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.2s; text-decoration: none;
         }
         .sidebar-nav-item:hover, .sidebar-nav-item.active {
-            background: rgba(14,165,233,0.1);
             color: #fff;
+            background: rgba(255,255,255,0.03);
         }
-        .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
-        
-        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
+        .sidebar-nav-item i {
+            font-size: 20px; width: 24px; text-align: center;
+        }
+        .sidebar-nav-item.active i { color: var(--accent); }
+
+        .sidebar-add-btn {
+            position: absolute;
+            bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 56px; height: 56px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 24px;
+            box-shadow: 0 8px 25px rgba(14,165,233,0.5);
+            cursor: pointer; text-decoration: none;
+            transition: all 0.3s;
+        }
+        .sidebar-add-btn:hover { transform: translateX(-50%) scale(1.1); }
+
+        /* الشريط العلوي للأفقي */
+        .desktop-topbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            position: absolute;
+            top: 0; right: 0; left: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .desktop-topbar .top-icon {
+            pointer-events: auto;
+            background: rgba(2,6,23,0.8); backdrop-filter: blur(10px);
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 18px; cursor: pointer;
+            border: 1px solid var(--border); transition: all 0.3s;
+        }
+        .desktop-topbar .top-icon:hover { background: rgba(14,165,233,0.2); border-color: var(--accent); }
+
+        /* إخفاء الشريط السفلي والشريط العلوي القديم */
         .topbar { display: none !important; }
         .nav-bottom { display: none !important; }
 
@@ -221,12 +297,13 @@ COMMON_CSS = """
             flex: 1;
             height: 100vh;
             width: auto;
+            background: #000;
         }
         .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
         
         /* تعديل مساحة العناصر الجانبية للأفقي */
         .side-btns { bottom: 40px; right: 30px; }
-        .vid-info { bottom: 40px; left: 30px; right: 90px; }
+        .vid-info { bottom: 60px; left: 24px; right: 100px; }
     }
 """
 
@@ -488,7 +565,7 @@ def build_auth():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# ☁️ 3. index.html - الرئيسية (مع تعديل هيكلية HTML لتناسب الأفقي)
+# ☁️ 3. index.html - الرئيسية (معدلة لتحاكي الصورة المطلوبة)
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
@@ -836,18 +913,25 @@ def build_index():
 <div id="mainApp">
     <!-- ✨ الهيكل الخاص بالوضع الأفقي (يظهر فقط عند التدوير) -->
     <div class="desktop-sidebar">
-        <div class="sidebar-logo"><div class="logo-icon">☁️</div> MNAENCA</div>
-        
-        <div class="sidebar-nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> الرئيسية</div>
-        <div class="sidebar-nav-item" onclick="openSearch()"><i class="fas fa-search"></i> بحث</div>
-        <div class="sidebar-nav-item" onclick="openNotifs()"><i class="fas fa-bell"></i> الإشعارات</div>
-        <div class="sidebar-nav-item" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</div>
-        <div class="sidebar-nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user"></i> ملفي</div>
-        
-        <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 20px;">
-            <div class="sidebar-nav-item" onclick="window.location.href='upload.html'"><i class="fas fa-plus-circle" style="color: var(--accent);"></i> رفع فيديو</div>
-            <div class="sidebar-nav-item" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</div>
+        <div class="sidebar-logo-wrap">
+            <div class="sidebar-logo-icon">☁️</div>
+            <span>MNAENCA</span>
         </div>
+        
+        <div class="sidebar-tabs">
+            <button class="sidebar-tab active" onclick="switchDesktopFeed('forYou')">لك</button>
+            <button class="sidebar-tab" onclick="switchDesktopFeed('following')">متابعين</button>
+        </div>
+
+        <div class="sidebar-nav-list">
+            <div class="sidebar-nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> الرئيسية</div>
+            <div class="sidebar-nav-item" onclick="openSearch()"><i class="fas fa-search"></i> بحث</div>
+            <div class="sidebar-nav-item" onclick="openNotifs()"><i class="fas fa-bell"></i> الإشعارات</div>
+            <div class="sidebar-nav-item" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</div>
+            <div class="sidebar-nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user"></i> ملفي</div>
+        </div>
+        
+        <a href="upload.html" class="sidebar-add-btn"><i class="fas fa-plus"></i></a>
     </div>
 
     <!-- ✨ محتوى الموقع الأساسي -->
@@ -866,6 +950,12 @@ def build_index():
                 <i class="fas fa-search top-icon" onclick="openSearch()"></i>
                 <i class="fas fa-bell top-icon" onclick="openNotifs()"><span class="notif-badge" id="notifBadge"></span></i>
             </div>
+        </div>
+
+        <!-- الشريط العلوي للوضع الأفقي (بحث + إشعارات فقط) -->
+        <div class="desktop-topbar">
+            <div class="top-icon" onclick="openNotifs()"><i class="fas fa-bell"></i></div>
+            <div class="top-icon" onclick="openSearch()"><i class="fas fa-search"></i></div>
         </div>
 
         <div class="videos-wrap" id="videosWrap">
@@ -1293,6 +1383,14 @@ def build_index():
 
     function toggleMute() {{ isMuted = !isMuted; document.querySelectorAll('video').forEach(v => v.muted = isMuted); }}
     function switchFeed(feed) {{ currentFeed = feed; document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); renderVideos(); }}
+    
+    function switchDesktopFeed(feed) {{
+        currentFeed = feed; 
+        document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        renderVideos();
+    }}
+    window.switchDesktopFeed = switchDesktopFeed;
 
     async function toggleLike(videoId, btn) {{
         if(!currentUser) return;
@@ -2078,7 +2176,7 @@ def main():
 ║                                                          ║
 ║  ☁️  MNAENCA 2026 - SKY BLUE LUXURY EDITION  ✨      ║
 ║     Ultimate Generator - 9 Files - 3000+ Lines           ║
-║     ✅ NOW RESPONSIVE (Vertical ↔ Horizontal)        ║
+║     ✅ FIXED DESKTOP LAYOUT (Based on your image)    ║
 ║                                                          ║
 ║  💬 TikTok-Style Comments with Replies                ║
 ║  📤 Professional Share System                         ║
@@ -2126,7 +2224,7 @@ def main():
   📁 الملفات:
      1. firebase-config.js   → إعدادات Firebase + Cloudinary
      2. auth.html            → تسجيل دخول + اشتراك
-     3. index.html           → الرئيسية + (شكل عمودي / أفقي حسب الشاشة)
+     3. index.html           → الرئيسية (شكل جانبي + علوي مطابق للصورة)
      4. profile.html         → ملف شخصي محترف + شبكة فيديوهات
      5. upload.html          → رفع فيديو
      6. chat.html            → دردشة خاصة
@@ -2134,9 +2232,9 @@ def main():
      8. notifications.html   → صفحة الإشعارات
      9. settings.html        → إعدادات
 
-  ✨ تم إضافة خاصية التصميم المتجاوب (Responsive):
-     • في الموبايل: يظهر كشريط سفلي (صورة 2)
-     • في الكمبيوتر/التدوير: يتحول لقائمة جانبية أفقية (صورة 1)
+  ✨ التعديلات الحالية (حسب الصورة):
+     • القائمة الجانبية تحتوي على: لوغو، تبويبات (لك/متابعين)، أزرار تنقل، زر رفع +.
+     • الشريط العلوي في الوضع الأفقي يحتوي فقط على: زر الإشعارات وزر البحث.
 
   ☁️ MNAENCA SKY BLUE READY! ✨
 {'='*60}
