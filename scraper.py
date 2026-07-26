@@ -12,6 +12,8 @@
 ║  👾  Avatars: DiceBear Big Smile (Random)                  ║
 ║  💎  Design: Light Green Glass Luxury                      ║
 ║  ✨  RESPONSIVE (Mobile + Desktop/Landscape)            ║
+║  🎬  NATURAL VIDEO DISPLAY (No Zoom/Crop)               ║
+║  📝  TEXT BELOW VIDEO                                    ║
 ║                                                            ║
 ╚══════════════════════════════════════════════════════════════╝
 """
@@ -269,7 +271,7 @@ console.log('💎 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #10b981; f
 """
 
 # ═══════════════════════════════════════════════════════════
-# 💎 2. auth.html - تسجيل الدخول والاشتراك
+# 💎 2. auth.html - تسجيل الدخول والاشتراك (مطور بالكامل)
 # ═══════════════════════════════════════════════════════════
 
 def build_auth():
@@ -480,7 +482,7 @@ def build_auth():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# 💎 3. index.html - الرئيسية
+# 💎 3. index.html - الرئيسية (فيديو طبيعي + نص أسفل الفيديو)
 # ═══════════════════════════════════════════════════════════
 
 def build_index():
@@ -511,7 +513,6 @@ def build_index():
             animation:spin 0.8s linear infinite;
         }}
 
-        /* ----- Mobile Layout (Vertical) ----- */
         .topbar{{
             position:fixed;top:10px;left:10px;right:10px;z-index:100;
             display:flex;justify-content:space-between;align-items:center;
@@ -565,59 +566,86 @@ def build_index():
             scrollbar-width:none;-ms-overflow-style:none;
         }}
         .videos-wrap::-webkit-scrollbar{{display:none}}
-        .vid-card{{height:100vh;scroll-snap-align:start;position:relative;background:#000}}
+        
+        /* ✨ بطاقة الفيديو - عرض طبيعي مع نص أسفل الفيديو */
+        .vid-card{{
+            height:100vh;
+            scroll-snap-align:start;
+            position:relative;
+            background:#000;
+            display: flex;
+            flex-direction: column;
+        }}
+
+        /* ✨ حاوية الفيديو - عرض طبيعي بدون تكبير */
+        .video-container {{
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            overflow: hidden;
+        }}
 
         .vid-card video {{
-            width:100%;height:100%;object-fit:cover;
-            opacity:0;transform:translateY(60px);
-            transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.16,1,0.3,1);
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            opacity:0;
+            transition:opacity 0.6s ease;
         }}
-        .vid-card.active video {{opacity:1;transform:translateY(0)}}
+        .vid-card.active video {{opacity:1;}}
 
+        /* ✨ منطقة النص أسفل الفيديو */
         .vid-info{{
-            position:absolute;bottom:90px;left:14px;right:80px;z-index:20;
-            text-shadow:0 2px 10px rgba(0,0,0,0.8);
+            position: relative;
+            padding: 12px 60px 100px 16px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.7), transparent);
+            z-index:20;
+            flex-shrink: 0;
+            min-height: 120px;
         }}
         .author-row{{display:flex;align-items:center;gap:10px;margin-bottom:6px}}
         .author-avatar{{
-            width:50px;height:50px;border-radius:50%;overflow:hidden;
+            width:40px;height:40px;border-radius:50%;overflow:hidden;
             cursor:pointer;position:relative;
             background:linear-gradient(135deg, #10b981, #34d399, #a7f3d0);
-            padding:3px;
+            padding:2px;flex-shrink:0;
             animation:storyRing 3s ease-in-out infinite;
-            flex-shrink:0;
         }}
         @keyframes storyRing{{0%,100%{{box-shadow:0 0 15px rgba(16,185,129,0.4)}}50%{{box-shadow:0 0 25px rgba(52,211,153,0.8)}}}}
         .author-avatar img{{width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--bg)}}
         .author-name{{
-            font-weight:700;font-size:15px;cursor:pointer;
+            font-weight:700;font-size:14px;cursor:pointer;
             display:flex;align-items:center;gap:6px;flex-wrap:wrap;
         }}
         .verified-badge-main{{
             background:linear-gradient(135deg, #10b981, #34d399);
-            color:#fff;font-size:10px;padding:2px 5px;border-radius:50%;
+            color:#fff;font-size:9px;padding:1px 4px;border-radius:50%;
             display:inline-flex;align-items:center;justify-content:center;
-            width:18px;height:18px;font-weight:bold;
+            width:16px;height:16px;font-weight:bold;
             box-shadow:0 0 12px rgba(167,243,208,0.6);
         }}
         .btn-follow{{
             background:linear-gradient(135deg,var(--accent),var(--accent2));
-            padding:5px 14px;border-radius:20px;font-size:11px;
+            padding:4px 12px;border-radius:20px;font-size:10px;
             font-weight:700;border:none;color:#fff;cursor:pointer;
             box-shadow:0 4px 15px rgba(16,185,129,0.4);
             transition:all 0.3s;white-space:nowrap;
         }}
-        .btn-follow:hover{{box-shadow:0 8px 25px rgba(16,185,129,0.7);transform:translateY(-1px)}}
-        .caption{{font-size:14px;margin-bottom:5px;line-height:1.4}}
+        .btn-follow:hover{{box-shadow:0 8px 25px rgba(16,185,129,0.7);}}
+        .caption{{font-size:13px;margin-bottom:4px;line-height:1.4;opacity:0.9}}
         .tag{{color:var(--accent2);cursor:pointer;font-weight:500}}
-        .music{{font-size:12px;opacity:0.8;display:flex;align-items:center;gap:6px;cursor:pointer}}
-        .music-wave{{display:flex;gap:2px;align-items:flex-end;height:16px}}
+        .music{{font-size:11px;opacity:0.7;display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:4px}}
+        .music-wave{{display:flex;gap:2px;align-items:flex-end;height:14px}}
         .music-wave span{{width:2px;background:var(--accent2);border-radius:1px;animation:musicWave 1s ease-in-out infinite}}
-        .music-wave span:nth-child(1){{height:8px;animation-delay:0s}}
-        .music-wave span:nth-child(2){{height:14px;animation-delay:0.15s}}
-        .music-wave span:nth-child(3){{height:6px;animation-delay:0.3s}}
-        .music-wave span:nth-child(4){{height:12px;animation-delay:0.45s}}
-        .music-wave span:nth-child(5){{height:4px;animation-delay:0.6s}}
+        .music-wave span:nth-child(1){{height:6px;animation-delay:0s}}
+        .music-wave span:nth-child(2){{height:12px;animation-delay:0.15s}}
+        .music-wave span:nth-child(3){{height:4px;animation-delay:0.3s}}
+        .music-wave span:nth-child(4){{height:10px;animation-delay:0.45s}}
+        .music-wave span:nth-child(5){{height:3px;animation-delay:0.6s}}
         @keyframes musicWave{{0%,100%{{transform:scaleY(1)}}50%{{transform:scaleY(1.8)}}}}
 
         /* 💧 Watermark */
@@ -625,17 +653,17 @@ def build_index():
             position:absolute;top:20px;right:20px;
             z-index:15;pointer-events:none;
             display:flex;align-items:center;gap:6px;
-            opacity:0.6;
+            opacity:0.5;
         }}
         .watermark-overlay span{{
-            font-weight:700;font-size:13px;
+            font-weight:700;font-size:12px;
             text-shadow:0 2px 8px rgba(0,0,0,0.6);
             color:#fff;
         }}
 
         .side-btns{{
-            position:absolute;right:14px;bottom:130px;
-            display:flex;flex-direction:column;gap:22px;z-index:20;
+            position:absolute;right:12px;bottom:140px;
+            display:flex;flex-direction:column;gap:20px;z-index:20;
         }}
         .sbtn{{
             display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -643,10 +671,10 @@ def build_index():
             font-size:10px;transition:transform 0.15s;
         }}
         .sbtn:active{{transform:scale(0.85)}}
-        .sbtn i{{font-size:28px;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.5))}}
+        .sbtn i{{font-size:26px;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.5))}}
         .sbtn.liked i{{color:var(--accent);animation:likePop 0.4s ease}}
         @keyframes likePop{{0%{{transform:scale(1)}}50%{{transform:scale(1.4)}}100%{{transform:scale(1)}}}}
-        .sbtn .cnt{{font-weight:700;font-size:11px}}
+        .sbtn .cnt{{font-weight:700;font-size:10px}}
 
         /* 📤 Share Panel */
         .share-panel{{
@@ -782,6 +810,61 @@ def build_index():
             z-index:101;transition:all 0.3s;text-decoration:none;
         }}
         .btn-add:hover{{transform:scale(1.1);box-shadow:0 15px 40px rgba(16,185,129,0.8)}}
+
+        /* ✨ RESPONSIVE: عرض أفقي للشاشات الكبيرة */
+        @media screen and (min-width: 800px) {{
+            .vid-card {{
+                flex-direction: row;
+            }}
+            .video-container {{
+                flex: 1;
+            }}
+            .vid-card video {{
+                max-height: 100vh;
+            }}
+            .vid-info {{
+                width: 350px;
+                padding: 20px;
+                background: linear-gradient(to left, rgba(0,0,0,0.9), rgba(0,0,0,0.3));
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+            }}
+            .side-btns {{
+                position: static;
+                flex-direction: row;
+                gap: 25px;
+                justify-content: center;
+                margin-top: 20px;
+            }}
+            .side-btns .sbtn i {{
+                font-size: 24px;
+            }}
+        }}
+
+        @media screen and (orientation: landscape) and (max-width: 800px) {{
+            .vid-card {{
+                flex-direction: row;
+            }}
+            .video-container {{
+                flex: 1;
+            }}
+            .vid-info {{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 70px;
+                background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+                padding: 40px 16px 16px;
+                min-height: auto;
+            }}
+            .side-btns {{
+                position: absolute;
+                right: 10px;
+                bottom: 20px;
+                flex-direction: column;
+            }}
+        }}
     </style>
 </head>
 <body>
@@ -1056,7 +1139,9 @@ def build_index():
             div.className = 'vid-card';
             div.innerHTML = `
                 <div class="watermark-overlay"><span>💎 MNAENCA</span></div>
-                <video loop playsinline muted data-src="${{video.url}}" poster="${{video.thumbnail || ''}}"></video>
+                <div class="video-container">
+                    <video loop playsinline muted data-src="${{video.url}}" poster="${{video.thumbnail || ''}}"></video>
+                </div>
                 <div class="vid-info">
                     <div class="author-row">
                         <div class="author-avatar" onclick="openUserProfile('${{video.sender}}')"><img src="${{avatarUrl}}" alt="avatar"></div>
@@ -2111,7 +2196,7 @@ def build_profile():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# 💎 5-8. الملفات المتبقية (مختصرة)
+# 💎 5. upload.html - رفع فيديو
 # ═══════════════════════════════════════════════════════════
 
 def build_upload():
@@ -2232,6 +2317,10 @@ def build_upload():
 </body>
 </html>"""
 
+# ═══════════════════════════════════════════════════════════
+# 💎 6. chat.html - دردشة
+# ═══════════════════════════════════════════════════════════
+
 def build_chat():
     return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -2327,6 +2416,10 @@ def build_chat():
 </body>
 </html>"""
 
+# ═══════════════════════════════════════════════════════════
+# 💎 7. explore.html - استكشاف
+# ═══════════════════════════════════════════════════════════
+
 def build_explore():
     return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -2339,6 +2432,10 @@ def build_explore():
 <body><div class="header"><a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-globe" style="color:var(--accent)"></i> استكشاف</h2></div><div class="grid" id="exploreGrid"><div class="spinner" style="grid-column:1/-1;padding:50px"></div></div>
 <script src="firebase-config.js"></script>
 <script>let currentUser=null;auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;loadExplore()}});async function loadExplore(){{const snap=await db.ref('videos').once('value');const videos=snap.val()||{{}};const allVids=Object.entries(videos).map(([k,v])=>({{id:k,...v}})).sort((a,b)=>(b.likes||0)-(a.likes||0));const g=document.getElementById('exploreGrid');if(!allVids.length){{g.innerHTML='<div style="text-align:center;padding:60px;grid-column:1/-1;opacity:0.5"><i class="fas fa-video-slash" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block"></i><p>لا توجد فيديوهات</p></div>';return}}g.innerHTML=allVids.map(v=>`<div class="thumb" onclick="window.open('${{v.url}}','_blank')">${{v.thumbnail?`<img src="${{v.thumbnail}}" loading="lazy">`:''}}<i class="fas fa-play"></i><span class="views"><i class="fas fa-heart" style="color:#10b981;margin-right:4px"></i>${{v.likes||0}}</span></div>`).join('')}}</script></body></html>"""
+
+# ═══════════════════════════════════════════════════════════
+# 💎 8. notifications.html - إشعارات
+# ═══════════════════════════════════════════════════════════
 
 def build_notifications():
     return f"""<!DOCTYPE html>
@@ -2353,6 +2450,10 @@ def build_notifications():
 <script src="firebase-config.js"></script>
 <script>let currentUser=null;auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;loadNotifs()}});async function loadNotifs(){{const snap=await db.ref('notifications/'+currentUser.uid).once('value');const ns=snap.val()||{{}};const c=document.getElementById('notifsList');const items=Object.values(ns).reverse();if(!items.length){{c.innerHTML='<div style="text-align:center;opacity:0.5;padding:60px"><i class="fas fa-bell" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';return}}c.innerHTML=items.map(n=>`<div class="notif-item"><div class="notif-icon"><i class="fas fa-bell"></i></div><div><div style="font-weight:600;font-size:14px">${{n.from||'مستخدم'}}</div><div style="font-size:12px;opacity:0.6;margin-top:3px">${{n.msg||''}}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${{new Date(n.timestamp).toLocaleString('ar-SA')}}</div></div></div>`).join('');await db.ref('notifications/'+currentUser.uid).remove()}}</script></body></html>"""
 
+# ═══════════════════════════════════════════════════════════
+# 💎 9. settings.html - إعدادات
+# ═══════════════════════════════════════════════════════════
+
 def build_settings():
     return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -2364,6 +2465,10 @@ def build_settings():
 <style>{COMMON_CSS}body{{min-height:100vh;overflow-y:auto;background:var(--bg)}}.header{{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);z-index:10}}.btn-back{{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}}.setting-item{{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s}}.setting-item:hover{{background:var(--glass)}}.setting-item i{{color:var(--accent);font-size:18px;width:30px}}.btn-danger{{background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block;transition:all 0.3s}}.btn-danger:hover{{background:rgba(239,68,68,0.3);box-shadow:0 0 20px rgba(239,68,68,0.2)}}</style></head>
 <body><div class="header"><a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-cog" style="color:var(--accent)"></i> الإعدادات</h2></div><div style="padding:8px 0"><div class="setting-item" onclick="window.location.href='profile.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user"></i><span>تعديل الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div><div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-lock"></i><span>الخصوصية</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div><div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px">العربية</span></div><div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">v2026.4 💎</span></div><button class="btn-danger" onclick="if(confirm('هل أنت متأكد من تسجيل الخروج؟')){{auth.signOut();window.location.href='auth.html'}}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button></div>
 <script src="firebase-config.js"></script><script>auth.onAuthStateChanged(u=>{{if(!u)window.location.href='auth.html'}});</script></body></html>"""
+
+# ═══════════════════════════════════════════════════════════
+# 💎 10. profile-videos.html - جميع الفيديوهات
+# ═══════════════════════════════════════════════════════════
 
 def build_profile_videos():
     """صفحة عرض جميع فيديوهات المستخدم"""
@@ -2426,6 +2531,9 @@ def main():
 ║     PROFILE 2.0 - Advanced Professional Version          ║
 ║     10 Files - 4000+ Lines                               ║
 ║                                                          ║
+║  🎬 NATURAL VIDEO DISPLAY (No Zoom/Crop)               ║
+║  📝 TEXT BELOW VIDEO                                    ║
+║  📱 RESPONSIVE (Mobile + Landscape + Desktop)          ║
 ║  👥 Followers/Following Modal with Actions              ║
 ║  🎬 Video Player Modal (In-App)                         ║
 ║  📝 Posts System (Create/Like/Delete)                   ║
@@ -2469,8 +2577,8 @@ def main():
 
   📁 الملفات:
      1. firebase-config.js    → إعدادات Firebase + Cloudinary
-     2. auth.html             → تسجيل دخول + اشتراك
-     3. index.html            → الرئيسية + (عمودي / أفقي)
+     2. auth.html             → ✨ تسجيل دخول + اشتراك مطور
+     3. index.html            → 🎬 الرئيسية (فيديو طبيعي + نص أسفل)
      4. profile.html          → ✨ ملف شخصي 2.0 متطور
      5. upload.html           → رفع فيديو مع تتبع التقدم
      6. chat.html             → دردشة خاصة
@@ -2479,13 +2587,17 @@ def main():
      9. settings.html         → إعدادات
      10. profile-videos.html  → صفحة جميع الفيديوهات
 
-  🆕 المميزات الجديدة في الملف الشخصي 2.0:
-     • نافذة منبثقة للمتابعين والمتابَعين مع أزرار متابعة
-     • تشغيل الفيديوهات داخل مشغل داخلي بدلاً من فتحها خارجياً
-     • نظام منشورات (Posts) مع إمكانية الإنشاء والحذف والإعجاب
-     • إحصائيات متحركة وتفاعلية
-     • تأثيرات بصرية زجاجية فاخرة
-     • عرض كل الفيديوهات في صفحة منفصلة
+  🆕 التحسينات الجديدة:
+     • 🎬 عرض الفيديو بشكله الطبيعي (contain) بدون تكبير
+     • 📝 النص يظهر أسفل الفيديو في تخطيط منفصل
+     • 📱 دعم كامل للعرض الأفقي (Landscape)
+     • 🖥️ دعم الشاشات الكبيرة (Desktop)
+     • 🔐 واجهة تسجيل دخول واشتراك مطورة بالكامل
+     • 💬 نظام تعليقات متقدم مع ردود
+     • 📤 نظام مشاركة متعدد المنصات
+     • 👥 نافذة منبثقة للمتابعين مع أزرار متابعة
+     • 📝 نظام منشورات متكامل
+     • 🛡️ لوحة تحكم أدمن متكاملة
 
   💎 MNAENCA PROFILE 2.0 READY! ✨
 {'='*60}
