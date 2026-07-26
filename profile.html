@@ -459,7 +459,9 @@
     }
     async function copyProfile() {
         const u = allUsers[profileUserId];
-        const text = `👤 @${u.username || 'مستخدم'}\n📝 ${u.bio || ''}\n☁️ MNAENCA 2026`;
+        const text = `👤 @${u.username || 'مستخدم'}
+📝 ${u.bio || ''}
+☁️ MNAENCA 2026`;
         try { await navigator.clipboard.writeText(text); } catch(e) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
         showToast('✅ تم نسخ معلومات الملف الشخصي');
     }
@@ -468,8 +470,10 @@
         const list = type === 'followers' ? (u?.followers || {}) : (u?.following || {});
         const ids = Object.keys(list);
         if(!ids.length) { alert('لا يوجد'); return; }
-        const names = ids.map(id => { const user = allUsers[id]; return user ? '@' + user.username : 'مستخدم'; }).join('\n');
-        alert((type === 'followers' ? 'المتابِعون' : 'المتابَعون') + ':\n' + names);
+        const names = ids.map(id => { const user = allUsers[id]; return user ? '@' + user.username : 'مستخدم'; }).join('
+');
+        alert((type === 'followers' ? 'المتابِعون' : 'المتابَعون') + ':
+' + names);
     }
     function showToast(msg) { const toast = document.getElementById('toastMsg'); toast.innerText = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
     function formatTime(ts) {
