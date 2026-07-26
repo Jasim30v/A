@@ -77,7 +77,7 @@
     }
     .btn-close-overlay:hover{background:rgba(14,165,233,0.25);box-shadow:0 0 15px rgba(14,165,233,0.3)}
 
-    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
+    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Tablet/Desktop (Horizontal) ✨ */
     
     /* الوضع العمودي (الافتراضي - للموبايل) */
     #mainApp {
@@ -86,60 +86,136 @@
         height: 100vh;
         width: 100vw;
         position: relative;
+        background: #000;
     }
 
     /* إخفاء عناصر الأفقي في الموبايل */
     .desktop-sidebar { display: none; }
-    .desktop-header { display: none; }
+    .desktop-topbar { display: none; }
 
-    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
-    @media screen and (min-width: 800px) {
-        body { overflow: hidden; }
+    /* --- عند التدوير (أو شاشات أكبر من 900px) --- */
+    @media screen and (min-width: 900px) {
+        body { overflow: hidden; background: #020617; }
         
         #mainApp {
             flex-direction: row; /* تحويل التخطيط لأفقي */
             height: 100vh;
             width: 100vw;
+            background: var(--bg);
         }
 
-        /* القائمة الجانبية (الأفقي) */
+        /* القائمة الجانبية (الأفقي - حسب الصورة) */
         .desktop-sidebar {
             display: flex;
             flex-direction: column;
-            width: 280px;
+            width: 300px;
             height: 100vh;
-            padding: 24px 16px;
+            padding: 24px 20px;
             border-right: 1px solid var(--border);
-            background: rgba(2,6,23,0.6);
+            background: var(--bg);
             flex-shrink: 0;
             overflow-y: auto;
+            position: relative;
         }
 
-        /* تنسيقات القائمة الجانبية */
-        .sidebar-logo {
-            font-size: 24px;
+        .sidebar-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
             font-weight: 800;
-            margin-bottom: 30px;
-            background: linear-gradient(to bottom,#fff,#7dd3fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 24px;
+            padding: 0 8px;
+        }
+        .sidebar-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            gap: 6px;
+            background: rgba(2,6,23,0.4);
+            border-radius: 40px;
+            padding: 4px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+        .sidebar-tab {
+            flex: 1;
+            padding: 10px 0;
+            background: none; border: none;
+            color: rgba(255,255,255,0.6);
+            border-radius: 30px;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sidebar-tab.active {
+            background: rgba(14, 165, 233, 0.2);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .sidebar-nav-list {
+            display: flex; flex-direction: column; gap: 6px; flex: 1;
         }
         .sidebar-nav-item {
             display: flex; align-items: center; gap: 14px;
-            padding: 12px 16px; margin-bottom: 6px;
-            border-radius: 16px; cursor: pointer;
-            font-size: 15px; font-weight: 500;
-            color: rgba(255,255,255,0.7);
-            transition: all 0.3s;
+            padding: 12px 16px; border-radius: 12px;
+            cursor: pointer; font-size: 16px; font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.2s; text-decoration: none;
         }
         .sidebar-nav-item:hover, .sidebar-nav-item.active {
-            background: rgba(14,165,233,0.1);
             color: #fff;
+            background: rgba(255,255,255,0.03);
         }
-        .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
-        
-        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
+        .sidebar-nav-item i {
+            font-size: 20px; width: 24px; text-align: center;
+        }
+        .sidebar-nav-item.active i { color: var(--accent); }
+
+        .sidebar-add-btn {
+            position: absolute;
+            bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 56px; height: 56px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 24px;
+            box-shadow: 0 8px 25px rgba(14,165,233,0.5);
+            cursor: pointer; text-decoration: none;
+            transition: all 0.3s;
+        }
+        .sidebar-add-btn:hover { transform: translateX(-50%) scale(1.1); }
+
+        /* الشريط العلوي للأفقي */
+        .desktop-topbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            position: absolute;
+            top: 0; right: 0; left: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .desktop-topbar .top-icon {
+            pointer-events: auto;
+            background: rgba(2,6,23,0.8); backdrop-filter: blur(10px);
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 18px; cursor: pointer;
+            border: 1px solid var(--border); transition: all 0.3s;
+        }
+        .desktop-topbar .top-icon:hover { background: rgba(14,165,233,0.2); border-color: var(--accent); }
+
+        /* إخفاء الشريط السفلي والشريط العلوي القديم */
         .topbar { display: none !important; }
         .nav-bottom { display: none !important; }
 
@@ -148,12 +224,13 @@
             flex: 1;
             height: 100vh;
             width: auto;
+            background: #000;
         }
         .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
         
         /* تعديل مساحة العناصر الجانبية للأفقي */
         .side-btns { bottom: 40px; right: 30px; }
-        .vid-info { bottom: 40px; left: 30px; right: 90px; }
+        .vid-info { bottom: 60px; left: 24px; right: 100px; }
     }
 
         body{
