@@ -1,6 +1,6 @@
 // 💎 MNAENCA 2026 - Emerald Green Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: trz3ktjf
-// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile + Voice + Image
+// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile + Posts
 
 const firebaseConfig = {
     apiKey: "AIzaSyCqDvG98pEqmZHKZienquJEq6gS1kNjK8M",
@@ -37,7 +37,7 @@ const COVER_COLORS = [
 
 // 💎 App Info
 const APP_NAME = "MNAENCA";
-const APP_VERSION = "2026.3";
+const APP_VERSION = "2026.4";
 const PRIMARY_COLOR = "#10b981";
 const SECONDARY_COLOR = "#a7f3d0";
 const WATERMARK_TEXT = "💎 MNAENCA";

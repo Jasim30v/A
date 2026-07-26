@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>💎 MNAENCA | إعدادات</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>💎 MNAENCA | إعدادات</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
     :root{
         --glass:rgba(16,185,129,0.03);
         --border:rgba(16,185,129,0.12);
@@ -77,9 +73,7 @@
     }
     .btn-close-overlay:hover{background:rgba(16,185,129,0.25);box-shadow:0 0 15px rgba(16,185,129,0.3)}
 
-    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
-    
-    /* الوضع العمودي (الافتراضي - للموبايل) */
+    /* ✨ RESPONSIVE LAYOUT ✨ */
     #mainApp {
         display: flex;
         flex-direction: column;
@@ -88,21 +82,18 @@
         position: relative;
     }
 
-    /* إخفاء عناصر الأفقي في الموبايل */
     .desktop-sidebar { display: none; }
     .desktop-header { display: none; }
 
-    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
     @media screen and (min-width: 800px) {
         body { overflow: hidden; }
         
         #mainApp {
-            flex-direction: row; /* تحويل التخطيط لأفقي */
+            flex-direction: row;
             height: 100vh;
             width: 100vw;
         }
 
-        /* القائمة الجانبية (الأفقي) */
         .desktop-sidebar {
             display: flex;
             flex-direction: column;
@@ -115,7 +106,6 @@
             overflow-y: auto;
         }
 
-        /* تنسيقات القائمة الجانبية */
         .sidebar-logo {
             font-size: 24px;
             font-weight: 800;
@@ -139,11 +129,9 @@
         }
         .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
         
-        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
         .topbar { display: none !important; }
         .nav-bottom { display: none !important; }
 
-        /* ضبط منطقة الفيديوهات لتملأ الشاشة المتبقية */
         .videos-wrap {
             flex: 1;
             height: 100vh;
@@ -151,31 +139,9 @@
         }
         .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
         
-        /* تعديل مساحة العناصر الجانبية للأفقي */
         .side-btns { bottom: 40px; right: 30px; }
         .vid-info { bottom: 40px; left: 30px; right: 90px; }
     }
-
-        body{min-height:100vh;overflow-y:auto;background:var(--bg)}
-        .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);z-index:10}
-        .btn-back{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}
-        .setting-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s}
-        .setting-item:hover{background:var(--glass)}
-        .setting-item i{color:var(--accent);font-size:18px;width:30px}
-        .btn-danger{background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block;transition:all 0.3s}
-        .btn-danger:hover{background:rgba(239,68,68,0.3);box-shadow:0 0 20px rgba(239,68,68,0.2)}
-    </style>
-</head>
-<body>
-<div class="header"><a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-cog" style="color:var(--accent)"></i> الإعدادات</h2></div>
-<div style="padding:8px 0">
-    <div class="setting-item" onclick="window.location.href='profile.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user"></i><span>تعديل الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-lock"></i><span>الخصوصية</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px">العربية</span></div>
-    <div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">v2026.3 💎</span></div>
-    <button class="btn-danger" onclick="if(confirm('هل أنت متأكد من تسجيل الخروج؟')){auth.signOut();window.location.href='auth.html'}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
-</div>
-<script src="firebase-config.js"></script>
-<script>auth.onAuthStateChanged(u=>{if(!u)window.location.href='auth.html'});</script>
-</body>
-</html>
+body{min-height:100vh;overflow-y:auto;background:var(--bg)}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);z-index:10}.btn-back{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}.setting-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s}.setting-item:hover{background:var(--glass)}.setting-item i{color:var(--accent);font-size:18px;width:30px}.btn-danger{background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 24px;border-radius:30px;cursor:pointer;font-size:14px;margin:20px auto;display:block;transition:all 0.3s}.btn-danger:hover{background:rgba(239,68,68,0.3);box-shadow:0 0 20px rgba(239,68,68,0.2)}</style></head>
+<body><div class="header"><a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-cog" style="color:var(--accent)"></i> الإعدادات</h2></div><div style="padding:8px 0"><div class="setting-item" onclick="window.location.href='profile.html'"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-user"></i><span>تعديل الملف الشخصي</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div><div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-lock"></i><span>الخصوصية</span></div><i class="fas fa-chevron-left" style="opacity:0.5"></i></div><div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-globe"></i><span>اللغة</span></div><span style="opacity:0.5;font-size:13px">العربية</span></div><div class="setting-item"><div style="display:flex;align-items:center;gap:12px"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div><span style="opacity:0.5;font-size:13px">v2026.4 💎</span></div><button class="btn-danger" onclick="if(confirm('هل أنت متأكد من تسجيل الخروج؟')){auth.signOut();window.location.href='auth.html'}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button></div>
+<script src="firebase-config.js"></script><script>auth.onAuthStateChanged(u=>{if(!u)window.location.href='auth.html'});</script></body></html>

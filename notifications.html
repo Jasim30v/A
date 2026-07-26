@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>💎 MNAENCA | إشعارات</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>💎 MNAENCA | إشعارات</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
     :root{
         --glass:rgba(16,185,129,0.03);
         --border:rgba(16,185,129,0.12);
@@ -77,9 +73,7 @@
     }
     .btn-close-overlay:hover{background:rgba(16,185,129,0.25);box-shadow:0 0 15px rgba(16,185,129,0.3)}
 
-    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
-    
-    /* الوضع العمودي (الافتراضي - للموبايل) */
+    /* ✨ RESPONSIVE LAYOUT ✨ */
     #mainApp {
         display: flex;
         flex-direction: column;
@@ -88,21 +82,18 @@
         position: relative;
     }
 
-    /* إخفاء عناصر الأفقي في الموبايل */
     .desktop-sidebar { display: none; }
     .desktop-header { display: none; }
 
-    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
     @media screen and (min-width: 800px) {
         body { overflow: hidden; }
         
         #mainApp {
-            flex-direction: row; /* تحويل التخطيط لأفقي */
+            flex-direction: row;
             height: 100vh;
             width: 100vw;
         }
 
-        /* القائمة الجانبية (الأفقي) */
         .desktop-sidebar {
             display: flex;
             flex-direction: column;
@@ -115,7 +106,6 @@
             overflow-y: auto;
         }
 
-        /* تنسيقات القائمة الجانبية */
         .sidebar-logo {
             font-size: 24px;
             font-weight: 800;
@@ -139,11 +129,9 @@
         }
         .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
         
-        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
         .topbar { display: none !important; }
         .nav-bottom { display: none !important; }
 
-        /* ضبط منطقة الفيديوهات لتملأ الشاشة المتبقية */
         .videos-wrap {
             flex: 1;
             height: 100vh;
@@ -151,34 +139,10 @@
         }
         .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
         
-        /* تعديل مساحة العناصر الجانبية للأفقي */
         .side-btns { bottom: 40px; right: 30px; }
         .vid-info { bottom: 40px; left: 30px; right: 90px; }
     }
-
-        body{min-height:100vh;overflow-y:auto;background:var(--bg)}
-        .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);z-index:10}
-        .btn-back{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}
-        .notif-item{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center;animation:fadeIn 0.3s ease}
-        .notif-icon{width:44px;height:44px;border-radius:50%;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent);flex-shrink:0}
-    </style>
-</head>
-<body>
-<div class="header"><a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-bell" style="color:var(--accent)"></i> الإشعارات</h2></div>
-<div id="notifsList"><div class="spinner"></div></div>
+body{min-height:100vh;overflow-y:auto;background:var(--bg)}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);z-index:10}.btn-back{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}.notif-item{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center;animation:fadeIn 0.3s ease}.notif-icon{width:44px;height:44px;border-radius:50%;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent);flex-shrink:0}</style></head>
+<body><div class="header"><a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-bell" style="color:var(--accent)"></i> الإشعارات</h2></div><div id="notifsList"><div class="spinner"></div></div>
 <script src="firebase-config.js"></script>
-<script>
-    let currentUser=null;
-    auth.onAuthStateChanged(async u=>{if(!u){window.location.href='auth.html';return}currentUser=u;loadNotifs()});
-    async function loadNotifs(){
-        const snap=await db.ref('notifications/'+currentUser.uid).once('value');
-        const ns=snap.val()||{};
-        const c=document.getElementById('notifsList');
-        const items=Object.values(ns).reverse();
-        if(!items.length){c.innerHTML='<div style="text-align:center;opacity:0.5;padding:60px"><i class="fas fa-bell" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';return}
-        c.innerHTML=items.map(n=>`<div class="notif-item"><div class="notif-icon"><i class="fas fa-bell"></i></div><div><div style="font-weight:600;font-size:14px">${n.from||'مستخدم'}</div><div style="font-size:12px;opacity:0.6;margin-top:3px">${n.msg||''}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${new Date(n.timestamp).toLocaleString('ar-SA')}</div></div></div>`).join('');
-        await db.ref('notifications/'+currentUser.uid).remove();
-    }
-</script>
-</body>
-</html>
+<script>let currentUser=null;auth.onAuthStateChanged(async u=>{if(!u){window.location.href='auth.html';return}currentUser=u;loadNotifs()});async function loadNotifs(){const snap=await db.ref('notifications/'+currentUser.uid).once('value');const ns=snap.val()||{};const c=document.getElementById('notifsList');const items=Object.values(ns).reverse();if(!items.length){c.innerHTML='<div style="text-align:center;opacity:0.5;padding:60px"><i class="fas fa-bell" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block"></i><p>لا توجد إشعارات</p></div>';return}c.innerHTML=items.map(n=>`<div class="notif-item"><div class="notif-icon"><i class="fas fa-bell"></i></div><div><div style="font-weight:600;font-size:14px">${n.from||'مستخدم'}</div><div style="font-size:12px;opacity:0.6;margin-top:3px">${n.msg||''}</div><div style="font-size:10px;opacity:0.3;margin-top:4px">${new Date(n.timestamp).toLocaleString('ar-SA')}</div></div></div>`).join('');await db.ref('notifications/'+currentUser.uid).remove()}</script></body></html>

@@ -77,9 +77,7 @@
     }
     .btn-close-overlay:hover{background:rgba(16,185,129,0.25);box-shadow:0 0 15px rgba(16,185,129,0.3)}
 
-    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
-    
-    /* الوضع العمودي (الافتراضي - للموبايل) */
+    /* ✨ RESPONSIVE LAYOUT ✨ */
     #mainApp {
         display: flex;
         flex-direction: column;
@@ -88,21 +86,18 @@
         position: relative;
     }
 
-    /* إخفاء عناصر الأفقي في الموبايل */
     .desktop-sidebar { display: none; }
     .desktop-header { display: none; }
 
-    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
     @media screen and (min-width: 800px) {
         body { overflow: hidden; }
         
         #mainApp {
-            flex-direction: row; /* تحويل التخطيط لأفقي */
+            flex-direction: row;
             height: 100vh;
             width: 100vw;
         }
 
-        /* القائمة الجانبية (الأفقي) */
         .desktop-sidebar {
             display: flex;
             flex-direction: column;
@@ -115,7 +110,6 @@
             overflow-y: auto;
         }
 
-        /* تنسيقات القائمة الجانبية */
         .sidebar-logo {
             font-size: 24px;
             font-weight: 800;
@@ -139,11 +133,9 @@
         }
         .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
         
-        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
         .topbar { display: none !important; }
         .nav-bottom { display: none !important; }
 
-        /* ضبط منطقة الفيديوهات لتملأ الشاشة المتبقية */
         .videos-wrap {
             flex: 1;
             height: 100vh;
@@ -151,7 +143,6 @@
         }
         .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
         
-        /* تعديل مساحة العناصر الجانبية للأفقي */
         .side-btns { bottom: 40px; right: 30px; }
         .vid-info { bottom: 40px; left: 30px; right: 90px; }
     }
@@ -160,19 +151,10 @@
         .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10}
         .btn-back{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}
         .container{max-width:500px;margin:0 auto;padding:20px}
-        .dropzone{
-            border:2px dashed rgba(16,185,129,0.3);border-radius:20px;
-            padding:50px 20px;text-align:center;cursor:pointer;
-            background:var(--glass);margin-bottom:20px;transition:all 0.3s;
-            position:relative;overflow:hidden;
-        }
+        .dropzone{border:2px dashed rgba(16,185,129,0.3);border-radius:20px;padding:50px 20px;text-align:center;cursor:pointer;background:var(--glass);margin-bottom:20px;transition:all 0.3s}
         .dropzone:hover{border-color:var(--accent);background:rgba(16,185,129,0.05)}
         .dropzone i{font-size:48px;color:var(--accent)}
-        .dropzone video{
-            width:100%;max-height:250px;object-fit:contain;
-            margin-top:12px;border-radius:12px;display:none;
-            position:relative;z-index:1;
-        }
+        .dropzone video{width:100%;max-height:250px;object-fit:contain;margin-top:12px;border-radius:12px;display:none}
         .form-card{background:rgba(16,185,129,0.03);border:1px solid var(--border);border-radius:20px;padding:20px}
         .form-card label{display:block;font-size:13px;opacity:0.7;margin-bottom:6px;margin-top:12px}
         .form-card textarea,.form-card input{width:100%;padding:14px 16px;border-radius:16px;background:rgba(16,185,129,0.04);border:1px solid var(--border);color:#fff;font-size:14px;outline:none;resize:none;font-family:'Segoe UI',sans-serif}
@@ -180,22 +162,11 @@
         .progress-bar{background:rgba(255,255,255,0.1);border-radius:30px;height:6px;overflow:hidden}
         .progress-fill{background:linear-gradient(90deg,var(--accent),var(--accent2));height:100%;border-radius:30px;width:0%;transition:width 0.3s}
         .progress-text{text-align:center;font-size:12px;margin-top:6px;color:var(--accent2)}
-        .btn-upload{
-            width:100%;padding:14px;
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            border:none;border-radius:30px;color:#fff;
-            font-weight:700;font-size:15px;cursor:pointer;margin-top:16px;
-            box-shadow:0 10px 25px rgba(16,185,129,0.4);
-            transition:all 0.3s;
-        }
+        .btn-upload{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:30px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;margin-top:16px;box-shadow:0 10px 25px rgba(16,185,129,0.4);transition:all 0.3s}
         .btn-upload:hover{transform:translateY(-2px);box-shadow:0 15px 35px rgba(16,185,129,0.6)}
         .btn-upload:disabled{opacity:0.5;transform:none;box-shadow:none}
         .status{text-align:center;margin-top:12px;font-size:13px;min-height:20px}
-        .upload-details {
-            display: flex; justify-content: space-between;
-            font-size: 12px; color: rgba(255,255,255,0.5);
-            margin-top: 10px;
-        }
+        .upload-details{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.5);margin-top:10px}
     </style>
 </head>
 <body>
@@ -230,134 +201,53 @@
     function onFilePick(inp){
         const f=inp.files[0];
         if(!f) return;
-        
-        // Validate file type
-        if(!f.type.startsWith('video/')){
-            showStatus('❌ الرجاء اختيار ملف فيديو صحيح','#ef4444');
-            inp.value = '';
-            return;
-        }
-        
-        // Validate file size (100MB limit)
-        if(f.size > 100 * 1024 * 1024) {
-            showStatus('❌ حجم الفيديو يجب أن يكون أقل من 100MB','#ef4444');
-            inp.value = '';
-            return;
-        }
-        
-        selectedFile = f;
-        
-        // Show preview
-        const r = new FileReader();
-        r.onload = e => {
-            const v = document.getElementById('preview');
-            v.src = e.target.result;
-            v.style.display = 'block';
-            document.getElementById('uploadIcon').style.display = 'none';
-            document.getElementById('dropText').style.display = 'none';
-        };
+        if(!f.type.startsWith('video/')){showStatus('❌ الرجاء اختيار ملف فيديو صحيح','#ef4444');inp.value='';return}
+        if(f.size>100*1024*1024){showStatus('❌ حجم الفيديو يجب أن يكون أقل من 100MB','#ef4444');inp.value='';return}
+        selectedFile=f;
+        const r=new FileReader();
+        r.onload=e=>{const v=document.getElementById('preview');v.src=e.target.result;v.style.display='block';document.getElementById('uploadIcon').style.display='none';document.getElementById('dropText').style.display='none'};
         r.readAsDataURL(f);
-        
-        // Update file info
-        const fileSizeMB = (f.size / (1024 * 1024)).toFixed(2);
-        document.getElementById('totalSize').innerText = fileSizeMB + ' MB';
-        document.getElementById('progressWrap').style.display = 'block';
-        document.getElementById('progressFill').style.width = '0%';
-        document.getElementById('progressText').innerText = '0%';
-        document.getElementById('uploadedSize').innerText = '0 MB';
-        document.getElementById('uploadBtn').disabled = false;
-        showStatus('✅ الفيديو جاهز للرفع', '#4ade80');
+        const fileSizeMB=(f.size/(1024*1024)).toFixed(2);
+        document.getElementById('totalSize').innerText=fileSizeMB+' MB';
+        document.getElementById('progressWrap').style.display='block';
+        document.getElementById('progressFill').style.width='0%';
+        document.getElementById('progressText').innerText='0%';
+        document.getElementById('uploadedSize').innerText='0 MB';
+        document.getElementById('uploadBtn').disabled=false;
+        showStatus('✅ الفيديو جاهز للرفع','#4ade80');
     }
 
     async function upload(){
-        if(!selectedFile) {
-            showStatus('❌ الرجاء اختيار فيديو أولاً','#ef4444');
-            return;
-        }
-        if(!currentUser) {
-            showStatus('❌ الرجاء تسجيل الدخول أولاً','#ef4444');
-            return;
-        }
-
-        const desc = document.getElementById('vidDesc').value;
-        const music = document.getElementById('vidMusic').value || 'Original Sound';
-        const btn = document.getElementById('uploadBtn');
-        const pw = document.getElementById('progressWrap');
-        const pf = document.getElementById('progressFill');
-        const pt = document.getElementById('progressText');
-        const us = document.getElementById('uploadedSize');
-        
-        btn.disabled = true;
-        pw.style.display = 'block';
-        pf.style.width = '0%';
-        pt.innerText = '0%';
-        showStatus('⏳ جاري رفع الفيديو...', '#f59e0b');
-
-        const fd = new FormData();
-        fd.append('file', selectedFile);
-        fd.append('upload_preset', UPLOAD_PRESET);
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/video/upload');
-
-        // Track upload progress
-        xhr.upload.onprogress = e => {
-            if(e.lengthComputable) {
-                const percent = Math.round((e.loaded / e.total) * 100);
-                pf.style.width = percent + '%';
-                pt.innerText = percent + '%';
-                const loadedMB = (e.loaded / (1024 * 1024)).toFixed(2);
-                const totalMB = (e.total / (1024 * 1024)).toFixed(2);
-                us.innerText = loadedMB + ' MB';
-                document.getElementById('totalSize').innerText = totalMB + ' MB';
-            }
+        if(!selectedFile){showStatus('❌ الرجاء اختيار فيديو أولاً','#ef4444');return}
+        if(!currentUser){showStatus('❌ الرجاء تسجيل الدخول أولاً','#ef4444');return}
+        const desc=document.getElementById('vidDesc').value;
+        const music=document.getElementById('vidMusic').value||'Original Sound';
+        const btn=document.getElementById('uploadBtn');
+        const pw=document.getElementById('progressWrap');
+        const pf=document.getElementById('progressFill');
+        const pt=document.getElementById('progressText');
+        const us=document.getElementById('uploadedSize');
+        btn.disabled=true;pw.style.display='block';pf.style.width='0%';pt.innerText='0%';
+        showStatus('⏳ جاري رفع الفيديو...','#f59e0b');
+        const fd=new FormData();fd.append('file',selectedFile);fd.append('upload_preset',UPLOAD_PRESET);
+        const xhr=new XMLHttpRequest();
+        xhr.open('POST','https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload');
+        xhr.upload.onprogress=e=>{if(e.lengthComputable){const percent=Math.round(e.loaded/e.total*100);pf.style.width=percent+'%';pt.innerText=percent+'%';const loadedMB=(e.loaded/(1024*1024)).toFixed(2);const totalMB=(e.total/(1024*1024)).toFixed(2);us.innerText=loadedMB+' MB';document.getElementById('totalSize').innerText=totalMB+' MB'}};
+        xhr.onload=async()=>{
+            try{
+                const r=JSON.parse(xhr.responseText);
+                if(r.secure_url){
+                    await db.ref('videos/').push({url:r.secure_url,thumbnail:r.secure_url.replace(/\.(mp4|mov|avi)$/i,'.jpg'),description:desc,music:music,sender:currentUser.uid,senderName:currentUserData?.username,likes:0,likedBy:{},comments:{},timestamp:Date.now()});
+                    showStatus('✅ تم رفع الفيديو بنجاح! سيتم التحويل للرئيسية...','#4ade80');
+                    setTimeout(()=>window.location.href='index.html',1500);
+                }else{showStatus('❌ فشل الرفع: '+(r.error?.message||'استجابة غير صحيحة'),'#ef4444');btn.disabled=false}
+            }catch(e){showStatus('❌ خطأ في معالجة الرد من الخادم','#ef4444');btn.disabled=false}
         };
-
-        xhr.onload = async () => {
-            try {
-                const r = JSON.parse(xhr.responseText);
-                if(r.secure_url) {
-                    await db.ref('videos/').push({
-                        url: r.secure_url,
-                        thumbnail: r.secure_url.replace(/\.(mp4|mov|avi)$/i, '.jpg'),
-                        description: desc,
-                        music: music,
-                        sender: currentUser.uid,
-                        senderName: currentUserData?.username,
-                        likes: 0,
-                        likedBy: {},
-                        comments: {},
-                        timestamp: Date.now()
-                    });
-                    showStatus('✅ تم رفع الفيديو بنجاح! سيتم التحويل للرئيسية...', '#4ade80');
-                    setTimeout(() => window.location.href = 'index.html', 1500);
-                } else {
-                    showStatus('❌ فشل الرفع: ' + (r.error?.message || 'استجابة غير صحيحة'), '#ef4444');
-                    btn.disabled = false;
-                }
-            } catch(e) {
-                showStatus('❌ خطأ في معالجة الرد من الخادم', '#ef4444');
-                btn.disabled = false;
-                console.error('Upload error:', e);
-            }
-        };
-
-        xhr.onerror = () => {
-            showStatus('❌ فشل رفع الفيديو - تحقق من اتصالك بالإنترنت', '#ef4444');
-            btn.disabled = false;
-            console.error('XHR error');
-        };
-        
+        xhr.onerror=()=>{showStatus('❌ فشل رفع الفيديو - تحقق من اتصالك بالإنترنت','#ef4444');btn.disabled=false};
         xhr.send(fd);
     }
-    
-    function showStatus(msg, color) {
-        const s = document.getElementById('status');
-        s.innerText = msg;
-        s.style.color = color;
-    }
-    
-    console.log('💎 MNAENCA Upload Ready ✨');
+    function showStatus(msg,color){const s=document.getElementById('status');s.innerText=msg;s.style.color=color}
+    console.log('💎 MNAENCA Upload Ready');
 </script>
 </body>
 </html>

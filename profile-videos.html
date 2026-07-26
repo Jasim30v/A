@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>💎 MNAENCA | استكشاف</title>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>💎 MNAENCA | جميع الفيديوهات</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        
     :root{
         --glass:rgba(16,185,129,0.03);
         --border:rgba(16,185,129,0.12);
@@ -142,7 +146,38 @@
         .side-btns { bottom: 40px; right: 30px; }
         .vid-info { bottom: 40px; left: 30px; right: 90px; }
     }
-body{min-height:100vh;overflow-y:auto;background:var(--bg)}.header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);z-index:10}.btn-back{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px}.thumb{aspect-ratio:9/16;background:rgba(16,185,129,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden}.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.thumb i{position:absolute;font-size:24px;color:#fff;z-index:1;opacity:0;transition:opacity 0.3s}.thumb:hover i{opacity:1}.thumb .views{position:absolute;bottom:4px;left:4px;font-size:10px;background:rgba(0,0,0,0.6);padding:2px 6px;border-radius:10px;z-index:2}</style></head>
-<body><div class="header"><a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-globe" style="color:var(--accent)"></i> استكشاف</h2></div><div class="grid" id="exploreGrid"><div class="spinner" style="grid-column:1/-1;padding:50px"></div></div>
+
+        body{min-height:100vh;overflow-y:auto;background:var(--bg)}
+        .header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(5,20,11,0.8);backdrop-filter:blur(20px);z-index:10}
+        .btn-back{background:rgba(16,185,129,0.1);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px;text-decoration:none}
+        .videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:8px}
+        .video-grid-item{aspect-ratio:9/16;position:relative;overflow:hidden;cursor:pointer;background:#000;border-radius:4px}
+        .video-grid-item img{width:100%;height:100%;object-fit:cover}
+        .video-grid-item .grid-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 50%);opacity:0;transition:opacity 0.3s}
+        .video-grid-item:hover .grid-overlay{opacity:1}
+        .video-grid-item .grid-info{position:absolute;bottom:8px;left:6px;right:6px;display:flex;justify-content:space-between;z-index:1;opacity:0;transition:opacity 0.3s}
+        .video-grid-item:hover .grid-info{opacity:1}
+        .grid-info span{font-size:10px;color:#fff;display:flex;align-items:center;gap:3px;background:rgba(0,0,0,0.5);padding:3px 8px;border-radius:10px}
+    </style>
+</head>
+<body>
+<div class="header"><a href="profile.html" class="btn-back"><i class="fas fa-arrow-right"></i></a><h2><i class="fas fa-video" style="color:var(--accent)"></i> جميع الفيديوهات</h2></div>
+<div class="videos-grid" id="videosGrid"><div class="spinner" style="grid-column:1/-1;padding:50px"></div></div>
 <script src="firebase-config.js"></script>
-<script>let currentUser=null;auth.onAuthStateChanged(async u=>{if(!u){window.location.href='auth.html';return}currentUser=u;loadExplore()});async function loadExplore(){const snap=await db.ref('videos').once('value');const videos=snap.val()||{};const allVids=Object.entries(videos).map(([k,v])=>({id:k,...v})).sort((a,b)=>(b.likes||0)-(a.likes||0));const g=document.getElementById('exploreGrid');if(!allVids.length){g.innerHTML='<div style="text-align:center;padding:60px;grid-column:1/-1;opacity:0.5"><i class="fas fa-video-slash" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block"></i><p>لا توجد فيديوهات</p></div>';return}g.innerHTML=allVids.map(v=>`<div class="thumb" onclick="window.open('${v.url}','_blank')">${v.thumbnail?`<img src="${v.thumbnail}" loading="lazy">`:''}<i class="fas fa-play"></i><span class="views"><i class="fas fa-heart" style="color:#10b981;margin-right:4px"></i>${v.likes||0}</span></div>`).join('')}</script></body></html>
+<script>
+    let currentUser=null;
+    auth.onAuthStateChanged(async u=>{
+        if(!u){window.location.href='auth.html';return}
+        currentUser=u;
+        const params=new URLSearchParams(window.location.search);
+        const uid=params.get('uid')||u.uid;
+        const snap=await db.ref('videos').once('value');
+        const allVideos=Object.entries(snap.val()||{}).map(([k,v])=>({id:k,...v}));
+        const uvs=allVideos.filter(v=>v.sender===uid).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+        const g=document.getElementById('videosGrid');
+        if(!uvs.length){g.innerHTML='<div style="text-align:center;padding:60px;grid-column:1/-1;opacity:0.5"><i class="fas fa-video-slash" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block"></i><p>لا توجد فيديوهات</p></div>';return}
+        g.innerHTML=uvs.map(v=>`<div class="video-grid-item" onclick="window.open('${v.url}','_blank')">${v.thumbnail?`<img src="${v.thumbnail}" loading="lazy">`:''}<div class="grid-overlay"></div><div class="grid-info"><span><i class="fas fa-heart"></i> ${v.likes||0}</span><span><i class="fas fa-comment"></i> ${v.comments?Object.keys(v.comments).length:0}</span></div></div>`).join('');
+    });
+</script>
+</body>
+</html>

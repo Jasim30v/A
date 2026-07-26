@@ -77,9 +77,7 @@
     }
     .btn-close-overlay:hover{background:rgba(16,185,129,0.25);box-shadow:0 0 15px rgba(16,185,129,0.3)}
 
-    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
-    
-    /* الوضع العمودي (الافتراضي - للموبايل) */
+    /* ✨ RESPONSIVE LAYOUT ✨ */
     #mainApp {
         display: flex;
         flex-direction: column;
@@ -88,21 +86,18 @@
         position: relative;
     }
 
-    /* إخفاء عناصر الأفقي في الموبايل */
     .desktop-sidebar { display: none; }
     .desktop-header { display: none; }
 
-    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
     @media screen and (min-width: 800px) {
         body { overflow: hidden; }
         
         #mainApp {
-            flex-direction: row; /* تحويل التخطيط لأفقي */
+            flex-direction: row;
             height: 100vh;
             width: 100vw;
         }
 
-        /* القائمة الجانبية (الأفقي) */
         .desktop-sidebar {
             display: flex;
             flex-direction: column;
@@ -115,7 +110,6 @@
             overflow-y: auto;
         }
 
-        /* تنسيقات القائمة الجانبية */
         .sidebar-logo {
             font-size: 24px;
             font-weight: 800;
@@ -139,11 +133,9 @@
         }
         .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
         
-        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
         .topbar { display: none !important; }
         .nav-bottom { display: none !important; }
 
-        /* ضبط منطقة الفيديوهات لتملأ الشاشة المتبقية */
         .videos-wrap {
             flex: 1;
             height: 100vh;
@@ -151,7 +143,6 @@
         }
         .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
         
-        /* تعديل مساحة العناصر الجانبية للأفقي */
         .side-btns { bottom: 40px; right: 30px; }
         .vid-info { bottom: 40px; left: 30px; right: 90px; }
     }
@@ -178,26 +169,176 @@
         .contact-info a{color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:5px;background:var(--card);padding:6px 14px;border-radius:20px;border:1px solid var(--border);transition:all 0.3s}
         .contact-info a:hover{background:rgba(16,185,129,0.15);box-shadow:0 0 15px rgba(16,185,129,0.2)}
         .last-seen{font-size:11px;opacity:0.5;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:6px}
-        .stats-row{display:flex;justify-content:center;gap:30px;margin:15px 20px;padding:18px;background:rgba(16,185,129,0.04);backdrop-filter:blur(20px);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.2)}
-        .stat-item{text-align:center;cursor:pointer;transition:transform 0.2s}
-        .stat-item:hover{transform:scale(1.05)}
-        .stat-val{font-size:20px;font-weight:700;color:var(--accent2)}
-        .stat-lbl{font-size:10px;opacity:0.6;margin-top:2px}
+        
+        /* ✨ إحصائيات متحركة */
+        .stats-row{
+            display:flex;justify-content:center;gap:20px;
+            margin:15px 20px;padding:18px;
+            background:rgba(16,185,129,0.04);
+            backdrop-filter:blur(20px);border-radius:20px;
+            border:1px solid var(--border);
+            box-shadow:0 8px 32px rgba(0,0,0,0.2);
+        }
+        .stat-item{
+            text-align:center;cursor:pointer;transition:all 0.3s;
+            padding:8px 16px;border-radius:16px;
+            position:relative;flex:1;
+        }
+        .stat-item:hover{
+            background:rgba(16,185,129,0.08);
+            transform:translateY(-3px);
+            box-shadow:0 8px 25px rgba(16,185,129,0.15);
+        }
+        .stat-item:active{transform:scale(0.95)}
+        .stat-val{font-size:22px;font-weight:800;color:var(--accent2);transition:all 0.3s}
+        .stat-item:hover .stat-val{color:#fff;text-shadow:0 0 20px rgba(52,211,153,0.8)}
+        .stat-lbl{font-size:11px;opacity:0.6;margin-top:4px;font-weight:500}
+        .stat-icon-mini{font-size:16px;margin-bottom:4px;opacity:0.5}
+        .stat-item:hover .stat-icon-mini{opacity:1}
+        
         .action-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 20px 20px}
         .btn{background:rgba(16,185,129,0.06);border:1px solid var(--border);padding:10px 20px;border-radius:25px;color:#fff;cursor:pointer;font-size:13px;transition:all 0.3s;display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px)}
         .btn:hover{background:rgba(16,185,129,0.15);border-color:var(--accent);box-shadow:0 0 20px rgba(16,185,129,0.2)}
         .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;color:#fff;box-shadow:0 8px 25px rgba(16,185,129,0.4)}
         .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(16,185,129,0.6)}
-        .section-title{font-size:16px;font-weight:700;padding:0 20px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-        .videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 8px 100px}
-        .video-grid-item{aspect-ratio:9/16;position:relative;overflow:hidden;cursor:pointer;background:#000;border-radius:4px}
-        .video-grid-item video{width:100%;height:100%;object-fit:cover}
-        .video-grid-item .grid-play-icon{position:absolute;bottom:4px;left:4px;font-size:14px;color:#fff;z-index:1;opacity:0.8}
-        .video-grid-item .grid-views{position:absolute;bottom:4px;right:4px;font-size:10px;color:#fff;z-index:1;display:flex;align-items:center;gap:3px;opacity:0.8}
+        .btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent2);font-weight:600}
+        
+        /* 🎬 قسم الفيديوهات */
+        .section-header{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:20px 20px 12px;
+        }
+        .section-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+        .btn-see-all{
+            background:rgba(16,185,129,0.1);border:1px solid var(--border);
+            color:var(--accent2);padding:6px 14px;border-radius:20px;
+            font-size:12px;cursor:pointer;transition:all 0.3s;
+            display:flex;align-items:center;gap:6px;
+        }
+        .btn-see-all:hover{background:rgba(16,185,129,0.2);box-shadow:0 0 15px rgba(16,185,129,0.2)}
+        
+        .videos-grid{
+            display:grid;grid-template-columns:repeat(3,1fr);
+            gap:3px;padding:0 8px 20px;
+        }
+        .video-grid-item{
+            aspect-ratio:9/16;position:relative;overflow:hidden;
+            cursor:pointer;background:#000;border-radius:4px;
+            transition:all 0.3s;
+        }
+        .video-grid-item:hover{transform:scale(1.02);z-index:2;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+        .video-grid-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s}
+        .video-grid-item:hover img{transform:scale(1.1)}
+        .video-grid-item .grid-overlay{
+            position:absolute;inset:0;
+            background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 50%);
+            opacity:0;transition:opacity 0.3s;
+        }
+        .video-grid-item:hover .grid-overlay{opacity:1}
+        .video-grid-item .grid-play-icon{
+            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+            font-size:28px;color:#fff;z-index:1;opacity:0;
+            transition:all 0.3s;
+        }
+        .video-grid-item:hover .grid-play-icon{opacity:1;transform:translate(-50%,-50%) scale(1.2)}
+        .video-grid-item .grid-info{
+            position:absolute;bottom:8px;left:6px;right:6px;
+            display:flex;justify-content:space-between;
+            z-index:1;opacity:0;transition:opacity 0.3s;
+        }
+        .video-grid-item:hover .grid-info{opacity:1}
+        .grid-info span{
+            font-size:10px;color:#fff;display:flex;align-items:center;
+            gap:3px;background:rgba(0,0,0,0.5);padding:3px 8px;
+            border-radius:10px;
+        }
+        
+        /* 📝 قسم المنشورات */
+        .posts-section{padding:0 16px 20px;margin-bottom:20px}
+        .post-card{
+            background:rgba(16,185,129,0.04);border:1px solid var(--border);
+            border-radius:20px;padding:18px;margin-bottom:12px;
+            backdrop-filter:blur(10px);transition:all 0.3s;
+            animation:fadeIn 0.4s ease;
+        }
+        .post-card:hover{border-color:rgba(16,185,129,0.3);box-shadow:0 8px 30px rgba(16,185,129,0.08)}
+        .post-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+        .post-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(16,185,129,0.2)}
+        .post-avatar img{width:100%;height:100%;object-fit:cover}
+        .post-user-info h4{font-size:14px;font-weight:600}
+        .post-user-info span{font-size:10px;opacity:0.5}
+        .post-content{font-size:14px;line-height:1.6;margin-bottom:12px}
+        .post-actions{display:flex;gap:20px;font-size:12px}
+        .post-actions span{cursor:pointer;opacity:0.5;display:flex;align-items:center;gap:5px;transition:all 0.2s}
+        .post-actions span:hover{opacity:1;color:var(--accent2)}
+        
         .empty-state{text-align:center;opacity:0.5;padding:40px 20px}
         .empty-state i{font-size:48px;color:var(--accent);margin-bottom:12px;display:block}
         .badge-verified{background:linear-gradient(135deg,#10b981,#34d399);color:#fff;font-size:12px;padding:3px 6px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-weight:bold;box-shadow:0 0 15px rgba(167,243,208,0.6);animation:verifyGlow 2s ease-in-out infinite}
         @keyframes verifyGlow{0%,100%{box-shadow:0 0 15px rgba(167,243,208,0.6)}50%{box-shadow:0 0 25px rgba(167,243,208,0.9)}}
+        
+        /* ✨ Modal للمتابعين */
+        .modal-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,0.8);
+            backdrop-filter:blur(20px);z-index:500;
+            display:flex;align-items:flex-end;justify-content:center;
+            animation:fadeIn 0.3s ease;
+        }
+        .modal-sheet{
+            width:100%;max-width:500px;max-height:80vh;
+            background:rgba(5,20,11,0.98);
+            border:1px solid var(--border);
+            border-radius:28px 28px 0 0;
+            overflow:hidden;display:flex;flex-direction:column;
+            box-shadow:0 -20px 60px rgba(0,0,0,0.5);
+            animation:slideUp 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal-header{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:18px 20px;border-bottom:1px solid var(--border);
+            flex-shrink:0;
+        }
+        .modal-header h3{font-size:17px;font-weight:700;color:var(--accent2)}
+        .modal-body{flex:1;overflow-y:auto;padding:10px 0}
+        .user-list-item{
+            display:flex;align-items:center;gap:12px;
+            padding:12px 20px;cursor:pointer;
+            transition:background 0.2s;animation:fadeIn 0.3s ease;
+        }
+        .user-list-item:hover{background:rgba(16,185,129,0.04)}
+        .user-list-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid rgba(16,185,129,0.2);flex-shrink:0}
+        .user-list-avatar img{width:100%;height:100%;object-fit:cover}
+        .user-list-info{flex:1;min-width:0}
+        .user-list-info h4{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+        .user-list-info p{font-size:11px;opacity:0.5;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .btn-follow-sm{
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border:none;color:#fff;padding:7px 16px;border-radius:20px;
+            font-size:11px;font-weight:600;cursor:pointer;
+            transition:all 0.3s;flex-shrink:0;
+            box-shadow:0 4px 12px rgba(16,185,129,0.3);
+        }
+        .btn-follow-sm:hover{box-shadow:0 6px 18px rgba(16,185,129,0.5)}
+        .btn-follow-sm.following{background:rgba(16,185,129,0.1);border:1px solid var(--border);color:#fff;box-shadow:none}
+        
+        /* 🎬 Modal مشغل الفيديو */
+        .video-modal{
+            position:fixed;inset:0;background:#000;
+            z-index:600;display:flex;align-items:center;
+            justify-content:center;
+            animation:fadeIn 0.3s ease;
+        }
+        .video-modal video{max-width:100%;max-height:90vh;object-fit:contain}
+        .video-modal-close{
+            position:absolute;top:16px;left:16px;
+            background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);
+            border:1px solid var(--border);color:#fff;
+            width:40px;height:40px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:18px;z-index:5;
+        }
+        
+        /* Edit Panel */
         .edit-panel{position:fixed;bottom:0;left:0;right:0;background:rgba(5,20,11,0.98);backdrop-filter:blur(40px);border-top:2px solid var(--accent);border-radius:24px 24px 0 0;padding:24px 20px 40px;z-index:200;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);max-height:80vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(16,185,129,0.1)}
         .edit-panel.show{transform:translateY(0)}
         .edit-panel h3{font-size:18px;font-weight:700;margin-bottom:20px;color:var(--accent2);text-align:center}
@@ -210,6 +351,28 @@
         .btn-cancel{background:var(--card);border:1px solid var(--border);color:#fff}
         .overlay-panel{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:none}
         .overlay-panel.show{display:block}
+        
+        /* New Post Creator */
+        .post-creator{
+            background:rgba(16,185,129,0.04);border:1px solid var(--border);
+            border-radius:20px;padding:16px;margin:0 16px 20px;
+            backdrop-filter:blur(10px);
+        }
+        .post-creator textarea{
+            width:100%;padding:12px;border-radius:14px;
+            background:var(--card);border:1px solid var(--border);
+            color:#fff;font-size:13px;outline:none;resize:none;
+            font-family:'Segoe UI',sans-serif;min-height:60px;
+            margin-bottom:10px;
+        }
+        .post-creator textarea:focus{border-color:var(--accent)}
+        .post-creator-actions{display:flex;justify-content:flex-end}
+        .btn-post{
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            border:none;color:#fff;padding:8px 20px;border-radius:20px;
+            font-weight:700;cursor:pointer;font-size:12px;
+            box-shadow:0 4px 12px rgba(16,185,129,0.3);
+        }
 
         /* Admin Panel */
         .admin-panel{padding:0 8px;margin:0 8px 100px 8px}
@@ -221,7 +384,7 @@
         .stat-info span{font-size:22px;font-weight:800}
         .admin-user-item{display:flex;align-items:center;justify-content:space-between;padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.2s;border-radius:8px}
         .admin-user-item:hover{background:rgba(16,185,129,0.04)}
-        .admin-user-info{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+        .admin-user-info{display:flex;align-items:center;gap:12px;flex:1;min-width:0;cursor:pointer}
         .admin-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(16,185,129,0.3);flex-shrink:0}
         .admin-avatar img{width:100%;height:100%;object-fit:cover}
         .admin-user-details h4{font-weight:600;font-size:15px}
@@ -272,17 +435,59 @@
         <div class="last-seen" id="lastSeenDisplay"></div>
     </div>
 
+    <!-- ✨ إحصائيات محسنة -->
     <div class="stats-row">
-        <div class="stat-item" onclick="showList('following')"><div class="stat-val" id="statFollowing">0</div><div class="stat-lbl">يتابع</div></div>
-        <div class="stat-item" onclick="showList('followers')"><div class="stat-val" id="statFollowers">0</div><div class="stat-lbl">متابع</div></div>
-        <div class="stat-item"><div class="stat-val" id="statLikes">0</div><div class="stat-lbl">إعجابات</div></div>
+        <div class="stat-item" onclick="showUsersModal('following')">
+            <div class="stat-icon-mini"><i class="fas fa-user-friends"></i></div>
+            <div class="stat-val" id="statFollowing">0</div>
+            <div class="stat-lbl">يتابع</div>
+        </div>
+        <div class="stat-item" onclick="showUsersModal('followers')">
+            <div class="stat-icon-mini"><i class="fas fa-users"></i></div>
+            <div class="stat-val" id="statFollowers">0</div>
+            <div class="stat-lbl">متابع</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon-mini"><i class="fas fa-heart"></i></div>
+            <div class="stat-val" id="statLikes">0</div>
+            <div class="stat-lbl">إعجابات</div>
+        </div>
+        <div class="stat-item" onclick="scrollToPosts()">
+            <div class="stat-icon-mini"><i class="fas fa-feather-alt"></i></div>
+            <div class="stat-val" id="statPosts">0</div>
+            <div class="stat-lbl">منشورات</div>
+        </div>
     </div>
 
     <div class="action-btns" id="actionsBar"></div>
 
-    <div class="section-title"><i class="fas fa-video" style="color:var(--accent)"></i> الفيديوهات</div>
+    <!-- 📝 منشئ المنشورات (للملف الشخصي فقط) -->
+    <div class="post-creator" id="postCreator" style="display:none">
+        <textarea id="newPostContent" placeholder="ماذا يدور في ذهنك؟ 💎" maxlength="500"></textarea>
+        <div class="post-creator-actions">
+            <button class="btn-post" onclick="createPost()"><i class="fas fa-paper-plane"></i> نشر</button>
+        </div>
+    </div>
+
+    <!-- 🎬 قسم الفيديوهات -->
+    <div class="section-header">
+        <div class="section-title"><i class="fas fa-video" style="color:var(--accent)"></i> الفيديوهات <span id="videosCount" style="font-size:12px;opacity:0.5;margin-right:6px"></span></div>
+        <button class="btn-see-all" onclick="showAllVideos()"><span>عرض الكل</span> <i class="fas fa-chevron-left" style="font-size:10px"></i></button>
+    </div>
     <div class="videos-grid" id="videosGrid"></div>
+
+    <!-- 📝 قسم المنشورات -->
+    <div class="section-header" id="postsHeader">
+        <div class="section-title"><i class="fas fa-feather-alt" style="color:var(--accent)"></i> المنشورات <span id="postsCount" style="font-size:12px;opacity:0.5;margin-right:6px"></span></div>
+    </div>
+    <div class="posts-section" id="postsSection"></div>
 </div>
+
+<!-- ✨ Modal المتابعين/المتابَعين -->
+<div id="usersModal" style="display:none"></div>
+
+<!-- 🎬 Modal مشغل الفيديو -->
+<div id="videoModal" style="display:none"></div>
 
 <div class="overlay-panel" id="overlayPanel" onclick="closeEditPanel()"></div>
 <div class="edit-panel" id="editPanel">
@@ -290,7 +495,7 @@
     <label>👤 اسم المستخدم</label>
     <input type="text" id="editUsername" placeholder="اسم المستخدم">
     <label>📝 السيرة الذاتية</label>
-    <textarea id="editBio" placeholder="اكتب شيئاً عن نفسك..."></textarea>
+    <textarea id="editBio" placeholder="اكتب شيئاً عن نفسك..." rows="3"></textarea>
     <label>🌐 الموقع الإلكتروني</label>
     <input type="text" id="editWebsite" placeholder="https://example.com" dir="ltr">
     <label>📧 البريد الإلكتروني</label>
@@ -308,6 +513,7 @@
 <script src="firebase-config.js"></script>
 <script>
     let profileUserId = null, currentUser = null, currentUserData = null, allVideos = [], allUsers = {}, isOwnProfile = false, _selectedCover = null;
+    let allPosts = [];
 
     window.parallaxCover = function(event) {
         const img = document.getElementById('coverImg');
@@ -348,62 +554,279 @@
     async function loadAll() {
         const us = await db.ref('users').once('value'); allUsers = us.val() || {};
         const vs = await db.ref('videos').once('value'); allVideos = Object.entries(vs.val() || {}).map(([k, v]) => ({id: k, ...v}));
+        const ps = await db.ref('posts').once('value');
+        const postsData = ps.val() || {};
+        allPosts = Object.entries(postsData).map(([k, v]) => ({id: k, ...v})).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     }
 
     async function loadProfile() {
         const u = allUsers[profileUserId];
         if(!u) { document.getElementById('content').innerHTML = '<div class="empty-state" style="padding-top:100px"><i class="fas fa-user-slash"></i><p>المستخدم غير موجود</p></div>'; return; }
+        
         const emeraldVerifiedBadge = u.isVerified ? '<span class="badge-verified"><i class="fas fa-check"></i></span>' : '';
         document.getElementById('nameDisplay').innerHTML = '@' + (u.username || 'مستخدم') + ' ' + emeraldVerifiedBadge;
-        document.getElementById('bioDisplay').innerText = u.bio || 'لم تتم إضافة سيرة ذاتية بعد';
+        document.getElementById('bioDisplay').innerText = u.bio || '';
+        
         const contactInfo = document.getElementById('contactInfo');
         let contactHTML = '';
         if(u.website) contactHTML += `<a href="${u.website}" target="_blank"><i class="fas fa-globe"></i> ${u.website.replace('https://','').replace('http://','')}</a>`;
         if(u.contactEmail) contactHTML += `<a href="mailto:${u.contactEmail}"><i class="fas fa-envelope"></i> ${u.contactEmail}</a>`;
         contactInfo.innerHTML = contactHTML;
+        
         document.getElementById('statFollowing').innerText = Object.keys(u.following || {}).length;
         document.getElementById('statFollowers').innerText = Object.keys(u.followers || {}).length;
+        
         const uvs = allVideos.filter(v => v.sender === profileUserId);
         document.getElementById('statLikes').innerText = uvs.reduce((s, v) => s + (v.likes || 0), 0);
+        
+        const userPosts = allPosts.filter(p => p.userId === profileUserId);
+        document.getElementById('statPosts').innerText = userPosts.length;
+        document.getElementById('videosCount').innerText = '(' + uvs.length + ')';
+        document.getElementById('postsCount').innerText = '(' + userPosts.length + ')';
+        
         const coverImg = document.getElementById('coverImg');
         if(u.coverImageUrl) { coverImg.src = u.coverImageUrl; coverImg.style.display = 'block'; }
         else { document.getElementById('coverSection').style.background = u.coverColor || COVER_COLORS[0]; coverImg.style.display = 'none'; }
+        
         document.getElementById('avatarImg').src = u.avatarUrl || (DICEBEAR_URL + '?seed=' + profileUserId);
-        if(isOwnProfile) { document.getElementById('avatarEditBtn').style.display = 'flex'; document.getElementById('coverEditBtn').style.display = 'flex'; }
+        
+        if(isOwnProfile) {
+            document.getElementById('avatarEditBtn').style.display = 'flex';
+            document.getElementById('coverEditBtn').style.display = 'flex';
+            document.getElementById('postCreator').style.display = 'block';
+        }
+        
         const lastSeen = document.getElementById('lastSeenDisplay');
         if(!isOwnProfile) {
             const presenceSnap = await db.ref('presence/' + profileUserId).get();
             const isOnline = presenceSnap.val();
             document.getElementById('onlineDot').style.display = isOnline ? 'block' : 'none';
             lastSeen.innerHTML = isOnline ? '<i class="fas fa-circle" style="color:#22c55e;font-size:8px"></i> نشط الآن' : '<i class="fas fa-clock"></i> آخر ظهور: ' + formatTime(u.lastSeen || u.createdAt);
+        } else {
+            lastSeen.innerHTML = '';
         }
 
         // Render video grid
         const grid = document.getElementById('videosGrid');
         grid.innerHTML = '';
-        if(!uvs.length) { grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-video-slash"></i><p>لا توجد فيديوهات</p></div>'; }
-        else {
-            uvs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).forEach(v => {
+        if(!uvs.length) { 
+            grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-video-slash"></i><p>لا توجد فيديوهات</p></div>'; 
+        } else {
+            const displayVideos = uvs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 9);
+            displayVideos.forEach(v => {
                 const d = document.createElement('div');
                 d.className = 'video-grid-item';
-                d.onclick = () => window.open(v.url, '_blank');
+                d.onclick = () => playVideo(v.url);
                 d.innerHTML = `
-                    ${v.thumbnail ? `<img src="${v.thumbnail}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fas fa-play" style="color:#555;font-size:24px"></i></div>'}
-                    <div class="grid-play-icon"><i class="fas fa-play"></i></div>
-                    <div class="grid-views"><i class="fas fa-heart" style="color:var(--accent)"></i> ${v.likes || 0}</div>
+                    ${v.thumbnail ? `<img src="${v.thumbnail}" style="width:100%;height:100%;object-fit:cover" loading="lazy">` : '<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fas fa-play" style="color:#555;font-size:24px"></i></div>'}
+                    <div class="grid-overlay"></div>
+                    <div class="grid-play-icon"><i class="fas fa-play-circle"></i></div>
+                    <div class="grid-info"><span><i class="fas fa-heart"></i> ${v.likes || 0}</span><span><i class="fas fa-comment"></i> ${v.comments ? Object.keys(v.comments).length : 0}</span></div>
                 `;
                 grid.appendChild(d);
             });
         }
 
+        // Render posts
+        renderPosts(userPosts);
+
         const actionsBar = document.getElementById('actionsBar');
         if(isOwnProfile) {
-            actionsBar.innerHTML = `<button class="btn btn-primary" onclick="openEditPanel()"><i class="fas fa-edit"></i> تعديل الملف</button><button class="btn" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</button><button class="btn" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</button>`;
+            actionsBar.innerHTML = `
+                <button class="btn btn-primary" onclick="openEditPanel()"><i class="fas fa-edit"></i> تعديل الملف</button>
+                <button class="btn" onclick="window.location.href='chat.html'"><i class="fas fa-envelope"></i> الرسائل</button>
+                <button class="btn" onclick="copyProfile()"><i class="fas fa-share-alt"></i> مشاركة</button>
+                <button class="btn btn-outline" onclick="auth.signOut();window.location.href='auth.html'"><i class="fas fa-sign-out-alt"></i> خروج</button>`;
         } else {
             const isFollowing = currentUserData?.following?.[profileUserId];
-            actionsBar.innerHTML = `<button class="btn btn-follow ${isFollowing ? 'following' : ''}" id="followBtn" onclick="toggleFollowUser()">${isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}</button><button class="btn btn-primary" onclick="window.location.href='chat.html?uid=${profileUserId}'"><i class="fas fa-comment"></i> مراسلة</button><button class="btn" onclick="copyProfile()"><i class="fas fa-copy"></i> نسخ المعلومات</button>`;
+            actionsBar.innerHTML = `
+                <button class="btn btn-follow ${isFollowing ? 'following' : ''}" id="followBtn" onclick="toggleFollowUser()" style="${isFollowing ? 'background:rgba(16,185,129,0.1);border:1px solid var(--border);box-shadow:none' : 'background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 25px rgba(16,185,129,0.4)'}">
+                    ${isFollowing ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}
+                </button>
+                <button class="btn btn-primary" onclick="window.location.href='chat.html?uid=${profileUserId}'"><i class="fas fa-comment"></i> مراسلة</button>
+                <button class="btn" onclick="copyProfile()"><i class="fas fa-share-alt"></i> مشاركة</button>`;
         }
+        
         if(isOwnProfile && ADMIN_EMAILS.includes(currentUser?.email)) { loadAdminPanel(); }
+    }
+
+    function renderPosts(userPosts) {
+        const section = document.getElementById('postsSection');
+        if(!userPosts.length) {
+            section.innerHTML = '<div class="empty-state"><i class="fas fa-feather-alt"></i><p>لا توجد منشورات</p></div>';
+            return;
+        }
+        section.innerHTML = userPosts.slice(0, 10).map(p => {
+            const user = allUsers[p.userId] || {};
+            const avatar = user.avatarUrl || (DICEBEAR_URL + '?seed=' + p.userId);
+            return `<div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar"><img src="${avatar}" alt="" loading="lazy"></div>
+                    <div class="post-user-info">
+                        <h4>@${user.username || 'مستخدم'} ${user.isVerified ? '<span class="badge-verified" style="width:16px;height:16px;font-size:9px"><i class="fas fa-check"></i></span>' : ''}</h4>
+                        <span>${formatTime(p.timestamp)}</span>
+                    </div>
+                </div>
+                <div class="post-content">${p.content}</div>
+                <div class="post-actions">
+                    <span onclick="likePost('${p.id}')"><i class="far fa-heart"></i> ${p.likes || 0}</span>
+                    <span><i class="far fa-comment"></i> ${p.comments || 0}</span>
+                    ${isOwnProfile ? `<span onclick="deletePost('${p.id}')" style="color:var(--danger)"><i class="fas fa-trash"></i> حذف</span>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // ✨ Modal عرض المتابعين/المتابَعين
+    async function showUsersModal(type) {
+        const u = allUsers[profileUserId];
+        const list = type === 'followers' ? (u?.followers || {}) : (u?.following || {});
+        const ids = Object.keys(list);
+        const title = type === 'followers' ? 'المتابِعون' : 'المتابَعون';
+        
+        let html = `<div class="modal-overlay" onclick="closeModal()">
+            <div class="modal-sheet" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3><i class="fas ${type === 'followers' ? 'fa-users' : 'fa-user-friends'}"></i> ${title} (${ids.length})</h3>
+                    <button class="btn-close-overlay" onclick="closeModal()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">`;
+        
+        if(!ids.length) {
+            html += '<div class="empty-state"><i class="fas fa-user-slash"></i><p>لا يوجد</p></div>';
+        } else {
+            for(const id of ids) {
+                const user = allUsers[id];
+                if(!user) continue;
+                const avatar = user.avatarUrl || (DICEBEAR_URL + '?seed=' + id);
+                const isFollowingMe = currentUserData?.following?.[id];
+                html += `<div class="user-list-item" onclick="openUserProfile('${id}')">
+                    <div class="user-list-avatar"><img src="${avatar}" alt="" loading="lazy"></div>
+                    <div class="user-list-info">
+                        <h4>@${user.username || 'مستخدم'} ${user.isVerified ? '<span class="badge-verified" style="width:16px;height:16px;font-size:9px"><i class="fas fa-check"></i></span>' : ''}</h4>
+                        <p>${user.bio || '💎 عضو في MNAENCA'}</p>
+                    </div>
+                    ${id !== currentUser?.uid ? `<button class="btn-follow-sm ${isFollowingMe ? 'following' : ''}" onclick="event.stopPropagation();toggleFollowModal('${id}', this)">${isFollowingMe ? '<i class="fas fa-user-check"></i> متابع' : '<i class="fas fa-user-plus"></i> متابعة'}</button>` : ''}
+                </div>`;
+            }
+        }
+        
+        html += `</div></div></div>`;
+        document.getElementById('usersModal').innerHTML = html;
+        document.getElementById('usersModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('usersModal').innerHTML = '';
+        document.getElementById('usersModal').style.display = 'none';
+    }
+
+    async function toggleFollowModal(userId, btn) {
+        if(!currentUser || currentUser.uid === userId) return;
+        const userRef = db.ref('users/' + currentUser.uid + '/following/' + userId);
+        const targetRef = db.ref('users/' + userId + '/followers/' + currentUser.uid);
+        const snap = await userRef.get();
+        if(snap.exists()) {
+            await userRef.remove(); await targetRef.remove();
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة';
+            btn.classList.remove('following');
+        } else {
+            await userRef.set(true); await targetRef.set(true);
+            btn.innerHTML = '<i class="fas fa-user-check"></i> متابع';
+            btn.classList.add('following');
+        }
+        await loadAll();
+    }
+
+    // 🎬 تشغيل الفيديو داخل Modal
+    function playVideo(url) {
+        document.getElementById('videoModal').innerHTML = `
+            <div class="video-modal" onclick="closeVideoModal()">
+                <button class="video-modal-close" onclick="closeVideoModal()"><i class="fas fa-times"></i></button>
+                <video src="${url}" controls autoplay playsinline onclick="event.stopPropagation()"></video>
+            </div>`;
+        document.getElementById('videoModal').style.display = 'block';
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoModal').innerHTML = '';
+        document.getElementById('videoModal').style.display = 'none';
+    }
+
+    // 📝 عرض كل الفيديوهات
+    function showAllVideos() {
+        const uvs = allVideos.filter(v => v.sender === profileUserId).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        let html = `<div class="modal-overlay" onclick="closeAllVideos()">
+            <div class="modal-sheet" onclick="event.stopPropagation()" style="max-height:90vh">
+                <div class="modal-header">
+                    <h3><i class="fas fa-video"></i> جميع الفيديوهات (${uvs.length})</h3>
+                    <button class="btn-close-overlay" onclick="closeAllVideos()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body" style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:10px">`;
+        
+        if(!uvs.length) {
+            html += '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-video-slash"></i><p>لا توجد فيديوهات</p></div>';
+        } else {
+            uvs.forEach(v => {
+                html += `<div class="video-grid-item" onclick="playVideo('${v.url}');closeAllVideos()">
+                    ${v.thumbnail ? `<img src="${v.thumbnail}" loading="lazy">` : ''}
+                    <div class="grid-overlay"></div>
+                    <div class="grid-play-icon"><i class="fas fa-play-circle"></i></div>
+                    <div class="grid-info"><span><i class="fas fa-heart"></i> ${v.likes || 0}</span></div>
+                </div>`;
+            });
+        }
+        
+        html += `</div></div></div>`;
+        document.getElementById('videoModal').innerHTML = html;
+        document.getElementById('videoModal').style.display = 'block';
+    }
+
+    function closeAllVideos() {
+        document.getElementById('videoModal').innerHTML = '';
+        document.getElementById('videoModal').style.display = 'none';
+    }
+
+    // 📝 إنشاء منشور
+    async function createPost() {
+        const content = document.getElementById('newPostContent').value.trim();
+        if(!content || !currentUser) return;
+        await db.ref('posts').push({
+            userId: currentUser.uid,
+            content: content,
+            likes: 0,
+            comments: 0,
+            timestamp: Date.now()
+        });
+        document.getElementById('newPostContent').value = '';
+        await db.ref('users/' + currentUser.uid + '/totalPosts').set((currentUserData?.totalPosts || 0) + 1);
+        await loadAll();
+        await loadProfile();
+        showToast('✅ تم نشر المنشور');
+    }
+
+    async function likePost(postId) {
+        if(!currentUser) return;
+        const ref = db.ref('posts/' + postId);
+        const snap = await ref.get();
+        const post = snap.val();
+        if(!post) return;
+        let likes = (post.likes || 0) + 1;
+        await ref.update({likes});
+        await loadAll();
+        await loadProfile();
+    }
+
+    async function deletePost(postId) {
+        if(!confirm('هل أنت متأكد من حذف هذا المنشور؟')) return;
+        await db.ref('posts/' + postId).remove();
+        await loadAll();
+        await loadProfile();
+        showToast('🗑️ تم حذف المنشور');
+    }
+
+    function scrollToPosts() {
+        document.getElementById('postsHeader').scrollIntoView({behavior: 'smooth'});
     }
 
     function openEditPanel() {
@@ -419,6 +842,7 @@
     }
     function closeEditPanel() { document.getElementById('editPanel').classList.remove('show'); document.getElementById('overlayPanel').classList.remove('show'); }
     function selectCover(color, el) { _selectedCover = color; document.getElementById('coverSection').style.background = color; document.getElementById('coverImg').style.display = 'none'; document.querySelectorAll('#coverColors div').forEach(d => d.style.borderColor = 'transparent'); el.style.borderColor = '#fff'; }
+    
     async function saveProfile() {
         const username = document.getElementById('editUsername').value.trim();
         const bio = document.getElementById('editBio').value.trim();
@@ -429,6 +853,7 @@
         if(_selectedCover) updates.coverColor = _selectedCover;
         try { await db.ref('users/' + profileUserId).update(updates); closeEditPanel(); await loadAll(); await loadProfile(); showToast('✅ تم حفظ التغييرات بنجاح'); } catch(e) { showToast('❌ حدث خطأ'); }
     }
+    
     async function uploadAvatar(inp) {
         const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الصورة...');
         const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
@@ -438,6 +863,7 @@
             if(data.secure_url) { await db.ref('users/' + profileUserId).update({avatarUrl: data.secure_url, hasCustomAvatar: true}); document.getElementById('avatarImg').src = data.secure_url; showToast('✅ تم تحديث الصورة الشخصية'); }
         } catch(e) { showToast('❌ خطأ في الرفع'); } inp.value = '';
     }
+    
     async function uploadCover(inp) {
         const file = inp.files[0]; if(!file) return; showToast('⏳ جاري رفع الغلاف...');
         const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', UPLOAD_PRESET);
@@ -447,31 +873,39 @@
             if(data.secure_url) { await db.ref('users/' + profileUserId).update({coverImageUrl: data.secure_url, hasCustomCover: true}); const coverImg = document.getElementById('coverImg'); coverImg.src = data.secure_url; coverImg.style.display = 'block'; document.getElementById('coverSection').style.background = 'none'; showToast('✅ تم تحديث الغلاف'); }
         } catch(e) { showToast('❌ خطأ في الرفع'); } inp.value = '';
     }
+    
     async function toggleFollowUser() {
         if(!currentUser || isOwnProfile) return;
         const btn = document.getElementById('followBtn');
         const userRef = db.ref('users/' + currentUser.uid + '/following/' + profileUserId);
         const targetRef = db.ref('users/' + profileUserId + '/followers/' + currentUser.uid);
         const snap = await userRef.get();
-        if(snap.exists()) { await userRef.remove(); await targetRef.remove(); btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة'; btn.classList.remove('following'); }
-        else { await userRef.set(true); await targetRef.set(true); btn.innerHTML = '<i class="fas fa-user-check"></i> متابع'; btn.classList.add('following'); }
+        if(snap.exists()) {
+            await userRef.remove(); await targetRef.remove();
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> متابعة';
+            btn.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
+            btn.style.boxShadow = '0 8px 25px rgba(16,185,129,0.4)';
+        } else {
+            await userRef.set(true); await targetRef.set(true);
+            btn.innerHTML = '<i class="fas fa-user-check"></i> متابع';
+            btn.style.background = 'rgba(16,185,129,0.1)';
+            btn.style.boxShadow = 'none';
+            btn.style.border = '1px solid var(--border)';
+        }
         await loadAll(); await loadProfile();
     }
+    
     async function copyProfile() {
         const u = allUsers[profileUserId];
-        const text = `👤 @${u.username || 'مستخدم'}\n📝 ${u.bio || ''}\n💎 MNAENCA 2026`;
+        const text = `👤 @${u.username || 'مستخدم'}
+📝 ${u.bio || ''}
+💎 MNAENCA 2026`;
         try { await navigator.clipboard.writeText(text); } catch(e) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
         showToast('✅ تم نسخ معلومات الملف الشخصي');
     }
-    function showList(type) {
-        const u = allUsers[profileUserId];
-        const list = type === 'followers' ? (u?.followers || {}) : (u?.following || {});
-        const ids = Object.keys(list);
-        if(!ids.length) { alert('لا يوجد'); return; }
-        const names = ids.map(id => { const user = allUsers[id]; return user ? '@' + user.username : 'مستخدم'; }).join('\n');
-        alert((type === 'followers' ? 'المتابِعون' : 'المتابَعون') + ':\n' + names);
-    }
+    
     function showToast(msg) { const toast = document.getElementById('toastMsg'); toast.innerText = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
+    
     function formatTime(ts) {
         if(!ts) return 'غير معروف';
         const diff = Date.now() - ts;
@@ -486,13 +920,20 @@
     }
 
     async function loadAdminPanel() {
-        const grid = document.getElementById('videosGrid'); if(!grid) return;
-        const oldPanel = document.getElementById('adminPanelContainer'); if(oldPanel) oldPanel.remove();
-        const adminDiv = document.createElement('div'); adminDiv.id = 'adminPanelContainer'; adminDiv.className = 'admin-panel';
+        const postsSection = document.getElementById('postsSection');
+        if(!postsSection) return;
+        const oldPanel = document.getElementById('adminPanelContainer');
+        if(oldPanel) oldPanel.remove();
+        
+        const adminDiv = document.createElement('div');
+        adminDiv.id = 'adminPanelContainer';
+        adminDiv.className = 'admin-panel';
+        
         const totalUsers = Object.keys(allUsers).length;
         const totalVideos = allVideos.length;
         const totalVerified = Object.values(allUsers).filter(u => u.isVerified).length;
         const totalBanned = Object.values(allUsers).filter(u => u.banned).length;
+        
         adminDiv.innerHTML = `<h3><i class="fas fa-crown"></i> لوحة تحكم الأدمن</h3>
             <div class="admin-stats-grid">
                 <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h4>المستخدمين</h4><span>${totalUsers}</span></div></div>
@@ -508,12 +949,15 @@
                 <span>🎬 جميع الفيديوهات</span><span style="font-size:11px">${totalVideos} إجمالي</span>
             </div>
             <div id="adminVideosList"></div>`;
-        grid.after(adminDiv);
-        loadAdminUsersList(); loadAdminVideosList();
+        
+        postsSection.after(adminDiv);
+        loadAdminUsersList();
+        loadAdminVideosList();
     }
 
     function loadAdminUsersList() {
-        const listContainer = document.getElementById('adminDynamicList'); if(!listContainer) return;
+        const listContainer = document.getElementById('adminDynamicList');
+        if(!listContainer) return;
         const usersArray = Object.entries(allUsers).sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 15);
         if(!usersArray.length) { listContainer.innerHTML = '<div style="text-align:center;opacity:0.5;padding:20px">لا يوجد مستخدمون</div>'; return; }
         listContainer.innerHTML = usersArray.map(([id, u]) => {
@@ -522,29 +966,72 @@
             const isBanned = u.banned;
             const verifiedBadgeHtml = isVerified ? '<span class="badge-verified"><i class="fas fa-check"></i></span>' : '';
             let actionBtns = '';
-            if(isBanned) { actionBtns = `<button class="admin-btn btn-unban" onclick="toggleBanUser('${id}')"><i class="fas fa-undo"></i> إلغاء الحظر</button>`; }
-            else { actionBtns = `<button class="admin-btn btn-verify ${isVerified ? 'unverify' : ''}" onclick="toggleVerifyUser('${id}')">${isVerified ? '<i class="fas fa-times-circle"></i> إلغاء' : '<i class="fas fa-check-circle"></i> توثيق'}</button><button class="admin-btn btn-ban" onclick="toggleBanUser('${id}')"><i class="fas fa-ban"></i> حظر</button>`; }
-            return `<div class="admin-user-item"><div class="admin-user-info" onclick="openUserProfile('${id}')" style="cursor:pointer"><div class="admin-avatar"><img src="${avatar}"></div><div class="admin-user-details"><h4>@${u.username || 'مستخدم'} ${verifiedBadgeHtml}</h4><p>${u.email || ''}</p></div></div><div class="admin-user-actions">${actionBtns}</div></div>`;
+            if(isBanned) {
+                actionBtns = `<button class="admin-btn btn-unban" onclick="toggleBanUser('${id}')"><i class="fas fa-undo"></i> إلغاء الحظر</button>`;
+            } else {
+                actionBtns = `<button class="admin-btn btn-verify" onclick="toggleVerifyUser('${id}')">${isVerified ? '<i class="fas fa-times-circle"></i> إلغاء' : '<i class="fas fa-check-circle"></i> توثيق'}</button><button class="admin-btn btn-ban" onclick="toggleBanUser('${id}')"><i class="fas fa-ban"></i> حظر</button>`;
+            }
+            return `<div class="admin-user-item">
+                <div class="admin-user-info" onclick="openUserProfile('${id}')">
+                    <div class="admin-avatar"><img src="${avatar}"></div>
+                    <div class="admin-user-details"><h4>@${u.username || 'مستخدم'} ${verifiedBadgeHtml}</h4><p>${u.email || ''}</p></div>
+                </div>
+                <div class="admin-user-actions">${actionBtns}</div>
+            </div>`;
         }).join('');
     }
 
     function loadAdminVideosList() {
-        const listContainer = document.getElementById('adminVideosList'); if(!listContainer) return;
+        const listContainer = document.getElementById('adminVideosList');
+        if(!listContainer) return;
         const videosArray = allVideos.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 20);
         if(!videosArray.length) { listContainer.innerHTML = '<div style="text-align:center;opacity:0.5;padding:20px">لا توجد فيديوهات</div>'; return; }
         listContainer.innerHTML = videosArray.map(v => {
             const user = allUsers[v.sender] || {username: v.senderName || 'مستخدم'};
             const desc = (v.description || 'بدون وصف').substring(0, 40);
-            return `<div class="admin-user-item"><div class="admin-user-info"><div class="admin-avatar" style="border-radius:8px;width:50px;height:70px">${v.thumbnail ? `<img src="${v.thumbnail}" style="object-fit:cover">` : ''}</div><div class="admin-user-details"><p style="font-size:12px">${desc}</p><span style="font-size:10px;opacity:0.4">@${user.username} · ❤️ ${v.likes || 0}</span></div></div><div class="admin-user-actions"><button class="admin-btn btn-delete-video" onclick="deleteVideo('${v.id}')"><i class="fas fa-trash"></i> حذف</button></div></div>`;
+            return `<div class="admin-user-item">
+                <div class="admin-user-info">
+                    <div class="admin-avatar" style="border-radius:8px;width:50px;height:70px">${v.thumbnail ? `<img src="${v.thumbnail}" style="object-fit:cover">` : ''}</div>
+                    <div class="admin-user-details"><p style="font-size:12px">${desc}</p><span style="font-size:10px;opacity:0.4">@${user.username} · ❤️ ${v.likes || 0}</span></div>
+                </div>
+                <div class="admin-user-actions"><button class="admin-btn btn-delete-video" onclick="deleteVideo('${v.id}')"><i class="fas fa-trash"></i> حذف</button></div>
+            </div>`;
         }).join('');
     }
 
-    window.deleteVideo = async function(videoId) { if(!confirm('هل أنت متأكد من حذف هذا الفيديو؟')) return; try { await db.ref('videos/' + videoId).remove(); showToast('🗑️ تم حذف الفيديو بنجاح'); await loadAll(); await loadProfile(); loadAdminVideosList(); } catch(e) { showToast('❌ فشل حذف الفيديو'); } };
-    window.toggleVerifyUser = async function(id) { const snap = await db.ref('users/' + id).once('value'); const data = snap.val(); if(!data) return; const newState = !data.isVerified; if(!confirm(`تأكيد ${newState ? 'توثيق' : 'إلغاء توثيق'} @${data.username || 'المستخدم'}؟`)) return; await db.ref('users/' + id).update({isVerified: newState, verifiedAt: newState ? Date.now() : null, verifiedBy: newState ? currentUser.uid : null}); await loadAll(); await loadProfile(); showToast(`✅ تم ${newState ? 'توثيق' : 'إلغاء توثيق'} المستخدم`); loadAdminUsersList(); };
-    window.toggleBanUser = async function(id) { const snap = await db.ref('users/' + id).once('value'); const data = snap.val(); if(!data) return; const newState = !data.banned; if(!confirm(`تأكيد ${newState ? 'حظر' : 'إلغاء حظر'} @${data.username || 'المستخدم'}؟`)) return; await db.ref('users/' + id).update({banned: newState, bannedAt: newState ? Date.now() : null, bannedBy: newState ? currentUser.uid : null}); await loadAll(); await loadProfile(); showToast(`✅ تم ${newState ? 'حظر' : 'إلغاء حظر'} المستخدم`); loadAdminUsersList(); };
-    window.openUserProfile = function(id) { if(id === currentUser?.uid) window.location.href = 'profile.html'; else window.location.href = 'profile.html?uid=' + id; };
+    window.deleteVideo = async function(videoId) {
+        if(!confirm('هل أنت متأكد من حذف هذا الفيديو؟')) return;
+        try { await db.ref('videos/' + videoId).remove(); showToast('🗑️ تم حذف الفيديو بنجاح'); await loadAll(); await loadProfile(); loadAdminVideosList(); } catch(e) { showToast('❌ فشل حذف الفيديو'); }
+    };
+    
+    window.toggleVerifyUser = async function(id) {
+        const snap = await db.ref('users/' + id).once('value');
+        const data = snap.val();
+        if(!data) return;
+        const newState = !data.isVerified;
+        if(!confirm(`تأكيد ${newState ? 'توثيق' : 'إلغاء توثيق'} @${data.username || 'المستخدم'}؟`)) return;
+        await db.ref('users/' + id).update({isVerified: newState, verifiedAt: newState ? Date.now() : null, verifiedBy: newState ? currentUser.uid : null});
+        await loadAll(); await loadProfile(); showToast(`✅ تم ${newState ? 'توثيق' : 'إلغاء توثيق'} المستخدم`);
+        loadAdminUsersList();
+    };
+    
+    window.toggleBanUser = async function(id) {
+        const snap = await db.ref('users/' + id).once('value');
+        const data = snap.val();
+        if(!data) return;
+        const newState = !data.banned;
+        if(!confirm(`تأكيد ${newState ? 'حظر' : 'إلغاء حظر'} @${data.username || 'المستخدم'}؟`)) return;
+        await db.ref('users/' + id).update({banned: newState, bannedAt: newState ? Date.now() : null, bannedBy: newState ? currentUser.uid : null});
+        await loadAll(); await loadProfile(); showToast(`✅ تم ${newState ? 'حظر' : 'إلغاء حظر'} المستخدم`);
+        loadAdminUsersList();
+    };
+    
+    window.openUserProfile = function(id) {
+        if(id === currentUser?.uid) window.location.href = 'profile.html';
+        else window.location.href = 'profile.html?uid=' + id;
+    };
 
-    console.log('💎 MNAENCA Profile Ready ✨');
+    console.log('💎 MNAENCA Profile 2.0 Ready ✨');
 </script>
 </body>
 </html>
