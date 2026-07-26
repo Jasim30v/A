@@ -6,7 +6,7 @@
 ║     Ultimate Version - 9 Files - 3000+ Lines               ║
 ║                                                            ║
 ║  🔥  Firebase: muvg-42126                                 ║
-║  ☁️   Cloudinary: dmqyd0haj / s3_gok                     ║
+║  ☁️   Cloudinary: trz3ktjf / s44_kk                     ║
 ║  👑  Admin: jasim28v@gmail.com                            ║
 ║  👾  Avatars: DiceBear Big Smile (Random)                  ║
 ║  💎  Design: Sky Blue Glass Luxury                        ║
@@ -35,13 +35,13 @@ FIREBASE_CONFIG = {
     "measurementId": "G-4VP8E6WJ48"
 }
 
-CLOUD_NAME = "dmqyd0haj"
-UPLOAD_PRESET = "s3_gok"
+CLOUD_NAME = "trz3ktjf"
+UPLOAD_PRESET = "s44_kk"
 ADMIN_EMAILS_JS = "['jasim28v@gmail.com']"
 DICEBEAR_URL = "https://api.dicebear.com/7.x/big-smile/svg"
 APP_NAME = "MNAENCA"
 WATERMARK_TEXT = "☁️ MNAENCA"
-WATERMARK_URL = "https://res.cloudinary.com/dmqyd0haj/image/upload/v1/watermark_mnaenca"
+WATERMARK_URL = "https://res.cloudinary.com/trz3ktjf/image/upload/v1/watermark_mnaenca"
 
 # ☁️ Sky Blue Luxury Palette
 SKY_COLORS_JS = """[
@@ -236,7 +236,7 @@ COMMON_CSS = """
 
 def build_config():
     return f"""// ☁️ MNAENCA 2026 - Sky Blue Luxury Configuration
-// Firebase: muvg-42126 | Cloudinary: dmqyd0haj
+// Firebase: muvg-42126 | Cloudinary: {CLOUD_NAME}
 // ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
 
 const firebaseConfig = {{
@@ -1734,7 +1734,7 @@ def build_profile():
     }}
     async function copyProfile() {{
         const u = allUsers[profileUserId];
-        const text = `👤 @${{u.username || 'مستخدم'}}\\n📝 ${{u.bio || ''}}\\n☁️ MNAENCA 2026`;
+        const text = `👤 @${{u.username || 'مستخدم'}}\n📝 ${{u.bio || ''}}\n☁️ MNAENCA 2026`;
         try {{ await navigator.clipboard.writeText(text); }} catch(e) {{ const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }}
         showToast('✅ تم نسخ معلومات الملف الشخصي');
     }}
@@ -1743,8 +1743,8 @@ def build_profile():
         const list = type === 'followers' ? (u?.followers || {{}}) : (u?.following || {{}});
         const ids = Object.keys(list);
         if(!ids.length) {{ alert('لا يوجد'); return; }}
-        const names = ids.map(id => {{ const user = allUsers[id]; return user ? '@' + user.username : 'مستخدم'; }}).join('\\n');
-        alert((type === 'followers' ? 'المتابِعون' : 'المتابَعون') + ':\\n' + names);
+        const names = ids.map(id => {{ const user = allUsers[id]; return user ? '@' + user.username : 'مستخدم'; }}).join('\n');
+        alert((type === 'followers' ? 'المتابِعون' : 'المتابَعون') + ':\n' + names);
     }}
     function showToast(msg) {{ const toast = document.getElementById('toastMsg'); toast.innerText = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }}
     function formatTime(ts) {{
@@ -2085,7 +2085,7 @@ def main():
 ║  👤 Enhanced Profile with Video Grid                  ║
 ║  💧 Watermark on Videos                               ║
 ║  🔥 Firebase: muvg-42126                              ║
-║  ☁️ Cloudinary: dmqyd0haj                             ║
+║  ☁️ Cloudinary: trz3ktjf / s44_kk                    ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
     """)
@@ -2135,8 +2135,8 @@ def main():
      9. settings.html        → إعدادات
 
   ✨ تم إضافة خاصية التصميم المتجاوب (Responsive):
-     • في الموبايل: يظهر كشريط سفلي (صورة 2)
-     • في الكمبيوتر/التدوير: يتحول لقائمة جانبية أفقية (صورة 1)
+     • في الموبايل: يظهر كشريط سفلي
+     • في الكمبيوتر/التدوير: يتحول لقائمة جانبية أفقية
 
   ☁️ MNAENCA SKY BLUE READY! ✨
 {'='*60}
