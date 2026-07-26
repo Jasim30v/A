@@ -29,6 +29,7 @@
         -webkit-tap-highlight-color:transparent;
         user-select:none;
         -webkit-user-select:none;
+        height:100vh;overflow:hidden;
     }
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
@@ -75,6 +76,85 @@
         cursor:pointer;font-size:16px;transition:all 0.3s;
     }
     .btn-close-overlay:hover{background:rgba(14,165,233,0.25);box-shadow:0 0 15px rgba(14,165,233,0.3)}
+
+    /* ✨ RESPONSIVE LAYOUT: Mobile (Vertical) vs Desktop (Horizontal) ✨ */
+    
+    /* الوضع العمودي (الافتراضي - للموبايل) */
+    #mainApp {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+    }
+
+    /* إخفاء عناصر الأفقي في الموبايل */
+    .desktop-sidebar { display: none; }
+    .desktop-header { display: none; }
+
+    /* --- عند التدوير (أو شاشات أكبر من 800px) --- */
+    @media screen and (min-width: 800px) {
+        body { overflow: hidden; }
+        
+        #mainApp {
+            flex-direction: row; /* تحويل التخطيط لأفقي */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* القائمة الجانبية (الأفقي) */
+        .desktop-sidebar {
+            display: flex;
+            flex-direction: column;
+            width: 280px;
+            height: 100vh;
+            padding: 24px 16px;
+            border-right: 1px solid var(--border);
+            background: rgba(2,6,23,0.6);
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        /* تنسيقات القائمة الجانبية */
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom,#fff,#7dd3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sidebar-nav-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 16px; margin-bottom: 6px;
+            border-radius: 16px; cursor: pointer;
+            font-size: 15px; font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s;
+        }
+        .sidebar-nav-item:hover, .sidebar-nav-item.active {
+            background: rgba(14,165,233,0.1);
+            color: #fff;
+        }
+        .sidebar-nav-item i { font-size: 20px; width: 24px; text-align: center; }
+        
+        /* إخفاء الشريط السفلي والشريط العلوي للموبايل في وضع الأفقي */
+        .topbar { display: none !important; }
+        .nav-bottom { display: none !important; }
+
+        /* ضبط منطقة الفيديوهات لتملأ الشاشة المتبقية */
+        .videos-wrap {
+            flex: 1;
+            height: 100vh;
+            width: auto;
+        }
+        .vid-card video { opacity: 1 !important; transform: translateY(0) !important; }
+        
+        /* تعديل مساحة العناصر الجانبية للأفقي */
+        .side-btns { bottom: 40px; right: 30px; }
+        .vid-info { bottom: 40px; left: 30px; right: 90px; }
+    }
 
         body{min-height:100vh;overflow-y:auto;overflow-x:hidden;}
         .cover-section{position:relative;width:100%;height:260px;overflow:hidden;cursor:pointer}
