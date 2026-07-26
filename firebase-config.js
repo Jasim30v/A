@@ -1,6 +1,6 @@
-// ☁️ MNAENCA 2026 - Sky Blue Luxury Configuration
+// 💖 MNAENCA 2026 - Rose Pink Luxury Configuration
 // Firebase: muvg-42126 | Cloudinary: trz3ktjf
-// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile
+// ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile + Voice + Image
 
 const firebaseConfig = {
     apiKey: "AIzaSyCqDvG98pEqmZHKZienquJEq6gS1kNjK8M",
@@ -23,24 +23,24 @@ const CLOUD_NAME = "trz3ktjf";
 const UPLOAD_PRESET = "s44_kk";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 
-// ☁️ MNAENCA Settings
+// 💖 MNAENCA Settings
 const ADMIN_EMAILS = ['jasim28v@gmail.com'];
 const DICEBEAR_URL = "https://api.dicebear.com/7.x/big-smile/svg";
 const COVER_COLORS = [
-    "linear-gradient(135deg, #0c4a6e, #0369a1, #0284c7)",
-    "linear-gradient(135deg, #082f49, #0c4a6e, #0369a1)",
-    "linear-gradient(135deg, #164e63, #155e75, #0e7490)",
-    "linear-gradient(135deg, #1e3a8a, #2563eb, #3b82f6)",
-    "linear-gradient(135deg, #0284c7, #38bdf8, #7dd3fc)",
-    "linear-gradient(135deg, #0a1628, #0f2847, #0369a1)"
+    "linear-gradient(135deg, #831843, #be185d, #ec4899)",
+    "linear-gradient(135deg, #4c0519, #9d174d, #db2777)",
+    "linear-gradient(135deg, #701a75, #a21caf, #d946ef)",
+    "linear-gradient(135deg, #831843, #e11d48, #fb7185)",
+    "linear-gradient(135deg, #9d174d, #f43f5e, #fda4af)",
+    "linear-gradient(135deg, #1a1a2e, #9d174d, #ec4899)"
 ];
 
-// ☁️ App Info
+// 💖 App Info
 const APP_NAME = "MNAENCA";
 const APP_VERSION = "2026.3";
-const PRIMARY_COLOR = "#0ea5e9";
-const SECONDARY_COLOR = "#38bdf8";
-const WATERMARK_TEXT = "☁️ MNAENCA";
+const PRIMARY_COLOR = "#ec4899";
+const SECONDARY_COLOR = "#fbcfe8";
+const WATERMARK_TEXT = "💖 MNAENCA";
 const WATERMARK_URL = "https://res.cloudinary.com/trz3ktjf/image/upload/v1/watermark_mnaenca";
 
-console.log('☁️ %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #0ea5e9; font-size: 16px; font-weight: bold;');
+console.log('💖 %c'+APP_NAME+' v'+APP_VERSION+' Ready ✨', 'color: #ec4899; font-size: 16px; font-weight: bold;');
