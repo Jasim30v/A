@@ -19,6 +19,8 @@ import os
 import sys
 import json
 import shutil
+import requests
+from tqdm import tqdm
 
 # ═══════════════════════════════════════════════════════════
 # 💖 CONFIGURATION - الإعدادات
