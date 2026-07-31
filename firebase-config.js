@@ -1,5 +1,5 @@
 // 💎 MNAENCA 2026 - Emerald Green Luxury Configuration
-// Firebase: muvg-42126 | Cloudinary: trz3ktjf
+// Firebase: muvg-42126 | Cloudinary: veh8sz1p
 // ✨ PREMIUM: TikTok Comments + Share System + Watermark + Enhanced Profile + Posts
 
 const firebaseConfig = {
@@ -19,8 +19,8 @@ const auth = firebase.auth();
 const db = firebase.database();
 
 // Cloudinary Configuration
-const CLOUD_NAME = "trz3ktjf";
-const UPLOAD_PRESET = "s44_kk";
+const CLOUD_NAME = "veh8sz1p";
+const UPLOAD_PRESET = "dh55_gb";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 
 // 💎 MNAENCA Settings
