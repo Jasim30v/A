@@ -3,8 +3,10 @@
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                            ║
 ║  💎  MNAENCA 2026 - EMERALD GREEN GLASS LUXURY EDITION  💎 ║
-║     Ultimate Version - 10 Files - 4000+ Lines              ║
+║     Ultimate Version - 10 Files - 4500+ Lines              ║
 ║     ✨ PROFILE 2.0 - Advanced Professional Profile         ║
+║     🎤 VOICE MESSAGES - Crystal Clear Recording            ║
+║     🖼️  IMAGE SHARING - Stunning Glass Previews            ║
 ║                                                            ║
 ║  🔥  Firebase: muvg-42126                                 ║
 ║  ☁️   Cloudinary: trz3ktjf / s44_kk                     ║
@@ -116,6 +118,8 @@ COMMON_CSS = """
     @keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
     @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
     @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(16,185,129,0.3)}50%{box-shadow:0 0 40px rgba(52,211,153,0.7)}}
+    @keyframes recordPulse{0%,100%{box-shadow:0 0 10px rgba(239,68,68,0.5)}50%{box-shadow:0 0 30px rgba(239,68,68,0.9),0 0 60px rgba(239,68,68,0.4)}}
+    @keyframes waveBar{0%,100%{height:4px}50%{height:20px}}
     .spinner{
         width:36px;height:36px;
         border:3px solid rgba(16,185,129,0.2);
@@ -281,954 +285,202 @@ def build_auth():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>💎 MNAENCA | دخول</title>
-    <!-- Firebase SDK v10.12.0 (أحدث إصدار) -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         {COMMON_CSS}
-        :root {{
-            --emerald-400: #34d399;
-            --emerald-500: #10b981;
-            --emerald-600: #059669;
-            --surface-glass: rgba(16, 185, 129, 0.04);
-            --border-glass: rgba(16, 185, 129, 0.15);
+        body{{
+            min-height:100vh;
+            background:radial-gradient(ellipse at top, #0f172a, #05140b, #020617);
+            display:flex;align-items:center;justify-content:center;
+            overflow:hidden;position:relative;
         }}
+        .bg-orb{{
+            position:fixed;border-radius:50%;filter:blur(130px);opacity:0.25;
+            animation:orbFloat 20s infinite alternate;pointer-events:none;
+        }}
+        .bg-orb:nth-child(1){{width:400px;height:400px;background:#10b981;top:-100px;left:-100px}}
+        .bg-orb:nth-child(2){{width:350px;height:350px;background:#34d399;bottom:-100px;right:-100px;animation-delay:5s}}
+        .bg-orb:nth-child(3){{width:300px;height:300px;background:#a7f3d0;top:50%;left:50%;animation-delay:10s}}
+        @keyframes orbFloat{{0%{{transform:translate(0,0) scale(1)}}100%{{transform:translate(50px,-50px) scale(1.3)}}}}
 
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .card{{
+            position:relative;z-index:1;width:90%;max-width:420px;
+            background:rgba(16,185,129,0.03);
+            backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+            border-radius:32px;padding:36px 24px;
+            border:1px solid rgba(16,185,129,0.2);
+            box-shadow:0 30px 70px rgba(16,185,129,0.1),inset 0 0 30px rgba(16,185,129,0.02);
+            animation:fadeUp 0.8s ease;
         }}
+        .logo{{
+            width:70px;height:70px;margin:0 auto 20px;
+            background:linear-gradient(135deg, rgba(16,185,129,0.3), rgba(52,211,153,0.3));
+            border-radius:20px;display:flex;align-items:center;justify-content:center;
+            font-size:36px;border:1px solid rgba(16,185,129,0.2);
+            animation:glowPulse 3s ease-in-out infinite;
+        }}
+        h1{{text-align:center;font-size:36px;font-weight:900;background:linear-gradient(to bottom, #fff, #a7f3d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}}
+        .sub{{text-align:center;color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:20px}}
 
-        body {{
-            min-height: 100vh;
-            background: radial-gradient(ellipse at top, #0f172a 0%, #05140b 50%, #020617 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
-        }}
+        .tabs{{display:flex;gap:4px;background:rgba(16,185,129,0.06);border-radius:40px;padding:4px;margin-bottom:24px}}
+        .tab{{flex:1;padding:12px;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;border-radius:40px;font-size:14px;transition:all 0.3s;font-weight:500}}
+        .tab.active{{background:linear-gradient(135deg, #10b981, #34d399);color:#fff;box-shadow:0 8px 20px rgba(16,185,129,0.4)}}
 
-        /* Background orbs with enhanced animation */
-        .bg-orb {{
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(140px);
-            opacity: 0.2;
-            animation: orbFloat 25s infinite alternate;
-            pointer-events: none;
-        }}
-        .bg-orb:nth-child(1) {{
-            width: 500px;
-            height: 500px;
-            background: #10b981;
-            top: -150px;
-            left: -150px;
-            animation-delay: 0s;
-        }}
-        .bg-orb:nth-child(2) {{
-            width: 400px;
-            height: 400px;
-            background: #34d399;
-            bottom: -150px;
-            right: -150px;
-            animation-delay: -7s;
-        }}
-        .bg-orb:nth-child(3) {{
-            width: 350px;
-            height: 350px;
-            background: #6ee7b7;
-            top: 50%;
-            left: 50%;
-            animation-delay: -14s;
-        }}
-        .bg-orb:nth-child(4) {{
-            width: 250px;
-            height: 250px;
-            background: #a7f3d0;
-            top: 20%;
-            right: 20%;
-            animation-delay: -21s;
-        }}
+        .form{{display:none;animation:fadeIn 0.4s ease}}
+        .form.active{{display:block}}
 
-        @keyframes orbFloat {{
-            0% {{
-                transform: translate(0, 0) scale(1) rotate(0deg);
-            }}
-            33% {{
-                transform: translate(60px, -40px) scale(1.2) rotate(120deg);
-            }}
-            66% {{
-                transform: translate(-30px, 50px) scale(0.9) rotate(240deg);
-            }}
-            100% {{
-                transform: translate(40px, -30px) scale(1.15) rotate(360deg);
-            }}
+        input{{
+            width:100%;padding:15px 18px;margin:8px 0;
+            border-radius:50px;background:rgba(16,185,129,0.04);
+            border:1px solid rgba(16,185,129,0.15);color:#fff;
+            font-size:14px;outline:none;transition:all 0.4s;
         }}
+        input:focus{{border-color:rgba(16,185,129,0.6);box-shadow:0 0 20px rgba(16,185,129,0.1);background:rgba(16,185,129,0.08)}}
+        input::placeholder{{color:rgba(255,255,255,0.3)}}
 
-        /* Particle effect */
-        .particles {{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+        button{{
+            width:100%;padding:15px;margin-top:18px;
+            background:linear-gradient(135deg, #10b981, #34d399);
+            border:none;border-radius:50px;color:#fff;
+            font-weight:bold;font-size:15px;cursor:pointer;
+            transition:all 0.3s;box-shadow:0 10px 30px rgba(16,185,129,0.4);
         }}
-        .particle {{
-            position: absolute;
-            background: rgba(16, 185, 129, 0.3);
-            border-radius: 50%;
-            animation: floatUp linear infinite;
-        }}
-        @keyframes floatUp {{
-            0% {{
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }}
-            10% {{
-                opacity: 1;
-            }}
-            90% {{
-                opacity: 1;
-            }}
-            100% {{
-                transform: translateY(-10vh) scale(1);
-                opacity: 0;
-            }}
-        }}
+        button:hover{{transform:translateY(-2px);box-shadow:0 20px 40px rgba(16,185,129,0.6)}}
+        button:active{{transform:scale(0.97)}}
+        button:disabled{{opacity:0.5;pointer-events:none}}
 
-        /* Main card with enhanced glass morphism */
-        .card {{
-            position: relative;
-            z-index: 1;
-            width: 90%;
-            max-width: 440px;
-            background: rgba(16, 185, 129, 0.03);
-            backdrop-filter: blur(60px);
-            -webkit-backdrop-filter: blur(60px);
-            border-radius: 36px;
-            padding: 40px 28px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            box-shadow: 
-                0 30px 80px rgba(16, 185, 129, 0.1),
-                0 0 0 1px rgba(16, 185, 129, 0.05),
-                inset 0 0 40px rgba(16, 185, 129, 0.02);
-            animation: cardFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }}
-        .card:hover {{
-            transform: translateY(-2px);
-            box-shadow: 
-                0 35px 90px rgba(16, 185, 129, 0.15),
-                0 0 0 1px rgba(16, 185, 129, 0.08),
-                inset 0 0 40px rgba(16, 185, 129, 0.03);
-        }}
-
-        @keyframes cardFadeUp {{
-            from {{
-                opacity: 0;
-                transform: translateY(40px) scale(0.95);
-            }}
-            to {{
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }}
-        }}
-
-        /* Logo with pulse glow */
-        .logo-container {{
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-        }}
-        .logo {{
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(52, 211, 153, 0.25));
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 42px;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            position: relative;
-            z-index: 2;
-        }}
-        .logo-glow {{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
-            border-radius: 22px;
-            animation: glowPulse 2.5s ease-in-out infinite;
-            z-index: 1;
-        }}
-        @keyframes glowPulse {{
-            0%, 100% {{
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0.6;
-            }}
-            50% {{
-                transform: translate(-50%, -50%) scale(1.3);
-                opacity: 0.2;
-            }}
-        }}
-
-        h1 {{
-            text-align: center;
-            font-size: 38px;
-            font-weight: 900;
-            background: linear-gradient(180deg, #ffffff 0%, #6ee7b7 50%, #34d399 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 4px;
-            letter-spacing: -0.5px;
-        }}
-        .sub {{
-            text-align: center;
-            color: rgba(255, 255, 255, 0.35);
-            font-size: 13px;
-            margin-bottom: 28px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }}
-
-        /* Enhanced tabs */
-        .tabs {{
-            display: flex;
-            gap: 6px;
-            background: rgba(16, 185, 129, 0.05);
-            border-radius: 50px;
-            padding: 5px;
-            margin-bottom: 28px;
-            position: relative;
-        }}
-        .tab {{
-            flex: 1;
-            padding: 13px;
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            border-radius: 50px;
-            font-size: 14px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            font-weight: 600;
-            position: relative;
-            z-index: 1;
-            font-family: inherit;
-        }}
-        .tab.active {{
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-            box-shadow: 
-                0 8px 25px rgba(16, 185, 129, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            transform: scale(1.02);
-        }}
-        .tab:hover:not(.active) {{
-            color: rgba(255, 255, 255, 0.8);
-            background: rgba(16, 185, 129, 0.08);
-        }}
-
-        /* Forms */
-        .form {{
-            display: none;
-            animation: fadeSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }}
-        .form.active {{
-            display: block;
-        }}
-        @keyframes fadeSlideIn {{
-            from {{
-                opacity: 0;
-                transform: translateX(-10px);
-            }}
-            to {{
-                opacity: 1;
-                transform: translateX(0);
-            }}
-        }}
-
-        /* Input fields with icons */
-        .input-group {{
-            position: relative;
-            margin-bottom: 12px;
-        }}
-        .input-group i {{
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(16, 185, 129, 0.4);
-            font-size: 15px;
-            transition: color 0.3s;
-            pointer-events: none;
-            z-index: 2;
-        }}
-        input {{
-            width: 100%;
-            padding: 16px 45px 16px 20px;
-            border-radius: 50px;
-            background: rgba(16, 185, 129, 0.04);
-            border: 1.5px solid rgba(16, 185, 129, 0.12);
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            font-family: inherit;
-        }}
-        input:focus {{
-            border-color: rgba(16, 185, 129, 0.6);
-            box-shadow: 
-                0 0 25px rgba(16, 185, 129, 0.1),
-                0 0 0 3px rgba(16, 185, 129, 0.05);
-            background: rgba(16, 185, 129, 0.08);
-        }}
-        input:focus + i,
-        .input-group:focus-within i {{
-            color: rgba(16, 185, 129, 0.8);
-        }}
-        input::placeholder {{
-            color: rgba(255, 255, 255, 0.25);
-            font-size: 13px;
-        }}
-
-        /* Primary button */
-        .btn-primary {{
-            width: 100%;
-            padding: 16px;
-            margin-top: 20px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
-            border-radius: 50px;
-            color: #fff;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 
-                0 10px 30px rgba(16, 185, 129, 0.35),
-                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            position: relative;
-            overflow: hidden;
-            font-family: inherit;
-        }}
-        .btn-primary::before {{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.5s;
-        }}
-        .btn-primary:hover {{
-            transform: translateY(-3px);
-            box-shadow: 
-                0 20px 45px rgba(16, 185, 129, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-        }}
-        .btn-primary:hover::before {{
-            left: 100%;
-        }}
-        .btn-primary:active {{
-            transform: scale(0.96);
-            transition: transform 0.1s;
-        }}
-        .btn-primary:disabled {{
-            opacity: 0.6;
-            pointer-events: none;
-            filter: grayscale(30%);
-        }}
-
-        /* Divider */
-        .divider {{
-            display: flex;
-            align-items: center;
-            margin: 22px 0;
-            gap: 12px;
-        }}
-        .divider::before,
-        .divider::after {{
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
-        }}
-        .divider span {{
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 12px;
-            font-weight: 500;
-            white-space: nowrap;
-        }}
-
-        /* Google button - Modern design */
-        .btn-google {{
-            width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            border-radius: 50px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            backdrop-filter: blur(10px);
-            font-family: inherit;
-        }}
-        .btn-google:hover {{
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }}
-        .btn-google:active {{
-            transform: scale(0.97);
-        }}
-        .btn-google img {{
-            width: 20px;
-            height: 20px;
-        }}
-
-        /* Messages */
-        .msg {{
-            text-align: center;
-            color: #fca5a5;
-            font-size: 13px;
-            margin-top: 14px;
-            min-height: 20px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }}
-        .msg.success {{
-            color: #4ade80;
-        }}
-
-        /* Loading spinner */
-        .spinner {{
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            vertical-align: middle;
-        }}
-        @keyframes spin {{
-            to {{ transform: rotate(360deg); }}
-        }}
-
-        /* Ripple effect */
-        .ripple {{
-            position: relative;
-            overflow: hidden;
-        }}
-        .ripple::after {{
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }}
-        .ripple:active::after {{
-            width: 300px;
-            height: 300px;
-        }}
-
-        /* Responsive */
-        @media (max-width: 480px) {{
-            .card {{
-                padding: 30px 20px;
-                border-radius: 28px;
-            }}
-            h1 {{
-                font-size: 30px;
-            }}
-            .logo-container {{
-                width: 65px;
-                height: 65px;
-            }}
-            .logo {{
-                font-size: 34px;
-                border-radius: 18px;
-            }}
-            .logo-glow {{
-                border-radius: 18px;
-            }}
-        }}
+        .msg{{text-align:center;color:#fca5a5;font-size:13px;margin-top:12px;min-height:20px}}
+        .msg.success{{color:#4ade80}}
     </style>
 </head>
 <body>
-    <!-- Floating orbs -->
-    <div class="bg-orb"></div>
-    <div class="bg-orb"></div>
-    <div class="bg-orb"></div>
-    <div class="bg-orb"></div>
+    <div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div>
 
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Main Card -->
     <div class="card">
-        <div class="logo-container">
-            <div class="logo-glow"></div>
-            <div class="logo">💎</div>
-        </div>
+        <div class="logo">💎</div>
         <h1>MNAENCA</h1>
-        <p class="sub">✦ Emerald Luxury 2026 ✦</p>
+        <p class="sub">Emerald Green Luxury 2026 ✨</p>
 
-        <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" id="tabLogin" onclick="switchTab('login')">
-                <i class="fas fa-sign-in-alt"></i> دخول
-            </button>
-            <button class="tab" id="tabRegister" onclick="switchTab('register')">
-                <i class="fas fa-user-plus"></i> اشتراك
-            </button>
+            <button class="tab active" id="tabLogin" onclick="switchTab('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
+            <button class="tab" id="tabRegister" onclick="switchTab('register')"><i class="fas fa-user-plus"></i> اشتراك</button>
         </div>
 
-        <!-- Login Form -->
         <div id="formLogin" class="form active">
-            <div class="input-group">
-                <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" autocomplete="email" dir="ltr">
-                <i class="fas fa-envelope"></i>
-            </div>
-            <div class="input-group">
-                <input type="password" id="loginPass" placeholder="كلمة المرور" autocomplete="current-password">
-                <i class="fas fa-lock"></i>
-            </div>
-            <button class="btn-primary ripple" id="btnLogin" onclick="doLogin()">
-                <i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول
-            </button>
-            <div class="divider">
-                <span>أو سجل دخولك بـ</span>
-            </div>
-            <button class="btn-google" id="btnGoogleLogin" onclick="doGoogleLogin()">
-                <img src="https://www.google.com/favicon.ico" alt="Google" width="20" height="20" style="border-radius:50%;">
-                متابعة باستخدام Google
-            </button>
-            <div class="divider">
-                <span>أو سجل دخولك بـ</span>
-            </div>
-            <button class="btn-google" id="btnGoogleRegister" onclick="doGoogleRegister()">
-                <img src="https://www.google.com/favicon.ico" alt="Google" width="20" height="20" style="border-radius:50%;">
-                متابعة باستخدام Google
-            </button>
+            <input type="email" id="loginEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
+            <input type="password" id="loginPass" placeholder="🔒 كلمة المرور" autocomplete="current-password">
+            <button id="btnLogin" onclick="doLogin()"><i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول</button>
             <div class="msg" id="loginMsg"></div>
         </div>
 
-        <!-- Register Form -->
         <div id="formRegister" class="form">
-            <div class="input-group">
-                <input type="text" id="regName" placeholder="اسم المستخدم" autocomplete="username">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="input-group">
-                <input type="email" id="regEmail" placeholder="البريد الإلكتروني" autocomplete="email" dir="ltr">
-                <i class="fas fa-envelope"></i>
-            </div>
-            <div class="input-group">
-                <input type="password" id="regPass" placeholder="كلمة المرور (6 أحرف على الأقل)" autocomplete="new-password">
-                <i class="fas fa-key"></i>
-            </div>
-            <button class="btn-primary ripple" id="btnRegister" onclick="doRegister()">
-                <i class="fas fa-heart"></i> إنشاء حساب
-            </button>
+            <input type="text" id="regName" placeholder="👤 اسم المستخدم" autocomplete="username">
+            <input type="email" id="regEmail" placeholder="📧 البريد الإلكتروني" autocomplete="email" dir="ltr">
+            <input type="password" id="regPass" placeholder="🔒 كلمة المرور (6 أحرف على الأقل)" autocomplete="new-password">
+            <button id="btnRegister" onclick="doRegister()"><i class="fas fa-heart"></i> إنشاء حساب</button>
             <div class="msg" id="regMsg"></div>
         </div>
     </div>
 
     <script src="firebase-config.js"></script>
     <script>
-        // Initialize Firebase (يجب أن يكون موجوداً في firebase-config.js)
-        // firebase.initializeApp(firebaseConfig);
-        // const auth = firebase.auth();
-        // const db = firebase.database();
-
-        // Create particles
-        (function createParticles() {{
-            const container = document.getElementById('particles');
-            if (!container) return;
-            const count = 25;
-            for (let i = 0; i < count; i++) {{
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const size = Math.random() * 4 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = Math.random() * 8 + 6 + 's';
-                particle.style.animationDelay = Math.random() * 8 + 's';
-                container.appendChild(particle);
-            }}
-        }})();
-
-        // Tab switching
-        function switchTab(type) {{
-            const tabLogin = document.getElementById('tabLogin');
-            const tabRegister = document.getElementById('tabRegister');
-            const formLogin = document.getElementById('formLogin');
-            const formRegister = document.getElementById('formRegister');
-            const btnGoogleLogin = document.getElementById('btnGoogleLogin');
-            const btnGoogleRegister = document.getElementById('btnGoogleRegister');
-            
+        function switchTab(type){{
+            document.getElementById('tabLogin').classList.remove('active');
+            document.getElementById('tabRegister').classList.remove('active');
+            document.getElementById('formLogin').classList.remove('active');
+            document.getElementById('formRegister').classList.remove('active');
             document.getElementById('loginMsg').innerText = '';
             document.getElementById('regMsg').innerText = '';
-            document.getElementById('loginMsg').className = 'msg';
-            document.getElementById('regMsg').className = 'msg';
-            
-            if (type === 'login') {{
-                tabLogin.classList.add('active');
-                tabRegister.classList.remove('active');
-                formLogin.classList.add('active');
-                formRegister.classList.remove('active');
-                if (btnGoogleLogin) btnGoogleLogin.style.display = 'flex';
-                if (btnGoogleRegister) btnGoogleRegister.style.display = 'flex';
+            if(type === 'login'){{
+                document.getElementById('tabLogin').classList.add('active');
+                document.getElementById('formLogin').classList.add('active');
             }} else {{
-                tabRegister.classList.add('active');
-                tabLogin.classList.remove('active');
-                formRegister.classList.add('active');
-                formLogin.classList.remove('active');
-                if (btnGoogleLogin) btnGoogleLogin.style.display = 'none';
-                if (btnGoogleRegister) btnGoogleRegister.style.display = 'none';
+                document.getElementById('tabRegister').classList.add('active');
+                document.getElementById('formRegister').classList.add('active');
             }}
         }}
 
-        // Login with Email/Password
-        async function doLogin() {{
+        async function doLogin(){{
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPass').value;
             const msg = document.getElementById('loginMsg');
             const btn = document.getElementById('btnLogin');
-            
-            if (!email || !password) {{
-                msg.innerText = '❌ الرجاء ملء جميع الحقول';
-                msg.className = 'msg';
-                shakeElement(document.getElementById('loginEmail').parentElement);
-                return;
-            }}
-            
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> جاري الدخول...';
-            msg.innerText = '';
-            msg.className = 'msg';
-            
+            if(!email || !password){{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
+            btn.disabled = true; btn.innerHTML = '⏳ جاري الدخول...'; msg.innerText = ''; msg.className = 'msg';
             try {{
                 await auth.signInWithEmailAndPassword(email, password);
                 window.location.replace('index.html');
-            }} catch (error) {{
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول';
-                
-                let errorMsg = '❌ حدث خطأ غير متوقع';
-                switch (error.code) {{
-                    case 'auth/user-not-found':
-                        errorMsg = '❌ لا يوجد حساب بهذا البريد الإلكتروني';
-                        break;
-                    case 'auth/wrong-password':
-                    case 'auth/invalid-credential':
-                        errorMsg = '❌ كلمة المرور غير صحيحة';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMsg = '❌ صيغة البريد الإلكتروني غير صالحة';
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMsg = '❌ محاولات كثيرة، الرجاء المحاولة لاحقاً';
-                        break;
-                    case 'auth/user-disabled':
-                        errorMsg = '❌ تم تعطيل هذا الحساب';
-                        break;
-                    default:
-                        errorMsg = '❌ خطأ: ' + (error.message || 'غير معروف');
+            }} catch(error) {{
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول';
+                switch(error.code) {{
+                    case 'auth/user-not-found': msg.innerText = '❌ لا يوجد حساب بهذا البريد'; break;
+                    case 'auth/wrong-password': case 'auth/invalid-credential': msg.innerText = '❌ كلمة المرور غير صحيحة'; break;
+                    case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
+                    case 'auth/too-many-requests': msg.innerText = '❌ محاولات كثيرة، حاول لاحقاً'; break;
+                    default: msg.innerText = '❌ خطأ: ' + error.message;
                 }}
-                msg.innerText = errorMsg;
-                msg.className = 'msg';
             }}
         }}
 
-        // Register with Email/Password
-        async function doRegister() {{
+        async function doRegister(){{
             const username = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPass').value;
             const msg = document.getElementById('regMsg');
             const btn = document.getElementById('btnRegister');
-            
-            // Validation
-            if (!username || !email || !password) {{
-                msg.innerText = '❌ الرجاء ملء جميع الحقول';
-                msg.className = 'msg';
-                return;
-            }}
-            if (username.length < 3) {{
-                msg.innerText = '❌ اسم المستخدم يجب أن يكون 3 أحرف على الأقل';
-                msg.className = 'msg';
-                return;
-            }}
-            if (password.length < 6) {{
-                msg.innerText = '❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل';
-                msg.className = 'msg';
-                return;
-            }}
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {{
-                msg.innerText = '❌ صيغة البريد الإلكتروني غير صالحة';
-                msg.className = 'msg';
-                return;
-            }}
-            
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> جاري إنشاء الحساب...';
-            msg.innerText = '';
-            msg.className = 'msg';
-            
+            if(!username || !email || !password){{ msg.innerText = '❌ الرجاء ملء جميع الحقول'; return; }}
+            if(username.length < 3){{ msg.innerText = '❌ اسم المستخدم 3 أحرف على الأقل'; return; }}
+            if(password.length < 6){{ msg.innerText = '❌ كلمة المرور 6 أحرف على الأقل'; return; }}
+            if(!email.includes('@') || !email.includes('.')){{ msg.innerText = '❌ بريد إلكتروني غير صالح'; return; }}
+            btn.disabled = true; btn.innerHTML = '⏳ جاري إنشاء الحساب...'; msg.innerText = ''; msg.className = 'msg';
             try {{
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const uid = userCredential.user.uid;
-                
-                // إنشاء بيانات المستخدم
                 const avatarUrl = DICEBEAR_URL + '?seed=' + uid;
                 const coverColor = COVER_COLORS[Math.floor(Math.random() * COVER_COLORS.length)];
-                
                 const userData = {{
-                    username: username,
-                    email: email,
-                    bio: '',
-                    website: '',
-                    location: '',
-                    contactEmail: '',
-                    avatarUrl: avatarUrl,
-                    hasCustomAvatar: false,
-                    coverImageUrl: '',
-                    hasCustomCover: false,
-                    coverColor: coverColor,
-                    followers: {{}},
-                    following: {{}},
-                    totalLikes: 0,
-                    totalPosts: 0,
-                    isVerified: false,
-                    verifiedAt: null,
-                    verifiedBy: null,
-                    banned: false,
-                    createdAt: Date.now(),
-                    lastSeen: Date.now(),
-                    authProvider: 'email'
+                    username: username, email: email, bio: '',
+                    website: '', location: '', contactEmail: '',
+                    avatarUrl: avatarUrl, hasCustomAvatar: false,
+                    coverImageUrl: '', hasCustomCover: false,
+                    coverColor: coverColor, followers: {{}}, following: {{}},
+                    totalLikes: 0, totalPosts: 0, isVerified: false, verifiedAt: null, verifiedBy: null,
+                    banned: false, createdAt: Date.now(), lastSeen: Date.now()
                 }};
-                
                 await db.ref('users/' + uid).set(userData);
-                
                 msg.innerText = '✅ تم إنشاء الحساب بنجاح! جاري التوجيه...';
                 msg.className = 'msg success';
-                
-                setTimeout(() => {{
-                    window.location.replace('index.html');
-                }}, 1000);
-            }} catch (error) {{
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-heart"></i> إنشاء حساب';
-                
-                let errorMsg = '❌ حدث خطأ غير متوقع';
-                switch (error.code) {{
-                    case 'auth/email-already-in-use':
-                        errorMsg = '❌ البريد الإلكتروني مستخدم بالفعل';
-                        break;
-                    case 'auth/weak-password':
-                        errorMsg = '❌ كلمة المرور ضعيفة جداً';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMsg = '❌ صيغة البريد الإلكتروني غير صالحة';
-                        break;
-                    case 'auth/operation-not-allowed':
-                        errorMsg = '❌ التسجيل غير مفعل، راجع إعدادات Firebase';
-                        break;
-                    default:
-                        errorMsg = '❌ خطأ: ' + (error.message || 'غير معروف');
+                setTimeout(() => {{ window.location.replace('index.html'); }}, 800);
+            }} catch(error) {{
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-heart"></i> إنشاء حساب'; msg.className = 'msg';
+                switch(error.code) {{
+                    case 'auth/email-already-in-use': msg.innerText = '❌ البريد الإلكتروني مستخدم بالفعل'; break;
+                    case 'auth/weak-password': msg.innerText = '❌ كلمة المرور ضعيفة جداً'; break;
+                    case 'auth/invalid-email': msg.innerText = '❌ بريد إلكتروني غير صالح'; break;
+                    case 'auth/operation-not-allowed': msg.innerText = '❌ التسجيل غير مفعل، راجع إعدادات Firebase'; break;
+                    default: msg.innerText = '❌ خطأ: ' + (error.message || 'غير معروف');
                 }}
-                msg.innerText = errorMsg;
-                msg.className = 'msg';
             }}
         }}
 
-        // Google Sign-In/Up
-        async function doGoogleLogin() {{
-            const provider = new firebase.auth.GoogleAuthProvider();
-            provider.setCustomParameters({{
-                prompt: 'select_account'
-            }});
-            await handleGoogleAuth(provider, 'login');
-        }}
-
-        async function doGoogleRegister() {{
-            const provider = new firebase.auth.GoogleAuthProvider();
-            provider.setCustomParameters({{
-                prompt: 'select_account'
-            }});
-            await handleGoogleAuth(provider, 'register');
-        }}
-
-        async function handleGoogleAuth(provider, type) {{
-            const msg = document.getElementById(type === 'login' ? 'loginMsg' : 'regMsg');
-            const btn = document.getElementById(type === 'login' ? 'btnGoogleLogin' : 'btnGoogleRegister');
-            
-            msg.innerText = '';
-            msg.className = 'msg';
-            
-            if (btn) {{
-                btn.disabled = true;
-                btn.innerHTML = '<span class="spinner"></span> جاري المصادقة...';
-            }}
-            
-            try {{
-                const result = await auth.signInWithPopup(provider);
-                const user = result.user;
-                const isNewUser = result.additionalUserInfo?.isNewUser;
-                
-                // إذا كان مستخدماً جديداً، أنشئ بياناته
-                if (isNewUser || type === 'register') {{
-                    const uid = user.uid;
-                    const userRef = db.ref('users/' + uid);
-                    const snapshot = await userRef.once('value');
-                    
-                    if (!snapshot.exists()) {{
-                        const avatarUrl = user.photoURL || (DICEBEAR_URL + '?seed=' + uid);
-                        const coverColor = COVER_COLORS[Math.floor(Math.random() * COVER_COLORS.length)];
-                        const displayName = user.displayName || 'مستخدم ' + uid.substring(0, 6);
-                        
-                        const userData = {{
-                            username: displayName,
-                            email: user.email,
-                            bio: '',
-                            website: '',
-                            location: '',
-                            contactEmail: user.email,
-                            avatarUrl: avatarUrl,
-                            hasCustomAvatar: !!user.photoURL,
-                            coverImageUrl: '',
-                            hasCustomCover: false,
-                            coverColor: coverColor,
-                            followers: {{}},
-                            following: {{}},
-                            totalLikes: 0,
-                            totalPosts: 0,
-                            isVerified: user.emailVerified || false,
-                            verifiedAt: user.emailVerified ? Date.now() : null,
-                            verifiedBy: user.emailVerified ? 'google' : null,
-                            banned: false,
-                            createdAt: Date.now(),
-                            lastSeen: Date.now(),
-                            authProvider: 'google'
-                        }};
-                        
-                        await userRef.set(userData);
-                    }}
-                }}
-                
-                msg.innerText = '✅ تم تسجيل الدخول بنجاح! جاري التوجيه...';
-                msg.className = 'msg success';
-                
-                setTimeout(() => {{
-                    window.location.replace('index.html');
-                }}, 800);
-            }} catch (error) {{
-                if (btn) {{
-                    btn.disabled = false;
-                    btn.innerHTML = '<img src="https://www.google.com/favicon.ico" alt="Google" width="20" height="20" style="border-radius:50%;"> متابعة باستخدام Google';
-                }}
-                
-                let errorMsg = '❌ حدث خطأ غير متوقع';
-                switch (error.code) {{
-                    case 'auth/popup-closed-by-user':
-                        errorMsg = '❌ تم إغلاق نافذة تسجيل الدخول';
-                        break;
-                    case 'auth/popup-blocked':
-                        errorMsg = '❌ تم حظر النافذة المنبثقة، الرجاء السماح بها';
-                        break;
-                    case 'auth/cancelled-popup-request':
-                        errorMsg = '❌ تم إلغاء الطلب';
-                        break;
-                    case 'auth/account-exists-with-different-credential':
-                        errorMsg = '❌ يوجد حساب مسجل بنفس البريد الإلكتروني بطريقة مختلفة';
-                        break;
-                    case 'auth/network-request-failed':
-                        errorMsg = '❌ فشل الاتصال بالشبكة';
-                        break;
-                    default:
-                        errorMsg = '❌ خطأ: ' + (error.message || 'غير معروف');
-                }}
-                msg.innerText = errorMsg;
-                msg.className = 'msg';
-                
-                console.error('Google Auth Error:', error);
-            }}
-        }}
-
-        // Shake animation for invalid input
-        function shakeElement(element) {{
-            if (!element) return;
-            element.style.animation = 'shake 0.5s ease';
-            setTimeout(() => {{
-                element.style.animation = '';
-            }}, 500);
-        }}
-
-        // Add shake keyframes dynamically
-        const shakeStyle = document.createElement('style');
-        shakeStyle.textContent = `
-            @keyframes shake {{
-                0%, 100% {{ transform: translateX(0); }}
-                10%, 30%, 50%, 70%, 90% {{ transform: translateX(-5px); }}
-                20%, 40%, 60%, 80% {{ transform: translateX(5px); }}
-            }}
-        `;
-        document.head.appendChild(shakeStyle);
-
-        // Enter key handler
         document.querySelectorAll('input').forEach(input => {{
             input.addEventListener('keydown', function(e) {{
-                if (e.key === 'Enter') {{
+                if(e.key === 'Enter') {{
                     e.preventDefault();
-                    if (document.getElementById('formLogin').classList.contains('active')) {{
-                        doLogin();
-                    }} else {{
-                        doRegister();
-                    }}
+                    if(document.getElementById('formLogin').classList.contains('active')) {{ doLogin(); }}
+                    else {{ doRegister(); }}
                 }}
             }});
         }});
 
-        // Auto-redirect if already logged in
-        if (typeof auth !== 'undefined') {{
-            auth.onAuthStateChanged(user => {{
-                if (user) {{
-                    window.location.replace('index.html');
-                }}
-            }});
-        }}
+        auth.onAuthStateChanged(user => {{
+            if(user) {{ window.location.replace('index.html'); }}
+        }});
 
-        console.log('💎 MNAENCA Auth v2.0 Ready | Firebase v10.12.0 | Google Auth Enabled');
+        console.log('💎 MNAENCA Auth Ready');
     </script>
 </body>
 </html>"""
@@ -3070,7 +2322,7 @@ def build_upload():
 </html>"""
 
 # ═══════════════════════════════════════════════════════════
-# 💎 6. chat.html - دردشة
+# 💎 6. chat.html - دردشة متطورة مع تسجيل صوتي وصور زجاجية
 # ═══════════════════════════════════════════════════════════
 
 def build_chat():
@@ -3105,7 +2357,15 @@ def build_chat():
         @keyframes msgIn{{from{{opacity:0;transform:translateY(12px) scale(0.95)}}to{{opacity:1;transform:translateY(0) scale(1)}}}}
         .bubble.sent{{background:linear-gradient(135deg,var(--accent),var(--accent2));align-self:flex-end;color:#fff;border-bottom-right-radius:6px;box-shadow:0 4px 15px rgba(16,185,129,0.2)}}
         .bubble.received{{background:rgba(16,185,129,0.08);align-self:flex-start;border:1px solid rgba(16,185,129,0.12);border-bottom-left-radius:6px}}
-        .bubble img{{max-width:200px;border-radius:14px;cursor:pointer;margin-top:6px;display:block}}
+        
+        /* 🖼️ صور زجاجية مبهرة */
+        .bubble img{{max-width:200px;border-radius:14px;cursor:pointer;margin-top:6px;display:block;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(2px);box-shadow:0 8px 25px rgba(0,0,0,0.4),0 0 15px rgba(16,185,129,0.1);transition:all 0.4s cubic-bezier(0.4,0,0.2,1)}}
+        .bubble img:hover{{transform:scale(1.03);box-shadow:0 12px 35px rgba(0,0,0,0.5),0 0 30px rgba(16,185,129,0.25);border-color:rgba(16,185,129,0.4)}}
+        
+        /* 🎤 تسجيل صوتي */
+        .bubble audio{{margin-top:6px;width:200px;height:40px;filter:sepia(20%) hue-rotate(80deg) saturate(70%);border-radius:30px}}
+        .bubble audio::-webkit-media-controls-panel{{background:rgba(16,185,129,0.15);border-radius:30px}}
+        
         .bubble .time{{font-size:9px;opacity:0.5;margin-top:6px;text-align:left;direction:ltr}}
         .input-bar{{display:flex;gap:8px;padding:10px 12px;background:rgba(5,20,11,0.95);backdrop-filter:blur(20px);border-top:1px solid rgba(16,185,129,0.2);align-items:center;flex-shrink:0;z-index:10;min-height:60px}}
         .input-bar input{{flex:1;padding:12px 18px;border-radius:30px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.25);color:#fff;font-size:14px;outline:none;transition:all 0.3s;min-width:0}}
@@ -3116,6 +2376,38 @@ def build_chat():
         .btn-send{{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 20px rgba(16,185,129,0.4);transition:all 0.3s}}
         .btn-send:hover{{transform:scale(1.05);box-shadow:0 8px 25px rgba(16,185,129,0.6)}}
         .btn-send:active{{transform:scale(0.95)}}
+        
+        /* 🎤 تسجيل صوتي - شريط مرئي */
+        .voice-recorder{{position:fixed;bottom:0;left:0;right:0;background:rgba(5,20,11,0.98);backdrop-filter:blur(40px);border-top:2px solid var(--accent);padding:20px;z-index:500;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;align-items:center;gap:15px;border-radius:24px 24px 0 0;box-shadow:0 -10px 40px rgba(16,185,129,0.15)}}
+        .voice-recorder.show{{transform:translateY(0)}}
+        .voice-recorder .record-btn{{
+            width:80px;height:80px;
+            background:rgba(239,68,68,0.15);
+            border:3px solid rgba(239,68,68,0.5);
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;color:#ef4444;font-size:32px;
+            transition:all 0.3s;
+        }}
+        .voice-recorder .record-btn.recording{{
+            animation:recordPulse 1.5s ease-in-out infinite;
+            background:rgba(239,68,68,0.3);
+            border-color:rgba(239,68,68,0.8);
+        }}
+        .voice-recorder .timer{{font-size:28px;font-weight:700;color:#fff;font-family:monospace}}
+        .voice-recorder .waveform{{display:flex;align-items:flex-end;gap:3px;height:50px}}
+        .voice-recorder .waveform .bar{{
+            width:4px;background:var(--accent);
+            border-radius:2px;animation:waveBar 0.8s ease-in-out infinite;
+        }}
+        .voice-recorder .record-actions{{display:flex;gap:15px}}
+        .voice-recorder .record-actions button{{
+            padding:12px 30px;border-radius:30px;font-weight:700;cursor:pointer;font-size:14px;
+            transition:all 0.3s;border:none;
+        }}
+        .btn-record-send{{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 6px 20px rgba(16,185,129,0.4)}}
+        .btn-record-cancel{{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3)}}
+        
         .empty-state{{text-align:center;padding:50px 20px;color:rgba(255,255,255,0.4)}}
         .empty-state i{{font-size:60px;color:var(--accent);opacity:0.3;margin-bottom:16px;display:block}}
         .empty-state p{{font-size:15px;margin-bottom:6px}}
@@ -3123,6 +2415,28 @@ def build_chat():
         .chat-header-info{{display:flex;align-items:center;gap:12px;flex:1;min-width:0}}
         .chat-header-avatar{{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(16,185,129,0.3);flex-shrink:0}}
         .chat-header-avatar img{{width:100%;height:100%;object-fit:cover}}
+        
+        /* 🌟 معاينة الصورة بحجم كامل (Fullscreen Preview) */
+        .image-preview-overlay{{
+            position:fixed;inset:0;background:rgba(0,0,0,0.95);
+            z-index:9999;display:flex;align-items:center;justify-content:center;
+            cursor:pointer;
+            animation:fadeIn 0.3s ease;
+        }}
+        .image-preview-overlay img{{
+            max-width:95vw;max-height:95vh;object-fit:contain;
+            border-radius:16px;border:2px solid rgba(16,185,129,0.3);
+            box-shadow:0 20px 60px rgba(16,185,129,0.2),0 0 100px rgba(16,185,129,0.05);
+        }}
+        .image-preview-close{{
+            position:absolute;top:20px;right:20px;
+            width:44px;height:44px;background:rgba(239,68,68,0.2);
+            border:1px solid rgba(239,68,68,0.3);border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            color:#f87171;font-size:20px;cursor:pointer;z-index:10000;
+            transition:all 0.3s;
+        }}
+        .image-preview-close:hover{{background:rgba(239,68,68,0.4);box-shadow:0 0 20px rgba(239,68,68,0.3)}}
     </style>
 </head>
 <body>
@@ -3141,29 +2455,272 @@ def build_chat():
         <div class="chat-header-info"><div class="chat-header-avatar" id="chatAvatar"><img src="" alt=""></div><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px" id="chatName">محادثة</div><div style="font-size:11px;opacity:0.5" id="chatOnline"></div></div></div>
         <button class="btn-icon" onclick="copyChat()" title="نسخ المحادثة"><i class="fas fa-copy"></i></button>
     </div>
-    <div class="chat-msgs" id="msgsList"><div class="empty-state"><i class="fas fa-comments"></i><p>ابدأ المحادثة</p><span>أرسل رسالة للبدء 💎</span></div></div>
+    <div class="chat-msgs" id="msgsList"><div class="empty-state"><i class="fas fa-comments"></i><p>ابدأ المحادثة</p><span>أرسل رسالة أو صورة أو تسجيل صوتي 💎</span></div></div>
     <div class="input-bar">
         <button class="btn-icon" onclick="sendImage()" title="إرسال صورة"><i class="fas fa-image"></i></button>
+        <button class="btn-icon" onclick="openVoiceRecorder()" title="تسجيل صوتي"><i class="fas fa-microphone"></i></button>
         <input type="text" id="msgInput" placeholder="اكتب رسالتك هنا..." autocomplete="off" onkeydown="if(event.key==='Enter')sendMsg()">
         <button class="btn-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
+
+<!-- 🎤 مسجل الصوت -->
+<div class="voice-recorder" id="voiceRecorder">
+    <div class="timer" id="recordTimer">00:00</div>
+    <div class="waveform" id="recordWaveform"></div>
+    <button class="record-btn" id="recordBtn" onclick="toggleRecording()"><i class="fas fa-microphone"></i></button>
+    <div class="record-actions">
+        <button class="btn-record-cancel" onclick="cancelRecording()"><i class="fas fa-times"></i> إلغاء</button>
+        <button class="btn-record-send" id="sendRecordBtn" onclick="sendRecording()" disabled><i class="fas fa-paper-plane"></i> إرسال</button>
+    </div>
+</div>
+<div class="overlay" id="voiceOverlay" style="display:none;z-index:499" onclick="cancelRecording()"></div>
+
 <div class="toast-msg" id="toastMsg">✅ تم</div>
 <script src="firebase-config.js"></script>
 <script>
     let currentUser=null,allUsers={{}},chatUserId=null;
-    auth.onAuthStateChanged(async u=>{{if(!u){{window.location.href='auth.html';return}}currentUser=u;const us=await db.ref('users').once('value');allUsers=us.val()||{{}};document.getElementById('loader').style.display='none';const params=new URLSearchParams(window.location.search);const targetUid=params.get('uid');if(targetUid){{openChat(targetUid)}}else{{showConvs()}}setInterval(()=>{{if(currentUser)db.ref('users/'+currentUser.uid+'/lastSeen').set(Date.now())}},60000)}});
+    let mediaRecorder=null,recordedChunks=[],recordStartTime=null,recordTimerInterval=null;
+    
+    auth.onAuthStateChanged(async u=>{{
+        if(!u){{window.location.href='auth.html';return}}
+        currentUser=u;
+        const us=await db.ref('users').once('value');allUsers=us.val()||{{}};
+        document.getElementById('loader').style.display='none';
+        const params=new URLSearchParams(window.location.search);
+        const targetUid=params.get('uid');
+        if(targetUid){{openChat(targetUid)}}else{{showConvs()}}
+        setInterval(()=>{{if(currentUser)db.ref('users/'+currentUser.uid+'/lastSeen').set(Date.now())}},60000);
+    }});
+    
     function showConvs(){{document.getElementById('chatView').style.display='none';document.getElementById('convView').style.display='flex';chatUserId=null;loadConvs()}}
-    async function loadConvs(){{const cl=document.getElementById('convList');const ce=document.getElementById('convEmpty');cl.innerHTML='';const snap=await db.ref('private_messages').once('value');const all=snap.val()||{{}};const found=new Set();Object.keys(all).forEach(cid=>{{const[u1,u2]=cid.split('_');const other=u1===currentUser.uid?u2:u2===currentUser.uid?u1:null;if(other&&!found.has(other)&&allUsers[other])found.add(other)}});if(!found.size){{ce.style.display='block';return}}else{{ce.style.display='none'}}found.forEach(uid=>{{const u=allUsers[uid];const d=document.createElement('div');d.className='conv-item';d.innerHTML=`<div class="chat-avatar"><img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}" alt="" onerror="this.src='${{DICEBEAR_URL}}?seed=${{uid}}'"></div><div class="conv-info"><div class="conv-name">@${{u?.username||'مستخدم'}} ${{u?.isVerified?'<span style="color:#a7f3d0;font-size:12px"><i class="fas fa-check-circle"></i></span>':''}}</div><div class="conv-last">اضغط للدخول إلى المحادثة 💬</div></div>`;d.onclick=()=>openChat(uid);cl.appendChild(d)}})}}
-    async function openChat(uid){{chatUserId=uid;const u=allUsers[uid];document.getElementById('chatName').innerText='@'+(u?.username||'مستخدم');document.getElementById('chatAvatar').querySelector('img').src=u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid);document.getElementById('convView').style.display='none';document.getElementById('chatView').style.display='flex';const onlineEl=document.getElementById('chatOnline');db.ref('presence/'+uid).on('value',s=>{{const online=s.val();onlineEl.innerHTML=online?'<span style="color:#22c55e">● نشط الآن</span>':'آخر ظهور: '+formatTime(u?.lastSeen)}});await loadMsgs();document.getElementById('msgInput').focus()}}
+    
+    async function loadConvs(){{
+        const cl=document.getElementById('convList');
+        const ce=document.getElementById('convEmpty');
+        cl.innerHTML='';
+        const snap=await db.ref('private_messages').once('value');
+        const all=snap.val()||{{}};
+        const found=new Set();
+        Object.keys(all).forEach(cid=>{{
+            const[u1,u2]=cid.split('_');
+            const other=u1===currentUser.uid?u2:u2===currentUser.uid?u1:null;
+            if(other&&!found.has(other)&&allUsers[other])found.add(other);
+        }});
+        if(!found.size){{ce.style.display='block';return}}else{{ce.style.display='none'}}
+        found.forEach(uid=>{{
+            const u=allUsers[uid];
+            const d=document.createElement('div');
+            d.className='conv-item';
+            d.innerHTML=`<div class="chat-avatar"><img src="${{u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid)}}" alt="" onerror="this.src='${{DICEBEAR_URL}}?seed=${{uid}}'"></div><div class="conv-info"><div class="conv-name">@${{u?.username||'مستخدم'}} ${{u?.isVerified?'<span style="color:#a7f3d0;font-size:12px"><i class="fas fa-check-circle"></i></span>':''}}</div><div class="conv-last">اضغط للدخول إلى المحادثة 💬</div></div>`;
+            d.onclick=()=>openChat(uid);cl.appendChild(d);
+        }});
+    }}
+    
+    async function openChat(uid){{
+        chatUserId=uid;
+        const u=allUsers[uid];
+        document.getElementById('chatName').innerText='@'+(u?.username||'مستخدم');
+        document.getElementById('chatAvatar').querySelector('img').src=u?.avatarUrl||(DICEBEAR_URL+'?seed='+uid);
+        document.getElementById('convView').style.display='none';
+        document.getElementById('chatView').style.display='flex';
+        const onlineEl=document.getElementById('chatOnline');
+        db.ref('presence/'+uid).on('value',s=>{{
+            const online=s.val();
+            onlineEl.innerHTML=online?'<span style="color:#22c55e">● نشط الآن</span>':'آخر ظهور: '+formatTime(u?.lastSeen);
+        }});
+        await loadMsgs();
+        document.getElementById('msgInput').focus();
+    }}
+    
     function getChatId(){{return[currentUser.uid,chatUserId].sort().join('_')}}
-    async function loadMsgs(){{const ml=document.getElementById('msgsList');if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const ms=snap.val()||{{}};const msgsArr=Object.values(ms).sort((a,b)=>a.timestamp-b.timestamp);if(!msgsArr.length){{ml.innerHTML='<div class="empty-state"><i class="fas fa-comments"></i><p>ابدأ المحادثة</p><span>أرسل رسالة للبدء 💎</span></div>';return}}ml.innerHTML=msgsArr.map(m=>{{const sent=m.senderId===currentUser.uid;const content=m.type==='image'?`<img src="${{m.imageUrl}}" onclick="window.open('${{m.imageUrl}}','_blank')" loading="lazy">`:m.text;return `<div class="bubble ${{sent?'sent':'received'}}">${{content}}<div class="time">${{new Date(m.timestamp).toLocaleTimeString('ar-SA',{{hour:'2-digit',minute:'2-digit'}})}}</div></div>`}}).join('');setTimeout(()=>{{ml.scrollTop=ml.scrollHeight}},100)}}
-    async function sendMsg(){{const inp=document.getElementById('msgInput');const txt=inp.value.trim();if(!txt||!chatUserId)return;inp.value='';await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,text:txt,type:'text',timestamp:Date.now()}});await loadMsgs()}}
-    async function sendImage(){{if(!chatUserId)return;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async(e)=>{{const file=e.target.files[0];if(!file)return;showToast('⏳ جاري رفع الصورة...');const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);try{{const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{{method:'POST',body:fd}});const data=await res.json();if(data.secure_url){{await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,type:'image',imageUrl:data.secure_url,timestamp:Date.now()}});await loadMsgs();showToast('✅ تم إرسال الصورة')}}}}catch(e){{showToast('❌ فشل رفع الصورة')}}}};inp.click()}}
-    async function copyChat(){{if(!chatUserId)return;const snap=await db.ref('private_messages/'+getChatId()).once('value');const msgs=snap.val()||{{}};let text='💬 محادثة MNAENCA\\n'+'─'.repeat(30)+'\\n';Object.values(msgs).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{const sender=m.senderId===currentUser.uid?'أنت':(allUsers[m.senderId]?.username||'مستخدم');const content=m.type==='image'?'[صورة]':m.text;const time=new Date(m.timestamp).toLocaleTimeString('ar-SA');text+=`\\n${{sender}} (${{time}}):\\n${{content}}\\n`}});try{{await navigator.clipboard.writeText(text)}}catch(e){{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}}showToast('✅ تم نسخ المحادثة')}}
+    
+    async function loadMsgs(){{
+        const ml=document.getElementById('msgsList');
+        if(!chatUserId)return;
+        const snap=await db.ref('private_messages/'+getChatId()).once('value');
+        const ms=snap.val()||{{}};
+        const msgsArr=Object.values(ms).sort((a,b)=>a.timestamp-b.timestamp);
+        if(!msgsArr.length){{
+            ml.innerHTML='<div class="empty-state"><i class="fas fa-comments"></i><p>ابدأ المحادثة</p><span>أرسل رسالة أو صورة أو تسجيل صوتي 💎</span></div>';
+            return;
+        }}
+        ml.innerHTML=msgsArr.map(m=>{{
+            const sent=m.senderId===currentUser.uid;
+            let content='';
+            if(m.type==='image'){{
+                content=`<img src="${{m.imageUrl}}" onclick="event.stopPropagation();openImagePreview('${{m.imageUrl}}')" loading="lazy" alt="صورة">`;
+            }} else if(m.type==='voice'){{
+                content=`<audio controls src="${{m.voiceUrl}}" style="max-width:220px"></audio>`;
+            }} else {{
+                content=m.text;
+            }}
+            return `<div class="bubble ${{sent?'sent':'received'}}">${{content}}<div class="time">${{new Date(m.timestamp).toLocaleTimeString('ar-SA',{{hour:'2-digit',minute:'2-digit'}})}}</div></div>`;
+        }}).join('');
+        setTimeout(()=>{{ml.scrollTop=ml.scrollHeight}},100);
+    }}
+    
+    async function sendMsg(){{
+        const inp=document.getElementById('msgInput');
+        const txt=inp.value.trim();
+        if(!txt||!chatUserId)return;
+        inp.value='';
+        await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,text:txt,type:'text',timestamp:Date.now()}});
+        await loadMsgs();
+    }}
+    
+    async function sendImage(){{
+        if(!chatUserId)return;
+        const inp=document.createElement('input');
+        inp.type='file';inp.accept='image/*';
+        inp.onchange=async(e)=>{{
+            const file=e.target.files[0];if(!file)return;
+            showToast('⏳ جاري رفع الصورة...');
+            const fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);
+            try{{
+                const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{{method:'POST',body:fd}});
+                const data=await res.json();
+                if(data.secure_url){{
+                    await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,type:'image',imageUrl:data.secure_url,timestamp:Date.now()}});
+                    await loadMsgs();
+                    showToast('✅ تم إرسال الصورة');
+                }}
+            }}catch(e){{showToast('❌ فشل رفع الصورة')}}
+        }};
+        inp.click();
+    }}
+
+    // 🖼️ معاينة الصورة بحجم كامل
+    function openImagePreview(url){{
+        const overlay=document.createElement('div');
+        overlay.className='image-preview-overlay';
+        overlay.innerHTML=`<button class="image-preview-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><img src="${{url}}" alt="preview" onclick="event.stopPropagation()">`;
+        overlay.onclick=function(e){{if(e.target===this)this.remove()}};
+        document.body.appendChild(overlay);
+    }}
+
+    // 🎤 فتح مسجل الصوت
+    function openVoiceRecorder(){{
+        if(!chatUserId)return;
+        document.getElementById('voiceRecorder').classList.add('show');
+        document.getElementById('voiceOverlay').style.display='block';
+        generateWaveform();
+    }}
+
+    function cancelRecording(){{
+        stopRecording(true);
+        document.getElementById('voiceRecorder').classList.remove('show');
+        document.getElementById('voiceOverlay').style.display='none';
+        document.getElementById('recordTimer').innerText='00:00';
+    }}
+
+    function generateWaveform(){{
+        const container=document.getElementById('recordWaveform');
+        container.innerHTML='';
+        for(let i=0;i<20;i++){{
+            const bar=document.createElement('div');
+            bar.className='bar';
+            bar.style.animationDelay=(i*0.08)+'s';
+            bar.style.height=(Math.random()*40+6)+'px';
+            container.appendChild(bar);
+        }}
+    }}
+
+    async function toggleRecording(){{
+        const btn=document.getElementById('recordBtn');
+        if(mediaRecorder&&mediaRecorder.state==='recording'){{
+            stopRecording(false);
+            btn.classList.remove('recording');
+            btn.innerHTML='<i class="fas fa-microphone"></i>';
+        }} else {{
+            try{{
+                const stream=await navigator.mediaDevices.getUserMedia({{audio:true}});
+                mediaRecorder=new MediaRecorder(stream);
+                recordedChunks=[];
+                mediaRecorder.ondataavailable=e=>{{if(e.data.size>0)recordedChunks.push(e.data)}};
+                mediaRecorder.onstop=()=>{{
+                    stream.getTracks().forEach(t=>t.stop());
+                }};
+                mediaRecorder.start();
+                recordStartTime=Date.now();
+                startTimer();
+                btn.classList.add('recording');
+                btn.innerHTML='<i class="fas fa-stop"></i>';
+                document.getElementById('sendRecordBtn').disabled=false;
+            }}catch(e){{
+                showToast('❌ تعذر الوصول إلى الميكروفون');
+                console.error(e);
+            }}
+        }}
+    }}
+
+    function startTimer(){{
+        if(recordTimerInterval)clearInterval(recordTimerInterval);
+        recordTimerInterval=setInterval(()=>{{
+            const diff=Math.floor((Date.now()-recordStartTime)/1000);
+            const mins=Math.floor(diff/60).toString().padStart(2,'0');
+            const secs=(diff%60).toString().padStart(2,'0');
+            document.getElementById('recordTimer').innerText=`${{mins}}:${{secs}}`;
+        }},500);
+    }}
+
+    function stopRecording(cancel){{
+        if(recordTimerInterval){{clearInterval(recordTimerInterval);recordTimerInterval=null}}
+        if(mediaRecorder&&mediaRecorder.state==='recording'){{
+            mediaRecorder.stop();
+            if(cancel){{recordedChunks=[];document.getElementById('sendRecordBtn').disabled=true}}
+        }}
+    }}
+
+    async function sendRecording(){{
+        if(!recordedChunks.length||!chatUserId)return;
+        stopRecording(false);
+        const blob=new Blob(recordedChunks,{{type:'audio/webm'}});
+        recordedChunks=[];
+        document.getElementById('voiceRecorder').classList.remove('show');
+        document.getElementById('voiceOverlay').style.display='none';
+        document.getElementById('recordBtn').classList.remove('recording');
+        document.getElementById('recordBtn').innerHTML='<i class="fas fa-microphone"></i>';
+        document.getElementById('sendRecordBtn').disabled=true;
+        document.getElementById('recordTimer').innerText='00:00';
+        
+        showToast('⏳ جاري رفع التسجيل الصوتي...');
+        const fd=new FormData();
+        fd.append('file',blob,'voice_'+Date.now()+'.webm');
+        fd.append('upload_preset',UPLOAD_PRESET);
+        try{{
+            const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload',{{method:'POST',body:fd}});
+            const data=await res.json();
+            if(data.secure_url){{
+                await db.ref('private_messages/'+getChatId()).push({{senderId:currentUser.uid,type:'voice',voiceUrl:data.secure_url,timestamp:Date.now()}});
+                await loadMsgs();
+                showToast('✅ تم إرسال التسجيل الصوتي');
+            }}
+        }}catch(e){{showToast('❌ فشل رفع التسجيل الصوتي')}}
+    }}
+
+    async function copyChat(){{
+        if(!chatUserId)return;
+        const snap=await db.ref('private_messages/'+getChatId()).once('value');
+        const msgs=snap.val()||{{}};
+        let text='💬 محادثة MNAENCA\\n'+'─'.repeat(30)+'\\n';
+        Object.values(msgs).sort((a,b)=>a.timestamp-b.timestamp).forEach(m=>{{
+            const sender=m.senderId===currentUser.uid?'أنت':(allUsers[m.senderId]?.username||'مستخدم');
+            let content='';
+            if(m.type==='image')content='[صورة]';
+            else if(m.type==='voice')content='[رسالة صوتية]';
+            else content=m.text;
+            const time=new Date(m.timestamp).toLocaleTimeString('ar-SA');
+            text+=`\\n${{sender}} (${{time}}):\\n${{content}}\\n`;
+        }});
+        try{{await navigator.clipboard.writeText(text)}}catch(e){{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}}
+        showToast('✅ تم نسخ المحادثة');
+    }}
+    
     function showToast(msg){{const toast=document.getElementById('toastMsg');toast.innerText=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}}
     function formatTime(ts){{if(!ts)return'غير معروف';const diff=Date.now()-ts;const mins=Math.floor(diff/60000);const hours=Math.floor(diff/3600000);const days=Math.floor(diff/86400000);if(mins<1)return'الآن';if(mins<60)return'منذ '+mins+' د';if(hours<24)return'منذ '+hours+' س';if(days<7)return'منذ '+days+' يوم';return new Date(ts).toLocaleDateString('ar-SA')}}
-    console.log('💎 MNAENCA Chat Ready ✨');
+    
+    console.log('💎 MNAENCA Chat with Voice & Image Ready ✨');
 </script>
 </body>
 </html>"""
@@ -3281,7 +2838,7 @@ def main():
 ║                                                          ║
 ║  💎  MNAENCA 2026 - EMERALD GREEN LUXURY EDITION  ✨  ║
 ║     PROFILE 2.0 - Advanced Professional Version          ║
-║     10 Files - 4000+ Lines                               ║
+║     10 Files - 4500+ Lines                               ║
 ║                                                          ║
 ║  🎬 NATURAL VIDEO DISPLAY (No Zoom/Crop)               ║
 ║  📝 TEXT BELOW VIDEO                                    ║
@@ -3289,8 +2846,8 @@ def main():
 ║  👥 Followers/Following Modal with Actions              ║
 ║  🎬 Video Player Modal (In-App)                         ║
 ║  📝 Posts System (Create/Like/Delete)                   ║
-║  📊 Enhanced Animated Statistics                        ║
-║  🎨 Premium Glass Effects                                ║
+║  🎤 VOICE MESSAGES - Crystal Clear Recording            ║
+║  🖼️  IMAGE SHARING - Stunning Glass Previews            ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
     """)
@@ -3333,23 +2890,18 @@ def main():
      3. index.html            → 🎬 الرئيسية (فيديو طبيعي + نص أسفل)
      4. profile.html          → ✨ ملف شخصي 2.0 متطور
      5. upload.html           → رفع فيديو مع تتبع التقدم
-     6. chat.html             → دردشة خاصة
+     6. chat.html             → 💬 دردشة خاصة + 🎤 تسجيل صوتي + 🖼️ صور
      7. explore.html          → استكشاف
      8. notifications.html    → الإشعارات
      9. settings.html         → إعدادات
      10. profile-videos.html  → صفحة جميع الفيديوهات
 
-  🆕 التحسينات الجديدة:
-     • 🎬 عرض الفيديو بشكله الطبيعي (contain) بدون تكبير
-     • 📝 النص يظهر أسفل الفيديو في تخطيط منفصل
-     • 📱 دعم كامل للعرض الأفقي (Landscape)
-     • 🖥️ دعم الشاشات الكبيرة (Desktop)
-     • 🔐 واجهة تسجيل دخول واشتراك مطورة بالكامل
-     • 💬 نظام تعليقات متقدم مع ردود
-     • 📤 نظام مشاركة متعدد المنصات
-     • 👥 نافذة منبثقة للمتابعين مع أزرار متابعة
-     • 📝 نظام منشورات متكامل
-     • 🛡️ لوحة تحكم أدمن متكاملة
+  🆕 أحدث التحسينات:
+     • 🎤 نظام تسجيل صوتي متكامل (واجهة جميلة مع مؤقت وموجات)
+     • 🖼️ إرسال صور مع معاينة زجاجية مبهرة
+     • 🔍 معاينة الصور بحجم كامل مع تأثيرات
+     • 🎵 مشغل صوتي أنيق للرسائل الصوتية
+     • ✨ تأثيرات زجاجية على جميع العناصر
 
   💎 MNAENCA PROFILE 2.0 READY! ✨
 {'='*60}
