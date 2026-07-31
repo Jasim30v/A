@@ -40,8 +40,8 @@ FIREBASE_CONFIG = {
     "measurementId": "G-4VP8E6WJ48"
 }
 
-CLOUD_NAME = "trz3ktjf"
-UPLOAD_PRESET = "s44_kk"
+CLOUD_NAME = "veh8sz1p"
+UPLOAD_PRESET = "dh55_gb"
 ADMIN_EMAILS_JS = "['jasim28v@gmail.com']"
 DICEBEAR_URL = "https://api.dicebear.com/7.x/big-smile/svg"
 APP_NAME = "MNAENCA"
